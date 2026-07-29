@@ -24,7 +24,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center space-x-3 group">
-              <div className="relative w-8 h-8 rounded-full overflow-hidden border border-zinc-800 bg-black group-hover:border-violet-500/50 transition-all duration-300">
+              <div className="relative w-11 h-11 rounded-full overflow-hidden border border-zinc-800 bg-black group-hover:border-violet-500 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:shadow-[0_0_20px_rgba(139,92,246,0.4)]">
                 <Image
                   src="/images/bitium-logo.jpg"
                   alt="Bitium Technology Logo"
@@ -33,10 +33,10 @@ export default function Navbar() {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-sm font-bold tracking-tight text-white group-hover:text-violet-400 transition-colors leading-none">
+                <span className="text-base font-black tracking-tight bg-gradient-to-r from-white via-violet-400 to-fuchsia-400 bg-[size:200%_auto] bg-left text-transparent bg-clip-text group-hover:bg-right transition-all duration-750 leading-none">
                   PrintGrid
                 </span>
-                <span className="text-[9px] font-semibold text-zinc-500 tracking-wide mt-1.5 leading-none">
+                <span className="text-[9px] font-bold text-zinc-500 tracking-wider mt-1.5 leading-none uppercase group-hover:text-zinc-400 transition-colors duration-500">
                   powered by Bitium Technology
                 </span>
               </div>
