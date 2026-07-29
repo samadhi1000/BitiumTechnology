@@ -10,9 +10,7 @@ import {
   Shirt, 
   Briefcase, 
   Globe2,
-  ChevronRight,
-  Facebook,
-  Instagram
+  ChevronRight
 } from 'lucide-react';
 
 export default function PromoBanner() {
@@ -175,8 +173,8 @@ export default function PromoBanner() {
             
             {/* Socials */}
             <div className="flex items-center gap-3 text-blue-500">
-              <a href="#" className="hover:text-white transition-colors"><Facebook size={20} /></a>
-              <a href="#" className="hover:text-white transition-colors"><Instagram size={20} /></a>
+              <a href="#" className="hover:text-white transition-colors text-sm font-bold">FB</a>
+              <a href="#" className="hover:text-white transition-colors text-sm font-bold">IG</a>
               <span className="text-zinc-400 font-semibold text-sm hover:text-white transition-colors cursor-pointer ml-1 hidden sm:inline-block">bitiumtechnology.com</span>
             </div>
           </div>
