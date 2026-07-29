@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { getProducts, Product } from '@/lib/products';
 import CardStack from '@/components/ui/CardStack';
+import HoverZoomImage from '@/components/ui/HoverZoomImage';
 import { Layers, Shirt, ArrowRight, ShieldCheck, Zap, Sparkles, Filter } from 'lucide-react';
 
 function HomeContent() {
@@ -233,6 +234,12 @@ function HomeContent() {
                 >
                   Black Blanks
                 </button>
+                <button
+                  onClick={() => setActiveSubFilter('white')}
+                  className={`px-3 py-1.5 rounded-lg text-[10px] font-bold ${activeSubFilter === 'white' ? 'bg-violet-600 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}
+                >
+                  White Blanks
+                </button>
               </>
             )}
             {filter === 'dtf_sheet' && (
@@ -254,6 +261,12 @@ function HomeContent() {
                   className={`px-3 py-1.5 rounded-lg text-[10px] font-bold ${activeSubFilter === '23x60' ? 'bg-violet-600 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}
                 >
                   23" x 60" (5ft Roll)
+                </button>
+                <button
+                  onClick={() => setActiveSubFilter('saree-border')}
+                  className={`px-3 py-1.5 rounded-lg text-[10px] font-bold ${activeSubFilter === 'saree-border' ? 'bg-violet-600 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}
+                >
+                  Saree Borders
                 </button>
               </>
             )}
@@ -278,12 +291,10 @@ function HomeContent() {
               >
                 {/* Product Image */}
                 <div className="relative w-full aspect-square bg-zinc-950 overflow-hidden">
-                  <Image
+                  <HoverZoomImage
                     src={product.image_url}
                     alt={product.name}
-                    fill
                     sizes="(max-w-768px) 100vw, (max-w-1024px) 50vw, 33vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   {product.original_price && (
                     <div className="absolute top-4 left-4 px-2.5 py-1 rounded-md bg-rose-600 text-[10px] font-bold tracking-wide uppercase">

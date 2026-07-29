@@ -94,6 +94,9 @@ export default function Navbar() {
                   <Link href="/?category=dtf_sheet&sub=23x60" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
                     23" x 60" (5 Feet Roll)
                   </Link>
+                  <Link href="/?category=dtf_sheet&sub=saree-border" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
+                    Saree Borders
+                  </Link>
                 </div>
               )}
             </div>

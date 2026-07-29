@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Product } from '@/lib/products';
+import HoverZoomImage from './HoverZoomImage';
 import { Layers, Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
 
 interface CardStackProps {
@@ -71,14 +72,21 @@ export default function CardStack({ products }: CardStackProps) {
             >
               {/* Product Image & Glow */}
               <div className="relative w-full h-[260px] bg-zinc-950 overflow-hidden">
-                <Image
-                  src={product.image_url}
-                  alt={product.name}
-                  fill
-                  sizes="(max-w-768px) 100vw, 400px"
-                  priority={isTop}
-                  className="object-cover pointer-events-none select-none"
-                />
+                {isTop ? (
+                  <HoverZoomImage
+                    src={product.image_url}
+                    alt={product.name}
+                    priority={true}
+                  />
+                ) : (
+                  <Image
+                    src={product.image_url}
+                    alt={product.name}
+                    fill
+                    sizes="(max-w-768px) 100vw, 400px"
+                    className="object-cover pointer-events-none select-none"
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/10 to-transparent"></div>
                 
                 {/* Badges */}
