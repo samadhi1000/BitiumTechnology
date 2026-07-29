@@ -24,15 +24,21 @@ const SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
 
 export default function DynamicMockupCustomizer() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const backCanvasRef = useRef<HTMLCanvasElement>(null);
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
+  const [backCanvas, setBackCanvas] = useState<fabric.Canvas | null>(null);
+  const [activeView, setActiveView] = useState<'front' | 'back'>('front');
   const [selectedColor, setSelectedColor] = useState(T_SHIRT_COLORS[0]);
   const [selectedSize, setSelectedSize] = useState('M');
   const [logoImage, setLogoImage] = useState<string | null>(null);
+  const [backLogoImage, setBackLogoImage] = useState<string | null>(null);
   const [printStyle, setPrintStyle] = useState<'flat' | 'embossed' | 'vintage'>('flat');
   const [loading, setLoading] = useState(false);
 
   const tShirtRef = useRef<fabric.Path | null>(null);
+  const backTShirtRef = useRef<fabric.Path | null>(null);
   const foldsRef = useRef<fabric.Object[]>([]);
+  const backFoldsRef = useRef<fabric.Object[]>([]);
   const addItem = useCartStore((state) => state.addItem);
 
   // Initialize Canvas
@@ -112,13 +118,92 @@ export default function DynamicMockupCustomizer() {
     };
   }, []);
 
-  // Update T-shirt color dynamically
+  // Initialize Back Canvas
+  useEffect(() => {
+    if (!backCanvasRef.current) return;
+
+    const bfc = new fabric.Canvas(backCanvasRef.current, {
+      width: 360,
+      height: 450,
+      backgroundColor: 'transparent',
+      selection: false
+    });
+
+    // Back T-Shirt path (no collar - back view)
+    const backShirt = new fabric.Path('M 140,40 L 70,65 L 30,140 L 80,165 L 90,150 L 90,430 C 90,440 100,450 110,450 L 290,450 C 300,450 310,440 310,430 L 310,150 L 320,165 L 370,140 L 330,65 L 260,40 L 200,30 Z', {
+      left: 180,
+      top: 225,
+      originX: 'center',
+      originY: 'center',
+      fill: selectedColor.hex,
+      stroke: '#1f1f23',
+      strokeWidth: 2.5,
+      selectable: false,
+      hoverCursor: 'default'
+    });
+    bfc.add(backShirt);
+    backTShirtRef.current = backShirt;
+
+    // Neck seam line (back)
+    const neckSeam = new fabric.Path('M 155,40 C 175,25 225,25 245,40', {
+      fill: 'transparent',
+      stroke: '#000000',
+      strokeWidth: 1.5,
+      opacity: 0.12,
+      selectable: false,
+      hoverCursor: 'default'
+    });
+    // Center seam (back)
+    const centerSeam = new fabric.Path('M 200,45 L 200,420', {
+      fill: 'transparent',
+      stroke: '#000000',
+      strokeWidth: 1,
+      opacity: 0.06,
+      strokeDashArray: [6, 8],
+      selectable: false,
+      hoverCursor: 'default'
+    });
+    // Shoulder seams
+    const shoulderL = new fabric.Path('M 90,150 L 105,170', {
+      fill: 'transparent',
+      stroke: '#000000',
+      strokeWidth: 2,
+      opacity: 0.10,
+      selectable: false,
+      hoverCursor: 'default'
+    });
+    const shoulderR = new fabric.Path('M 275,170 L 290,150', {
+      fill: 'transparent',
+      stroke: '#000000',
+      strokeWidth: 2,
+      opacity: 0.10,
+      selectable: false,
+      hoverCursor: 'default'
+    });
+    bfc.add(neckSeam);
+    bfc.add(centerSeam);
+    bfc.add(shoulderL);
+    bfc.add(shoulderR);
+
+    backFoldsRef.current = [neckSeam, centerSeam, shoulderL, shoulderR];
+    setBackCanvas(bfc);
+
+    return () => {
+      bfc.dispose();
+    };
+  }, []);
+
+  // Update T-shirt color dynamically (both front and back)
   useEffect(() => {
     if (tShirtRef.current && canvas) {
       tShirtRef.current.set({ fill: selectedColor.hex });
       canvas.renderAll();
     }
-  }, [selectedColor, canvas]);
+    if (backTShirtRef.current && backCanvas) {
+      backTShirtRef.current.set({ fill: selectedColor.hex });
+      backCanvas.renderAll();
+    }
+  }, [selectedColor, canvas, backCanvas]);
 
   // Handle Logo Image Upload
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -229,6 +314,59 @@ export default function DynamicMockupCustomizer() {
     canvas.renderAll();
   };
 
+  // Handle Back Logo Upload
+  const handleBackLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !backCanvas) return;
+    setLoading(true);
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUrl = event.target?.result as string;
+      setBackLogoImage(dataUrl);
+      const imgElement = document.createElement('img');
+      imgElement.src = dataUrl;
+      imgElement.onload = () => {
+        backCanvas.getObjects().forEach((obj) => {
+          if (obj instanceof fabric.FabricImage) backCanvas.remove(obj);
+        });
+        const fabImg = new fabric.FabricImage(imgElement, {
+          left: 180,
+          top: 230,
+          originX: 'center',
+          originY: 'center',
+          cornerColor: '#d946ef',
+          cornerStrokeColor: '#ffffff',
+          borderColor: '#d946ef',
+          cornerSize: 8,
+          transparentCorners: false,
+          padding: 6
+        });
+        if (fabImg.width > 130) fabImg.scaleToWidth(130);
+        backCanvas.add(fabImg);
+        backCanvas.setActiveObject(fabImg);
+        applyStyleToLogo(fabImg, printStyle);
+        backFoldsRef.current.forEach((fold) => {
+          backCanvas.remove(fold);
+          backCanvas.add(fold);
+        });
+        backCanvas.renderAll();
+        setLoading(false);
+      };
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Remove Back Logo
+  const handleRemoveBackLogo = () => {
+    if (!backCanvas) return;
+    backCanvas.getObjects().forEach((obj) => {
+      if (obj instanceof fabric.FabricImage) backCanvas.remove(obj);
+    });
+    setBackLogoImage(null);
+    backCanvas.discardActiveObject();
+    backCanvas.renderAll();
+  };
+
   // Add customized tee to cart
   const handleAddToCart = () => {
     if (!canvas) return;
@@ -322,33 +460,69 @@ export default function DynamicMockupCustomizer() {
         <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-4">
           <h3 className="font-bold text-sm text-zinc-300 flex items-center gap-2">
             <Layers size={16} className="text-violet-400" />
-            3. Chest Logo/Image
+            3. Print Graphic
           </h3>
-          <div className="flex flex-col gap-3">
-            <label className="w-full h-24 rounded-xl border border-dashed border-zinc-800 hover:border-zinc-700 bg-zinc-950 hover:bg-zinc-950/60 cursor-pointer flex flex-col items-center justify-center gap-2 transition-all">
-              {loading ? (
-                <RefreshCw className="animate-spin text-zinc-500" size={20} />
-              ) : (
-                <>
-                  <UploadCloud size={20} className="text-zinc-500" />
-                  <span className="text-xs font-semibold text-zinc-400">Upload Print Graphic</span>
-                </>
-              )}
-              <input
-                type="file"
-                accept="image/png, image/jpeg"
-                className="hidden"
-                onChange={handleLogoUpload}
-              />
-            </label>
 
-            {logoImage && (
+          {/* Front / Back Tab */}
+          <div className="flex gap-1.5 p-1 rounded-xl bg-zinc-950 border border-zinc-800">
+            {(['front', 'back'] as const).map((v) => (
               <button
-                onClick={handleRemoveLogo}
-                className="w-full py-2.5 rounded-lg border border-red-500/30 bg-red-950/10 hover:bg-red-950/20 text-red-400 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
+                key={v}
+                onClick={() => setActiveView(v)}
+                className={`flex-1 py-1.5 rounded-lg text-xs font-bold capitalize transition-all ${
+                  activeView === v
+                    ? 'bg-violet-600 text-white shadow'
+                    : 'text-zinc-400 hover:text-zinc-200'
+                }`}
               >
-                <Trash2 size={13} /> Remove Design
+                {v} View
               </button>
+            ))}
+          </div>
+
+          <div className="flex flex-col gap-3">
+            {/* Front upload */}
+            {activeView === 'front' && (
+              <>
+                <label className="w-full h-24 rounded-xl border border-dashed border-zinc-800 hover:border-violet-700/50 bg-zinc-950 hover:bg-zinc-950/60 cursor-pointer flex flex-col items-center justify-center gap-2 transition-all">
+                  {loading ? (
+                    <RefreshCw className="animate-spin text-zinc-500" size={20} />
+                  ) : (
+                    <>
+                      <UploadCloud size={20} className="text-zinc-500" />
+                      <span className="text-xs font-semibold text-zinc-400">Upload Front Print</span>
+                    </>
+                  )}
+                  <input type="file" accept="image/png, image/jpeg" className="hidden" onChange={handleLogoUpload} />
+                </label>
+                {logoImage && (
+                  <button onClick={handleRemoveLogo} className="w-full py-2.5 rounded-lg border border-red-500/30 bg-red-950/10 hover:bg-red-950/20 text-red-400 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors">
+                    <Trash2 size={13} /> Remove Front Design
+                  </button>
+                )}
+              </>
+            )}
+
+            {/* Back upload */}
+            {activeView === 'back' && (
+              <>
+                <label className="w-full h-24 rounded-xl border border-dashed border-zinc-800 hover:border-violet-700/50 bg-zinc-950 hover:bg-zinc-950/60 cursor-pointer flex flex-col items-center justify-center gap-2 transition-all">
+                  {loading ? (
+                    <RefreshCw className="animate-spin text-zinc-500" size={20} />
+                  ) : (
+                    <>
+                      <UploadCloud size={20} className="text-zinc-500" />
+                      <span className="text-xs font-semibold text-zinc-400">Upload Back Print</span>
+                    </>
+                  )}
+                  <input type="file" accept="image/png, image/jpeg" className="hidden" onChange={handleBackLogoUpload} />
+                </label>
+                {backLogoImage && (
+                  <button onClick={handleRemoveBackLogo} className="w-full py-2.5 rounded-lg border border-red-500/30 bg-red-950/10 hover:bg-red-950/20 text-red-400 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors">
+                    <Trash2 size={13} /> Remove Back Design
+                  </button>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -386,32 +560,58 @@ export default function DynamicMockupCustomizer() {
         </div>
       </div>
 
-      {/* MIDDLE: Interactive Canvas Customizer */}
-      <div className="flex-1 flex flex-col items-center justify-center min-w-[320px]">
-        {/* Mockup Render Frame */}
-        <div className="relative w-full max-w-[420px] h-[500px] rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-905 bg-gradient-to-br from-zinc-900 to-zinc-950 shadow-2xl flex items-center justify-center p-6">
-          
-          <div className="relative bg-transparent rounded-2xl overflow-hidden border border-zinc-800/20 shadow-lg">
-            <canvas ref={canvasRef} id="apparel-canvas" className="z-10" />
+      {/* CANVAS AREA: Front + Back side-by-side */}
+      <div className="flex-1 flex flex-col gap-6">
+        {/* Title bar */}
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-bold text-zinc-300 uppercase tracking-widest flex items-center gap-2">
+            <Eye size={15} className="text-violet-400" /> Interactive Mockup Studio
+          </h2>
+          <span className="text-xs text-zinc-500 font-medium">Both canvases update color in sync</span>
+        </div>
+
+        {/* Dual canvas grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          {/* FRONT CANVAS */}
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-violet-500 animate-pulse" />
+              <span className="text-xs font-bold text-zinc-300 uppercase tracking-widest">Front View</span>
+            </div>
+            <div className="relative rounded-3xl overflow-hidden border border-zinc-800 bg-gradient-to-br from-zinc-900 to-zinc-950 shadow-2xl flex items-center justify-center p-4 min-h-[500px]">
+              <div className="relative bg-transparent rounded-2xl overflow-hidden border border-zinc-800/20 shadow-lg">
+                <canvas ref={canvasRef} id="apparel-canvas" className="z-10" />
+              </div>
+              <div className="absolute bottom-3 left-0 right-0 text-center pointer-events-none">
+                <p className="text-[10px] text-zinc-500 font-bold">
+                  {logoImage ? 'Drag · Resize · Rotate the logo on the T-shirt' : 'Use Front View upload to add a chest graphic'}
+                </p>
+              </div>
+            </div>
           </div>
 
-          {/* Top overlays */}
-          <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-center pointer-events-none">
-            <span className="px-3 py-1 rounded-full bg-zinc-900/80 backdrop-blur border border-zinc-800 text-[10px] font-bold uppercase tracking-wider text-zinc-300">
-              Interactive Mockup Studio
-            </span>
-          </div>
-
-          {/* Canvas Guide instructions */}
-          <div className="absolute bottom-4 left-4 right-4 z-20 text-center pointer-events-none">
-            <p className="text-[10px] text-zinc-500 font-bold">
-              {logoImage ? 'Select & drag, resize, or rotate the logo directly on T-shirt' : 'Upload custom logo from menu to adjust placement'}
-            </p>
+          {/* BACK CANVAS */}
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-fuchsia-500" />
+              <span className="text-xs font-bold text-zinc-300 uppercase tracking-widest">Back View</span>
+            </div>
+            <div className="relative rounded-3xl overflow-hidden border border-zinc-800 bg-gradient-to-br from-zinc-900 to-zinc-950 shadow-2xl flex items-center justify-center p-4 min-h-[500px]">
+              <div className="relative bg-transparent rounded-2xl overflow-hidden border border-zinc-800/20 shadow-lg">
+                <canvas ref={backCanvasRef} id="apparel-canvas-back" className="z-10" />
+              </div>
+              <div className="absolute bottom-3 left-0 right-0 text-center pointer-events-none">
+                <p className="text-[10px] text-zinc-500 font-bold">
+                  {backLogoImage ? 'Drag · Resize · Rotate the back graphic' : 'Use Back View upload to add a back print'}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Add to Cart Actions */}
-        <div className="w-full max-w-[420px] mt-6">
+        {/* Add to Cart */}
+        <div className="w-full">
           <button
             onClick={handleAddToCart}
             className="w-full py-4 rounded-xl bg-violet-600 hover:bg-violet-500 font-bold text-sm text-white flex items-center justify-center gap-2 transition-all glow-primary shadow-lg shadow-violet-600/20"

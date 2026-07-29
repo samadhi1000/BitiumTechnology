@@ -5,11 +5,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useAuth } from '@/lib/context/AuthContext';
-import { ShoppingBag, User, LayoutGrid, LogOut, Shirt, ChevronDown } from 'lucide-react';
+import { useTheme } from '@/lib/context/ThemeContext';
+import { ShoppingBag, User, LayoutGrid, LogOut, Shirt, ChevronDown, Sun, Moon } from 'lucide-react';
 
 export default function Navbar() {
   const cartItemsCount = useCartStore((state) => state.getTotalItems());
   const { user, profile, signOut } = useAuth();
+  const { theme, toggle } = useTheme();
   
   // Dropdown hover states
   const [stencilHovered, setStencilHovered] = useState(false);
@@ -190,11 +192,33 @@ export default function Navbar() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
             <Link href="/canvas" className="md:hidden text-xs font-semibold px-3 py-1.5 rounded-full bg-violet-600/30 border border-violet-500/50 hover:bg-violet-600/50 text-violet-200 transition-all flex items-center gap-1">
               <LayoutGrid size={14} />
               Canvas
             </Link>
+
+            {/* 🌙 Light / Dark Mode Toggle */}
+            <button
+              onClick={toggle}
+              aria-label="Toggle light/dark mode"
+              className="relative flex items-center justify-center w-14 h-7 rounded-full border border-zinc-700 bg-zinc-900 hover:border-violet-500 transition-all duration-300 group overflow-hidden"
+            >
+              {/* Track fill */}
+              <span className={`absolute inset-0 rounded-full transition-all duration-500 ${
+                theme === 'light' ? 'bg-violet-100' : 'bg-zinc-800'
+              }`} />
+              {/* Thumb */}
+              <span className={`absolute w-5 h-5 rounded-full shadow-sm flex items-center justify-center transition-all duration-500 ${
+                theme === 'light'
+                  ? 'translate-x-3.5 bg-violet-500'
+                  : '-translate-x-3.5 bg-zinc-600'
+              }`}>
+                {theme === 'light'
+                  ? <Sun size={10} className="text-white" />
+                  : <Moon size={10} className="text-zinc-300" />}
+              </span>
+            </button>
 
             <Link href="/cart" className="relative p-2 rounded-full hover:bg-zinc-800 text-zinc-300 hover:text-white transition-colors">
               <ShoppingBag size={20} />

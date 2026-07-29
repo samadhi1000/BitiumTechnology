@@ -108,3 +108,40 @@ body {
 .glow-primary {
   box-shadow: 0 0 20px rgba(139, 92, 246, 0.15);
 }
+
+/* ── Light Mode Theme Overrides ─────────────────────────────────── */
+html.light-mode {
+  --background: 220 20% 97%;
+  --foreground: 224 15% 10%;
+  --card: 0 0% 100%;
+  --card-foreground: 224 15% 10%;
+  --muted: 220 14% 90%;
+  --muted-foreground: 220 8% 46%;
+  --border: 220 13% 88%;
+  --input: 220 13% 88%;
+}
+
+html.light-mode body {
+  background-color: hsl(220 20% 97%);
+  color: hsl(224 15% 10%);
+}
+
+html.light-mode .glass {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Swap zinc-950 / zinc-900 panels in light mode */
+html.light-mode .bg-zinc-950 { background-color: #f1f5f9 !important; }
+html.light-mode .bg-zinc-900\/40 { background-color: rgba(255,255,255,0.85) !important; }
+html.light-mode .bg-zinc-900 { background-color: #e2e8f0 !important; }
+html.light-mode .border-zinc-800 { border-color: #cbd5e1 !important; }
+html.light-mode .border-zinc-900 { border-color: #e2e8f0 !important; }
+html.light-mode .text-zinc-300 { color: #334155 !important; }
+html.light-mode .text-zinc-400 { color: #475569 !important; }
+html.light-mode .text-zinc-500 { color: #64748b !important; }
+html.light-mode .text-white { color: #0f172a !important; }
+html.light-mode .bg-zinc-950\/80 { background-color: rgba(248,250,252,0.9) !important; }
+html.light-mode ::-webkit-scrollbar-track { background: #f1f5f9; }
+html.light-mode ::-webkit-scrollbar-thumb { background: #cbd5e1; }
