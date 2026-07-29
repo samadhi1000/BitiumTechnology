@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useAuth } from '@/lib/context/AuthContext';
 import { ShoppingBag, User, LayoutGrid, LogOut, Shirt, ChevronDown } from 'lucide-react';
@@ -22,13 +23,23 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center space-x-2">
-              <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-violet-500 to-fuchsia-500 bg-clip-text text-transparent">
-                PrintGrid
-              </span>
-              <span className="hidden sm:inline-block text-xs font-semibold text-zinc-500 border-l border-zinc-700 pl-2">
-                powered by Bitium Technology
-              </span>
+            <Link href="/" className="flex items-center space-x-3 group">
+              <div className="relative w-8 h-8 rounded-full overflow-hidden border border-zinc-800 bg-black group-hover:border-violet-500/50 transition-all duration-300">
+                <Image
+                  src="/images/bitium-logo.jpg"
+                  alt="Bitium Technology Logo"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-sm font-bold tracking-tight text-white group-hover:text-violet-400 transition-colors leading-none">
+                  PrintGrid
+                </span>
+                <span className="text-[9px] font-semibold text-zinc-500 tracking-wide mt-1.5 leading-none">
+                  powered by Bitium Technology
+                </span>
+              </div>
             </Link>
           </div>
 
@@ -51,7 +62,7 @@ export default function Navbar() {
               </button>
               {stencilHovered && (
                 <div className="absolute top-[60px] left-0 w-44 rounded-xl border border-zinc-800 bg-zinc-950 p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
-                  <Link href="/?category=stencil" className="px-3 py-2 rounded-lg text-[11px] font-bold text-violet-400 hover:bg-zinc-900 transition-colors">
+                  <Link href="/?category=stencil#catalog" className="px-3 py-2 rounded-lg text-[11px] font-bold text-violet-400 hover:bg-zinc-900 transition-colors">
                     All Stencils
                   </Link>
                   <hr className="border-zinc-800 my-0.5" />
@@ -65,7 +76,7 @@ export default function Navbar() {
                   ].map((item) => (
                     <Link 
                       key={item.sub} 
-                      href={`/?category=stencil&sub=${item.sub}`} 
+                      href={`/?category=stencil&sub=${item.sub}#catalog`} 
                       className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white"
                     >
                       {item.label}
@@ -87,7 +98,7 @@ export default function Navbar() {
               </button>
               {screenPrintingHovered && (
                 <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-zinc-800 bg-zinc-950 p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
-                  <Link href="/?category=screen-printing" className="px-3 py-2 rounded-lg text-[11px] font-bold text-violet-400 hover:bg-zinc-900 transition-colors">
+                  <Link href="/?category=screen-printing#catalog" className="px-3 py-2 rounded-lg text-[11px] font-bold text-violet-400 hover:bg-zinc-900 transition-colors">
                     All Screen Printing
                   </Link>
                   <hr className="border-zinc-800 my-0.5" />
@@ -99,7 +110,7 @@ export default function Navbar() {
                   ].map((item) => (
                     <Link 
                       key={item.sub} 
-                      href={`/?category=screen-printing&sub=${item.sub}`} 
+                      href={`/?category=screen-printing&sub=${item.sub}#catalog`} 
                       className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white"
                     >
                       {item.label}
@@ -135,7 +146,7 @@ export default function Navbar() {
                   ].map((item) => (
                     <Link 
                       key={item.sub} 
-                      href={`/?category=dtf_sheet&sub=${item.sub}`} 
+                      href={`/?category=dtf_sheet&sub=${item.sub}#catalog`} 
                       className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white"
                     >
                       {item.label}
@@ -158,7 +169,7 @@ export default function Navbar() {
               {batikStampHovered && (
                 <div className="absolute top-[60px] left-0 w-40 rounded-xl border border-zinc-800 bg-zinc-950 p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
                   <Link 
-                    href="/?category=batik-stamp&sub=cap-batik" 
+                    href="/?category=batik-stamp&sub=cap-batik#catalog" 
                     className="px-3 py-2 rounded-lg text-[11px] font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white"
                   >
                     Cap Batik
@@ -168,7 +179,7 @@ export default function Navbar() {
             </div>
 
             {/* 06. Printing Materials & Ink */}
-            <Link href="/?category=materials" className="text-xs font-semibold hover:text-violet-400 transition-colors h-full flex items-center text-zinc-300">
+            <Link href="/?category=materials#catalog" className="text-xs font-semibold hover:text-violet-400 transition-colors h-full flex items-center text-zinc-300">
               Materials & Ink
             </Link>
 

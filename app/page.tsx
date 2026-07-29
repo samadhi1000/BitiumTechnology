@@ -43,6 +43,19 @@ function HomeContent() {
     }
   }, [catParam, subParam]);
 
+  // Smooth scroll to catalog grid when category or subcategory changes
+  useEffect(() => {
+    if (catParam || subParam) {
+      const timer = setTimeout(() => {
+        const catalogEl = document.getElementById('catalog');
+        if (catalogEl) {
+          catalogEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [catParam, subParam]);
+
   const filteredProducts = products.filter((product) => {
     // Category check
     if (filter !== 'all' && product.category !== filter) return false;
