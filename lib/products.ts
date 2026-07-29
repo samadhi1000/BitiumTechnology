@@ -53,17 +53,34 @@ const SUBCAT_DATA = [
 
 const MOCK_PRODUCTS: Product[] = [];
 
-SUBCAT_DATA.forEach((sc) => {
+const AVAILABLE_IMAGES = [
+  '/images/products/bear-street-dtf.jpg',
+  '/images/products/demon-slayer-tee.jpg',
+  '/images/products/dtf-sheet.jpg',
+  '/images/products/heavyweight-tee.jpg',
+  '/images/products/labubu-dtf.jpg',
+  '/images/products/saree-border-dtf.jpg',
+  '/images/products/stitch-dtf.jpg',
+  '/images/products/streetwear-hoodie.jpg'
+];
+
+SUBCAT_DATA.forEach((sc, catIdx) => {
   sc.names.forEach((name, idx) => {
     const slug = name.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and');
     const skuCode = `${sc.cat.substring(0,3).toUpperCase()}-${sc.sub.substring(0,3).toUpperCase()}-00${idx + 1}`;
+    
+    // Create variety for dummy products
+    const dynamicImage = AVAILABLE_IMAGES[(catIdx * 9 + idx) % AVAILABLE_IMAGES.length];
+    const dynamicPrice = sc.price + (idx * 50);
+    const dynamicOrig = sc.orig ? sc.orig + (idx * 70) : undefined;
+
     MOCK_PRODUCTS.push({
       id: `${sc.cat}-${sc.sub}-${idx + 1}`,
       name: name,
       description: `High quality professional grade ${name}. Designed to meet premium trade and retail printing requirements. Excellent durability and finish.`,
-      price: sc.price,
-      original_price: sc.orig,
-      image_url: sc.image,
+      price: dynamicPrice,
+      original_price: dynamicOrig,
+      image_url: dynamicImage,
       category: sc.cat as any,
       sub_category: sc.sub,
       is_active: true,
