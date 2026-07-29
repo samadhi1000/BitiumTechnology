@@ -26,61 +26,91 @@ export interface Variant {
 // Subcategory definitions (15 subcategories, 9 items each = 135 products total)
 const SUBCAT_DATA = [
   // Stencil
-  { cat: 'stencil', sub: 'hand-painting', names: ['Artistic Flora Hand-Painting Stencil', 'Mystic Lotus Hand-Painting Stencil', 'Modern Mandala Hand-Painting Stencil', 'Chibi Characters Hand-Painting Stencil', 'Abstract Geometry Hand-Painting Stencil', 'Vintage Logo Hand-Painting Stencil', 'Tropical Leaves Hand-Painting Stencil', 'Cyberpunk Accent Hand-Painting Stencil', 'Cute Animal Hand-Painting Stencil'], image: '/images/products/dtf-sheet.jpg', price: 450, orig: 600 },
-  { cat: 'stencil', sub: 'saree', names: ['Traditional Gold Zari Saree Stencil', 'Royal Peacock Saree Border Stencil', 'Silver Vines Saree Lace Stencil', 'Copper Paisley Border Saree Stencil', 'Lotus Petals Border Saree Stencil', 'Mandala Lace Border Saree Stencil', 'Chevron Geo Saree Border Stencil', 'Elephant March Saree Stencil', 'Classic Temple Saree Stencil'], image: '/images/products/saree-border-dtf.jpg', price: 750, orig: 950 },
-  { cat: 'stencil', sub: 'tote-bags', names: ['Cute Bear Tote Bag Stencil', 'Save the Earth Eco Tote Stencil', 'Retro Cassette Tote Bag Stencil', 'Aesthetic Line Art Tote Stencil', 'Minimalist Sun & Moon Tote Stencil', 'Coffee Lover Quote Tote Stencil', 'Wildflower Bouquet Tote Stencil', 'Tokyo Street Neon Tote Stencil', 'Kawaii Cat Paw Tote Stencil'], image: '/images/products/stitch-dtf.jpg', price: 380, orig: 500 },
-  { cat: 'stencil', sub: 'batik', names: ['Traditional Tjanting Batik Stencil', 'Floral Vine Batik Border Stencil', 'Geometric Kawung Batik Stencil', 'Royal Parang Pattern Batik Stencil', 'Mega Mendung Cloud Batik Stencil', 'Modern Abstract Batik Stencil', 'Symmetrical Mandala Batik Stencil', 'Siriwasa Traditional Batik Stencil', 'Ocean Wave Motif Batik Stencil'], image: '/images/products/bear-street-dtf.jpg', price: 650, orig: 850 },
-  { cat: 'stencil', sub: 'wall-decoration', names: ['Luxury Damask Wall Decor Stencil', 'Giant Monstera Wall Leaf Stencil', 'Geometric Accent Wall Stencil', 'Moroccan Trellis Wall Stencil', 'Scandinavian Forest Wall Stencil', 'Celestial Stars Wall Stencil', 'Art Deco Pattern Wall Stencil', 'Boho Sunrays Wall Decor Stencil', 'Japanese Wave Wall Art Stencil'], image: '/images/products/labubu-dtf.jpg', price: 1200, orig: 1600 },
-  { cat: 'stencil', sub: 'titanium', names: ['Ultra-Durability Industrial Titanium Stencil', 'Heavy-Duty Logo Titanium Stencil', 'Precision Micro-Circuit Titanium Stencil', 'High-Temp Metal Spray Titanium Stencil', 'Custom Brand Plate Titanium Stencil', 'Stainless Titanium Marking Stencil', 'Automotive Detailing Titanium Stencil', 'Military Grade Numbering Titanium Stencil', 'Premium Mechanical Stencil Titanium'], image: '/images/products/dtf-sheet.jpg', price: 3500, orig: 4500 },
+  { cat: 'stencil', sub: 'hand-painting', names: ['Artistic Flora Hand-Painting Stencil', 'Mystic Lotus Hand-Painting Stencil', 'Modern Mandala Hand-Painting Stencil', 'Chibi Characters Hand-Painting Stencil', 'Abstract Geometry Hand-Painting Stencil', 'Vintage Logo Hand-Painting Stencil', 'Tropical Leaves Hand-Painting Stencil', 'Cyberpunk Accent Hand-Painting Stencil', 'Cute Animal Hand-Painting Stencil'], image: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=600&q=80', price: 450, orig: 600 },
+  { cat: 'stencil', sub: 'saree', names: ['Traditional Gold Zari Saree Stencil', 'Royal Peacock Saree Border Stencil', 'Silver Vines Saree Lace Stencil', 'Copper Paisley Border Saree Stencil', 'Lotus Petals Border Saree Stencil', 'Mandala Lace Border Saree Stencil', 'Chevron Geo Saree Border Stencil', 'Elephant March Saree Stencil', 'Classic Temple Saree Stencil'], image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80', price: 750, orig: 950 },
+  { cat: 'stencil', sub: 'tote-bags', names: ['Cute Bear Tote Bag Stencil', 'Save the Earth Eco Tote Stencil', 'Retro Cassette Tote Bag Stencil', 'Aesthetic Line Art Tote Stencil', 'Minimalist Sun & Moon Tote Stencil', 'Coffee Lover Quote Tote Stencil', 'Wildflower Bouquet Tote Stencil', 'Tokyo Street Neon Tote Stencil', 'Kawaii Cat Paw Tote Stencil'], image: 'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&w=600&q=80', price: 380, orig: 500 },
+  { cat: 'stencil', sub: 'batik', names: ['Traditional Tjanting Batik Stencil', 'Floral Vine Batik Border Stencil', 'Geometric Kawung Batik Stencil', 'Royal Parang Pattern Batik Stencil', 'Mega Mendung Cloud Batik Stencil', 'Modern Abstract Batik Stencil', 'Symmetrical Mandala Batik Stencil', 'Siriwasa Traditional Batik Stencil', 'Ocean Wave Motif Batik Stencil'], image: 'https://images.unsplash.com/photo-1508807526345-15e988543c28?auto=format&fit=crop&w=600&q=80', price: 650, orig: 850 },
+  { cat: 'stencil', sub: 'wall-decoration', names: ['Luxury Damask Wall Decor Stencil', 'Giant Monstera Wall Leaf Stencil', 'Geometric Accent Wall Stencil', 'Moroccan Trellis Wall Stencil', 'Scandinavian Forest Wall Stencil', 'Celestial Stars Wall Stencil', 'Art Deco Pattern Wall Stencil', 'Boho Sunrays Wall Decor Stencil', 'Japanese Wave Wall Art Stencil'], image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=600&q=80', price: 1200, orig: 1600 },
+  { cat: 'stencil', sub: 'titanium', names: ['Ultra-Durability Industrial Titanium Stencil', 'Heavy-Duty Logo Titanium Stencil', 'Precision Micro-Circuit Titanium Stencil', 'High-Temp Metal Spray Titanium Stencil', 'Custom Brand Plate Titanium Stencil', 'Stainless Titanium Marking Stencil', 'Automotive Detailing Titanium Stencil', 'Military Grade Numbering Titanium Stencil', 'Premium Mechanical Stencil Titanium'], image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=600&q=80', price: 3500, orig: 4500 },
 
   // Screen Printing
-  { cat: 'screen-printing', sub: 'screen-exposed', names: ['Custom Exposed Screen 12x12 120T', 'Exposed Screen A4 Standard 100T', 'Exposed Screen A3 Large 120T', 'Exposed Screen T-Shirt Front 90T', 'Exposed Screen Pocket Logo 140T', 'Exposed Screen Back Artwork 90T', 'Exposed Screen Textile Print 100T', 'Custom Exposed Screen 23x31 120T', 'Exposed Screen Sleeve Design 140T'], image: '/images/products/dtf-sheet.jpg', price: 2900, orig: 3500 },
-  { cat: 'screen-printing', sub: 'artwork', names: ['Viper Streetwear Artwork Design', 'Retro Wave Cyberpunk Artwork', 'Vintage Botanical Artwork Pack', 'Anime Hero Portrait Artwork', 'Classic Typographic Quote Artwork', 'Geometric Mandala Vector Artwork', 'Spooky Skull Custom Artwork', 'Abstract Brushstroke Art Pack', 'Urban Graffiti Vector Artwork'], image: '/images/products/demon-slayer-tee.jpg', price: 950, orig: 1500 },
-  { cat: 'screen-printing', sub: 'tracing-printouts', names: ['Tracing Film A4 Printout Set', 'Tracing Film A3 Printout Pack', 'Tracing Paper Half-Tone Printout', 'High-Translucent Tracing Roll 12x23', 'Tracing Sheet Vector Pocket Logo', 'Tracing Sheet Large Front Banner', 'Tracing Printout Custom Vector Set', 'Precision Detail Tracing Sheet', 'Fine Text Tracing Film A4'], image: '/images/products/dtf-sheet.jpg', price: 150, orig: 250 },
-  { cat: 'screen-printing', sub: 'positive-printouts', names: ['Positive Film A4 Screen Laser Set', 'Positive Film A3 Screen Laser Set', 'High-Density Inkjet Positive Sheet', 'Custom Positive Printout 12x23 Roll', 'Positive Printout Multi-Color Layer Set', 'Halftone Screen Positive Sheet A3', 'Micro-Line Detail Positive Film A4', 'Heavyweight Block Positive Sheet', 'Professional Output Positive Film Roll'], image: '/images/products/dtf-sheet.jpg', price: 300, orig: 500 },
+  { cat: 'screen-printing', sub: 'screen-exposed', names: ['Custom Exposed Screen 12x12 120T', 'Exposed Screen A4 Standard 100T', 'Exposed Screen A3 Large 120T', 'Exposed Screen T-Shirt Front 90T', 'Exposed Screen Pocket Logo 140T', 'Exposed Screen Back Artwork 90T', 'Exposed Screen Textile Print 100T', 'Custom Exposed Screen 23x31 120T', 'Exposed Screen Sleeve Design 140T'], image: 'https://images.unsplash.com/photo-1606159068539-43f36b99d1b2?auto=format&fit=crop&w=600&q=80', price: 2900, orig: 3500 },
+  { cat: 'screen-printing', sub: 'artwork', names: ['Viper Streetwear Artwork Design', 'Retro Wave Cyberpunk Artwork', 'Vintage Botanical Artwork Pack', 'Anime Hero Portrait Artwork', 'Classic Typographic Quote Artwork', 'Geometric Mandala Vector Artwork', 'Spooky Skull Custom Artwork', 'Abstract Brushstroke Art Pack', 'Urban Graffiti Vector Artwork'], image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80', price: 950, orig: 1500 },
+  { cat: 'screen-printing', sub: 'tracing-printouts', names: ['Tracing Film A4 Printout Set', 'Tracing Film A3 Printout Pack', 'Tracing Paper Half-Tone Printout', 'High-Translucent Tracing Roll 12x23', 'Tracing Sheet Vector Pocket Logo', 'Tracing Sheet Large Front Banner', 'Tracing Printout Custom Vector Set', 'Precision Detail Tracing Sheet', 'Fine Text Tracing Film A4'], image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80', price: 150, orig: 250 },
+  { cat: 'screen-printing', sub: 'positive-printouts', names: ['Positive Film A4 Screen Laser Set', 'Positive Film A3 Screen Laser Set', 'High-Density Inkjet Positive Sheet', 'Custom Positive Printout 12x23 Roll', 'Positive Printout Multi-Color Layer Set', 'Halftone Screen Positive Sheet A3', 'Micro-Line Detail Positive Film A4', 'Heavyweight Block Positive Sheet', 'Professional Output Positive Film Roll'], image: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=600&q=80', price: 300, orig: 500 },
 
   // DTF Printing
-  { cat: 'dtf_sheet', sub: 'tshirt-design', names: ['TeeDesign Custom T-Shirt Print Sheet', 'Demon Slayer Anime T-Shirt Design', 'Cute Labubu Family T-Shirt Design', 'Stitch Cartoon Character Tee Design', 'Streetwear Bear T-Shirt Print Sheet', 'Classic Rock Band Logo Tee Design', 'Cyberpunk City T-Shirt Print Design', 'Retro Gaming Console Tee Design', 'Typography Coffee Quote Tee Design'], image: '/images/products/demon-slayer-tee.jpg', price: 850, orig: 1200 },
-  { cat: 'dtf_sheet', sub: 'dtf-sticker', names: ['Stitch & Friends DTF Sticker Pack', 'Labubu Pop Toy DTF Sticker Sheet', 'Retro Arcade Game DTF Stickers', 'Cute Animals DTF Sticker Sheet', 'Streetwear Graffiti DTF Stickers', 'Motorsport Logo DTF Sticker Set', 'Anime Chibi Heroes DTF Stickers', 'Cyberpunk Neon Icons DTF Stickers', 'Floral Botanical DTF Sticker Pack'], image: '/images/products/stitch-dtf.jpg', price: 380, orig: 500 },
-  { cat: 'dtf_sheet', sub: 'dtf-cloth', names: ['Full Jacket Back DTF Cloth Print', 'Hoodie Large Graphics DTF Cloth Sheet', 'Canvas Tote Bag Print DTF Sheet', 'Denim Jacket Graphic DTF Cloth Sheet', 'Sleeve Stripes Custom DTF Cloth Set', 'Sweatshirt Chest Accent DTF Print', 'Cap Logo Custom DTF Transfer Sheet', 'Fabric Banner Layout DTF Cloth Sheet', 'Heavy Cotton Uniform DTF Cloth Logo'], image: '/images/products/bear-street-dtf.jpg', price: 1500, orig: 2200 },
+  { cat: 'dtf_sheet', sub: 'tshirt-design', names: ['TeeDesign Custom T-Shirt Print Sheet', 'Demon Slayer Anime T-Shirt Design', 'Cute Labubu Family T-Shirt Design', 'Stitch Cartoon Character Tee Design', 'Streetwear Bear T-Shirt Print Sheet', 'Classic Rock Band Logo Tee Design', 'Cyberpunk City T-Shirt Print Design', 'Retro Gaming Console Tee Design', 'Typography Coffee Quote Tee Design'], image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80', price: 850, orig: 1200 },
+  { cat: 'dtf_sheet', sub: 'dtf-sticker', names: ['Stitch & Friends DTF Sticker Pack', 'Labubu Pop Toy DTF Sticker Sheet', 'Retro Arcade Game DTF Stickers', 'Cute Animals DTF Sticker Sheet', 'Streetwear Graffiti DTF Stickers', 'Motorsport Logo DTF Sticker Set', 'Anime Chibi Heroes DTF Stickers', 'Cyberpunk Neon Icons DTF Stickers', 'Floral Botanical DTF Sticker Pack'], image: 'https://images.unsplash.com/photo-1572375995501-4b0894d50d69?auto=format&fit=crop&w=600&q=80', price: 380, orig: 500 },
+  { cat: 'dtf_sheet', sub: 'dtf-cloth', names: ['Full Jacket Back DTF Cloth Print', 'Hoodie Large Graphics DTF Cloth Sheet', 'Canvas Tote Bag Print DTF Sheet', 'Denim Jacket Graphic DTF Cloth Sheet', 'Sleeve Stripes Custom DTF Cloth Set', 'Sweatshirt Chest Accent DTF Print', 'Cap Logo Custom DTF Transfer Sheet', 'Fabric Banner Layout DTF Cloth Sheet', 'Heavy Cotton Uniform DTF Cloth Logo'], image: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=600&q=80', price: 1500, orig: 2200 },
 
   // Batik Stamp
-  { cat: 'batik-stamp', sub: 'cap-batik', names: ['Traditional Copper Cap Batik Stamp', 'Wood Carved Lotus Cap Batik Stamp', 'Royal Parang Pattern Cap Batik Stamp', 'Symmetrical Mandala Cap Batik Stamp', 'Peacock Tail Motif Cap Batik Stamp', 'Classic Siriwasa Cap Batik Stamp', 'Kawung Geometry Cap Batik Stamp', 'Geometric Grid Pattern Cap Batik Stamp', 'Modern Wave Abstract Cap Batik Stamp'], image: '/images/products/bear-street-dtf.jpg', price: 4900, orig: 6500 },
+  { cat: 'batik-stamp', sub: 'cap-batik', names: ['Traditional Copper Cap Batik Stamp', 'Wood Carved Lotus Cap Batik Stamp', 'Royal Parang Pattern Cap Batik Stamp', 'Symmetrical Mandala Cap Batik Stamp', 'Peacock Tail Motif Cap Batik Stamp', 'Classic Siriwasa Cap Batik Stamp', 'Kawung Geometry Cap Batik Stamp', 'Geometric Grid Pattern Cap Batik Stamp', 'Modern Wave Abstract Cap Batik Stamp'], image: 'https://images.unsplash.com/photo-1590736704728-f4730bb30770?auto=format&fit=crop&w=600&q=80', price: 4900, orig: 6500 },
 
   // Printing Materials & Ink
-  { cat: 'materials', sub: 'printing-materials', names: ['Premium Matte DTF Printing Ink 1L', 'Vibrant Glossy DTF Printing Ink 1L', 'DTF Hot Melt Adhesive Powder 1kg', 'Plastisol Screen Printing Ink White 1L', 'Water-Based Premium Textile Ink 1L', 'Aluminum Screen Frame 20x24 120T', 'Wooden Squeegee 12 Inch 70 Durometer', 'Photo Emulsion & Sensitizer Kit 1L', 'Screen Printing Clean-up Solvent 1L'], image: '/images/products/streetwear-hoodie.jpg', price: 2400, orig: 3200 }
+  { cat: 'materials', sub: 'printing-materials', names: ['Premium Matte DTF Printing Ink 1L', 'Vibrant Glossy DTF Printing Ink 1L', 'DTF Hot Melt Adhesive Powder 1kg', 'Plastisol Screen Printing Ink White 1L', 'Water-Based Premium Textile Ink 1L', 'Aluminum Screen Frame 20x24 120T', 'Wooden Squeegee 12 Inch 70 Durometer', 'Photo Emulsion & Sensitizer Kit 1L', 'Screen Printing Clean-up Solvent 1L'], image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=600&q=80', price: 2400, orig: 3200 }
 ];
 
 const MOCK_PRODUCTS: Product[] = [];
 
-const AVAILABLE_IMAGES = [
-  '/images/products/bear-street-dtf.jpg',
-  '/images/products/demon-slayer-tee.jpg',
-  '/images/products/dtf-sheet.jpg',
-  '/images/products/heavyweight-tee.jpg',
-  '/images/products/labubu-dtf.jpg',
-  '/images/products/saree-border-dtf.jpg',
-  '/images/products/stitch-dtf.jpg',
-  '/images/products/streetwear-hoodie.jpg'
-];
+// Dictionary of unique copyright-free Unsplash images mapped to specific subcategory index items
+const UNIQUE_IMAGES: Record<string, string[]> = {
+  'hand-painting': [
+    'https://images.unsplash.com/photo-1513364776144-60967b0f800f', // Floral
+    'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5', // Lotus
+    'https://images.unsplash.com/photo-1541701494587-cb58502866ab', // Mandala
+    'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f', // Chibi Characters Stencil
+    'https://images.unsplash.com/photo-1502224562085-639556652f33', // Geometry
+    'https://images.unsplash.com/photo-1515462277126-270d878326e5', // Vintage Logo
+    'https://images.unsplash.com/photo-1448375240586-882707db888b', // Leaves
+    'https://images.unsplash.com/photo-1563089145-599997674d42', // Cyberpunk
+    'https://images.unsplash.com/photo-1550180133-7286b8b49f9a'  // Animal
+  ],
+  'saree': [
+    'https://images.unsplash.com/photo-1610030469983-98e550d6193c',
+    'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b',
+    'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb',
+    'https://images.unsplash.com/photo-1609357605129-26f69add5d6e',
+    'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17',
+    'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5',
+    'https://images.unsplash.com/photo-1618220179428-22790b461013',
+    'https://images.unsplash.com/photo-1544816155-12df9643f363',
+    'https://images.unsplash.com/photo-1597484211625-2efc21cf81f7'
+  ],
+  'tote-bags': [
+    'https://images.unsplash.com/photo-1544816155-12df9643f363',
+    'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3',
+    'https://images.unsplash.com/photo-1591561954557-26941169b49e',
+    'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519',
+    'https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6',
+    'https://images.unsplash.com/photo-1575032617751-6ddec2089882',
+    'https://images.unsplash.com/photo-1544816155-12df9643f363',
+    'https://images.unsplash.com/photo-1566150905458-1bf1fc15aae9',
+    'https://images.unsplash.com/photo-1590874103328-eac38a683ce7'
+  ]
+};
 
-SUBCAT_DATA.forEach((sc, catIdx) => {
+SUBCAT_DATA.forEach((sc) => {
   sc.names.forEach((name, idx) => {
     const slug = name.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and');
     const skuCode = `${sc.cat.substring(0,3).toUpperCase()}-${sc.sub.substring(0,3).toUpperCase()}-00${idx + 1}`;
     
-    // Create variety for dummy products
-    const dynamicImage = AVAILABLE_IMAGES[(catIdx * 9 + idx) % AVAILABLE_IMAGES.length];
-    const dynamicPrice = sc.price + (idx * 50);
-    const dynamicOrig = sc.orig ? sc.orig + (idx * 70) : undefined;
+    // Choose custom image if available, else fallback to standard category URL
+    let finalImage = sc.image;
+    if (UNIQUE_IMAGES[sc.sub] && UNIQUE_IMAGES[sc.sub][idx]) {
+      finalImage = `${UNIQUE_IMAGES[sc.sub][idx]}?auto=format&fit=crop&w=600&q=80`;
+    } else {
+      // Append subtle parameter variance so different products have slightly varied views
+      finalImage = `${sc.image}&sig=${idx + 1}`;
+    }
 
     MOCK_PRODUCTS.push({
       id: `${sc.cat}-${sc.sub}-${idx + 1}`,
       name: name,
       description: `High quality professional grade ${name}. Designed to meet premium trade and retail printing requirements. Excellent durability and finish.`,
-      price: dynamicPrice,
-      original_price: dynamicOrig,
-      image_url: dynamicImage,
+      price: sc.price,
+      original_price: sc.orig,
+      image_url: finalImage,
       category: sc.cat as any,
       sub_category: sc.sub,
       is_active: true,
