@@ -11,8 +11,10 @@ export default function Navbar() {
   const { user, profile, signOut } = useAuth();
   
   // Dropdown hover states
-  const [apparelHovered, setApparelHovered] = useState(false);
-  const [dtfHovered, setDtfHovered] = useState(false);
+  const [stencilHovered, setStencilHovered] = useState(false);
+  const [screenPrintingHovered, setScreenPrintingHovered] = useState(false);
+  const [dtfPrintingHovered, setDtfPrintingHovered] = useState(false);
+  const [batikStampHovered, setBatikStampHovered] = useState(false);
 
   return (
     <nav className="sticky top-0 z-50 w-full glass shadow-sm transition-all duration-300">
@@ -25,85 +27,154 @@ export default function Navbar() {
                 PrintGrid
               </span>
               <span className="hidden sm:inline-block text-xs font-semibold text-zinc-500 border-l border-zinc-700 pl-2">
-                powered by Bitium
+                powered by Bitium Technology
               </span>
             </Link>
           </div>
 
           {/* Navigation Links */}
-          <div className="hidden md:flex space-x-8 h-full items-center">
-            <Link href="/" className="text-sm font-medium hover:text-primary transition-colors h-full flex items-center">
+          <div className="hidden lg:flex space-x-6 h-full items-center">
+            {/* 01. Home Page */}
+            <Link href="/" className="text-xs font-semibold hover:text-violet-400 transition-colors h-full flex items-center text-zinc-300">
               Home
             </Link>
 
-            {/* Dropdown: T-Shirt Collection */}
+            {/* 02. Stencil Page Dropdown */}
             <div 
               className="relative h-full flex items-center"
-              onMouseEnter={() => setApparelHovered(true)}
-              onMouseLeave={() => setApparelHovered(false)}
+              onMouseEnter={() => setStencilHovered(true)}
+              onMouseLeave={() => setStencilHovered(false)}
             >
-              <button className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1 cursor-pointer">
-                <span>T-Shirt Collection</span>
-                <ChevronDown size={14} className={`transition-transform duration-200 ${apparelHovered ? 'rotate-180' : ''}`} />
+              <button className="text-xs font-semibold hover:text-violet-400 transition-colors flex items-center gap-1 cursor-pointer text-zinc-300">
+                <span>Stencil</span>
+                <ChevronDown size={12} className={`transition-transform duration-200 ${stencilHovered ? 'rotate-180' : ''}`} />
               </button>
-              
-              {apparelHovered && (
+              {stencilHovered && (
+                <div className="absolute top-[60px] left-0 w-44 rounded-xl border border-zinc-800 bg-zinc-950 p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
+                  <Link href="/?category=stencil" className="px-3 py-2 rounded-lg text-[11px] font-bold text-violet-400 hover:bg-zinc-900 transition-colors">
+                    All Stencils
+                  </Link>
+                  <hr className="border-zinc-800 my-0.5" />
+                  {[
+                    { sub: 'hand-painting', label: 'Hand Painting' },
+                    { sub: 'saree', label: 'Saree' },
+                    { sub: 'tote-bags', label: 'Tote Bags' },
+                    { sub: 'batik', label: 'Batik' },
+                    { sub: 'wall-decoration', label: 'Wall Decoration' },
+                    { sub: 'titanium', label: 'Titanium' }
+                  ].map((item) => (
+                    <Link 
+                      key={item.sub} 
+                      href={`/?category=stencil&sub=${item.sub}`} 
+                      className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* 03. Screen Printing Dropdown */}
+            <div 
+              className="relative h-full flex items-center"
+              onMouseEnter={() => setScreenPrintingHovered(true)}
+              onMouseLeave={() => setScreenPrintingHovered(false)}
+            >
+              <button className="text-xs font-semibold hover:text-violet-400 transition-colors flex items-center gap-1 cursor-pointer text-zinc-300">
+                <span>Screen Printing</span>
+                <ChevronDown size={12} className={`transition-transform duration-200 ${screenPrintingHovered ? 'rotate-180' : ''}`} />
+              </button>
+              {screenPrintingHovered && (
                 <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-zinc-800 bg-zinc-950 p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
-                  <Link href="/?category=apparel" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
-                    All Collection
+                  <Link href="/?category=screen-printing" className="px-3 py-2 rounded-lg text-[11px] font-bold text-violet-400 hover:bg-zinc-900 transition-colors">
+                    All Screen Printing
                   </Link>
-                  <Link href="/?category=apparel&sub=anime" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
-                    Anime Oversized Tees
-                  </Link>
-                  <Link href="/?category=apparel&sub=black" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
-                    Black Blanks
-                  </Link>
-                  <Link href="/?category=apparel&sub=white" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
-                    White Blanks
-                  </Link>
+                  <hr className="border-zinc-800 my-0.5" />
+                  {[
+                    { sub: 'screen-exposed', label: 'Screen Exposed' },
+                    { sub: 'artwork', label: 'Artwork' },
+                    { sub: 'tracing-printouts', label: 'Tracing Printouts' },
+                    { sub: 'positive-printouts', label: 'Positive Printouts' }
+                  ].map((item) => (
+                    <Link 
+                      key={item.sub} 
+                      href={`/?category=screen-printing&sub=${item.sub}`} 
+                      className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>
 
-            {/* Dropdown: DTF Print Sheet */}
+            {/* 04. DTF Printing Dropdown */}
             <div 
               className="relative h-full flex items-center"
-              onMouseEnter={() => setDtfHovered(true)}
-              onMouseLeave={() => setDtfHovered(false)}
+              onMouseEnter={() => setDtfPrintingHovered(true)}
+              onMouseLeave={() => setDtfPrintingHovered(false)}
             >
-              <button className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1 cursor-pointer">
-                <span>DTF Print Sheets</span>
-                <ChevronDown size={14} className={`transition-transform duration-200 ${dtfHovered ? 'rotate-180' : ''}`} />
+              <button className="text-xs font-semibold hover:text-violet-400 transition-colors flex items-center gap-1 cursor-pointer text-zinc-300">
+                <span>DTF Printing</span>
+                <ChevronDown size={12} className={`transition-transform duration-200 ${dtfPrintingHovered ? 'rotate-180' : ''}`} />
               </button>
+              {dtfPrintingHovered && (
+                <div className="absolute top-[60px] left-0 w-44 rounded-xl border border-zinc-800 bg-zinc-950 p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
+                  <Link href="/canvas" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-violet-400 hover:bg-zinc-900 transition-colors flex items-center gap-1">
+                    <LayoutGrid size={11} /> Canvas Builder
+                  </Link>
+                  <Link href="/3d-customizer" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-fuchsia-400 hover:bg-zinc-900 transition-colors flex items-center gap-1">
+                    <Shirt size={11} /> Mockup Studio
+                  </Link>
+                  <hr className="border-zinc-800 my-0.5" />
+                  {[
+                    { sub: 'tshirt-design', label: 'T Shirt Design' },
+                    { sub: 'dtf-sticker', label: 'DTF Sticker' },
+                    { sub: 'dtf-cloth', label: 'DTF Cloth' }
+                  ].map((item) => (
+                    <Link 
+                      key={item.sub} 
+                      href={`/?category=dtf_sheet&sub=${item.sub}`} 
+                      className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
 
-              {dtfHovered && (
-                <div className="absolute top-[60px] left-0 w-52 rounded-xl border border-zinc-800 bg-zinc-950 p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
-                  <Link href="/canvas" className="px-3 py-2 rounded-lg text-xs font-bold text-violet-400 hover:bg-zinc-900 transition-colors flex items-center gap-1.5">
-                    <LayoutGrid size={12} /> Live Canvas Builder
-                  </Link>
-                  <hr className="border-zinc-800 my-1" />
-                  <Link href="/?category=dtf_sheet&sub=12x23" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
-                    12" x 23" Sheet
-                  </Link>
-                  <Link href="/?category=dtf_sheet&sub=12x12" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
-                    12" x 12" Sheet
-                  </Link>
-                  <Link href="/?category=dtf_sheet&sub=cute-girls" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
-                    Cute Girls Packs
-                  </Link>
-                  <Link href="/?category=dtf_sheet&sub=23x60" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
-                    23" x 60" (5 Feet Roll)
-                  </Link>
-                  <Link href="/?category=dtf_sheet&sub=saree-border" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
-                    Saree Borders
+            {/* 05. Batik Stamp Dropdown */}
+            <div 
+              className="relative h-full flex items-center"
+              onMouseEnter={() => setBatikStampHovered(true)}
+              onMouseLeave={() => setBatikStampHovered(false)}
+            >
+              <button className="text-xs font-semibold hover:text-violet-400 transition-colors flex items-center gap-1 cursor-pointer text-zinc-300">
+                <span>Batik Stamp</span>
+                <ChevronDown size={12} className={`transition-transform duration-200 ${batikStampHovered ? 'rotate-180' : ''}`} />
+              </button>
+              {batikStampHovered && (
+                <div className="absolute top-[60px] left-0 w-40 rounded-xl border border-zinc-800 bg-zinc-950 p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
+                  <Link 
+                    href="/?category=batik-stamp&sub=cap-batik" 
+                    className="px-3 py-2 rounded-lg text-[11px] font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white"
+                  >
+                    Cap Batik
                   </Link>
                 </div>
               )}
             </div>
 
-            <Link href="/3d-customizer" className="text-sm font-medium text-fuchsia-400 hover:text-fuchsia-300 transition-colors flex items-center gap-1 h-full">
-              <Shirt size={16} />
-              3D Customizer
+            {/* 06. Printing Materials & Ink */}
+            <Link href="/?category=materials" className="text-xs font-semibold hover:text-violet-400 transition-colors h-full flex items-center text-zinc-300">
+              Materials & Ink
+            </Link>
+
+            {/* 07. Contact Us */}
+            <Link href="/contact" className="text-xs font-semibold hover:text-violet-400 transition-colors h-full flex items-center text-zinc-300">
+              Contact Us
             </Link>
           </div>
 

@@ -16,7 +16,7 @@ function HomeContent() {
   const subParam = searchParams.get('sub');
 
   const [products, setProducts] = useState<Product[]>([]);
-  const [filter, setFilter] = useState<'all' | 'dtf_sheet' | 'apparel'>('all');
+  const [filter, setFilter] = useState<'all' | 'stencil' | 'screen-printing' | 'dtf_sheet' | 'batik-stamp' | 'materials'>('all');
   const [activeSubFilter, setActiveSubFilter] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -32,7 +32,7 @@ function HomeContent() {
 
   useEffect(() => {
     if (catParam) {
-      setFilter(catParam as 'dtf_sheet' | 'apparel');
+      setFilter(catParam as any);
     } else {
       setFilter('all');
     }
@@ -53,7 +53,7 @@ function HomeContent() {
 
   // Extract featured products for the Card Stack deck
   const featuredProducts = products.filter(
-    (p) => p.id === 'anime-douma-tee' || p.id === 'dtf-1212-labubu' || p.id === 'dtf-5ft-bear-street'
+    (p) => p.id === 'stencil-saree-1' || p.id === 'dtf_sheet-dtf-sticker-1' || p.id === 'batik-stamp-cap-batik-1'
   );
 
   return (
@@ -171,9 +171,8 @@ function HomeContent() {
             <p className="text-zinc-500 text-sm mt-1">Select customizable templates or top-quality blank base apparel.</p>
           </div>
           
-          {/* Main Category Selectors */}
-          <div className="flex flex-wrap items-center gap-4">
-            <div className="flex p-1 rounded-xl bg-zinc-900 border border-zinc-800">
+           <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-wrap p-1 rounded-xl bg-zinc-900 border border-zinc-800 gap-1">
               <button
                 onClick={() => {
                   setFilter('all');
@@ -185,21 +184,48 @@ function HomeContent() {
               </button>
               <button
                 onClick={() => {
+                  setFilter('stencil');
+                  setActiveSubFilter(null);
+                }}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${filter === 'stencil' ? 'bg-violet-600 text-white' : 'text-zinc-400 hover:text-white'}`}
+              >
+                Stencils
+              </button>
+              <button
+                onClick={() => {
+                  setFilter('screen-printing');
+                  setActiveSubFilter(null);
+                }}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${filter === 'screen-printing' ? 'bg-violet-600 text-white' : 'text-zinc-400 hover:text-white'}`}
+              >
+                Screen Printing
+              </button>
+              <button
+                onClick={() => {
                   setFilter('dtf_sheet');
                   setActiveSubFilter(null);
                 }}
                 className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${filter === 'dtf_sheet' ? 'bg-violet-600 text-white' : 'text-zinc-400 hover:text-white'}`}
               >
-                DTF Sheets
+                DTF Printing
               </button>
               <button
                 onClick={() => {
-                  setFilter('apparel');
+                  setFilter('batik-stamp');
                   setActiveSubFilter(null);
                 }}
-                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${filter === 'apparel' ? 'bg-violet-600 text-white' : 'text-zinc-400 hover:text-white'}`}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${filter === 'batik-stamp' ? 'bg-violet-600 text-white' : 'text-zinc-400 hover:text-white'}`}
               >
-                Blank Apparel
+                Batik Stamps
+              </button>
+              <button
+                onClick={() => {
+                  setFilter('materials');
+                  setActiveSubFilter(null);
+                }}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${filter === 'materials' ? 'bg-violet-600 text-white' : 'text-zinc-400 hover:text-white'}`}
+              >
+                Materials & Ink
               </button>
             </div>
           </div>
@@ -220,54 +246,74 @@ function HomeContent() {
             >
               Clear Filters
             </button>
-            {filter === 'apparel' && (
+            {filter === 'stencil' && (
               <>
-                <button
-                  onClick={() => setActiveSubFilter('anime')}
-                  className={`px-3 py-1.5 rounded-lg text-[10px] font-bold ${activeSubFilter === 'anime' ? 'bg-violet-600 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}
-                >
-                  Anime Collection
-                </button>
-                <button
-                  onClick={() => setActiveSubFilter('black')}
-                  className={`px-3 py-1.5 rounded-lg text-[10px] font-bold ${activeSubFilter === 'black' ? 'bg-violet-600 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}
-                >
-                  Black Blanks
-                </button>
-                <button
-                  onClick={() => setActiveSubFilter('white')}
-                  className={`px-3 py-1.5 rounded-lg text-[10px] font-bold ${activeSubFilter === 'white' ? 'bg-violet-600 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}
-                >
-                  White Blanks
-                </button>
+                {[
+                  { sub: 'hand-painting', label: 'Hand Painting' },
+                  { sub: 'saree', label: 'Saree' },
+                  { sub: 'tote-bags', label: 'Tote Bags' },
+                  { sub: 'batik', label: 'Batik' },
+                  { sub: 'wall-decoration', label: 'Wall Decoration' },
+                  { sub: 'titanium', label: 'Titanium' }
+                ].map((item) => (
+                  <button
+                    key={item.sub}
+                    onClick={() => setActiveSubFilter(item.sub)}
+                    className={`px-3 py-1.5 rounded-lg text-[10px] font-bold ${activeSubFilter === item.sub ? 'bg-violet-600 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </>
+            )}
+            {filter === 'screen-printing' && (
+              <>
+                {[
+                  { sub: 'screen-exposed', label: 'Screen Exposed' },
+                  { sub: 'artwork', label: 'Artwork' },
+                  { sub: 'tracing-printouts', label: 'Tracing Printouts' },
+                  { sub: 'positive-printouts', label: 'Positive Printouts' }
+                ].map((item) => (
+                  <button
+                    key={item.sub}
+                    onClick={() => setActiveSubFilter(item.sub)}
+                    className={`px-3 py-1.5 rounded-lg text-[10px] font-bold ${activeSubFilter === item.sub ? 'bg-violet-600 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
               </>
             )}
             {filter === 'dtf_sheet' && (
               <>
-                <button
-                  onClick={() => setActiveSubFilter('12x12')}
-                  className={`px-3 py-1.5 rounded-lg text-[10px] font-bold ${activeSubFilter === '12x12' ? 'bg-violet-600 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}
-                >
-                  12" x 12"
-                </button>
-                <button
-                  onClick={() => setActiveSubFilter('12x23')}
-                  className={`px-3 py-1.5 rounded-lg text-[10px] font-bold ${activeSubFilter === '12x23' ? 'bg-violet-600 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}
-                >
-                  12" x 23"
-                </button>
-                <button
-                  onClick={() => setActiveSubFilter('23x60')}
-                  className={`px-3 py-1.5 rounded-lg text-[10px] font-bold ${activeSubFilter === '23x60' ? 'bg-violet-600 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}
-                >
-                  23" x 60" (5ft Roll)
-                </button>
-                <button
-                  onClick={() => setActiveSubFilter('saree-border')}
-                  className={`px-3 py-1.5 rounded-lg text-[10px] font-bold ${activeSubFilter === 'saree-border' ? 'bg-violet-600 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}
-                >
-                  Saree Borders
-                </button>
+                {[
+                  { sub: 'tshirt-design', label: 'T Shirt Design' },
+                  { sub: 'dtf-sticker', label: 'DTF Sticker' },
+                  { sub: 'dtf-cloth', label: 'DTF Cloth' }
+                ].map((item) => (
+                  <button
+                    key={item.sub}
+                    onClick={() => setActiveSubFilter(item.sub)}
+                    className={`px-3 py-1.5 rounded-lg text-[10px] font-bold ${activeSubFilter === item.sub ? 'bg-violet-600 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </>
+            )}
+            {filter === 'batik-stamp' && (
+              <>
+                {[
+                  { sub: 'cap-batik', label: 'Cap Batik' }
+                ].map((item) => (
+                  <button
+                    key={item.sub}
+                    onClick={() => setActiveSubFilter(item.sub)}
+                    className={`px-3 py-1.5 rounded-lg text-[10px] font-bold ${activeSubFilter === item.sub ? 'bg-violet-600 text-white' : 'bg-zinc-900 border border-zinc-800 text-zinc-400'}`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
               </>
             )}
           </div>
@@ -306,7 +352,7 @@ function HomeContent() {
                 {/* Content */}
                 <div className="p-6 flex flex-col flex-grow">
                   <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
-                    {product.category === 'dtf_sheet' ? 'DTF Stickers Roll' : 'Premium Blanks Apparel'}
+                    {product.category.replace('-', ' ')}
                   </span>
                   <h3 className="font-extrabold text-sm text-zinc-100 mt-1.5 leading-snug line-clamp-1">
                     {product.name}
