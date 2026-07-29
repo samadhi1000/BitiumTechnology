@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { 
@@ -12,15 +12,83 @@ import {
   Globe2,
   ChevronRight
 } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 export default function PromoBanner() {
+  const container = useRef<HTMLElement>(null);
+  const centerMockupRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    // ScrollTrigger Animations
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: container.current,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        toggleActions: 'play none none reverse',
+      }
+    });
+
+    // 1. Top Strip entrance
+    tl.from('.promo-top-strip', { y: -20, opacity: 0, duration: 0.5, ease: 'power2.out' });
+
+    // 2. Left Value Icons stagger in
+    tl.from('.value-icon-block', { 
+      x: -50, 
+      opacity: 0, 
+      duration: 0.6, 
+      stagger: 0.15, 
+      ease: 'back.out(1.5)' 
+    }, '-=0.3');
+
+    // 3. Right Service Cards stagger in
+    tl.from('.service-card', { 
+      x: 50, 
+      opacity: 0, 
+      duration: 0.6, 
+      stagger: 0.15, 
+      ease: 'power3.out' 
+    }, '-=0.6');
+
+    // 4. Center Mockups pop in
+    tl.from('.center-mockup', {
+      scale: 0.5,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: 'back.out(1.2)'
+    }, '-=0.5');
+
+    // Optional: Mouse Parallax for center mockups
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!centerMockupRef.current) return;
+      const { clientX, clientY } = e;
+      const xPos = (clientX / window.innerWidth - 0.5) * 30; // 30px max move
+      const yPos = (clientY / window.innerHeight - 0.5) * 30;
+
+      gsap.to('.mockup-bg-1', { x: xPos * 0.5, y: yPos * 0.5, duration: 1, ease: 'power2.out' });
+      gsap.to('.mockup-bg-2', { x: -xPos * 0.5, y: -yPos * 0.5, duration: 1, ease: 'power2.out' });
+      gsap.to('.mockup-fg', { x: xPos, y: yPos, duration: 1, ease: 'power2.out' });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+
+  }, { scope: container });
+
   return (
-    <section className="relative w-full bg-zinc-950 overflow-hidden border-b border-zinc-900">
+    <section ref={container} className="relative w-full bg-zinc-950 overflow-hidden border-b border-zinc-900">
       {/* Background glowing effects */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/15 via-zinc-950 to-zinc-950 pointer-events-none"></div>
       
       {/* Top Angled Banner Strip */}
-      <div className="w-full flex justify-end px-4 sm:px-8 pt-4">
+      <div className="promo-top-strip w-full flex justify-end px-4 sm:px-8 pt-4">
         <div 
           className="bg-blue-600/90 text-white px-8 py-1.5 font-black italic tracking-widest text-xs sm:text-sm uppercase shadow-[0_0_15px_rgba(37,99,235,0.4)]"
           style={{ clipPath: 'polygon(15px 0, 100% 0, 100% 100%, 0 100%)' }}
@@ -34,7 +102,7 @@ export default function PromoBanner() {
           
           {/* Left Side: 4 Value Props (4 cols) */}
           <div className="lg:col-span-3 grid grid-cols-2 gap-4">
-            <div className="flex flex-col items-center text-center group">
+            <div className="value-icon-block flex flex-col items-center text-center group">
               <div className="w-14 h-14 rounded-full border border-blue-500/30 bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/20 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(37,99,235,0.3)] transition-all duration-300">
                 <Award size={28} />
               </div>
@@ -42,7 +110,7 @@ export default function PromoBanner() {
               <p className="mt-1 text-[10px] text-zinc-400 leading-snug px-2">Top quality materials & flawless printing</p>
             </div>
             
-            <div className="flex flex-col items-center text-center group">
+            <div className="value-icon-block flex flex-col items-center text-center group">
               <div className="w-14 h-14 rounded-full border border-blue-500/30 bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/20 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(37,99,235,0.3)] transition-all duration-300">
                 <Clock size={28} />
               </div>
@@ -50,7 +118,7 @@ export default function PromoBanner() {
               <p className="mt-1 text-[10px] text-zinc-400 leading-snug px-2">Quick production without compromising</p>
             </div>
             
-            <div className="flex flex-col items-center text-center group">
+            <div className="value-icon-block flex flex-col items-center text-center group">
               <div className="w-14 h-14 rounded-full border border-blue-500/30 bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/20 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(37,99,235,0.3)] transition-all duration-300">
                 <CheckCircle2 size={28} />
               </div>
@@ -58,7 +126,7 @@ export default function PromoBanner() {
               <p className="mt-1 text-[10px] text-zinc-400 leading-snug px-2">No minimums, big or small, we got you</p>
             </div>
             
-            <div className="flex flex-col items-center text-center group">
+            <div className="value-icon-block flex flex-col items-center text-center group">
               <div className="w-14 h-14 rounded-full border border-blue-500/30 bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/20 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(37,99,235,0.3)] transition-all duration-300">
                 <Target size={28} />
               </div>
@@ -68,12 +136,12 @@ export default function PromoBanner() {
           </div>
 
           {/* Center Showcase: Apparel Images Overlapping (5 cols) */}
-          <div className="lg:col-span-5 relative h-[380px] w-full flex justify-center items-center">
+          <div ref={centerMockupRef} className="lg:col-span-5 relative h-[380px] w-full flex justify-center items-center">
             {/* Ambient glowing cloud behind shirts */}
             <div className="absolute w-[80%] h-[80%] bg-blue-600/20 blur-[80px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
             
             {/* Background Shirt (Hoodie) */}
-            <div className="absolute left-[10%] top-[15%] w-48 h-48 sm:w-56 sm:h-56 -rotate-6 opacity-70 group hover:opacity-100 hover:scale-105 hover:z-20 transition-all duration-500 drop-shadow-2xl">
+            <div className="center-mockup mockup-bg-1 absolute left-[10%] top-[15%] w-48 h-48 sm:w-56 sm:h-56 -rotate-6 opacity-70 group hover:opacity-100 hover:scale-105 hover:z-20 transition-all duration-500 drop-shadow-2xl">
               <Image 
                 src="/images/products/streetwear-hoodie.jpg" 
                 alt="Custom Hoodie" 
@@ -83,7 +151,7 @@ export default function PromoBanner() {
             </div>
             
             {/* Background Shirt (Labubu) */}
-            <div className="absolute right-[5%] top-[5%] w-44 h-44 sm:w-52 sm:h-52 rotate-12 opacity-80 group hover:opacity-100 hover:scale-105 hover:z-20 transition-all duration-500 drop-shadow-2xl">
+            <div className="center-mockup mockup-bg-2 absolute right-[5%] top-[5%] w-44 h-44 sm:w-52 sm:h-52 rotate-12 opacity-80 group hover:opacity-100 hover:scale-105 hover:z-20 transition-all duration-500 drop-shadow-2xl">
               <Image 
                 src="/images/products/labubu-new.jpg" 
                 alt="Labubu Custom Tee" 
@@ -93,7 +161,7 @@ export default function PromoBanner() {
             </div>
             
             {/* Foreground Main Shirt (Mountain Tee) */}
-            <div className="absolute z-10 w-60 h-60 sm:w-72 sm:h-72 shadow-[0_0_40px_rgba(0,0,0,0.8)] hover:scale-105 transition-transform duration-500">
+            <div className="center-mockup mockup-fg absolute z-10 w-60 h-60 sm:w-72 sm:h-72 shadow-[0_0_40px_rgba(0,0,0,0.8)] hover:scale-105 transition-transform duration-500">
               <Image 
                 src="/images/products/mountain-vintage-tee.jpg" 
                 alt="Vintage Mountain Custom Tee" 
@@ -107,7 +175,7 @@ export default function PromoBanner() {
           <div className="lg:col-span-4 flex flex-col gap-3">
             {/* Card 1 */}
             <div 
-              className="bg-zinc-900/60 border border-zinc-800 hover:border-blue-500/50 p-4 pr-10 flex items-center gap-4 group cursor-pointer transition-colors backdrop-blur-sm"
+              className="service-card bg-zinc-900/60 border border-zinc-800 hover:border-blue-500/50 p-4 pr-10 flex items-center gap-4 group cursor-pointer transition-colors backdrop-blur-sm"
               style={{ clipPath: 'polygon(0 0, 100% 0, 95% 100%, 0 100%)' }}
             >
               <div className="text-blue-500 drop-shadow-[0_0_8px_rgba(37,99,235,0.5)]">
@@ -121,7 +189,7 @@ export default function PromoBanner() {
 
             {/* Card 2 */}
             <div 
-              className="bg-zinc-900/60 border border-zinc-800 hover:border-blue-500/50 p-4 pr-10 flex items-center gap-4 group cursor-pointer transition-colors backdrop-blur-sm"
+              className="service-card bg-zinc-900/60 border border-zinc-800 hover:border-blue-500/50 p-4 pr-10 flex items-center gap-4 group cursor-pointer transition-colors backdrop-blur-sm"
               style={{ clipPath: 'polygon(0 0, 95% 0, 100% 100%, 0 100%)' }}
             >
               <div className="text-blue-500 drop-shadow-[0_0_8px_rgba(37,99,235,0.5)]">
@@ -135,7 +203,7 @@ export default function PromoBanner() {
 
             {/* Card 3 */}
             <div 
-              className="bg-zinc-900/60 border border-zinc-800 hover:border-blue-500/50 p-4 pr-10 flex items-center gap-4 group cursor-pointer transition-colors backdrop-blur-sm"
+              className="service-card bg-zinc-900/60 border border-zinc-800 hover:border-blue-500/50 p-4 pr-10 flex items-center gap-4 group cursor-pointer transition-colors backdrop-blur-sm"
               style={{ clipPath: 'polygon(0 0, 100% 0, 95% 100%, 0 100%)' }}
             >
               <div className="text-blue-500 drop-shadow-[0_0_8px_rgba(37,99,235,0.5)]">

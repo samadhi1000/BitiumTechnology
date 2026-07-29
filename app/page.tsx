@@ -4,12 +4,18 @@ import React, { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { motion } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import { getProducts, Product } from '@/lib/products';
 import CardStack from '@/components/ui/CardStack';
 import HoverZoomImage from '@/components/ui/HoverZoomImage';
 import PromoBanner from '@/components/PromoBanner';
 import { Layers, Shirt, ArrowRight, ShieldCheck, Zap, Sparkles, Filter } from 'lucide-react';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 function HomeContent() {
   const searchParams = useSearchParams();
@@ -70,47 +76,62 @@ function HomeContent() {
     (p) => p.id === 'stencil-saree-1' || p.id === 'dtf_sheet-dtf-sticker-1' || p.id === 'batik-stamp-cap-batik-1'
   );
 
+  const container = React.useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    // 1. Hero Animations
+    const tl = gsap.timeline();
+    
+    tl.from('.hero-badge', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' })
+      .from('.hero-title', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3')
+      .from('.hero-text', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3')
+      .from('.hero-buttons', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3')
+      .from('.hero-cards', { scale: 0.9, opacity: 0, duration: 0.6, ease: 'back.out(1.2)' }, '-=0.4');
+
+    // 2. Catalog Grid ScrollTrigger Animations
+    if (filteredProducts.length > 0 && !loading) {
+      ScrollTrigger.batch('.product-card', {
+        interval: 0.1,
+        batchMax: 3,
+        onEnter: batch => gsap.to(batch, { opacity: 1, y: 0, stagger: 0.15, overwrite: true, duration: 0.6, ease: 'power2.out' }),
+        onLeave: batch => gsap.set(batch, { opacity: 0, y: 30, overwrite: true }),
+        onEnterBack: batch => gsap.to(batch, { opacity: 1, y: 0, stagger: 0.15, overwrite: true, duration: 0.6, ease: 'power2.out' }),
+        onLeaveBack: batch => gsap.set(batch, { opacity: 0, y: 30, overwrite: true }),
+        start: 'top 85%'
+      });
+    }
+
+  }, { scope: container, dependencies: [filteredProducts, loading] });
+
   return (
-    <div className="w-full min-h-screen bg-zinc-950 text-white">
+    <div ref={container} className="w-full min-h-screen bg-zinc-950 text-white">
       {/* Hero Banner */}
       <section className="relative overflow-hidden py-16 px-4 sm:px-6 lg:px-8 border-b border-zinc-900 bg-radial-[at_top_right,_var(--tw-gradient-stops)] from-violet-950/10 via-zinc-950 to-zinc-950">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
         
         <div className="max-w-7xl mx-auto relative z-10 text-center sm:text-left flex flex-col lg:flex-row justify-between items-center gap-12">
           <div className="flex-1 space-y-6">
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-300 text-xs font-semibold"
+            <div 
+              className="hero-badge inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-300 text-xs font-semibold"
             >
               <Sparkles size={12} />
               <span>Next-Gen DTF Printing</span>
-            </motion.div>
+            </div>
             
-            <motion.h1 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-4xl sm:text-6xl font-black tracking-tight"
+            <h1 
+              className="hero-title text-4xl sm:text-6xl font-black tracking-tight"
             >
               High-Definition <span className="bg-gradient-to-r from-violet-400 to-fuchsia-500 bg-clip-text text-transparent">DTF Transfers</span> & Apparel
-            </motion.h1>
+            </h1>
             
-            <motion.p 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-base text-zinc-400 max-w-xl leading-relaxed"
+            <p 
+              className="hero-text text-base text-zinc-400 max-w-xl leading-relaxed"
             >
               Create custom layouts on our virtual 12x23 sheet builder, or browse our hot-selling pre-designed collections of anime tees and sticker rolls.
-            </motion.p>
+            </p>
             
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-center gap-4 pt-2"
+            <div 
+              className="hero-buttons flex flex-col sm:flex-row items-center gap-4 pt-2"
             >
               <Link 
                 href="/canvas" 
@@ -125,13 +146,13 @@ function HomeContent() {
               >
                 Browse Shop
               </a>
-            </motion.div>
+            </div>
           </div>
 
           {/* Interactive Card Stack Column */}
           <div className="flex-1 w-full flex flex-col items-center justify-center">
             {featuredProducts.length > 0 ? (
-              <div className="space-y-4">
+              <div className="hero-cards space-y-4">
                 <CardStack products={featuredProducts} />
                 <p className="text-center text-xs text-zinc-500 font-semibold select-none">
                   Drag cards left/right or hover to view details
@@ -312,12 +333,9 @@ function HomeContent() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProducts.map((product) => (
-              <motion.div
+              <div
                 key={product.id}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
-                className="group relative rounded-2xl border border-zinc-905 bg-zinc-900/20 hover:border-zinc-800/80 hover:bg-zinc-900/40 transition-all flex flex-col h-full overflow-hidden"
+                className="product-card opacity-0 translate-y-8 group relative rounded-2xl border border-zinc-905 bg-zinc-900/20 hover:border-zinc-800/80 hover:bg-zinc-900/40 transition-all flex flex-col h-full overflow-hidden"
               >
                 {/* Product Image */}
                 <div className="relative w-full aspect-square bg-zinc-950 overflow-hidden">
@@ -367,7 +385,7 @@ function HomeContent() {
                     </Link>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         )}
