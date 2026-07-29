@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { getProducts, Product } from '@/lib/products';
 import CardStack from '@/components/ui/CardStack';
 import HoverZoomImage from '@/components/ui/HoverZoomImage';
+import PromoBanner from '@/components/PromoBanner';
 import { Layers, Shirt, ArrowRight, ShieldCheck, Zap, Sparkles, Filter } from 'lucide-react';
 
 function HomeContent() {
@@ -143,38 +144,8 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Selling Points Section */}
-      <section className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-900/10 flex gap-4">
-          <div className="p-3 h-fit rounded-xl bg-violet-600/10 text-violet-400">
-            <Zap size={20} />
-          </div>
-          <div>
-            <h4 className="font-bold text-sm text-zinc-200">Instant White Layer backing</h4>
-            <p className="text-xs text-zinc-500 mt-1 leading-relaxed">Our DTF printer outputs high opacity white layers automatically, allowing printing on dark fabrics.</p>
-          </div>
-        </div>
-
-        <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-900/10 flex gap-4">
-          <div className="p-3 h-fit rounded-xl bg-violet-600/10 text-violet-400">
-            <Layers size={20} />
-          </div>
-          <div>
-            <h4 className="font-bold text-sm text-zinc-200">Fabric.js Custom Designer</h4>
-            <p className="text-xs text-zinc-500 mt-1 leading-relaxed">Drag, resize, position, and overlap graphics precisely to physical roll sizing in inches.</p>
-          </div>
-        </div>
-
-        <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-900/10 flex gap-4">
-          <div className="p-3 h-fit rounded-xl bg-violet-600/10 text-violet-400">
-            <ShieldCheck size={20} />
-          </div>
-          <div>
-            <h4 className="font-bold text-sm text-zinc-200">300 DPI Resolution Watch</h4>
-            <p className="text-xs text-zinc-500 mt-1 leading-relaxed">Instantly checks uploaded image densities, providing upscaler suggestions to guarantee print sharpness.</p>
-          </div>
-        </div>
-      </section>
+      {/* Full Width Promo Banner */}
+      <PromoBanner />
 
       {/* Catalog Grid Section */}
       <section id="catalog" className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 border-t border-zinc-900 scroll-mt-16">
