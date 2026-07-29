@@ -1,161 +1,209 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
-export default function Preloader() {
-  const [progress, setProgress] = useState(0);
-  const [isDone, setIsDone] = useState(false);
-  const [isHidden, setIsHidden] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+// ── Star particle canvas ─────────────────────────────────────────────────────
+function StarField() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Percentage counter progress
-  useEffect(() => {
-    // Speed of counter
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(() => setIsDone(true), 400); // Wait briefly at 100%
-          setTimeout(() => setIsHidden(true), 1200); // Match transit timing to display none
-          return 100;
-        }
-        // Random progress step
-        const step = Math.floor(Math.random() * 8) + 4;
-        return Math.min(prev + step, 100);
-      });
-    }, 60);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Dreamy Star Particles canvas effect
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let animationFrameId: number;
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    let animId: number;
 
-    // Track window resize
-    const handleResize = () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     };
-    window.addEventListener('resize', handleResize);
+    resize();
+    window.addEventListener('resize', resize);
 
-    // Particle schema
-    interface Star {
-      x: number;
-      y: number;
-      size: number;
-      speed: number;
-      opacity: number;
-      pulseDirection: number;
-    }
-
-    const stars: Star[] = Array.from({ length: 65 }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      size: Math.random() * 2.2 + 0.5,
-      speed: Math.random() * 0.4 + 0.1,
-      opacity: Math.random() * 0.7 + 0.2,
-      pulseDirection: Math.random() > 0.5 ? 1 : -1
+    type Star = { x: number; y: number; r: number; alpha: number; speed: number; drift: number };
+    const NUM = 220;
+    const stars: Star[] = Array.from({ length: NUM }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.6 + 0.2,
+      alpha: Math.random(),
+      speed: Math.random() * 0.006 + 0.003,
+      drift: (Math.random() - 0.5) * 0.15,
     }));
 
-    const render = () => {
-      ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = '#000000';
-      ctx.fillRect(0, 0, width, height);
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach((s) => {
+        s.alpha += s.speed;
+        if (s.alpha > 1 || s.alpha < 0) s.speed *= -1;
+        s.x += s.drift;
+        if (s.x < 0) s.x = canvas.width;
+        if (s.x > canvas.width) s.x = 0;
 
-      // Render stars
-      stars.forEach((star) => {
+        const grd = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 3);
+        grd.addColorStop(0, `rgba(180,160,255,${s.alpha})`);
+        grd.addColorStop(0.5, `rgba(140,100,255,${s.alpha * 0.4})`);
+        grd.addColorStop(1, 'rgba(0,0,0,0)');
+
         ctx.beginPath();
-        // Star pulse glow opacity
-        star.opacity += star.pulseDirection * 0.015;
-        if (star.opacity >= 0.9) star.pulseDirection = -1;
-        if (star.opacity <= 0.15) star.pulseDirection = 1;
-
-        ctx.fillStyle = `rgba(167, 139, 250, ${star.opacity})`; // Soft violet star tint
-        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.arc(s.x, s.y, s.r * 3, 0, Math.PI * 2);
+        ctx.fillStyle = grd;
         ctx.fill();
-
-        // Slow drifting movement
-        star.y -= star.speed;
-        if (star.y < -10) {
-          star.y = height + 10;
-          star.x = Math.random() * width;
-        }
       });
-
-      animationFrameId = requestAnimationFrame(render);
+      animId = requestAnimationFrame(draw);
     };
-
-    render();
+    draw();
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animationFrameId);
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', resize);
     };
   }, []);
 
-  if (isHidden) return null;
+  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />;
+}
+
+// ── Main preloader ────────────────────────────────────────────────────────────
+export default function Preloader({ onDone }: { onDone: () => void }) {
+  const [phase, setPhase] = useState<'in' | 'hold' | 'out'>('in');
+
+  useEffect(() => {
+    // in → hold after 600 ms
+    const t1 = setTimeout(() => setPhase('hold'), 600);
+    // hold → out after 2 600 ms total
+    const t2 = setTimeout(() => setPhase('out'), 2600);
+    // unmount after fade completes
+    const t3 = setTimeout(() => onDone(), 3400);
+    return () => [t1, t2, t3].forEach(clearTimeout);
+  }, [onDone]);
+
+  // Tailwind transitions controlled via phase state
+  const wrapperCls =
+    phase === 'out'
+      ? 'opacity-0 scale-105 pointer-events-none'
+      : 'opacity-100 scale-100';
+
+  const logoCls =
+    phase === 'in'
+      ? 'opacity-0 scale-75 -translate-y-4'
+      : phase === 'hold'
+      ? 'opacity-100 scale-100 translate-y-0'
+      : 'opacity-0 scale-110 translate-y-4';
+
+  const textCls =
+    phase === 'in'
+      ? 'opacity-0 translate-y-4'
+      : phase === 'hold'
+      ? 'opacity-100 translate-y-0'
+      : 'opacity-0 -translate-y-4';
+
+  const barCls = phase === 'hold' ? 'w-full' : 'w-0';
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center transition-all duration-700 ease-in-out ${
-        isDone ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'
-      }`}
+      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black
+        transition-all duration-700 ease-in-out ${wrapperCls}`}
     >
-      {/* Background Star Particles */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
+      {/* Dreamy star particles */}
+      <StarField />
 
-      {/* Loader Container */}
-      <div className="relative z-10 flex flex-col items-center gap-6 select-none">
-        
-        {/* Animated Glowing Ring & Logo */}
-        <div className="relative w-28 h-28 flex items-center justify-center">
-          {/* Pulsing Back Glow */}
-          <div className="absolute inset-0 rounded-full bg-violet-600/35 filter blur-xl animate-pulse"></div>
-          
-          {/* Spinning Tech Ring */}
-          <div className="absolute inset-0 border border-t-violet-500 border-r-fuchsia-500 border-b-transparent border-l-transparent rounded-full animate-spin [animation-duration:1.5s]"></div>
-          
-          {/* Logo Frame */}
-          <div className="w-[100px] h-[100px] rounded-full overflow-hidden border border-zinc-800 bg-zinc-950 flex items-center justify-center p-1.5 shadow-2xl relative z-10 animate-bounce [animation-duration:3s]">
-            <Image
-              src="/images/logo-anim.png"
-              alt="PrintGrid Animated Logo"
-              width={90}
-              height={90}
-              className="object-contain"
-              priority
-            />
-          </div>
-        </div>
+      {/* Subtle radial glow behind logo */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div
+          className={`w-[420px] h-[420px] rounded-full bg-violet-700/10 blur-[90px]
+            transition-all duration-1000 ${phase === 'hold' ? 'opacity-100' : 'opacity-0'}`}
+        />
+      </div>
 
-        {/* Counter Text */}
-        <div className="text-center space-y-2 mt-4">
-          <h2 className="text-lg font-black tracking-[0.25em] bg-gradient-to-r from-white via-violet-300 to-fuchsia-300 bg-[size:200%_auto] text-transparent bg-clip-text animate-pulse">
-            PRINTGRID
-          </h2>
-          <div className="flex items-center justify-center gap-2">
-            {/* Loading Bar */}
-            <div className="w-32 h-1 bg-zinc-900 rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 transition-all duration-100 ease-out"
-                style={{ width: `${progress}%` }}
-              ></div>
-            </div>
-            {/* Percentage Text */}
-            <span className="text-[10px] font-mono text-zinc-400 tracking-wider w-8 text-right">
-              {progress}%
-            </span>
-          </div>
+      {/* Logo ring */}
+      <div
+        className={`relative z-10 transition-all duration-700 ease-out ${logoCls}`}
+        style={{ transitionDelay: phase === 'in' ? '0ms' : '0ms' }}
+      >
+        {/* Spinning ring */}
+        <svg
+          className={`absolute -inset-5 w-[calc(100%+40px)] h-[calc(100%+40px)] transition-opacity duration-500
+            ${phase === 'hold' ? 'opacity-100 animate-spin' : 'opacity-0'}`}
+          style={{ animationDuration: '6s' }}
+          viewBox="0 0 130 130"
+        >
+          <circle
+            cx="65" cy="65" r="60"
+            fill="none"
+            stroke="url(#ringGrad)"
+            strokeWidth="1.5"
+            strokeDasharray="80 300"
+            strokeLinecap="round"
+          />
+          <defs>
+            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#7c3aed" />
+              <stop offset="50%" stopColor="#d946ef" />
+              <stop offset="100%" stopColor="#7c3aed" />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        {/* Second counter-spin ring */}
+        <svg
+          className={`absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] transition-opacity duration-500
+            ${phase === 'hold' ? 'opacity-60 animate-spin' : 'opacity-0'}`}
+          style={{ animationDuration: '9s', animationDirection: 'reverse' }}
+          viewBox="0 0 110 110"
+        >
+          <circle
+            cx="55" cy="55" r="50"
+            fill="none"
+            stroke="url(#ringGrad2)"
+            strokeWidth="1"
+            strokeDasharray="30 280"
+            strokeLinecap="round"
+          />
+          <defs>
+            <linearGradient id="ringGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#d946ef" />
+              <stop offset="100%" stopColor="#7c3aed" />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        {/* Logo image */}
+        <div className="relative w-28 h-28 rounded-full overflow-hidden border-2 border-violet-500/40 shadow-[0_0_40px_rgba(139,92,246,0.45)]">
+          <Image
+            src="/images/bitium-logo.jpg"
+            alt="Bitium Technology"
+            fill
+            priority
+            className="object-cover"
+          />
         </div>
+      </div>
+
+      {/* Brand text */}
+      <div
+        className={`relative z-10 mt-8 text-center transition-all duration-700 ease-out ${textCls}`}
+        style={{ transitionDelay: phase === 'in' ? '150ms' : '0ms' }}
+      >
+        <h1 className="text-3xl font-black tracking-tight bg-gradient-to-r from-white via-violet-300 to-fuchsia-400 bg-clip-text text-transparent">
+          PrintGrid
+        </h1>
+        <p className="mt-1 text-[11px] font-bold text-zinc-500 tracking-[0.25em] uppercase">
+          powered by Bitium Technology
+        </p>
+      </div>
+
+      {/* Loading bar */}
+      <div
+        className={`relative z-10 mt-10 h-[2px] w-48 rounded-full bg-zinc-900 overflow-hidden
+          transition-opacity duration-300 ${phase === 'out' ? 'opacity-0' : 'opacity-100'}`}
+      >
+        <div
+          className={`h-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-violet-500
+            transition-all ease-in-out ${barCls}`}
+          style={{ transitionDuration: phase === 'hold' ? '1800ms' : '200ms' }}
+        />
       </div>
     </div>
   );
