@@ -40,7 +40,7 @@ const SUBCAT_DATA = [
   { cat: 'screen-printing', sub: 'positive-printouts', names: ['Positive Film A4 Screen Laser Set', 'Positive Film A3 Screen Laser Set', 'High-Density Inkjet Positive Sheet', 'Custom Positive Printout 12x23 Roll', 'Positive Printout Multi-Color Layer Set', 'Halftone Screen Positive Sheet A3', 'Micro-Line Detail Positive Film A4', 'Heavyweight Block Positive Sheet', 'Professional Output Positive Film Roll'], image: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=600&q=80', price: 300, orig: 500 },
 
   // DTF Printing
-  { cat: 'dtf_sheet', sub: 'tshirt-design', names: ['TeeDesign Custom T-Shirt Print Sheet', 'Demon Slayer Anime T-Shirt Design', 'Cute Labubu Family T-Shirt Design', 'Stitch Cartoon Character Tee Design', 'Streetwear Bear T-Shirt Print Sheet', 'Classic Rock Band Logo Tee Design', 'Cyberpunk City T-Shirt Print Design', 'Retro Gaming Console Tee Design', 'Typography Coffee Quote Tee Design'], image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80', price: 850, orig: 1200 },
+  { cat: 'dtf_sheet', sub: 'tshirt-design', names: ['Vintage Mountain Adventure Tee Design', 'Demon Slayer Anime T-Shirt Design', 'Cute Labubu Family T-Shirt Design', 'Stitch Cartoon Character Tee Design', 'Streetwear Bear T-Shirt Print Sheet', 'I\'d Hike That Mountain Tee Design', 'I\'d Hike That Mountain Tee (Back) Design', 'Half Mile Hiking Quote Tee Design', 'Premium Heavyweight Blank Tee'], image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80', price: 850, orig: 1200 },
   { cat: 'dtf_sheet', sub: 'dtf-sticker', names: ['Stitch & Friends DTF Sticker Pack', 'Labubu Pop Toy DTF Sticker Sheet', 'Retro Arcade Game DTF Stickers', 'Cute Animals DTF Sticker Sheet', 'Streetwear Graffiti DTF Stickers', 'Motorsport Logo DTF Sticker Set', 'Anime Chibi Heroes DTF Stickers', 'Cyberpunk Neon Icons DTF Stickers', 'Floral Botanical DTF Sticker Pack'], image: 'https://images.unsplash.com/photo-1572375995501-4b0894d50d69?auto=format&fit=crop&w=600&q=80', price: 380, orig: 500 },
   { cat: 'dtf_sheet', sub: 'dtf-cloth', names: ['Full Jacket Back DTF Cloth Print', 'Hoodie Large Graphics DTF Cloth Sheet', 'Canvas Tote Bag Print DTF Sheet', 'Denim Jacket Graphic DTF Cloth Sheet', 'Sleeve Stripes Custom DTF Cloth Set', 'Sweatshirt Chest Accent DTF Print', 'Cap Logo Custom DTF Transfer Sheet', 'Fabric Banner Layout DTF Cloth Sheet', 'Heavy Cotton Uniform DTF Cloth Logo'], image: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=600&q=80', price: 1500, orig: 2200 },
 
@@ -87,6 +87,17 @@ const UNIQUE_IMAGES: Record<string, string[]> = {
     'https://images.unsplash.com/photo-1544816155-12df9643f363',
     'https://images.unsplash.com/photo-1566150905458-1bf1fc15aae9',
     'https://images.unsplash.com/photo-1590874103328-eac38a683ce7'
+  ],
+  'tshirt-design': [
+    '/images/products/mountain-vintage-tee.jpg',
+    '/images/products/demon-slayer-tee.jpg',
+    '/images/products/labubu-new.jpg',
+    '/images/products/stitch-dtf.jpg',
+    '/images/products/bear-street-dtf.jpg',
+    '/images/products/hike-that-tee.jpg',
+    '/images/products/hike-that-tee-back.jpg',
+    '/images/products/half-mile-tee.jpg',
+    '/images/products/heavyweight-tee.jpg'
   ]
 };
 
@@ -98,7 +109,10 @@ SUBCAT_DATA.forEach((sc) => {
     // Choose custom image if available, else fallback to standard category URL
     let finalImage = sc.image;
     if (UNIQUE_IMAGES[sc.sub] && UNIQUE_IMAGES[sc.sub][idx]) {
-      finalImage = `${UNIQUE_IMAGES[sc.sub][idx]}?auto=format&fit=crop&w=600&q=80`;
+      finalImage = UNIQUE_IMAGES[sc.sub][idx];
+      if (finalImage.startsWith('http')) {
+        finalImage = `${finalImage}?auto=format&fit=crop&w=600&q=80`;
+      }
     } else {
       // Append subtle parameter variance so different products have slightly varied views
       finalImage = `${sc.image}&sig=${idx + 1}`;
