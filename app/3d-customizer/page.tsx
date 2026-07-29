@@ -43,10 +43,12 @@ export default function ThreeDViewer() {
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
-    // Create camera
+    // Create camera with safe initial dimensions
+    const width = containerRef.current.clientWidth || 400;
+    const height = containerRef.current.clientHeight || 500;
     const camera = new THREE.PerspectiveCamera(
       45,
-      containerRef.current.clientWidth / containerRef.current.clientHeight,
+      width / height,
       0.1,
       1000
     );
@@ -55,6 +57,7 @@ export default function ThreeDViewer() {
     // Create renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setClearColor(0x000000, 0); // Explicit transparent background
+    renderer.setSize(width, height);
     renderer.setPixelRatio(window.devicePixelRatio);
     containerRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
@@ -173,12 +176,14 @@ export default function ThreeDViewer() {
 
   // Update base color when state changes
   useEffect(() => {
-    if (shirtMeshRef.current) {
+    if (sceneRef.current) {
       // Find all meshes in the group and change material color
-      sceneRef.current?.traverse((object) => {
+      sceneRef.current.traverse((object) => {
         if (object instanceof THREE.Mesh) {
           const material = object.material as THREE.MeshStandardMaterial;
-          material.color.set(selectedColor.hex);
+          if (material && material.color) {
+            material.color.set(selectedColor.hex);
+          }
         }
       });
     }
@@ -237,18 +242,30 @@ export default function ThreeDViewer() {
     } else {
       try {
         setLoading(true);
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: 'environment' },
-          audio: false,
-        });
+        let stream: MediaStream;
+        try {
+          // Try environment camera (back camera on mobile)
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'environment' },
+            audio: false,
+          });
+        } catch (err) {
+          console.warn('Environment camera failed, falling back to default camera:', err);
+          // Fallback to default user camera (front camera / webcam)
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false,
+          });
+        }
+        
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
           videoRef.current.play();
         }
         setArMode(true);
       } catch (err) {
-        console.error('Camera access failed:', err);
-        alert('Could not access background camera. Please grant camera permissions.');
+        console.error('Camera access failed completely:', err);
+        alert('Could not access camera. Please verify device camera connections and site permissions.');
       } finally {
         setLoading(false);
       }
@@ -333,9 +350,9 @@ export default function ThreeDViewer() {
       </div>
 
       {/* MIDDLE: 3D / AR Renderer */}
-      <div className="flex-1 flex flex-col items-center">
+      <div className="flex-1 flex flex-col items-center justify-center min-w-[320px]">
         {/* Render Frame */}
-        <div className="relative w-full max-w-[500px] aspect-[4/5] rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-950/80 shadow-2xl">
+        <div className="relative w-full max-w-[450px] h-[450px] sm:h-[550px] rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-950/80 shadow-2xl">
           {/* Background Camera video for AR fitting */}
           <video
             ref={videoRef}
