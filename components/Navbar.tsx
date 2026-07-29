@@ -25,21 +25,46 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center space-x-3 group">
-              <div className="relative w-11 h-11 rounded-full overflow-hidden border border-zinc-800 bg-black group-hover:border-violet-500 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:shadow-[0_0_20px_rgba(139,92,246,0.4)]">
-                <Image
-                  src="/images/bitium-logo.jpg"
-                  alt="Bitium Technology Logo"
-                  fill
-                  className="object-cover"
-                />
+            <Link href="/" className="flex items-center space-x-3 group relative px-1 py-1">
+              {/* Left Logo Icon with Animated Red Ring and Glow */}
+              <div className="relative flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12">
+                {/* Background light rays / flare glow (invisible until hover) */}
+                <div className="absolute inset-0 bg-red-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+                
+                {/* SVG Animated Red Drawing Ring */}
+                <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none drop-shadow-[0_0_5px_rgba(239,68,68,0.6)]">
+                  {/* Subtle track */}
+                  <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(239,68,68,0.15)" strokeWidth="2" />
+                  {/* Drawing stroke (Dasharray 301 is approx circumference of r=48) */}
+                  <circle 
+                    cx="50" cy="50" r="48" fill="none" stroke="#ef4444" strokeWidth="2" 
+                    strokeDasharray="301" strokeDashoffset="301" 
+                    className="group-hover:stroke-dashoffset-0 transition-all duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)]" 
+                  />
+                </svg>
+
+                {/* The Logo Image */}
+                <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-black z-10 group-hover:scale-105 transition-transform duration-700 ease-out border border-zinc-800 group-hover:border-transparent">
+                  <Image
+                    src="/images/bitium-logo.jpg"
+                    alt="Bitium Technology"
+                    fill
+                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-[1200ms]"
+                  />
+                </div>
               </div>
-              <div className="flex flex-col">
-                <span className="text-base font-black tracking-tight bg-gradient-to-r from-white via-violet-400 to-fuchsia-400 bg-[size:200%_auto] bg-left text-transparent bg-clip-text group-hover:bg-right transition-all duration-750 leading-none">
-                  PrintGrid
-                </span>
-                <span className="text-[9px] font-bold text-zinc-500 tracking-wider mt-1.5 leading-none uppercase group-hover:text-zinc-400 transition-colors duration-500">
-                  powered by Bitium Technology
+
+              {/* Text Side */}
+              <div className="flex flex-col justify-center">
+                {/* B!T!UM */}
+                <div className="text-base sm:text-lg font-black tracking-widest text-white leading-none flex items-center group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.4)] transition-all duration-700">
+                  B<span className="text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.9)]">!</span>
+                  T<span className="text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.9)]">!</span>
+                  UM
+                </div>
+                {/* TECHNOLOGY */}
+                <span className="text-[8px] sm:text-[9px] font-bold text-zinc-400 tracking-[0.35em] mt-1.5 leading-none uppercase group-hover:text-white transition-colors duration-700 drop-shadow-sm">
+                  Technology
                 </span>
               </div>
             </Link>

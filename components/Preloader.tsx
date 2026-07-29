@@ -186,11 +186,13 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
         className={`relative z-10 mt-8 text-center transition-all duration-700 ease-out ${textCls}`}
         style={{ transitionDelay: phase === 'in' ? '150ms' : '0ms' }}
       >
-        <h1 className="text-3xl font-black tracking-tight bg-gradient-to-r from-white via-violet-300 to-fuchsia-400 bg-clip-text text-transparent">
-          PrintGrid
+        <h1 className="text-4xl font-black tracking-widest text-white flex justify-center drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
+          B<span className="text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,0.9)]">!</span>
+          T<span className="text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,0.9)]">!</span>
+          UM
         </h1>
-        <p className="mt-1 text-[11px] font-bold text-zinc-500 tracking-[0.25em] uppercase">
-          powered by Bitium Technology
+        <p className="mt-2 text-[13px] font-bold text-zinc-400 tracking-[0.35em] uppercase drop-shadow-sm">
+          Technology
         </p>
       </div>
 
