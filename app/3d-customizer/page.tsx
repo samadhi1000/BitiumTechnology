@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import * as THREE from 'three';
+import * as fabric from 'fabric';
 import { 
-  Camera, Shirt, Sparkles, RefreshCw, ZoomIn, 
-  Settings2, Eye, Paintbrush, ArrowLeft 
+  Shirt, Sparkles, RefreshCw, Layers, 
+  Settings2, Eye, Paintbrush, ArrowLeft,
+  Trash2, UploadCloud, ShoppingBag
 } from 'lucide-react';
 import Link from 'next/link';
+import { useCartStore } from '@/lib/store/cartStore';
 
 const T_SHIRT_COLORS = [
   { name: 'Pitch Black', hex: '#09090b' },
@@ -14,185 +16,114 @@ const T_SHIRT_COLORS = [
   { name: 'Navy Blue', hex: '#1e3a8a' },
   { name: 'Ruby Red', hex: '#991b1b' },
   { name: 'Forest Green', hex: '#065f46' },
+  { name: 'Muted Pink', hex: '#db2777' },
+  { name: 'Mustard Yellow', hex: '#d97706' },
 ];
 
-export default function ThreeDViewer() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+const SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
+
+export default function DynamicMockupCustomizer() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const [selectedColor, setSelectedColor] = useState(T_SHIRT_COLORS[0]);
+  const [selectedSize, setSelectedSize] = useState('M');
   const [logoImage, setLogoImage] = useState<string | null>(null);
-  const [arMode, setArMode] = useState(false);
+  const [printStyle, setPrintStyle] = useState<'flat' | 'embossed' | 'vintage'>('flat');
   const [loading, setLoading] = useState(false);
 
-  // ThreeJS instances
-  const sceneRef = useRef<THREE.Scene | null>(null);
-  const shirtMeshRef = useRef<THREE.Mesh | null>(null);
-  const logoDecalMeshRef = useRef<THREE.Mesh | null>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const tShirtRef = useRef<fabric.Path | null>(null);
+  const foldsRef = useRef<fabric.Object[]>([]);
+  const addItem = useCartStore((state) => state.addItem);
 
-  const arModeRef = useRef(arMode);
+  // Initialize Canvas
   useEffect(() => {
-    arModeRef.current = arMode;
-  }, [arMode]);
+    if (!canvasRef.current) return;
 
-  // Initialize 3D Scene
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    // Create scene
-    const scene = new THREE.Scene();
-    sceneRef.current = scene;
-
-    // Create camera with safe initial dimensions
-    const width = containerRef.current.clientWidth || 400;
-    const height = containerRef.current.clientHeight || 500;
-    const camera = new THREE.PerspectiveCamera(
-      45,
-      width / height,
-      0.1,
-      1000
-    );
-    camera.position.z = 8;
-
-    // Create renderer
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setClearColor(0x000000, 0); // Explicit transparent background
-    renderer.setSize(width, height);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    containerRef.current.appendChild(renderer.domElement);
-    rendererRef.current = renderer;
-
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-    scene.add(ambientLight);
-
-    const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
-    dirLight1.position.set(5, 5, 5);
-    scene.add(dirLight1);
-
-    const dirLight2 = new THREE.DirectionalLight(0xffffff, 0.3);
-    dirLight2.position.set(-5, 5, -5);
-    scene.add(dirLight2);
-
-    // Procedural T-Shirt Geometry (using custom extruded shapes for high realism without files)
-    const shirtGroup = new THREE.Group();
-    
-    // Torso
-    const torsoGeo = new THREE.CylinderGeometry(1.4, 1.4, 2.5, 32);
-    const shirtMat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(selectedColor.hex),
-      roughness: 0.8,
-      metalness: 0.1,
+    const fc = new fabric.Canvas(canvasRef.current, {
+      width: 360,
+      height: 450,
+      backgroundColor: 'transparent',
+      selection: false
     });
-    
-    const torso = new THREE.Mesh(torsoGeo, shirtMat);
-    torso.position.y = -0.2;
-    shirtGroup.add(torso);
 
-    // Left Sleeve
-    const sleeveGeo = new THREE.CylinderGeometry(0.5, 0.45, 0.9, 16);
-    sleeveGeo.rotateZ(Math.PI / 4);
-    const leftSleeve = new THREE.Mesh(sleeveGeo, shirtMat);
-    leftSleeve.position.set(-1.4, 0.7, 0);
-    shirtGroup.add(leftSleeve);
-
-    // Right Sleeve
-    const rightSleeve = new THREE.Mesh(sleeveGeo, shirtMat);
-    // Mirror the rotation
-    rightSleeve.rotation.z = -Math.PI / 4;
-    rightSleeve.position.set(1.4, 0.7, 0);
-    shirtGroup.add(rightSleeve);
-
-    // Collar trim
-    const collarGeo = new THREE.TorusGeometry(0.65, 0.08, 16, 32);
-    collarGeo.rotateX(Math.PI / 2);
-    const collar = new THREE.Mesh(collarGeo, shirtMat);
-    collar.position.set(0, 1.0, 0);
-    shirtGroup.add(collar);
-
-    // Rotate slightly for better perspective
-    shirtGroup.rotation.y = 0.2;
-    scene.add(shirtGroup);
-    shirtMeshRef.current = torso; // Track torso to change color later
-
-    // Animation Loop
-    let animationFrameId: number;
-    const animate = () => {
-      animationFrameId = requestAnimationFrame(animate);
-      
-      // Auto rotate if not in AR mode
-      if (!arModeRef.current) {
-        shirtGroup.rotation.y += 0.005;
-      }
-      
-      renderer.render(scene, camera);
-    };
-    animate();
-
-    // Handle Resize
-    const handleResize = () => {
-      if (!containerRef.current) return;
-      const width = containerRef.current.clientWidth || 350;
-      const height = containerRef.current.clientHeight || 430;
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
-    };
-
-    // Use ResizeObserver for robust layout computation
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        const { width, height } = entry.contentRect;
-        if (width > 0 && height > 0) {
-          camera.aspect = width / height;
-          camera.updateProjectionMatrix();
-          renderer.setSize(width, height);
-        }
-      }
+    // 1. Base T-Shirt outline path (perfectly symmetric & centered)
+    const tShirt = new fabric.Path('M 140,40 C 170,55 230,55 260,40 L 330,65 L 370,140 L 320,165 L 310,150 L 310,430 C 310,440 300,450 290,450 L 110,450 C 100,450 90,440 90,430 L 90,150 L 80,165 L 30,140 L 70,65 Z', {
+      left: 180,
+      top: 225,
+      originX: 'center',
+      originY: 'center',
+      fill: selectedColor.hex,
+      stroke: '#1f1f23',
+      strokeWidth: 2.5,
+      selectable: false,
+      hoverCursor: 'default'
     });
-    
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current);
-    }
+    fc.add(tShirt);
+    tShirtRef.current = tShirt;
 
-    // Double check layout size shortly after mounting
-    setTimeout(handleResize, 100);
-    setTimeout(handleResize, 400);
+    // 2. Collar trim
+    const collar = new fabric.Path('M 140,40 C 170,55 230,55 260,40 C 250,55 150,55 140,40 Z', {
+      left: 180,
+      top: 48,
+      originX: 'center',
+      originY: 'center',
+      fill: '#18181b',
+      opacity: 0.15,
+      selectable: false,
+      hoverCursor: 'default'
+    });
+    fc.add(collar);
 
-    window.addEventListener('resize', handleResize);
+    // 3. Folds & crease lines (gives vectors a realistic 3D appearance)
+    const sleeveL = new fabric.Path('M 90,150 L 110,180', {
+      fill: 'transparent',
+      stroke: '#000000',
+      strokeWidth: 2,
+      opacity: 0.12,
+      selectable: false,
+      hoverCursor: 'default'
+    });
+    const sleeveR = new fabric.Path('M 270,180 L 290,150', {
+      fill: 'transparent',
+      stroke: '#000000',
+      strokeWidth: 2,
+      opacity: 0.12,
+      selectable: false,
+      hoverCursor: 'default'
+    });
+    const fold1 = new fabric.Path('M 180,90 C 170,220 190,300 180,410', {
+      fill: 'transparent',
+      stroke: '#000000',
+      strokeWidth: 1.5,
+      opacity: 0.08,
+      selectable: false,
+      hoverCursor: 'default'
+    });
+    fc.add(sleeveL);
+    fc.add(sleeveR);
+    fc.add(fold1);
+
+    foldsRef.current = [collar, sleeveL, sleeveR, fold1];
+
+    setCanvas(fc);
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('resize', handleResize);
-      if (containerRef.current) {
-        resizeObserver.disconnect();
-      }
-      if (containerRef.current && renderer.domElement) {
-        containerRef.current.removeChild(renderer.domElement);
-      }
-      renderer.dispose();
+      fc.dispose();
     };
   }, []);
 
-  // Update base color when state changes
+  // Update T-shirt color dynamically
   useEffect(() => {
-    if (sceneRef.current) {
-      // Find all meshes in the group and change material color
-      sceneRef.current.traverse((object) => {
-        if (object instanceof THREE.Mesh) {
-          const material = object.material as THREE.MeshStandardMaterial;
-          if (material && material.color) {
-            material.color.set(selectedColor.hex);
-          }
-        }
-      });
+    if (tShirtRef.current && canvas) {
+      tShirtRef.current.set({ fill: selectedColor.hex });
+      canvas.renderAll();
     }
-  }, [selectedColor]);
+  }, [selectedColor, canvas]);
 
-  // Load logo graphic onto shirt
+  // Handle Logo Image Upload
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file || !canvas) return;
 
     setLoading(true);
     const reader = new FileReader();
@@ -200,76 +131,136 @@ export default function ThreeDViewer() {
       const dataUrl = event.target?.result as string;
       setLogoImage(dataUrl);
 
-      // Load texture
-      const loader = new THREE.TextureLoader();
-      loader.load(dataUrl, (texture) => {
-        // If an old decal exists, remove it
-        if (logoDecalMeshRef.current && sceneRef.current) {
-          sceneRef.current.remove(logoDecalMeshRef.current);
+      const imgElement = document.createElement('img');
+      imgElement.src = dataUrl;
+      imgElement.onload = () => {
+        // Remove existing logos
+        canvas.getObjects().forEach((obj) => {
+          if (obj instanceof fabric.FabricImage) {
+            canvas.remove(obj);
+          }
+        });
+
+        // Add logo to canvas
+        const fabImg = new fabric.FabricImage(imgElement, {
+          left: 180,
+          top: 220,
+          originX: 'center',
+          originY: 'center',
+          cornerColor: '#8b5cf6',
+          cornerStrokeColor: '#ffffff',
+          borderColor: '#8b5cf6',
+          cornerSize: 8,
+          transparentCorners: false,
+          padding: 6
+        });
+
+        // Scale to fit chest area
+        if (fabImg.width > 120) {
+          fabImg.scaleToWidth(120);
         }
 
-        // Create a flat plane to display the decal over the chest
-        const decalGeo = new THREE.PlaneGeometry(0.8, 0.8);
-        const decalMat = new THREE.MeshBasicMaterial({
-          map: texture,
-          transparent: true,
-          side: THREE.DoubleSide,
-          depthWrite: false, // Prevents Z-fighting
+        canvas.add(fabImg);
+        canvas.setActiveObject(fabImg);
+
+        // Re-apply textures / emboss parameters
+        applyStyleToLogo(fabImg, printStyle);
+
+        // Bring folds to front so they layer overlay details on the logo
+        foldsRef.current.forEach((fold) => {
+          canvas.remove(fold);
+          canvas.add(fold);
         });
-        
-        const decalMesh = new THREE.Mesh(decalGeo, decalMat);
-        
-        // Position on chest
-        decalMesh.position.set(0, 0.3, 1.41); // slightly in front of cylinder radius 1.4
-        sceneRef.current?.add(decalMesh);
-        logoDecalMeshRef.current = decalMesh;
+
+        canvas.renderAll();
         setLoading(false);
-      });
+      };
     };
     reader.readAsDataURL(file);
   };
 
-  // WebAR Camera Toggle (Capacitor wrapper compatible)
-  const toggleARMode = async () => {
-    if (arMode) {
-      // Stop camera
-      if (videoRef.current && videoRef.current.srcObject) {
-        const stream = videoRef.current.srcObject as MediaStream;
-        stream.getTracks().forEach((track) => track.stop());
-        videoRef.current.srcObject = null;
-      }
-      setArMode(false);
-    } else {
-      try {
-        setLoading(true);
-        let stream: MediaStream;
-        try {
-          // Try environment camera (back camera on mobile)
-          stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: 'environment' },
-            audio: false,
-          });
-        } catch (err) {
-          console.warn('Environment camera failed, falling back to default camera:', err);
-          // Fallback to default user camera (front camera / webcam)
-          stream = await navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: false,
-          });
-        }
-        
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          videoRef.current.play();
-        }
-        setArMode(true);
-      } catch (err) {
-        console.error('Camera access failed completely:', err);
-        alert('Could not access camera. Please verify device camera connections and site permissions.');
-      } finally {
-        setLoading(false);
-      }
+  // Apply print texture effects
+  const applyStyleToLogo = (logo: fabric.FabricImage, style: 'flat' | 'embossed' | 'vintage') => {
+    if (style === 'flat') {
+      logo.set({
+        opacity: 1.0,
+        shadow: null
+      });
+    } else if (style === 'embossed') {
+      logo.set({
+        opacity: 0.98,
+        shadow: new fabric.Shadow({
+          color: 'rgba(0,0,0,0.35)',
+          blur: 4,
+          offsetX: 1,
+          offsetY: 2
+        })
+      });
+    } else if (style === 'vintage') {
+      logo.set({
+        opacity: 0.78,
+        shadow: null
+      });
     }
+  };
+
+  // Change style dropdown handler
+  const handleStyleChange = (style: 'flat' | 'embossed' | 'vintage') => {
+    setPrintStyle(style);
+    if (!canvas) return;
+
+    const logo = canvas.getObjects().find(obj => obj instanceof fabric.FabricImage) as fabric.FabricImage;
+    if (logo) {
+      applyStyleToLogo(logo, style);
+      canvas.renderAll();
+    }
+  };
+
+  // Remove logo object
+  const handleRemoveLogo = () => {
+    if (!canvas) return;
+    canvas.getObjects().forEach((obj) => {
+      if (obj instanceof fabric.FabricImage) {
+        canvas.remove(obj);
+      }
+    });
+    setLogoImage(null);
+    canvas.discardActiveObject();
+    canvas.renderAll();
+  };
+
+  // Add customized tee to cart
+  const handleAddToCart = () => {
+    if (!canvas) return;
+
+    // Deselect active logo to clean up capture preview
+    canvas.discardActiveObject();
+    canvas.renderAll();
+
+    // Export mockup layout image
+    const dataUrl = canvas.toDataURL({ format: 'png', multiplier: 1.5 });
+
+    addItem({
+      id: crypto.randomUUID(),
+      type: 'apparel',
+      product: {
+        id: `custom-shirt-${selectedColor.name.toLowerCase().replace(/\s+/g, '-')}`,
+        name: `Customized ${selectedColor.name} Tee`,
+        description: `Custom ${selectedColor.name} blank T-shirt printed with dynamic logo layout. Print Finish: ${printStyle.toUpperCase()}`,
+        image_url: dataUrl
+      },
+      variant: {
+        id: `var-custom-${selectedColor.name.toLowerCase().replace(/\s+/g, '-')}-${selectedSize.toLowerCase()}`,
+        name: `${selectedSize} / ${selectedColor.name}`,
+        sku: `CUSTOM-${selectedColor.name.substring(0,3).toUpperCase()}-${selectedSize}`,
+        price: 2490.00,
+        attributes: { size: selectedSize, color: selectedColor.name, customPrint: true, printStyle }
+      },
+      quantity: 1,
+      price: 2490.00
+    });
+
+    alert('Successfully added customized T-shirt to your shopping cart!');
   };
 
   return (
@@ -295,86 +286,138 @@ export default function ThreeDViewer() {
                 className={`w-10 h-10 rounded-full border-2 transition-all ${
                   selectedColor.name === col.name
                     ? 'border-violet-500 scale-110 shadow-lg shadow-violet-600/30'
-                    : 'border-zinc-800 hover:border-zinc-500'
+                    : 'border-zinc-800 hover:border-zinc-500 hover:scale-105'
                 }`}
                 title={col.name}
               />
             ))}
           </div>
+          <p className="text-xs text-zinc-500 font-medium">Selected Color: {selectedColor.name}</p>
         </div>
 
-        {/* Upload Logo Decal */}
+        {/* Size Selector */}
         <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-4">
           <h3 className="font-bold text-sm text-zinc-300 flex items-center gap-2">
             <Shirt size={16} className="text-violet-400" />
-            2. Chest Design Decal
+            2. Choose Size
           </h3>
-          <label className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-zinc-800 hover:border-violet-500 rounded-xl cursor-pointer hover:bg-zinc-900/50 transition-all text-center">
-            <span className="text-xs text-zinc-400 font-semibold">Upload Print Graphic</span>
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleLogoUpload}
-            />
-          </label>
+          <div className="flex gap-2">
+            {SIZES.map((sz) => (
+              <button
+                key={sz}
+                onClick={() => setSelectedSize(sz)}
+                className={`flex-1 py-2.5 rounded-lg font-bold text-xs border transition-all ${
+                  selectedSize === sz
+                    ? 'bg-violet-600 border-violet-500 text-white shadow-md'
+                    : 'bg-zinc-950 border-zinc-850 text-zinc-400 hover:text-white hover:border-zinc-700'
+                }`}
+              >
+                {sz}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* AR Mode Trigger */}
+        {/* Logo Graphic Upload */}
         <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-4">
           <h3 className="font-bold text-sm text-zinc-300 flex items-center gap-2">
-            <Eye size={16} className="text-violet-400" />
-            3. AR Camera Fitting
+            <Layers size={16} className="text-violet-400" />
+            3. Chest Logo/Image
           </h3>
-          <button
-            onClick={toggleARMode}
-            className={`w-full py-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all ${
-              arMode
-                ? 'bg-red-950/20 border border-red-500/50 text-red-400'
-                : 'bg-violet-600 hover:bg-violet-500 text-white glow-primary'
-            }`}
-          >
-            {loading ? (
-              <RefreshCw className="animate-spin" size={16} />
-            ) : arMode ? (
-              <>
-                <Camera size={16} /> Stop Camera Fit
-              </>
-            ) : (
-              <>
-                <Camera size={16} /> Start AR fitting check
-              </>
+          <div className="flex flex-col gap-3">
+            <label className="w-full h-24 rounded-xl border border-dashed border-zinc-800 hover:border-zinc-700 bg-zinc-950 hover:bg-zinc-950/60 cursor-pointer flex flex-col items-center justify-center gap-2 transition-all">
+              {loading ? (
+                <RefreshCw className="animate-spin text-zinc-500" size={20} />
+              ) : (
+                <>
+                  <UploadCloud size={20} className="text-zinc-500" />
+                  <span className="text-xs font-semibold text-zinc-400">Upload Print Graphic</span>
+                </>
+              )}
+              <input
+                type="file"
+                accept="image/png, image/jpeg"
+                className="hidden"
+                onChange={handleLogoUpload}
+              />
+            </label>
+
+            {logoImage && (
+              <button
+                onClick={handleRemoveLogo}
+                className="w-full py-2.5 rounded-lg border border-red-500/30 bg-red-950/10 hover:bg-red-950/20 text-red-400 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
+              >
+                <Trash2 size={13} /> Remove Design
+              </button>
             )}
-          </button>
+          </div>
+        </div>
+
+        {/* Print Emboss Finishes */}
+        <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-4">
+          <h3 className="font-bold text-sm text-zinc-300 flex items-center gap-2">
+            <Sparkles size={16} className="text-violet-400" />
+            4. Print Style & Emboss
+          </h3>
+          <div className="flex flex-col gap-2">
+            {[
+              { id: 'flat', label: 'Vibrant Flat Print', desc: 'Sleek, direct flat ink transfer.' },
+              { id: 'embossed', label: '3D Embossed Print', desc: 'Embossed edges with detailed shadow.' },
+              { id: 'vintage', label: 'Vintage Faded Print', desc: 'A subtle faded look with low opacity.' },
+            ].map((style) => (
+              <button
+                key={style.id}
+                onClick={() => handleStyleChange(style.id as any)}
+                className={`w-full p-3 rounded-xl border text-left flex flex-col gap-1 transition-all ${
+                  printStyle === style.id
+                    ? 'bg-violet-950/20 border-violet-500/60 shadow-lg'
+                    : 'bg-zinc-950 border-zinc-850 hover:bg-zinc-950/60 hover:border-zinc-800'
+                }`}
+              >
+                <span className={`text-xs font-bold ${printStyle === style.id ? 'text-violet-400' : 'text-zinc-300'}`}>
+                  {style.label}
+                </span>
+                <span className="text-[10px] text-zinc-500 font-medium">
+                  {style.desc}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* MIDDLE: 3D / AR Renderer */}
+      {/* MIDDLE: Interactive Canvas Customizer */}
       <div className="flex-1 flex flex-col items-center justify-center min-w-[320px]">
-        {/* Render Frame */}
-        <div className="relative w-full max-w-[450px] h-[450px] sm:h-[550px] rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-950/80 shadow-2xl">
-          {/* Background Camera video for AR fitting */}
-          <video
-            ref={videoRef}
-            className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-300 ${
-              arMode ? 'opacity-100' : 'opacity-0 pointer-events-none'
-            }`}
-            muted
-            playsInline
-          />
-
-          {/* ThreeJS WebGL Overlay with Hardware Acceleration translation */}
-          <div
-            ref={containerRef}
-            className="absolute inset-0 z-10 w-full h-full pointer-events-auto [transform:translate3d(0,0,0)]"
-          />
+        {/* Mockup Render Frame */}
+        <div className="relative w-full max-w-[420px] h-[500px] rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-905 bg-gradient-to-br from-zinc-900 to-zinc-950 shadow-2xl flex items-center justify-center p-6">
+          
+          <div className="relative bg-transparent rounded-2xl overflow-hidden border border-zinc-800/20 shadow-lg">
+            <canvas ref={canvasRef} id="apparel-canvas" className="z-10" />
+          </div>
 
           {/* Top overlays */}
           <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-center pointer-events-none">
             <span className="px-3 py-1 rounded-full bg-zinc-900/80 backdrop-blur border border-zinc-800 text-[10px] font-bold uppercase tracking-wider text-zinc-300">
-              {arMode ? 'AR Camera Mode' : '3D Studio Model'}
+              Interactive Mockup Studio
             </span>
           </div>
+
+          {/* Canvas Guide instructions */}
+          <div className="absolute bottom-4 left-4 right-4 z-20 text-center pointer-events-none">
+            <p className="text-[10px] text-zinc-500 font-bold">
+              {logoImage ? 'Select & drag, resize, or rotate the logo directly on T-shirt' : 'Upload custom logo from menu to adjust placement'}
+            </p>
+          </div>
+        </div>
+
+        {/* Add to Cart Actions */}
+        <div className="w-full max-w-[420px] mt-6">
+          <button
+            onClick={handleAddToCart}
+            className="w-full py-4 rounded-xl bg-violet-600 hover:bg-violet-500 font-bold text-sm text-white flex items-center justify-center gap-2 transition-all glow-primary shadow-lg shadow-violet-600/20"
+          >
+            <ShoppingBag size={16} /> Add Custom Design to Cart (Rs. 2,490.00)
+          </button>
         </div>
       </div>
     </div>
