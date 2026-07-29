@@ -30,6 +30,11 @@ export default function ThreeDViewer() {
   const logoDecalMeshRef = useRef<THREE.Mesh | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
 
+  const arModeRef = useRef(arMode);
+  useEffect(() => {
+    arModeRef.current = arMode;
+  }, [arMode]);
+
   // Initialize 3D Scene
   useEffect(() => {
     if (!containerRef.current) return;
@@ -49,7 +54,7 @@ export default function ThreeDViewer() {
 
     // Create renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
+    renderer.setClearColor(0x000000, 0); // Explicit transparent background
     renderer.setPixelRatio(window.devicePixelRatio);
     containerRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
@@ -113,7 +118,7 @@ export default function ThreeDViewer() {
       animationFrameId = requestAnimationFrame(animate);
       
       // Auto rotate if not in AR mode
-      if (!arMode) {
+      if (!arModeRef.current) {
         shirtGroup.rotation.y += 0.005;
       }
       
@@ -124,17 +129,41 @@ export default function ThreeDViewer() {
     // Handle Resize
     const handleResize = () => {
       if (!containerRef.current) return;
-      const width = containerRef.current.clientWidth;
-      const height = containerRef.current.clientHeight;
+      const width = containerRef.current.clientWidth || 350;
+      const height = containerRef.current.clientHeight || 430;
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
     };
+
+    // Use ResizeObserver for robust layout computation
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const { width, height } = entry.contentRect;
+        if (width > 0 && height > 0) {
+          camera.aspect = width / height;
+          camera.updateProjectionMatrix();
+          renderer.setSize(width, height);
+        }
+      }
+    });
+    
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
+    // Double check layout size shortly after mounting
+    setTimeout(handleResize, 100);
+    setTimeout(handleResize, 400);
+
     window.addEventListener('resize', handleResize);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
+      if (containerRef.current) {
+        resizeObserver.disconnect();
+      }
       if (containerRef.current && renderer.domElement) {
         containerRef.current.removeChild(renderer.domElement);
       }
@@ -317,10 +346,10 @@ export default function ThreeDViewer() {
             playsInline
           />
 
-          {/* ThreeJS WebGL Overlay */}
+          {/* ThreeJS WebGL Overlay with Hardware Acceleration translation */}
           <div
             ref={containerRef}
-            className="absolute inset-0 z-10 w-full h-full"
+            className="absolute inset-0 z-10 w-full h-full pointer-events-auto [transform:translate3d(0,0,0)]"
           />
 
           {/* Top overlays */}
