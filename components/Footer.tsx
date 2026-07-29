@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import PoweredBy from './PoweredBy';
 
 export default function Footer() {
   return (
@@ -11,7 +12,7 @@ export default function Footer() {
               PrintGrid
             </span>
             <span className="text-xs text-zinc-500 mt-1">
-              powered by Bitium Technology
+              Premium Canvas Studio
             </span>
           </div>
           <div className="flex space-x-6 text-sm text-zinc-400">
@@ -28,6 +29,11 @@ export default function Footer() {
           <div className="text-xs text-zinc-500">
             &copy; {new Date().getFullYear()} PrintGrid. All rights reserved.
           </div>
+        </div>
+        
+        {/* Animated Agency Logo */}
+        <div className="mt-8 pt-6 border-t border-zinc-800/50 flex justify-center">
+          <PoweredBy theme="brand" logoSrc="/images/bitium-logo.jpg" />
         </div>
       </div>
     </footer>
