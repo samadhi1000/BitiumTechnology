@@ -1,14 +1,18 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useAuth } from '@/lib/context/AuthContext';
-import { ShoppingBag, User, LayoutGrid, LogOut, Shirt } from 'lucide-react';
+import { ShoppingBag, User, LayoutGrid, LogOut, Shirt, ChevronDown } from 'lucide-react';
 
 export default function Navbar() {
   const cartItemsCount = useCartStore((state) => state.getTotalItems());
   const { user, profile, signOut } = useAuth();
+  
+  // Dropdown hover states
+  const [apparelHovered, setApparelHovered] = useState(false);
+  const [dtfHovered, setDtfHovered] = useState(false);
 
   return (
     <nav className="sticky top-0 z-50 w-full glass shadow-sm transition-all duration-300">
@@ -20,22 +24,81 @@ export default function Navbar() {
               <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-violet-500 to-fuchsia-500 bg-clip-text text-transparent">
                 PrintGrid
               </span>
-              <span className="hidden sm:inline-block text-xs font-semibold text-muted-foreground border-l border-zinc-700 pl-2">
+              <span className="hidden sm:inline-block text-xs font-semibold text-zinc-500 border-l border-zinc-700 pl-2">
                 powered by Bitium
               </span>
             </Link>
           </div>
 
           {/* Navigation Links */}
-          <div className="hidden md:flex space-x-8">
-            <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">
-              Apparel Catalog
+          <div className="hidden md:flex space-x-8 h-full items-center">
+            <Link href="/" className="text-sm font-medium hover:text-primary transition-colors h-full flex items-center">
+              Home
             </Link>
-            <Link href="/canvas" className="text-sm font-medium text-violet-400 hover:text-violet-300 transition-colors flex items-center gap-1">
-              <LayoutGrid size={16} />
-              DTF Sheet Builder
-            </Link>
-            <Link href="/3d-customizer" className="text-sm font-medium text-fuchsia-400 hover:text-fuchsia-300 transition-colors flex items-center gap-1">
+
+            {/* Dropdown: T-Shirt Collection */}
+            <div 
+              className="relative h-full flex items-center"
+              onMouseEnter={() => setApparelHovered(true)}
+              onMouseLeave={() => setApparelHovered(false)}
+            >
+              <button className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1 cursor-pointer">
+                <span>T-Shirt Collection</span>
+                <ChevronDown size={14} className={`transition-transform duration-200 ${apparelHovered ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {apparelHovered && (
+                <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-zinc-800 bg-zinc-950 p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
+                  <Link href="/?category=apparel" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
+                    All Collection
+                  </Link>
+                  <Link href="/?category=apparel&sub=anime" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
+                    Anime Oversized Tees
+                  </Link>
+                  <Link href="/?category=apparel&sub=black" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
+                    Black Blanks
+                  </Link>
+                  <Link href="/?category=apparel&sub=white" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
+                    White Blanks
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Dropdown: DTF Print Sheet */}
+            <div 
+              className="relative h-full flex items-center"
+              onMouseEnter={() => setDtfHovered(true)}
+              onMouseLeave={() => setDtfHovered(false)}
+            >
+              <button className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1 cursor-pointer">
+                <span>DTF Print Sheets</span>
+                <ChevronDown size={14} className={`transition-transform duration-200 ${dtfHovered ? 'rotate-180' : ''}`} />
+              </button>
+
+              {dtfHovered && (
+                <div className="absolute top-[60px] left-0 w-52 rounded-xl border border-zinc-800 bg-zinc-950 p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
+                  <Link href="/canvas" className="px-3 py-2 rounded-lg text-xs font-bold text-violet-400 hover:bg-zinc-900 transition-colors flex items-center gap-1.5">
+                    <LayoutGrid size={12} /> Live Canvas Builder
+                  </Link>
+                  <hr className="border-zinc-800 my-1" />
+                  <Link href="/?category=dtf_sheet&sub=12x23" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
+                    12" x 23" Sheet
+                  </Link>
+                  <Link href="/?category=dtf_sheet&sub=12x12" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
+                    12" x 12" Sheet
+                  </Link>
+                  <Link href="/?category=dtf_sheet&sub=cute-girls" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
+                    Cute Girls Packs
+                  </Link>
+                  <Link href="/?category=dtf_sheet&sub=23x60" className="px-3 py-2 rounded-lg text-xs font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white">
+                    23" x 60" (5 Feet Roll)
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            <Link href="/3d-customizer" className="text-sm font-medium text-fuchsia-400 hover:text-fuchsia-300 transition-colors flex items-center gap-1 h-full">
               <Shirt size={16} />
               3D Customizer
             </Link>
