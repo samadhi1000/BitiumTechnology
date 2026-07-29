@@ -1,0 +1,161 @@
+{
+  "name": "PrintGrid Order Processing & Invoicing Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "printgrid-order-completed",
+        "options": {}
+      },
+      "id": "node-webhook-trigger",
+      "name": "Webhook (Order Created)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.twilio.com/2010-04-01/Accounts/{{$env.TWILIO_ACCOUNT_SID}}/Messages.json",
+        "authentication": "basicAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/x-www-form-urlencoded"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "To",
+              "value": "={{$json.body.shippingAddress.phone}}"
+            },
+            {
+              "name": "From",
+              "value": "={{$env.TWILIO_PHONE_NUMBER}}"
+            },
+            {
+              "name": "Body",
+              "value": "=Hello {{$json.body.shippingAddress.full_name}}, your PrintGrid order {{$json.body.orderId}} of Rs. {{$json.body.totalPrice}} has been received! We are prepping your prints. Bitium Tech."
+            }
+          ]
+        }
+      },
+      "id": "node-twilio-sms",
+      "name": "Send SMS Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [480, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.html2pdf.app/v1/generate",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "html",
+              "value": "=<h1>PrintGrid Invoice</h1><p>Order: {{$json.body.orderId}}</p><p>Customer: {{$json.body.shippingAddress.full_name}}</p><p>Total: Rs. {{$json.body.totalPrice}}</p>"
+            }
+          ]
+        }
+      },
+      "id": "node-generate-invoice",
+      "name": "Generate Waybill/Invoice PDF",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [480, 400]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://your-project.supabase.co/rest/v1/orders?id=eq.{{$node[\"Webhook (Order Created)\"].json.body.orderId}}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{$env.SUPABASE_SERVICE_ROLE_KEY}}"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.SUPABASE_SERVICE_ROLE_KEY}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "n8n_processed",
+              "value": "true"
+            },
+            {
+              "name": "status",
+              "value": "processing"
+            }
+          ]
+        }
+      },
+      "id": "node-update-supabase",
+      "name": "Update Supabase Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [720, 300]
+    }
+  ],
+  "connections": {
+    "Webhook (Order Created)": {
+      "main": [
+        [
+          {
+            "node": "Send SMS Notification",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Generate Waybill/Invoice PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send SMS Notification": {
+      "main": [
+        [
+          {
+            "node": "Update Supabase Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Waybill/Invoice PDF": {
+      "main": [
+        [
+          {
+            "node": "Update Supabase Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {},
+  "versionId": "f7d3a019-3221-4f18-be42-5f6b8b17ab06"
+}

@@ -1,0 +1,492 @@
+'use client';
+
+import React, { useEffect, useRef, useState } from 'react';
+import { useCartStore } from '@/lib/store/cartStore';
+import { useAuth } from '@/lib/context/AuthContext';
+import * as fabric from 'fabric';
+import { 
+  Upload, Trash2, Copy, Trash, RefreshCw, ZoomIn, 
+  HelpCircle, Sparkles, CheckCircle2, AlertTriangle, ArrowRight,
+  Maximize2, Move
+} from 'lucide-react';
+
+interface SheetPreset {
+  name: string;
+  width: number; // inches
+  height: number; // inches
+  price: number;
+}
+
+const PRESETS: SheetPreset[] = [
+  { name: 'Standard Sheet (12" x 23")', width: 12, height: 23, price: 1500 },
+  { name: 'Jumbo Sheet (12" x 48")', width: 12, height: 48, price: 2800 },
+  { name: 'Custom Banner (12" x 72")', width: 12, height: 72, price: 4200 },
+];
+
+export default function CanvasBuilder() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
+  const [selectedPreset, setSelectedPreset] = useState<SheetPreset>(PRESETS[0]);
+  
+  // Design properties
+  const [selectedObject, setSelectedObject] = useState<fabric.Object | null>(null);
+  const [dpi, setDpi] = useState<number | null>(null);
+  const [dpiStatus, setDpiStatus] = useState<'high' | 'medium' | 'low' | null>(null);
+  
+  // AI Tools states
+  const [processingBg, setProcessingBg] = useState(false);
+  const [processingUpscale, setProcessingUpscale] = useState(false);
+  
+  // Cart adding
+  const addItem = useCartStore((state) => state.addItem);
+  const [cartSuccess, setCartSuccess] = useState(false);
+
+  // Conversion factor: 1 inch = 30 screen pixels (for rendering scale)
+  const PPI = 35; 
+
+  // Calculate canvas dimensions based on preset
+  const canvasWidth = selectedPreset.width * PPI;
+  const canvasHeight = selectedPreset.height * PPI;
+
+  // Initialize fabric canvas
+  useEffect(() => {
+    if (!canvasRef.current) return;
+
+    const fc = new fabric.Canvas(canvasRef.current, {
+      width: canvasWidth,
+      height: canvasHeight,
+      backgroundColor: '#111113', // Zinc-900
+      preserveObjectStacking: true,
+    });
+
+    // Grid lines for standard DTF ruler visual assistance
+    const drawGridLines = () => {
+      // Draw grid helper lines directly on canvas background if wanted,
+      // or we can use CSS container background styling. We will use CSS background grid for flexibility.
+    };
+
+    setCanvas(fc);
+
+    // Event listeners
+    const handleSelection = () => {
+      const activeObject = fc.getActiveObject();
+      setSelectedObject(activeObject || null);
+      if (activeObject && activeObject.type === 'FabricImage') {
+        calculateDPI(activeObject as fabric.FabricImage, fc.width || canvasWidth);
+      } else {
+        setDpi(null);
+        setDpiStatus(null);
+      }
+    };
+
+    fc.on('selection:created', handleSelection);
+    fc.on('selection:updated', handleSelection);
+    fc.on('selection:cleared', handleSelection);
+    fc.on('object:scaling', handleSelection);
+    fc.on('object:moving', handleSelection);
+
+    // Initial check
+    drawGridLines();
+
+    return () => {
+      fc.dispose();
+    };
+  }, [selectedPreset]);
+
+  // Recalculate DPI when selection resizes
+  const calculateDPI = (fabImg: fabric.FabricImage, cWidth: number) => {
+    // Standard rule: canvas width corresponds to selectedPreset.width (12 inches)
+    const imgElement = fabImg.getElement() as HTMLImageElement;
+    if (!imgElement) return;
+
+    const naturalWidth = imgElement.naturalWidth || 800; // fallback if dummy
+    
+    // Scale on canvas
+    const currentWidthInCanvasUnits = fabImg.width * fabImg.scaleX;
+    
+    // Convert canvas units to physical inches
+    const physicalWidthInInches = (currentWidthInCanvasUnits / cWidth) * selectedPreset.width;
+    
+    // DPI = Pixels / Inches
+    const calculatedDpi = Math.round(naturalWidth / physicalWidthInInches);
+    setDpi(calculatedDpi);
+
+    if (calculatedDpi >= 300) {
+      setDpiStatus('high');
+    } else if (calculatedDpi >= 150) {
+      setDpiStatus('medium');
+    } else {
+      setDpiStatus('low');
+    }
+  };
+
+  // Upload image handler
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !canvas) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUrl = event.target?.result as string;
+      
+      const imgElement = document.createElement('img');
+      imgElement.src = dataUrl;
+      imgElement.onload = () => {
+        const fabImg = new fabric.FabricImage(imgElement, {
+          left: 40,
+          top: 40,
+        });
+
+        // Scale down if image is too large for sheet
+        const limitWidth = canvas.width ? canvas.width * 0.6 : 200;
+        if (fabImg.width > limitWidth) {
+          fabImg.scaleToWidth(limitWidth);
+        }
+
+        canvas.add(fabImg);
+        canvas.setActiveObject(fabImg);
+        canvas.renderAll();
+      };
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Action helpers
+  const deleteSelected = () => {
+    if (!canvas) return;
+    const activeObjects = canvas.getActiveObjects();
+    activeObjects.forEach((obj) => canvas.remove(obj));
+    canvas.discardActiveObject();
+    canvas.renderAll();
+  };
+
+  const duplicateSelected = () => {
+    if (!canvas) return;
+    const activeObject = canvas.getActiveObject();
+    if (!activeObject) return;
+
+    activeObject.clone().then((cloned) => {
+      cloned.set({
+        left: (activeObject.left || 0) + 20,
+        top: (activeObject.top || 0) + 20,
+      });
+      canvas.add(cloned);
+      canvas.setActiveObject(cloned);
+      canvas.renderAll();
+    });
+  };
+
+  const clearCanvas = () => {
+    if (!canvas) return;
+    if (confirm('Clear everything on the sheet?')) {
+      canvas.clear();
+      canvas.backgroundColor = '#111113';
+      canvas.renderAll();
+    }
+  };
+
+  const centerSelected = () => {
+    if (!canvas) return;
+    const activeObject = canvas.getActiveObject();
+    if (activeObject) {
+      canvas.centerObjectH(activeObject);
+      canvas.renderAll();
+    }
+  };
+
+  // AI Design Tools
+  const handleRemoveBackground = async () => {
+    if (!canvas || !selectedObject || selectedObject.type !== 'FabricImage') return;
+    setProcessingBg(true);
+
+    try {
+      const dataUrl = (selectedObject as fabric.FabricImage).toDataURL({ multiplier: 1 });
+      const res = await fetch('/api/ai/remove-bg', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageBase64: dataUrl }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        const newImgElement = document.createElement('img');
+        newImgElement.src = data.url;
+        newImgElement.onload = () => {
+          (selectedObject as fabric.FabricImage).setElement(newImgElement);
+          canvas.renderAll();
+          alert('AI Background Removal completed successfully!');
+        };
+      } else {
+        alert('Failed to remove background: ' + (data.error || 'Unknown error'));
+      }
+    } catch (err: any) {
+      console.error(err);
+      alert('Error during AI background removal: ' + err.message);
+    } finally {
+      setProcessingBg(false);
+    }
+  };
+
+  const handleUpscale = async () => {
+    if (!canvas || !selectedObject || selectedObject.type !== 'FabricImage') return;
+    setProcessingUpscale(true);
+
+    try {
+      const dataUrl = (selectedObject as fabric.FabricImage).toDataURL({ multiplier: 1 });
+      const res = await fetch('/api/ai/upscale', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageBase64: dataUrl }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        const newImgElement = document.createElement('img');
+        newImgElement.src = data.url;
+        newImgElement.onload = () => {
+          (selectedObject as fabric.FabricImage).setElement(newImgElement);
+          canvas.renderAll();
+          if (dpi) {
+            setDpi(Math.round(dpi * 2));
+            setDpiStatus('high');
+          }
+          alert('AI Resolution Upscaling applied successfully!');
+        };
+      } else {
+        alert('Failed to upscale image: ' + (data.error || 'Unknown error'));
+      }
+    } catch (err: any) {
+      console.error(err);
+      alert('Error during AI upscaling: ' + err.message);
+    } finally {
+      setProcessingUpscale(false);
+    }
+  };
+
+  // Add sheet to cart
+  const handleAddToCart = () => {
+    if (!canvas) return;
+    
+    // Get preview PNG URL
+    const previewDataUrl = canvas.toDataURL({
+      format: 'png',
+      quality: 0.8,
+      multiplier: 1
+    });
+
+    const canvasJson = canvas.toJSON();
+
+    addItem({
+      type: 'dtf_sheet',
+      product: {
+        id: 'b2a8d3e9-4e7a-4e2b-b6c8-2f1a3b4c5d6e',
+        name: 'Custom DTF Sheet Builder',
+        description: `Custom ${selectedPreset.width}" x ${selectedPreset.height}" DTF Transfer Sheet`,
+        image_url: previewDataUrl,
+      },
+      customSheet: {
+        width: selectedPreset.width,
+        height: selectedPreset.height,
+        canvasJson: canvasJson,
+        previewUrl: previewDataUrl,
+        price: selectedPreset.price,
+      },
+      quantity: 1,
+      price: selectedPreset.price,
+    });
+
+    setCartSuccess(true);
+    setTimeout(() => setCartSuccess(false), 3000);
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8">
+      {/* LEFT COLUMN: Controls & Presets */}
+      <div className="w-full lg:w-80 flex flex-col gap-6">
+        {/* Preset Selector */}
+        <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-4">
+          <h3 className="font-bold text-sm text-zinc-300">1. Select Sheet Dimensions</h3>
+          <div className="flex flex-col gap-2">
+            {PRESETS.map((preset) => (
+              <button
+                key={preset.name}
+                onClick={() => setSelectedPreset(preset)}
+                className={`w-full text-left p-3.5 rounded-xl border text-sm font-semibold transition-all ${
+                  selectedPreset.name === preset.name
+                    ? 'border-violet-500 bg-violet-600/10 text-white'
+                    : 'border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200'
+                }`}
+              >
+                <div>{preset.name}</div>
+                <div className="text-xs text-violet-400 mt-1">Rs. {preset.price.toLocaleString()}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Upload Button */}
+        <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-4">
+          <h3 className="font-bold text-sm text-zinc-300">2. Import Custom Logos</h3>
+          <label className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-zinc-800 hover:border-violet-500 rounded-xl cursor-pointer hover:bg-zinc-900/50 transition-all text-center">
+            <Upload className="text-zinc-500 hover:text-violet-400 transition-colors" size={28} />
+            <span className="text-xs text-zinc-400 mt-2 font-semibold">Upload PNG / JPEG</span>
+            <span className="text-[10px] text-zinc-500 mt-1">Transparency recommended</span>
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageUpload}
+            />
+          </label>
+        </div>
+
+        {/* Toolbars / Actions */}
+        {selectedObject && (
+          <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-4 animate-fade-in">
+            <h3 className="font-bold text-sm text-zinc-300">3. Edit Selected Graphic</h3>
+            
+            {/* DPI Status Indicator */}
+            {dpi !== null && (
+              <div className={`p-3 rounded-xl border flex items-center gap-3 ${
+                dpiStatus === 'high' 
+                  ? 'bg-emerald-950/20 border-emerald-800 text-emerald-400' 
+                  : dpiStatus === 'medium'
+                  ? 'bg-amber-950/20 border-amber-800 text-amber-400'
+                  : 'bg-red-950/20 border-red-800 text-red-400'
+              }`}>
+                {dpiStatus === 'high' ? <CheckCircle2 size={18} /> : <AlertTriangle size={18} />}
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wider">Quality: {dpiStatus}</p>
+                  <p className="text-[10px] font-semibold opacity-90 mt-0.5">{dpi} DPI (Standard: 300)</p>
+                </div>
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <button
+                onClick={duplicateSelected}
+                className="p-2.5 rounded-lg border border-zinc-800 hover:bg-zinc-800 text-zinc-300 font-bold transition-all flex items-center justify-center gap-1.5"
+              >
+                <Copy size={14} /> Duplicate
+              </button>
+              <button
+                onClick={deleteSelected}
+                className="p-2.5 rounded-lg border border-red-950 bg-red-950/15 hover:bg-red-900/35 text-red-400 font-bold transition-all flex items-center justify-center gap-1.5"
+              >
+                <Trash size={14} /> Delete
+              </button>
+              <button
+                onClick={centerSelected}
+                className="col-span-2 p-2.5 rounded-lg border border-zinc-800 hover:bg-zinc-800 text-zinc-300 font-bold transition-all flex items-center justify-center gap-1.5"
+              >
+                <Move size={14} /> Center Horizontally
+              </button>
+            </div>
+
+            {/* AI Tools Subpanel */}
+            <div className="pt-4 border-t border-zinc-800/60 space-y-2">
+              <span className="text-[10px] font-bold text-violet-400 uppercase tracking-widest flex items-center gap-1">
+                <Sparkles size={10} /> AI Enhancers
+              </span>
+              <button
+                disabled={processingBg}
+                onClick={handleRemoveBackground}
+                className="w-full p-2.5 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-violet-500/50 hover:bg-zinc-850 text-xs font-bold text-zinc-200 hover:text-white transition-all flex items-center justify-center gap-2"
+              >
+                {processingBg ? <RefreshCw className="animate-spin" size={14} /> : <Sparkles size={14} className="text-violet-400" />}
+                Remove Background (remove.bg)
+              </button>
+              <button
+                disabled={processingUpscale}
+                onClick={handleUpscale}
+                className="w-full p-2.5 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-violet-500/50 hover:bg-zinc-850 text-xs font-bold text-zinc-200 hover:text-white transition-all flex items-center justify-center gap-2"
+              >
+                {processingUpscale ? <RefreshCw className="animate-spin" size={14} /> : <Maximize2 size={14} className="text-violet-400" />}
+                Upscale to 300 DPI
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Global actions */}
+        <button
+          onClick={clearCanvas}
+          className="w-full p-3 rounded-xl border border-zinc-800/80 hover:bg-zinc-900 text-xs font-bold text-zinc-400 hover:text-white transition-all flex items-center justify-center gap-2"
+        >
+          <Trash2 size={14} /> Clear Sheet Canvas
+        </button>
+      </div>
+
+      {/* MIDDLE: Interactive Virtual Sheet Workspace */}
+      <div className="flex-1 flex flex-col items-center">
+        {/* Dimensions banner */}
+        <div className="mb-4 w-full max-w-[420px] flex justify-between items-center px-4 py-2 border border-zinc-800 bg-zinc-900/60 rounded-xl text-xs text-zinc-400">
+          <span>Width: {selectedPreset.width} inches</span>
+          <span>Height: {selectedPreset.height} inches</span>
+        </div>
+
+        {/* Outer Scroll Wrapper */}
+        <div 
+          ref={containerRef}
+          className="w-full max-w-[420px] max-h-[600px] overflow-y-auto overflow-x-hidden p-6 bg-zinc-950 border border-zinc-900 rounded-3xl canvas-grid-pattern relative flex justify-center glow-primary"
+        >
+          {/* Fabric Canvas element */}
+          <div className="border border-zinc-700/50 rounded-lg shadow-2xl overflow-hidden bg-black">
+            <canvas ref={canvasRef} />
+          </div>
+        </div>
+
+        {/* Tips / Guidelines */}
+        <div className="mt-4 flex items-center gap-2 text-xs text-zinc-500">
+          <HelpCircle size={14} className="text-zinc-400" />
+          <span>Tip: Grid cells help verify dimensions. Standard DPI check updates instantly.</span>
+        </div>
+      </div>
+
+      {/* RIGHT COLUMN: Order Summary */}
+      <div className="w-full lg:w-80 flex flex-col gap-6">
+        <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-6">
+          <h3 className="font-bold text-base">Order Summary</h3>
+          
+          <div className="space-y-3 text-sm">
+            <div className="flex justify-between">
+              <span className="text-zinc-400">Transfer Sheet:</span>
+              <span className="font-semibold">{selectedPreset.name.split(' ')[0]} {selectedPreset.name.split(' ')[1]}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-zinc-400">Total Ink Capacity:</span>
+              <span className="font-semibold text-emerald-400">Auto-transparency</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-zinc-400">Base Cost:</span>
+              <span className="font-semibold text-zinc-200">Rs. {selectedPreset.price.toLocaleString()}</span>
+            </div>
+          </div>
+
+          <div className="border-t border-zinc-800 pt-4 flex justify-between items-end">
+            <div>
+              <span className="text-xs text-zinc-500">Total Price</span>
+              <p className="text-2xl font-black text-violet-400">Rs. {selectedPreset.price.toLocaleString()}</p>
+            </div>
+          </div>
+
+          {cartSuccess ? (
+            <button
+              className="w-full py-4 rounded-xl bg-emerald-600 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-default"
+            >
+              <CheckCircle2 size={16} />
+              Sheet Added to Cart
+            </button>
+          ) : (
+            <button
+              onClick={handleAddToCart}
+              className="w-full py-4 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-violet-600/10"
+            >
+              Add Custom Sheet to Cart
+              <ArrowRight size={16} />
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
