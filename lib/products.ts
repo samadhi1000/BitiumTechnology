@@ -47,8 +47,23 @@ const SUBCAT_DATA = [
   // Batik Stamp
   { cat: 'batik-stamp', sub: 'cap-batik', names: ['Traditional Copper Cap Batik Stamp', 'Wood Carved Lotus Cap Batik Stamp', 'Royal Parang Pattern Cap Batik Stamp', 'Symmetrical Mandala Cap Batik Stamp', 'Peacock Tail Motif Cap Batik Stamp', 'Classic Siriwasa Cap Batik Stamp', 'Kawung Geometry Cap Batik Stamp', 'Geometric Grid Pattern Cap Batik Stamp', 'Modern Wave Abstract Cap Batik Stamp'], image: 'https://images.unsplash.com/photo-1590736704728-f4730bb30770?auto=format&fit=crop&w=600&q=80', price: 4900, orig: 6500 },
 
-  // Printing Materials & Ink
-  { cat: 'materials', sub: 'printing-materials', names: ['Premium Matte DTF Printing Ink 1L', 'Vibrant Glossy DTF Printing Ink 1L', 'DTF Hot Melt Adhesive Powder 1kg', 'Plastisol Screen Printing Ink White 1L', 'Water-Based Premium Textile Ink 1L', 'Aluminum Screen Frame 20x24 120T', 'Wooden Squeegee 12 Inch 70 Durometer', 'Photo Emulsion & Sensitizer Kit 1L', 'Screen Printing Clean-up Solvent 1L'], image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=600&q=80', price: 2400, orig: 3200 }
+  // Printing Materials & Ink (DTF Printing Consumables)
+  { 
+    cat: 'materials', 
+    sub: 'printing-materials', 
+    names: [
+      'White Ink for DTF Printer', 
+      'Color (C M Y K LC LM) Ink for DTF Printer', 
+      'Premium High Adhesive Hot Melt DTF Powder', 
+      'Premium DTF Film Roll 30cm – Double Matte', 
+      'Premium DTF Film Roll 30cm – Hot Peel', 
+      'Premium DTF Film Roll 60cm – Double Matte', 
+      'Premium DTF Film Roll 60cm – Hot Peel'
+    ], 
+    image: '/images/products/dtf-white-ink.jpg',
+    prices: [6500, 6500, 4900, 7500, 7500, 14000, 14000],
+    origs: [8000, 8000, 6000, 9500, 9500, 18000, 18000]
+  }
 ];
 
 const MOCK_PRODUCTS: Product[] = [];
@@ -98,6 +113,15 @@ const UNIQUE_IMAGES: Record<string, string[]> = {
     '/images/products/hike-that-tee-back.jpg',
     '/images/products/half-mile-tee.jpg',
     '/images/products/heavyweight-tee.jpg'
+  ],
+  'printing-materials': [
+    '/images/products/dtf-white-ink.jpg',
+    '/images/products/dtf-color-ink.jpg',
+    '/images/products/dtf-powder.jpg',
+    '/images/products/dtf-film-roll.jpg',
+    '/images/products/dtf-film-roll.jpg',
+    '/images/products/dtf-film-roll.jpg',
+    '/images/products/dtf-film-roll.jpg'
   ]
 };
 
@@ -118,12 +142,20 @@ SUBCAT_DATA.forEach((sc) => {
       finalImage = `${sc.image}&sig=${idx + 1}`;
     }
 
+    const itemPrice = (sc as any).prices && (sc as any).prices[idx] !== undefined 
+      ? (sc as any).prices[idx] 
+      : (sc as any).price;
+
+    const itemOrig = (sc as any).origs && (sc as any).origs[idx] !== undefined 
+      ? (sc as any).origs[idx] 
+      : (sc as any).orig;
+
     MOCK_PRODUCTS.push({
       id: `${sc.cat}-${sc.sub}-${idx + 1}`,
       name: name,
       description: `High quality professional grade ${name}. Designed to meet premium trade and retail printing requirements. Excellent durability and finish.`,
-      price: sc.price,
-      original_price: sc.orig,
+      price: itemPrice,
+      original_price: itemOrig,
       image_url: finalImage,
       category: sc.cat as any,
       sub_category: sc.sub,

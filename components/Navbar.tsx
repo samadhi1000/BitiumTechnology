@@ -182,9 +182,9 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* 06. Printing Materials & Ink */}
+            {/* 06. DTF Printing Consumables */}
             <Link href="/?category=materials#catalog" className="text-xs font-semibold hover:text-violet-400 transition-colors h-full flex items-center text-zinc-300">
-              Materials & Ink
+              DTF Printing Consumables
             </Link>
 
             {/* 07. Contact Us */}

@@ -221,7 +221,7 @@ function HomeContent() {
                 }}
                 className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${filter === 'materials' ? 'bg-violet-600 text-white' : 'text-zinc-400 hover:text-white'}`}
               >
-                Materials & Ink
+                DTF Printing Consumables
               </button>
             </div>
           </div>
@@ -316,13 +316,21 @@ function HomeContent() {
         )}
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3].map((n) => (
-              <div key={n} className="animate-pulse rounded-2xl bg-zinc-900 border border-zinc-800 h-[380px]"></div>
+          <div className={`grid gap-8 ${
+            filter === 'materials' 
+              ? 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6' 
+              : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+          }`}>
+            {[1, 2, 3, 4].map((n) => (
+              <div key={n} className="animate-pulse rounded-2xl bg-zinc-900 border border-zinc-800 h-[280px]"></div>
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className={`grid gap-8 ${
+            filter === 'materials' 
+              ? 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6' 
+              : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+          }`}>
             {filteredProducts.map((product) => (
               <div
                 key={product.id}
@@ -333,7 +341,7 @@ function HomeContent() {
                   <HoverZoomImage
                     src={product.image_url}
                     alt={product.name}
-                    sizes="(max-w-768px) 100vw, (max-w-1024px) 50vw, 33vw"
+                    sizes={filter === 'materials' ? '(max-w-768px) 50vw, (max-w-1024px) 33vw, 25vw' : '(max-w-768px) 100vw, (max-w-1024px) 50vw, 33vw'}
                   />
                   {product.original_price && (
                     <div className="absolute top-4 left-4 px-2.5 py-1 rounded-md bg-rose-600 text-[10px] font-bold tracking-wide uppercase">
@@ -343,30 +351,34 @@ function HomeContent() {
                 </div>
 
                 {/* Content */}
-                <div className="p-6 flex flex-col flex-grow">
+                <div className={`${filter === 'materials' ? 'p-4' : 'p-6'} flex flex-col flex-grow`}>
                   <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
-                    {product.category.replace('-', ' ')}
+                    {product.category === 'materials' ? 'DTF Consumables' : product.category.replace('-', ' ')}
                   </span>
-                  <h3 className="font-extrabold text-sm text-zinc-100 mt-1.5 leading-snug line-clamp-1">
+                  <h3 className={`font-extrabold text-zinc-100 leading-snug line-clamp-1 ${
+                    filter === 'materials' ? 'text-xs mt-1' : 'text-sm mt-1.5'
+                  }`}>
                     {product.name}
                   </h3>
-                  <p className="text-zinc-400 text-xs mt-2 line-clamp-2 flex-grow leading-relaxed">
+                  <p className="text-zinc-400 text-[11px] mt-1.5 line-clamp-2 flex-grow leading-relaxed">
                     {product.description}
                   </p>
                   
-                  <div className="mt-6 flex items-center justify-between border-t border-zinc-850 pt-4">
+                  <div className={`${filter === 'materials' ? 'mt-4' : 'mt-6'} flex items-center justify-between border-t border-zinc-850 pt-4`}>
                     <div>
                       {product.original_price && (
-                        <span className="text-[10px] text-zinc-500 line-through">
+                        <span className="text-[9px] text-zinc-500 line-through block -mb-0.5">
                           Rs. {product.original_price.toLocaleString()}
                         </span>
                       )}
-                      <p className="font-black text-base text-violet-400">Rs. {product.price.toLocaleString()}</p>
+                      <p className={`font-black text-violet-400 ${
+                        filter === 'materials' ? 'text-sm' : 'text-base'
+                      }`}>Rs. {product.price.toLocaleString()}</p>
                     </div>
 
                     <Link
                       href={product.category === 'dtf_sheet' && product.id.startsWith('b2a8') ? '/canvas' : `/products/${product.id}`}
-                      className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                      className={`${filter === 'materials' ? 'px-3 py-1.5 text-[10px] rounded-lg' : 'px-4 py-2.5 text-xs rounded-xl'} font-bold transition-all ${
                         product.category === 'dtf_sheet' && product.id.startsWith('b2a8')
                           ? 'bg-violet-600 hover:bg-violet-500 text-white glow-primary'
                           : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200'
