@@ -27,7 +27,9 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="flex items-center space-x-2 group relative px-1 py-1 hover:opacity-80 transition-opacity">
-              <BitiumLogo scale={0.55} withParticles={false} />
+              <div className="origin-left" style={{ transform: 'scale(1.65)' }}>
+                <BitiumLogo scale={0.28} withParticles={false} />
+              </div>
             </Link>
           </div>
 
