@@ -175,9 +175,32 @@ SUBCAT_DATA.forEach((sc) => {
   });
 });
 
-export async function getProducts(): Promise<Product[]> {
+const LOCAL_STORAGE_KEY = 'printgrid_custom_products';
+
+function getLocalStorageProducts(): Product[] {
+  if (typeof window === 'undefined') return [];
   try {
-    const { data: products, error } = await supabase
+    const data = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch (err) {
+    console.error('Error reading local storage products:', err);
+    return [];
+  }
+}
+
+function setLocalStorageProducts(products: Product[]) {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(products));
+  } catch (err) {
+    console.error('Error writing local storage products:', err);
+  }
+}
+
+export async function getProducts(): Promise<Product[]> {
+  let dbProducts: Product[] = [];
+  try {
+    const { data, error } = await supabase
       .from('products')
       .select(`
         *,
@@ -185,15 +208,31 @@ export async function getProducts(): Promise<Product[]> {
       `)
       .eq('is_active', true);
 
-    if (error || !products || products.length === 0) {
-      console.warn('Supabase fetch failed or empty; using local product catalog.');
-      return MOCK_PRODUCTS;
+    if (!error && data && data.length > 0) {
+      dbProducts = data as Product[];
     }
-
-    return products as Product[];
   } catch (err) {
-    console.error('Error fetching products from DB, returning mocks:', err);
-    return MOCK_PRODUCTS;
+    console.error('Error fetching products from DB:', err);
+  }
+
+  const localProducts = getLocalStorageProducts();
+
+  if (dbProducts.length === 0) {
+    const merged = [...localProducts];
+    MOCK_PRODUCTS.forEach((mock) => {
+      if (!merged.some((p) => p.id === mock.id)) {
+        merged.push(mock);
+      }
+    });
+    return merged.filter((p) => p.is_active);
+  } else {
+    const merged = [...localProducts];
+    dbProducts.forEach((dbP) => {
+      if (!merged.some((p) => p.id === dbP.id)) {
+        merged.push(dbP);
+      }
+    });
+    return merged.filter((p) => p.is_active);
   }
 }
 
@@ -208,15 +247,152 @@ export async function getProductById(id: string): Promise<Product | null> {
       .eq('id', id)
       .single();
 
-    if (error || !product) {
-      const mockProduct = MOCK_PRODUCTS.find((p) => p.id === id);
-      return mockProduct || null;
+    if (!error && product) {
+      return product as Product;
     }
-
-    return product as Product;
   } catch (err) {
-    console.error('Error fetching product from DB, returning mock:', err);
-    const mockProduct = MOCK_PRODUCTS.find((p) => p.id === id);
-    return mockProduct || null;
+    console.error('Error fetching product from DB:', err);
   }
+
+  const localProducts = getLocalStorageProducts();
+  const foundLocal = localProducts.find((p) => p.id === id);
+  if (foundLocal) return foundLocal;
+
+  const mockProduct = MOCK_PRODUCTS.find((p) => p.id === id);
+  return mockProduct || null;
+}
+
+export async function createProduct(productData: Omit<Product, 'id' | 'is_active'>, stock: number): Promise<Product> {
+  const id = `${productData.category}-${productData.sub_category || 'item'}-${Date.now()}`;
+  const newProduct: Product = {
+    ...productData,
+    id,
+    is_active: true,
+    variants: [
+      {
+        id: `var-${id}`,
+        product_id: id,
+        name: 'Standard Option',
+        sku: `${productData.category.substring(0,3).toUpperCase()}-CUSTOM-${Date.now().toString().slice(-4)}`,
+        price_override: null,
+        stock_quantity: stock,
+        attributes: { size: 'Default' }
+      }
+    ]
+  };
+
+  try {
+    const { error: prodError } = await supabase
+      .from('products')
+      .insert({
+        id,
+        name: productData.name,
+        description: productData.description,
+        price: productData.price,
+        original_price: productData.original_price,
+        image_url: productData.image_url,
+        category: productData.category,
+        sub_category: productData.sub_category,
+        is_active: true
+      });
+
+    if (!prodError) {
+      await supabase
+        .from('product_variants')
+        .insert({
+          id: `var-${id}`,
+          product_id: id,
+          name: 'Standard Option',
+          sku: newProduct.variants![0].sku,
+          price_override: null,
+          stock_quantity: stock,
+          attributes: { size: 'Default' }
+        });
+    }
+  } catch (err) {
+    console.error('Supabase insert failed, caching locally:', err);
+  }
+
+  const localProducts = getLocalStorageProducts();
+  localProducts.unshift(newProduct);
+  setLocalStorageProducts(localProducts);
+
+  return newProduct;
+}
+
+export async function updateProduct(id: string, productData: Partial<Product>, stock?: number): Promise<Product | null> {
+  const existing = await getProductById(id);
+  if (!existing) return null;
+
+  const updated: Product = {
+    ...existing,
+    ...productData,
+    variants: existing.variants ? existing.variants.map((v, i) => {
+      if (i === 0 && stock !== undefined) {
+        return { ...v, stock_quantity: stock };
+      }
+      return v;
+    }) : []
+  };
+
+  try {
+    const { error: prodError } = await supabase
+      .from('products')
+      .update({
+        name: updated.name,
+        description: updated.description,
+        price: updated.price,
+        original_price: updated.original_price,
+        image_url: updated.image_url,
+        category: updated.category,
+        sub_category: updated.sub_category,
+        is_active: updated.is_active
+      })
+      .eq('id', id);
+
+    if (!prodError && stock !== undefined) {
+      await supabase
+        .from('product_variants')
+        .update({ stock_quantity: stock })
+        .eq('product_id', id);
+    }
+  } catch (err) {
+    console.error('Supabase update failed, caching locally:', err);
+  }
+
+  const localProducts = getLocalStorageProducts();
+  const index = localProducts.findIndex((p) => p.id === id);
+  if (index !== -1) {
+    localProducts[index] = updated;
+  } else {
+    localProducts.push(updated);
+  }
+  setLocalStorageProducts(localProducts);
+
+  return updated;
+}
+
+export async function deleteProduct(id: string): Promise<boolean> {
+  try {
+    await supabase
+      .from('products')
+      .update({ is_active: false })
+      .eq('id', id);
+  } catch (err) {
+    console.error('Supabase delete failed, soft deleting locally:', err);
+  }
+
+  const localProducts = getLocalStorageProducts();
+  const index = localProducts.findIndex((p) => p.id === id);
+  if (index !== -1) {
+    localProducts[index].is_active = false;
+  } else {
+    const mock = MOCK_PRODUCTS.find((p) => p.id === id);
+    if (mock) {
+      localProducts.push({ ...mock, is_active: false });
+    }
+  }
+  setLocalStorageProducts(localProducts);
+
+  return true;
 }

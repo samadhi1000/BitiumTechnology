@@ -192,7 +192,12 @@ export default function Navbar() {
               Size Guide
             </Link>
 
-            {/* 08. Contact Us */}
+            {/* 08. Admin Panel */}
+            <Link href="/admin" className="text-xs font-semibold text-violet-400 hover:text-violet-300 transition-colors h-full flex items-center">
+              Admin Panel
+            </Link>
+
+            {/* 09. Contact Us */}
             <Link href="/contact" className="text-xs font-semibold hover:text-violet-400 transition-colors h-full flex items-center text-zinc-300">
               Contact Us
             </Link>
