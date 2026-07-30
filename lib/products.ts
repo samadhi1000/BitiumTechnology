@@ -177,6 +177,26 @@ SUBCAT_DATA.forEach((sc) => {
 
 const LOCAL_STORAGE_KEY = 'printgrid_custom_products';
 
+function generateUUID(): string {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+function isSupabaseConfigured(): boolean {
+  if (typeof window === 'undefined') return false;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || url.includes('placeholder') || url.includes('your-project')) return false;
+  if (!anonKey || anonKey.includes('placeholder') || anonKey.includes('your-key')) return false;
+  return true;
+}
+
 function getLocalStorageProducts(): Product[] {
   if (typeof window === 'undefined') return [];
   try {
@@ -199,20 +219,22 @@ function setLocalStorageProducts(products: Product[]) {
 
 export async function getProducts(): Promise<Product[]> {
   let dbProducts: Product[] = [];
-  try {
-    const { data, error } = await supabase
-      .from('products')
-      .select(`
-        *,
-        variants:product_variants(*)
-      `)
-      .eq('is_active', true);
+  if (isSupabaseConfigured()) {
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .select(`
+          *,
+          variants:product_variants(*)
+        `)
+        .eq('is_active', true);
 
-    if (!error && data && data.length > 0) {
-      dbProducts = data as Product[];
+      if (!error && data && data.length > 0) {
+        dbProducts = data as Product[];
+      }
+    } catch (err) {
+      console.error('Error fetching products from DB:', err);
     }
-  } catch (err) {
-    console.error('Error fetching products from DB:', err);
   }
 
   const localProducts = getLocalStorageProducts();
@@ -237,21 +259,26 @@ export async function getProducts(): Promise<Product[]> {
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
-  try {
-    const { data: product, error } = await supabase
-      .from('products')
-      .select(`
-        *,
-        variants:product_variants(*)
-      `)
-      .eq('id', id)
-      .single();
+  if (isSupabaseConfigured()) {
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    if (isUUID) {
+      try {
+        const { data: product, error } = await supabase
+          .from('products')
+          .select(`
+            *,
+            variants:product_variants(*)
+          `)
+          .eq('id', id)
+          .single();
 
-    if (!error && product) {
-      return product as Product;
+        if (!error && product) {
+          return product as Product;
+        }
+      } catch (err) {
+        console.error('Error fetching product from DB:', err);
+      }
     }
-  } catch (err) {
-    console.error('Error fetching product from DB:', err);
   }
 
   const localProducts = getLocalStorageProducts();
@@ -263,14 +290,15 @@ export async function getProductById(id: string): Promise<Product | null> {
 }
 
 export async function createProduct(productData: Omit<Product, 'id' | 'is_active'>, stock: number): Promise<Product> {
-  const id = `${productData.category}-${productData.sub_category || 'item'}-${Date.now()}`;
+  const id = generateUUID();
+  const variantId = generateUUID();
   const newProduct: Product = {
     ...productData,
     id,
     is_active: true,
     variants: [
       {
-        id: `var-${id}`,
+        id: variantId,
         product_id: id,
         name: 'Standard Option',
         sku: `${productData.category.substring(0,3).toUpperCase()}-CUSTOM-${Date.now().toString().slice(-4)}`,
@@ -281,36 +309,43 @@ export async function createProduct(productData: Omit<Product, 'id' | 'is_active
     ]
   };
 
-  try {
-    const { error: prodError } = await supabase
-      .from('products')
-      .insert({
-        id,
-        name: productData.name,
-        description: productData.description,
-        price: productData.price,
-        original_price: productData.original_price,
-        image_url: productData.image_url,
-        category: productData.category,
-        sub_category: productData.sub_category,
-        is_active: true
-      });
-
-    if (!prodError) {
-      await supabase
-        .from('product_variants')
+  if (isSupabaseConfigured()) {
+    try {
+      const { error: prodError } = await supabase
+        .from('products')
         .insert({
-          id: `var-${id}`,
-          product_id: id,
-          name: 'Standard Option',
-          sku: newProduct.variants![0].sku,
-          price_override: null,
-          stock_quantity: stock,
-          attributes: { size: 'Default' }
+          id,
+          name: productData.name,
+          description: productData.description,
+          price: productData.price,
+          original_price: productData.original_price,
+          image_url: productData.image_url,
+          category: productData.category,
+          sub_category: productData.sub_category,
+          is_active: true
         });
+
+      if (prodError) {
+        console.error('Supabase product insert failed:', prodError);
+      } else {
+        const { error: varError } = await supabase
+          .from('product_variants')
+          .insert({
+            id: variantId,
+            product_id: id,
+            name: 'Standard Option',
+            sku: newProduct.variants![0].sku,
+            price_override: null,
+            stock_quantity: stock,
+            attributes: { size: 'Default' }
+          });
+        if (varError) {
+          console.error('Supabase variant insert failed:', varError);
+        }
+      }
+    } catch (err) {
+      console.error('Supabase insert failed:', err);
     }
-  } catch (err) {
-    console.error('Supabase insert failed, caching locally:', err);
   }
 
   const localProducts = getLocalStorageProducts();
@@ -335,29 +370,34 @@ export async function updateProduct(id: string, productData: Partial<Product>, s
     }) : []
   };
 
-  try {
-    const { error: prodError } = await supabase
-      .from('products')
-      .update({
-        name: updated.name,
-        description: updated.description,
-        price: updated.price,
-        original_price: updated.original_price,
-        image_url: updated.image_url,
-        category: updated.category,
-        sub_category: updated.sub_category,
-        is_active: updated.is_active
-      })
-      .eq('id', id);
+  if (isSupabaseConfigured()) {
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    if (isUUID) {
+      try {
+        const { error: prodError } = await supabase
+          .from('products')
+          .update({
+            name: updated.name,
+            description: updated.description,
+            price: updated.price,
+            original_price: updated.original_price,
+            image_url: updated.image_url,
+            category: updated.category,
+            sub_category: updated.sub_category,
+            is_active: updated.is_active
+          })
+          .eq('id', id);
 
-    if (!prodError && stock !== undefined) {
-      await supabase
-        .from('product_variants')
-        .update({ stock_quantity: stock })
-        .eq('product_id', id);
+        if (!prodError && stock !== undefined) {
+          await supabase
+            .from('product_variants')
+            .update({ stock_quantity: stock })
+            .eq('product_id', id);
+        }
+      } catch (err) {
+        console.error('Supabase update failed:', err);
+      }
     }
-  } catch (err) {
-    console.error('Supabase update failed, caching locally:', err);
   }
 
   const localProducts = getLocalStorageProducts();
@@ -373,13 +413,18 @@ export async function updateProduct(id: string, productData: Partial<Product>, s
 }
 
 export async function deleteProduct(id: string): Promise<boolean> {
-  try {
-    await supabase
-      .from('products')
-      .update({ is_active: false })
-      .eq('id', id);
-  } catch (err) {
-    console.error('Supabase delete failed, soft deleting locally:', err);
+  if (isSupabaseConfigured()) {
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    if (isUUID) {
+      try {
+        await supabase
+          .from('products')
+          .update({ is_active: false })
+          .eq('id', id);
+      } catch (err) {
+        console.error('Supabase delete failed:', err);
+      }
+    }
   }
 
   const localProducts = getLocalStorageProducts();
