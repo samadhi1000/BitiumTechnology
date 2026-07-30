@@ -33,7 +33,7 @@ export default function Footer() {
         
         {/* Animated Agency Logo */}
         <div className="mt-8 pt-6 border-t border-zinc-800/50 flex justify-center">
-          <PoweredBy theme="brand" logoSrc="/images/bitium-logo.jpg" />
+          <PoweredBy theme="brand" />
         </div>
       </div>
     </footer>
