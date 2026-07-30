@@ -187,7 +187,12 @@ export default function Navbar() {
               DTF Printing Consumables
             </Link>
 
-            {/* 07. Contact Us */}
+            {/* 07. Size Guide */}
+            <Link href="/size-guide" className="text-xs font-semibold hover:text-violet-400 transition-colors h-full flex items-center text-zinc-300">
+              Size Guide
+            </Link>
+
+            {/* 08. Contact Us */}
             <Link href="/contact" className="text-xs font-semibold hover:text-violet-400 transition-colors h-full flex items-center text-zinc-300">
               Contact Us
             </Link>
