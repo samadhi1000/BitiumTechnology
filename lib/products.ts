@@ -217,6 +217,51 @@ function setLocalStorageProducts(products: Product[]) {
   }
 }
 
+function getFileCatalogProducts(): Product[] {
+  if (typeof window === 'undefined') {
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      const catalogPath = path.join(process.cwd(), 'lib', 'products-catalog.json');
+      if (fs.existsSync(catalogPath)) {
+        const data = fs.readFileSync(catalogPath, 'utf8');
+        return JSON.parse(data || '[]');
+      }
+    } catch (err) {
+      console.error('Failed to read catalog file on server:', err);
+    }
+  }
+  return [];
+}
+
+async function getApiCatalogProducts(): Promise<Product[]> {
+  if (typeof window === 'undefined') return [];
+  try {
+    const res = await fetch('/api/products');
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch (err) {
+    console.error('Failed to fetch from API catalog:', err);
+  }
+  return [];
+}
+
+async function syncToApiCatalog(products: Product[]) {
+  if (typeof window === 'undefined') return;
+  try {
+    await fetch('/api/products', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(products)
+    });
+  } catch (err) {
+    console.error('Failed to sync catalog to API:', err);
+  }
+}
+
 export async function getProducts(): Promise<Product[]> {
   let dbProducts: Product[] = [];
   if (isSupabaseConfigured()) {
@@ -237,10 +282,18 @@ export async function getProducts(): Promise<Product[]> {
     }
   }
 
-  const localProducts = getLocalStorageProducts();
+  let customProducts: Product[] = [];
+  if (typeof window === 'undefined') {
+    customProducts = getFileCatalogProducts();
+  } else {
+    customProducts = await getApiCatalogProducts();
+    if (customProducts.length === 0) {
+      customProducts = getLocalStorageProducts();
+    }
+  }
 
   if (dbProducts.length === 0) {
-    const merged = [...localProducts];
+    const merged = [...customProducts];
     MOCK_PRODUCTS.forEach((mock) => {
       if (!merged.some((p) => p.id === mock.id)) {
         merged.push(mock);
@@ -248,7 +301,7 @@ export async function getProducts(): Promise<Product[]> {
     });
     return merged.filter((p) => p.is_active);
   } else {
-    const merged = [...localProducts];
+    const merged = [...customProducts];
     dbProducts.forEach((dbP) => {
       if (!merged.some((p) => p.id === dbP.id)) {
         merged.push(dbP);
@@ -281,9 +334,18 @@ export async function getProductById(id: string): Promise<Product | null> {
     }
   }
 
-  const localProducts = getLocalStorageProducts();
-  const foundLocal = localProducts.find((p) => p.id === id);
-  if (foundLocal) return foundLocal;
+  let customProducts: Product[] = [];
+  if (typeof window === 'undefined') {
+    customProducts = getFileCatalogProducts();
+  } else {
+    customProducts = await getApiCatalogProducts();
+    if (customProducts.length === 0) {
+      customProducts = getLocalStorageProducts();
+    }
+  }
+
+  const foundCustom = customProducts.find((p) => p.id === id);
+  if (foundCustom) return foundCustom;
 
   const mockProduct = MOCK_PRODUCTS.find((p) => p.id === id);
   return mockProduct || null;
@@ -352,6 +414,9 @@ export async function createProduct(productData: Omit<Product, 'id' | 'is_active
   localProducts.unshift(newProduct);
   setLocalStorageProducts(localProducts);
 
+  // Sync to API JSON file
+  await syncToApiCatalog(localProducts);
+
   return newProduct;
 }
 
@@ -409,6 +474,9 @@ export async function updateProduct(id: string, productData: Partial<Product>, s
   }
   setLocalStorageProducts(localProducts);
 
+  // Sync to API JSON file
+  await syncToApiCatalog(localProducts);
+
   return updated;
 }
 
@@ -438,6 +506,9 @@ export async function deleteProduct(id: string): Promise<boolean> {
     }
   }
   setLocalStorageProducts(localProducts);
+
+  // Sync to API JSON file
+  await syncToApiCatalog(localProducts);
 
   return true;
 }
