@@ -23,12 +23,26 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full glass shadow-sm transition-all duration-300">
       <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-28">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="flex items-center space-x-2 group relative px-1 py-1 hover:opacity-80 transition-opacity">
-              <div className="origin-left" style={{ transform: 'scale(1.65)' }}>
-                <BitiumLogo scale={0.28} withParticles={false} />
+            <Link href="/" className="flex items-center space-x-3 group relative py-1 hover:opacity-90 transition-opacity">
+              <div className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-violet-500/50 shadow-[0_0_20px_rgba(139,92,246,0.5)] group-hover:scale-105 transition-transform">
+                <Image
+                  src="/images/bitium-logo.jpg"
+                  alt="Bitium Technology"
+                  fill
+                  priority
+                  className="object-cover"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-2xl font-black tracking-wider text-white flex items-center gap-0.5 leading-none">
+                  B<span className="text-red-500 drop-shadow-[0_0_12px_rgba(239,68,68,0.9)]">!</span>TIUM
+                </span>
+                <span className="text-[11px] font-extrabold tracking-[0.28em] text-violet-400 uppercase leading-tight mt-1">
+                  Technology
+                </span>
               </div>
             </Link>
           </div>

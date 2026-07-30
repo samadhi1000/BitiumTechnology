@@ -8,7 +8,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { getProducts, Product } from '@/lib/products';
-import CardStack from '@/components/ui/CardStack';
+import TrendingHeroShowcase from '@/components/ui/TrendingHeroShowcase';
 import HoverZoomImage from '@/components/ui/HoverZoomImage';
 import PromoBanner from '@/components/PromoBanner';
 import { Layers, Shirt, ArrowRight, ShieldCheck, Zap, Sparkles, Filter } from 'lucide-react';
@@ -149,18 +149,9 @@ function HomeContent() {
             </div>
           </div>
 
-          {/* Interactive Card Stack Column */}
-          <div className="flex-1 w-full flex flex-col items-center justify-center">
-            {featuredProducts.length > 0 ? (
-              <div className="hero-cards space-y-4">
-                <CardStack products={featuredProducts} />
-                <p className="text-center text-xs text-zinc-500 font-semibold select-none">
-                  Drag cards left/right or hover to view details
-                </p>
-              </div>
-            ) : (
-              <div className="animate-pulse rounded-2xl bg-zinc-900 border border-zinc-850 w-[340px] h-[400px]"></div>
-            )}
+          {/* Trending Hero Showcase Column */}
+          <div className="flex-1 w-full flex flex-col items-center justify-center hero-cards">
+            <TrendingHeroShowcase products={products} />
           </div>
         </div>
       </section>
