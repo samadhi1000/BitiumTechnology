@@ -107,7 +107,7 @@ export default function CheckoutPage() {
       
       const payload = {
         orderId,
-        userEmail: user?.email || 'guest@printgrid.com',
+        userEmail: user?.email || 'guest@bitium.lk',
         shippingAddress: shippingAddressObj,
         paymentMethod,
         totalPrice: total,
@@ -154,7 +154,7 @@ export default function CheckoutPage() {
         <div className="space-y-2">
           <h2 className="text-2xl font-bold">Order Placed Successfully!</h2>
           <p className="text-zinc-400 text-sm">
-            Thank you for shopping with PrintGrid. Your order has been placed.
+            Thank you for shopping with Bitium Technology. Your order has been placed.
           </p>
           <div className="p-3 bg-zinc-900 border border-zinc-800 rounded-xl mt-4">
             <span className="text-xs text-zinc-500 uppercase font-bold tracking-wider">Order ID</span>

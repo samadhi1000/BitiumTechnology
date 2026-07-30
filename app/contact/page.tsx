@@ -61,7 +61,7 @@ export default function ContactPage() {
                   <Mail size={18} className="text-violet-400 mt-0.5" />
                   <div>
                     <p className="font-semibold text-zinc-200">Email Address</p>
-                    <p className="text-xs text-zinc-400 mt-0.5">info@printgrid.lk</p>
+                    <p className="text-xs text-zinc-400 mt-0.5">info@bitium.lk</p>
                   </div>
                 </div>
 
@@ -85,7 +85,7 @@ export default function ContactPage() {
 
             <div className="border-t border-zinc-850 pt-6 text-center md:text-left">
               <p className="text-xs text-zinc-500 font-medium">
-                PrintGrid is powered by Bitium Technology
+                Bitium Technology - Leading High-Performance Custom Printing Solutions
               </p>
             </div>
           </div>

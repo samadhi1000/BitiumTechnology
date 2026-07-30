@@ -91,7 +91,7 @@ export const useCartStore = create<CartState>()(
       },
     }),
     {
-      name: 'printgrid-cart-storage',
+      name: 'bitium-cart-storage',
     }
   )
 );

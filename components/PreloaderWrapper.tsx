@@ -8,12 +8,12 @@ export default function PreloaderWrapper({ children }: { children: React.ReactNo
 
   useEffect(() => {
     // Only show once per session
-    const seen = sessionStorage.getItem('printgrid_loaded');
+    const seen = sessionStorage.getItem('bitium_loaded');
     if (seen) setShow(false);
   }, []);
 
   const handleDone = () => {
-    sessionStorage.setItem('printgrid_loaded', '1');
+    sessionStorage.setItem('bitium_loaded', '1');
     setShow(false);
   };
 

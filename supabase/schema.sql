@@ -1,4 +1,4 @@
--- Create tables for PrintGrid e-commerce platform
+-- Create tables for Bitium Technology e-commerce platform
 
 -- 1. Profiles Table (linked to Supabase auth.users)
 CREATE TABLE IF NOT EXISTS public.profiles (

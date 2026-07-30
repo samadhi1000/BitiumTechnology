@@ -74,7 +74,7 @@ export default function AdminPanelPage() {
   // Check login session on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const session = sessionStorage.getItem('printgrid_admin_session');
+      const session = sessionStorage.getItem('bitium_admin_session');
       if (session === 'true') {
         setIsAuthenticated(true);
       }
@@ -106,11 +106,11 @@ export default function AdminPanelPage() {
     if (typeof window === 'undefined') return;
 
     // Get current stored credentials or defaults
-    const storedUsername = localStorage.getItem('printgrid_admin_username') || 'admin';
-    const storedPassword = localStorage.getItem('printgrid_admin_password') || 'admin123';
+    const storedUsername = localStorage.getItem('bitium_admin_username') || 'admin';
+    const storedPassword = localStorage.getItem('bitium_admin_password') || 'admin123';
 
     if (usernameInput === storedUsername && passwordInput === storedPassword) {
-      sessionStorage.setItem('printgrid_admin_session', 'true');
+      sessionStorage.setItem('bitium_admin_session', 'true');
       setIsAuthenticated(true);
       setLoginError('');
     } else {
@@ -121,7 +121,7 @@ export default function AdminPanelPage() {
   // Handle Logout Action
   const handleLogout = () => {
     if (typeof window !== 'undefined') {
-      sessionStorage.removeItem('printgrid_admin_session');
+      sessionStorage.removeItem('bitium_admin_session');
     }
     setIsAuthenticated(false);
     setUsernameInput('');
@@ -133,8 +133,8 @@ export default function AdminPanelPage() {
     e.preventDefault();
     if (typeof window === 'undefined') return;
 
-    const storedUsername = localStorage.getItem('printgrid_admin_username') || 'admin';
-    const storedPassword = localStorage.getItem('printgrid_admin_password') || 'admin123';
+    const storedUsername = localStorage.getItem('bitium_admin_username') || 'admin';
+    const storedPassword = localStorage.getItem('bitium_admin_password') || 'bitium123';
 
     if (currUser !== storedUsername || currPass !== storedPassword) {
       setSettingsError('Current Username or Password validation failed.');
@@ -152,8 +152,8 @@ export default function AdminPanelPage() {
     }
 
     // Save credentials
-    localStorage.setItem('printgrid_admin_username', newUser);
-    localStorage.setItem('printgrid_admin_password', newPass);
+    localStorage.setItem('bitium_admin_username', newUser);
+    localStorage.setItem('bitium_admin_password', newPass);
 
     setSettingsSuccess('Credentials updated successfully!');
     setSettingsError('');

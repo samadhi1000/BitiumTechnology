@@ -175,7 +175,7 @@ SUBCAT_DATA.forEach((sc) => {
   });
 });
 
-const LOCAL_STORAGE_KEY = 'printgrid_custom_products';
+const LOCAL_STORAGE_KEY = 'bitium_custom_products';
 
 function generateUUID(): string {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {

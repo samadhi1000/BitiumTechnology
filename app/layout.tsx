@@ -18,9 +18,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PrintGrid - High-Performance Custom DTF Sheet Builder",
-  description: "Create, customize, and order premium DTF prints and apparel online with PrintGrid, powered by Bitium Technology.",
-  keywords: "DTF prints, apparel, t-shirt design, custom printing, virtual canvas, fabricjs, next.js",
+  title: "Bitium Technology - High-Performance Custom DTF Sheet Builder",
+  description: "Create, customize, and order premium DTF prints and apparel online with Bitium Technology.",
+  keywords: "DTF prints, apparel, t-shirt design, custom printing, virtual canvas, fabricjs, next.js, Bitium Technology",
   authors: [{ name: "Bitium Technology" }],
 };
 

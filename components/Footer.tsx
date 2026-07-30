@@ -9,10 +9,10 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex flex-col items-center md:items-start">
             <span className="text-lg font-bold tracking-tight bg-gradient-to-r from-violet-500 to-fuchsia-500 bg-clip-text text-transparent">
-              PrintGrid
+              Bitium Technology
             </span>
             <span className="text-xs text-zinc-500 mt-1">
-              Premium Canvas Studio
+              Premium Custom Printing Studio
             </span>
           </div>
           <div className="flex space-x-6 text-sm text-zinc-400">
@@ -27,7 +27,7 @@ export default function Footer() {
             </Link>
           </div>
           <div className="text-xs text-zinc-500">
-            &copy; {new Date().getFullYear()} PrintGrid. All rights reserved.
+            &copy; {new Date().getFullYear()} Bitium Technology. All rights reserved.
           </div>
         </div>
         

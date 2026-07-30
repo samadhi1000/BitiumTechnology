@@ -103,7 +103,7 @@ export default function PromoBanner() {
       <div className="promo-accent-bar w-full bg-blue-600 py-6 relative z-10 border-t border-blue-500 select-none">
         <div className="max-w-[1500px] mx-auto px-4 text-center">
           <h3 className="text-xl sm:text-3xl font-black text-black tracking-[0.2em] uppercase">
-            WHY CHOOSE PRINTGRID?
+            WHY CHOOSE BITIUM TECHNOLOGY?
           </h3>
         </div>
       </div>

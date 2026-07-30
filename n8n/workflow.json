@@ -1,10 +1,10 @@
 {
-  "name": "PrintGrid Order Processing & Invoicing Workflow",
+  "name": "Bitium Technology Order Processing & Invoicing Workflow",
   "nodes": [
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "printgrid-order-completed",
+        "path": "bitium-order-completed",
         "options": {}
       },
       "id": "node-webhook-trigger",
@@ -40,7 +40,7 @@
             },
             {
               "name": "Body",
-              "value": "=Hello {{$json.body.shippingAddress.full_name}}, your PrintGrid order {{$json.body.orderId}} of Rs. {{$json.body.totalPrice}} has been received! We are prepping your prints. Bitium Tech."
+              "value": "=Hello {{$json.body.shippingAddress.full_name}}, your Bitium Technology order {{$json.body.orderId}} of Rs. {{$json.body.totalPrice}} has been received! We are prepping your prints. Bitium Tech."
             }
           ]
         }
@@ -60,7 +60,7 @@
           "parameters": [
             {
               "name": "html",
-              "value": "=<h1>PrintGrid Invoice</h1><p>Order: {{$json.body.orderId}}</p><p>Customer: {{$json.body.shippingAddress.full_name}}</p><p>Total: Rs. {{$json.body.totalPrice}}</p>"
+              "value": "=<h1>Bitium Technology Invoice</h1><p>Order: {{$json.body.orderId}}</p><p>Customer: {{$json.body.shippingAddress.full_name}}</p><p>Total: Rs. {{$json.body.totalPrice}}</p>"
             }
           ]
         }
