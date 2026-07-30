@@ -78,17 +78,18 @@ function HomeContent() {
 
   const container = React.useRef<HTMLDivElement>(null);
 
+  // 1. Hero Entrance Animations (Runs only once on mount to prevent dimming when scrolling/filtering)
   useGSAP(() => {
-    // 1. Hero Animations
     const tl = gsap.timeline();
-    
     tl.from('.hero-badge', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' })
       .from('.hero-title', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3')
       .from('.hero-text', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3')
       .from('.hero-buttons', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3')
       .from('.hero-cards', { scale: 0.9, opacity: 0, duration: 0.6, ease: 'back.out(1.2)' }, '-=0.4');
+  }, { scope: container });
 
-    // 2. Catalog Grid ScrollTrigger Animations
+  // 2. Catalog Grid ScrollTrigger Animations (Re-runs when filtered products change)
+  useGSAP(() => {
     if (filteredProducts.length > 0 && !loading) {
       ScrollTrigger.batch('.product-card', {
         interval: 0.1,
@@ -100,14 +101,16 @@ function HomeContent() {
         start: 'top 85%'
       });
     }
-
   }, { scope: container, dependencies: [filteredProducts, loading] });
 
   return (
     <div ref={container} className="w-full min-h-screen bg-zinc-950 text-white">
-      {/* Hero Banner */}
-      <section className="relative overflow-hidden py-16 px-4 sm:px-6 lg:px-8 border-b border-zinc-900 bg-radial-[at_top_right,_var(--tw-gradient-stops)] from-violet-950/10 via-zinc-950 to-zinc-950">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+      {/* Hero Banner with Premium DTF Background Image */}
+      <section className="relative overflow-hidden py-20 sm:py-28 px-4 sm:px-6 lg:px-8 border-b border-zinc-900 bg-zinc-950">
+        <div className="absolute inset-0 bg-[url('/images/dtf-hero-bg.jpg')] bg-cover bg-center bg-no-repeat pointer-events-none opacity-40"></div>
+        <div className="absolute inset-0 bg-radial-[at_center,_var(--tw-gradient-stops)] from-zinc-950/20 via-zinc-950/80 to-zinc-950 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/15 via-transparent to-zinc-950 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.005)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.005)_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none"></div>
         
         <div className="max-w-7xl mx-auto relative z-10 text-center sm:text-left flex flex-col lg:flex-row justify-between items-center gap-12">
           <div className="flex-1 space-y-6">
