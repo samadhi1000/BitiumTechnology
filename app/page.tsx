@@ -115,7 +115,7 @@ function HomeContent() {
               className="hero-badge inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-300 text-xs font-semibold"
             >
               <Sparkles size={12} />
-              <span>Next-Gen DTF Printing</span>
+              <span>Next-Gen DTF Printing (v1.0.3)</span>
             </div>
             
             <h1 
