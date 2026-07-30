@@ -17,13 +17,16 @@ import {
   RefreshCw, 
   Package, 
   AlertTriangle, 
-  DollarSign, 
-  Tags,
-  CheckCircle,
+  CheckCircle, 
   XCircle,
-  Eye,
-  Check,
-  X
+  X,
+  Lock,
+  User,
+  Key,
+  Settings,
+  LogOut,
+  ChevronRight,
+  ShoppingCart
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -33,11 +36,27 @@ export default function AdminPanelPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   
-  // Modal states
+  // Authentication States
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [usernameInput, setUsernameInput] = useState('');
+  const [passwordInput, setPasswordInput] = useState('');
+  const [loginError, setLoginError] = useState('');
+
+  // Settings/Change Password States
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [currUser, setCurrUser] = useState('');
+  const [currPass, setCurrPass] = useState('');
+  const [newUser, setNewUser] = useState('');
+  const [newPass, setNewPass] = useState('');
+  const [confirmPass, setConfirmPass] = useState('');
+  const [settingsError, setSettingsError] = useState('');
+  const [settingsSuccess, setSettingsSuccess] = useState('');
+
+  // Modal states for products
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
-  // Form states
+  // Product Form states
   const [name, setName] = useState('');
   const [category, setCategory] = useState<'stencil' | 'screen-printing' | 'dtf_sheet' | 'batik-stamp' | 'materials'>('dtf_sheet');
   const [subCategory, setSubCategory] = useState('');
@@ -52,7 +71,17 @@ export default function AdminPanelPage() {
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
-  // Fetch products
+  // Check login session on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const session = sessionStorage.getItem('printgrid_admin_session');
+      if (session === 'true') {
+        setIsAuthenticated(true);
+      }
+    }
+  }, []);
+
+  // Fetch products if authenticated
   const fetchProductsList = async () => {
     setLoading(true);
     try {
@@ -66,8 +95,81 @@ export default function AdminPanelPage() {
   };
 
   useEffect(() => {
-    fetchProductsList();
-  }, []);
+    if (isAuthenticated) {
+      fetchProductsList();
+    }
+  }, [isAuthenticated]);
+
+  // Handle Login Action
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (typeof window === 'undefined') return;
+
+    // Get current stored credentials or defaults
+    const storedUsername = localStorage.getItem('printgrid_admin_username') || 'admin';
+    const storedPassword = localStorage.getItem('printgrid_admin_password') || 'admin123';
+
+    if (usernameInput === storedUsername && passwordInput === storedPassword) {
+      sessionStorage.setItem('printgrid_admin_session', 'true');
+      setIsAuthenticated(true);
+      setLoginError('');
+    } else {
+      setLoginError('Incorrect Admin Username or Password. Please try again.');
+    }
+  };
+
+  // Handle Logout Action
+  const handleLogout = () => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('printgrid_admin_session');
+    }
+    setIsAuthenticated(false);
+    setUsernameInput('');
+    setPasswordInput('');
+  };
+
+  // Handle Credentials Update Action
+  const handleUpdateCredentials = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (typeof window === 'undefined') return;
+
+    const storedUsername = localStorage.getItem('printgrid_admin_username') || 'admin';
+    const storedPassword = localStorage.getItem('printgrid_admin_password') || 'admin123';
+
+    if (currUser !== storedUsername || currPass !== storedPassword) {
+      setSettingsError('Current Username or Password validation failed.');
+      return;
+    }
+
+    if (!newUser || !newPass) {
+      setSettingsError('New Username and New Password are required.');
+      return;
+    }
+
+    if (newPass !== confirmPass) {
+      setSettingsError('New Password confirmation does not match.');
+      return;
+    }
+
+    // Save credentials
+    localStorage.setItem('printgrid_admin_username', newUser);
+    localStorage.setItem('printgrid_admin_password', newPass);
+
+    setSettingsSuccess('Credentials updated successfully!');
+    setSettingsError('');
+    
+    // Reset form
+    setCurrUser('');
+    setCurrPass('');
+    setNewUser('');
+    setNewPass('');
+    setConfirmPass('');
+
+    setTimeout(() => {
+      setSettingsSuccess('');
+      setIsSettingsOpen(false);
+    }, 2000);
+  };
 
   const openAddModal = () => {
     setEditingProduct(null);
@@ -110,7 +212,6 @@ export default function AdminPanelPage() {
     setErrorMsg('');
     try {
       if (editingProduct) {
-        // Edit product
         await updateProduct(editingProduct.id, {
           name,
           category,
@@ -123,7 +224,6 @@ export default function AdminPanelPage() {
         }, Number(stock));
         setSuccessMsg('Product updated successfully!');
       } else {
-        // Add product
         await createProduct({
           name,
           category,
@@ -177,9 +277,88 @@ export default function AdminPanelPage() {
   }).length;
   const activeCount = products.filter((p) => p.is_active).length;
 
+  // 1. RENDER ADMIN LOGIN PORTAL IF NOT AUTHENTICATED
+  if (!isAuthenticated) {
+    return (
+      <div className="w-full min-h-screen bg-zinc-950 text-white flex items-center justify-center py-24 px-4 relative overflow-hidden">
+        {/* Ambient background glows */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-violet-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(rgba(139,92,246,0.02)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+
+        <div className="w-full max-w-md rounded-3xl border border-zinc-800 bg-zinc-900/20 backdrop-blur-md p-8 space-y-6 shadow-2xl relative z-10 animate-fade-in">
+          
+          <div className="text-center space-y-2">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-violet-600 to-fuchsia-600 flex items-center justify-center text-white mx-auto shadow-lg shadow-violet-600/20 mb-4">
+              <Lock size={26} />
+            </div>
+            <h1 className="text-2xl font-black tracking-tight">Admin Authentication</h1>
+            <p className="text-zinc-500 text-xs">Enter your administrative credentials to unlock the products catalog settings.</p>
+          </div>
+
+          {loginError && (
+            <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-bold flex items-center gap-2 animate-pulse">
+              <AlertTriangle size={14} className="shrink-0" />
+              {loginError}
+            </div>
+          )}
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            
+            {/* Username Input */}
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Admin Username</label>
+              <div className="relative">
+                <User className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500" size={16} />
+                <input
+                  type="text"
+                  required
+                  value={usernameInput}
+                  onChange={(e) => setUsernameInput(e.target.value)}
+                  placeholder="e.g. admin"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-sm text-white focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+                />
+              </div>
+            </div>
+
+            {/* Password Input */}
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Admin Password</label>
+              <div className="relative">
+                <Key className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500" size={16} />
+                <input
+                  type="password"
+                  required
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-sm text-white focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+                />
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-violet-600/10 hover:shadow-violet-600/35 transition-all hover:scale-[1.02]"
+            >
+              Unlock Admin Panel
+            </button>
+
+          </form>
+
+          <div className="text-center pt-2">
+            <span className="text-[9px] text-zinc-650 tracking-wider">Default credentials: admin / admin123</span>
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  // 2. RENDER MAIN ADMIN DASHBOARD
   return (
     <div className="w-full min-h-screen bg-zinc-950 text-white py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Background glow effects */}
+      {/* Background glows */}
       <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-violet-600/10 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-1/4 left-1/4 w-[350px] h-[350px] bg-fuchsia-600/5 rounded-full blur-[100px] pointer-events-none"></div>
 
@@ -194,7 +373,21 @@ export default function AdminPanelPage() {
             </h1>
             <p className="text-zinc-500 text-xs sm:text-sm mt-1">Manage your storefront product items, pricing, discounts, and inventory details.</p>
           </div>
+          
           <div className="flex items-center gap-3">
+            {/* Settings button */}
+            <button
+              onClick={() => {
+                setSettingsError('');
+                setSettingsSuccess('');
+                setIsSettingsOpen(true);
+              }}
+              className="p-3 rounded-xl border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-900 transition-colors text-zinc-400 hover:text-white"
+              title="Credentials Settings"
+            >
+              <Settings size={16} />
+            </button>
+            {/* Refresh button */}
             <button
               onClick={fetchProductsList}
               className="p-3 rounded-xl border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-900 transition-colors text-zinc-400 hover:text-white"
@@ -202,12 +395,21 @@ export default function AdminPanelPage() {
             >
               <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
             </button>
+            {/* Add Product button */}
             <button
               onClick={openAddModal}
               className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-violet-600/25 hover:shadow-violet-600/40 transition-all hover:scale-105"
             >
               <Plus size={16} />
               <span>Add Product</span>
+            </button>
+            {/* Logout button */}
+            <button
+              onClick={handleLogout}
+              className="p-3 rounded-xl border border-rose-950/20 bg-rose-950/10 hover:bg-rose-950/30 text-rose-450 hover:text-rose-400 transition-colors"
+              title="Lock Admin Panel"
+            >
+              <LogOut size={16} />
             </button>
           </div>
         </div>
@@ -220,9 +422,8 @@ export default function AdminPanelPage() {
           </div>
         )}
 
-        {/* Dashboard Statistics Widget */}
+        {/* Stats Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Card 1 */}
           <div className="p-5 rounded-2xl border border-zinc-900 bg-zinc-900/10 backdrop-blur-md flex items-center gap-4">
             <div className="w-10 h-10 rounded-xl bg-violet-600/10 border border-violet-500/20 flex items-center justify-center text-violet-400 shrink-0">
               <Package size={20} />
@@ -232,7 +433,6 @@ export default function AdminPanelPage() {
               <span className="text-xl sm:text-2xl font-black text-white">{totalProducts} Items</span>
             </div>
           </div>
-          {/* Card 2 */}
           <div className="p-5 rounded-2xl border border-zinc-900 bg-zinc-900/10 backdrop-blur-md flex items-center gap-4">
             <div className="w-10 h-10 rounded-xl bg-rose-600/10 border border-rose-500/20 flex items-center justify-center text-rose-400 shrink-0">
               <XCircle size={20} />
@@ -242,7 +442,6 @@ export default function AdminPanelPage() {
               <span className="text-xl sm:text-2xl font-black text-rose-400">{outOfStockCount} Items</span>
             </div>
           </div>
-          {/* Card 3 */}
           <div className="p-5 rounded-2xl border border-zinc-900 bg-zinc-900/10 backdrop-blur-md flex items-center gap-4">
             <div className="w-10 h-10 rounded-xl bg-amber-600/10 border border-amber-500/20 flex items-center justify-center text-amber-400 shrink-0">
               <AlertTriangle size={20} />
@@ -252,7 +451,6 @@ export default function AdminPanelPage() {
               <span className="text-xl sm:text-2xl font-black text-amber-400">{lowStockCount} items</span>
             </div>
           </div>
-          {/* Card 4 */}
           <div className="p-5 rounded-2xl border border-zinc-900 bg-zinc-900/10 backdrop-blur-md flex items-center gap-4">
             <div className="w-10 h-10 rounded-xl bg-emerald-600/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
               <CheckCircle size={20} />
@@ -264,9 +462,8 @@ export default function AdminPanelPage() {
           </div>
         </div>
 
-        {/* Filter & Search Bar */}
+        {/* Filters and Search */}
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between p-4 rounded-2xl border border-zinc-900 bg-zinc-900/20 backdrop-blur-sm">
-          {/* Search Input */}
           <div className="relative w-full md:w-80">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500" size={16} />
             <input
@@ -278,7 +475,6 @@ export default function AdminPanelPage() {
             />
           </div>
 
-          {/* Category Filters */}
           <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
             <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mr-2 flex items-center gap-1.5"><Filter size={12} /> Filter:</span>
             {[
@@ -304,8 +500,8 @@ export default function AdminPanelPage() {
           </div>
         </div>
 
-        {/* Products Table Container */}
-        <div className="rounded-2xl border border-zinc-900 bg-zinc-900/10 backdrop-blur-sm overflow-hidden">
+        {/* Product Table List */}
+        <div className="rounded-2xl border border-zinc-900 bg-zinc-900/10 backdrop-blur-sm overflow-hidden animate-fade-in">
           {loading ? (
             <div className="p-12 text-center text-zinc-500 flex flex-col items-center justify-center gap-2">
               <RefreshCw size={24} className="animate-spin text-violet-500" />
@@ -315,7 +511,7 @@ export default function AdminPanelPage() {
             <div className="p-16 text-center text-zinc-500">
               <Package size={36} className="mx-auto text-zinc-700 mb-3" />
               <p className="text-sm font-semibold">No products found</p>
-              <p className="text-xs mt-1">Try modifying your query or category filters, or add a new item.</p>
+              <p className="text-xs mt-1">Try modifying filters or add a new item.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -339,7 +535,6 @@ export default function AdminPanelPage() {
                     
                     return (
                       <tr key={p.id} className="hover:bg-zinc-900/20 transition-colors">
-                        {/* Image */}
                         <td className="p-4">
                           <div className="relative w-12 h-12 rounded-xl bg-zinc-950 overflow-hidden border border-zinc-800">
                             <Image 
@@ -351,7 +546,6 @@ export default function AdminPanelPage() {
                           </div>
                         </td>
 
-                        {/* Info */}
                         <td className="p-4">
                           <div className="space-y-0.5">
                             <span className="font-extrabold text-zinc-200 block text-xs line-clamp-1">{p.name}</span>
@@ -360,19 +554,16 @@ export default function AdminPanelPage() {
                           </div>
                         </td>
 
-                        {/* Category */}
                         <td className="p-4">
                           <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-850 text-zinc-400 text-[10px] font-semibold uppercase">
                             {p.category.replace('_', ' ')}
                           </span>
                         </td>
 
-                        {/* Price */}
                         <td className="p-4 font-bold text-zinc-200">
                           Rs. {p.price.toLocaleString()}
                         </td>
 
-                        {/* Discount */}
                         <td className="p-4">
                           {p.original_price ? (
                             <div className="space-y-0.5">
@@ -386,7 +577,6 @@ export default function AdminPanelPage() {
                           )}
                         </td>
 
-                        {/* Stock */}
                         <td className="p-4 text-center">
                           <span className={`font-black text-xs ${
                             primaryStock === 0 
@@ -399,7 +589,6 @@ export default function AdminPanelPage() {
                           </span>
                         </td>
 
-                        {/* Status */}
                         <td className="p-4 text-center">
                           <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase ${
                             p.is_active 
@@ -410,7 +599,6 @@ export default function AdminPanelPage() {
                           </span>
                         </td>
 
-                        {/* Actions */}
                         <td className="p-4 text-right">
                           <div className="flex justify-end gap-2">
                             <button
@@ -440,12 +628,135 @@ export default function AdminPanelPage() {
 
       </div>
 
-      {/* UPSERT PRODUCT FORM MODAL */}
+      {/* MODAL: CHANGE CREDENTIALS */}
+      {isSettingsOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fade-in">
+          <div className="relative w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-950 p-6 sm:p-8 space-y-6 shadow-2xl">
+            
+            <div className="flex justify-between items-center border-b border-zinc-850 pb-4">
+              <h2 className="text-base font-black text-white flex items-center gap-2">
+                <Settings size={18} className="text-violet-400" />
+                Change Admin Credentials
+              </h2>
+              <button 
+                onClick={() => setIsSettingsOpen(false)}
+                className="p-1 rounded-full bg-zinc-900 border border-zinc-850 text-zinc-400 hover:text-white transition-colors"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {settingsError && (
+              <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400 text-[11px] font-semibold flex items-center gap-2">
+                <AlertTriangle size={14} />
+                {settingsError}
+              </div>
+            )}
+
+            {settingsSuccess && (
+              <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-semibold flex items-center gap-2">
+                <CheckCircle size={14} />
+                {settingsSuccess}
+              </div>
+            )}
+
+            <form onSubmit={handleUpdateCredentials} className="space-y-4">
+              
+              {/* Curr Username & Pass validation */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-[9px] font-bold text-zinc-500 uppercase tracking-wider block">Current Username</label>
+                  <input
+                    type="text"
+                    required
+                    value={currUser}
+                    onChange={(e) => setCurrUser(e.target.value)}
+                    placeholder="admin"
+                    className="w-full bg-zinc-900 border border-zinc-850 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-violet-500 transition-colors"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[9px] font-bold text-zinc-500 uppercase tracking-wider block">Current Password</label>
+                  <input
+                    type="password"
+                    required
+                    value={currPass}
+                    onChange={(e) => setCurrPass(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full bg-zinc-900 border border-zinc-850 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-violet-500 transition-colors"
+                  />
+                </div>
+              </div>
+
+              <hr className="border-zinc-900 my-1" />
+
+              {/* New Username */}
+              <div className="space-y-1.5">
+                <label className="text-[9px] font-bold text-zinc-400 uppercase tracking-wider block">New Admin Username</label>
+                <input
+                  type="text"
+                  required
+                  value={newUser}
+                  onChange={(e) => setNewUser(e.target.value)}
+                  placeholder="e.g. admin_new"
+                  className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-violet-500 transition-colors"
+                />
+              </div>
+
+              {/* New Password & Confirm */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-[9px] font-bold text-zinc-400 uppercase tracking-wider block">New Password</label>
+                  <input
+                    type="password"
+                    required
+                    value={newPass}
+                    onChange={(e) => setNewPass(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-violet-500 transition-colors"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[9px] font-bold text-zinc-400 uppercase tracking-wider block">Confirm Password</label>
+                  <input
+                    type="password"
+                    required
+                    value={confirmPass}
+                    onChange={(e) => setConfirmPass(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-violet-500 transition-colors"
+                  />
+                </div>
+              </div>
+
+              {/* Actions Footer */}
+              <div className="flex justify-end gap-3 pt-4 border-t border-zinc-850 mt-6">
+                <button
+                  type="button"
+                  onClick={() => setIsSettingsOpen(false)}
+                  className="px-5 py-2 text-xs font-bold border border-zinc-850 hover:bg-zinc-900 text-zinc-400 hover:text-white rounded-xl transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white font-black text-[10px] uppercase tracking-wider shadow-lg shadow-violet-600/10 hover:scale-[1.02] transition-all"
+                >
+                  Save Credentials
+                </button>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: ADD/EDIT PRODUCT */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fade-in">
           <div className="relative w-full max-w-xl rounded-2xl border border-zinc-800 bg-zinc-950 p-6 sm:p-8 space-y-6 shadow-2xl overflow-y-auto max-h-[90vh]">
             
-            {/* Modal Header */}
             <div className="flex justify-between items-center border-b border-zinc-850 pb-4">
               <h2 className="text-lg font-black text-white flex items-center gap-2">
                 {editingProduct ? <Edit size={18} className="text-violet-400" /> : <Plus size={18} className="text-violet-400" />}
@@ -459,7 +770,6 @@ export default function AdminPanelPage() {
               </button>
             </div>
 
-            {/* Error Message */}
             {errorMsg && (
               <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400 text-[11px] font-semibold flex items-center gap-2">
                 <AlertTriangle size={14} />
@@ -467,10 +777,8 @@ export default function AdminPanelPage() {
               </div>
             )}
 
-            {/* Form */}
             <form onSubmit={handleSave} className="space-y-4">
               
-              {/* Product Name */}
               <div className="space-y-1.5">
                 <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Product Name *</label>
                 <input
@@ -483,7 +791,6 @@ export default function AdminPanelPage() {
                 />
               </div>
 
-              {/* Grid 2 Columns (Category & Sub-category) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Category *</label>
@@ -511,7 +818,6 @@ export default function AdminPanelPage() {
                 </div>
               </div>
 
-              {/* Description */}
               <div className="space-y-1.5">
                 <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Description</label>
                 <textarea
@@ -523,7 +829,6 @@ export default function AdminPanelPage() {
                 />
               </div>
 
-              {/* Grid 3 Columns (Price, Original Price, Stock) */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Price (Rs.) *</label>
@@ -559,7 +864,6 @@ export default function AdminPanelPage() {
                 </div>
               </div>
 
-              {/* Image URL */}
               <div className="space-y-1.5">
                 <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Image URL *</label>
                 <input
@@ -572,7 +876,6 @@ export default function AdminPanelPage() {
                 />
               </div>
 
-              {/* Toggles (Is Active / Listed) */}
               <div className="flex items-center gap-6 pt-2">
                 <label className="flex items-center gap-2 cursor-pointer select-none">
                   <input
@@ -585,7 +888,6 @@ export default function AdminPanelPage() {
                 </label>
               </div>
 
-              {/* Actions Footer */}
               <div className="flex justify-end gap-3 pt-4 border-t border-zinc-850 mt-6">
                 <button
                   type="button"
