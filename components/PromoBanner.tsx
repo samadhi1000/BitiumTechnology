@@ -65,8 +65,8 @@ export default function PromoBanner() {
               </h2>
             </div>
 
-            <p className="promo-subtitle text-zinc-400 text-sm sm:text-base tracking-wider font-semibold max-w-lg leading-relaxed">
-              Clean designs | Quality fabrics | Built for daily wear
+            <p className="promo-subtitle text-zinc-450 text-xs sm:text-sm font-semibold max-w-xl leading-relaxed">
+              Engineered for Flawless Custom Prints. From high-fidelity digital transfers to precise traditional stencils, we bring industrial-grade printing quality straight to your designs.
             </p>
 
             <div className="promo-btn">
