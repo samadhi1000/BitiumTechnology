@@ -1,16 +1,18 @@
+'use client';
+
 import React, { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { 
   Award, 
   Clock, 
-  CheckCircle2, 
-  Target, 
   Layers, 
   Shirt, 
   Briefcase, 
   Globe2,
-  ChevronRight
+  ChevronRight,
+  Sparkles,
+  ShieldCheck
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -22,10 +24,9 @@ if (typeof window !== 'undefined') {
 
 export default function PromoBanner() {
   const container = useRef<HTMLElement>(null);
-  const centerMockupRef = useRef<HTMLDivElement>(null);
+  const mockupContainerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // ScrollTrigger Animations
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: container.current,
@@ -35,218 +36,225 @@ export default function PromoBanner() {
       }
     });
 
-    // 1. Top Strip entrance
-    tl.from('.promo-top-strip', { y: -20, opacity: 0, duration: 0.5, ease: 'power2.out' });
-
-    // 2. Left Value Icons stagger in
-    tl.from('.value-icon-block', { 
-      x: -50, 
-      opacity: 0, 
-      duration: 0.6, 
-      stagger: 0.15, 
-      ease: 'back.out(1.5)' 
-    }, '-=0.3');
-
-    // 3. Right Service Cards stagger in
-    tl.from('.service-card', { 
-      x: 50, 
-      opacity: 0, 
-      duration: 0.6, 
-      stagger: 0.15, 
-      ease: 'power3.out' 
-    }, '-=0.6');
-
-    // 4. Center Mockups pop in
-    tl.from('.center-mockup', {
-      scale: 0.5,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: 'back.out(1.2)'
-    }, '-=0.5');
-
-    // Optional: Mouse Parallax for center mockups
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!centerMockupRef.current) return;
-      const { clientX, clientY } = e;
-      const xPos = (clientX / window.innerWidth - 0.5) * 30; // 30px max move
-      const yPos = (clientY / window.innerHeight - 0.5) * 30;
-
-      gsap.to('.mockup-bg-1', { x: xPos * 0.5, y: yPos * 0.5, duration: 1, ease: 'power2.out' });
-      gsap.to('.mockup-bg-2', { x: -xPos * 0.5, y: -yPos * 0.5, duration: 1, ease: 'power2.out' });
-      gsap.to('.mockup-fg', { x: xPos, y: yPos, duration: 1, ease: 'power2.out' });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    // 1. Entrance animations
+    tl.from('.promo-header', { y: 30, opacity: 0, duration: 0.6, ease: 'power3.out' })
+      .from('.value-card', { 
+        y: 40, 
+        opacity: 0, 
+        duration: 0.6, 
+        stagger: 0.1, 
+        ease: 'power3.out' 
+      }, '-=0.3')
+      .from('.service-row', { 
+        x: 40, 
+        opacity: 0, 
+        duration: 0.6, 
+        stagger: 0.1, 
+        ease: 'power3.out' 
+      }, '-=0.4')
+      .from('.mockup-image-frame', { 
+        scale: 0.95, 
+        opacity: 0, 
+        duration: 0.7, 
+        ease: 'back.out(1.2)' 
+      }, '-=0.5');
 
   }, { scope: container });
 
   return (
-    <section ref={container} className="relative w-full bg-zinc-950 overflow-hidden border-b border-zinc-900">
+    <section ref={container} className="relative w-full bg-zinc-950 overflow-hidden border-b border-zinc-900 py-16 sm:py-24">
       {/* Background glowing effects */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/15 via-zinc-950 to-zinc-950 pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-violet-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute top-1/3 right-1/4 translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-fuchsia-600/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+      {/* Grid Pattern Accent */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.005)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.005)_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none"></div>
       
-      {/* Top Angled Banner Strip */}
-      <div className="promo-top-strip w-full flex justify-end px-4 sm:px-8 pt-4">
-        <div 
-          className="bg-blue-600/90 text-white px-8 py-1.5 font-black italic tracking-widest text-xs sm:text-sm uppercase shadow-[0_0_15px_rgba(37,99,235,0.4)]"
-          style={{ clipPath: 'polygon(15px 0, 100% 0, 100% 100%, 0 100%)' }}
-        >
-          High Quality. Fast Turnaround. Built to Last.
+      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Modern Header Section */}
+        <div className="promo-header text-center max-w-3xl mx-auto mb-16 space-y-4">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-300 text-xs font-semibold">
+            <Sparkles size={11} className="animate-pulse" />
+            <span>Why PrintGrid</span>
+          </div>
+          <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
+            Engineered for <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-violet-400 bg-clip-text text-transparent">Flawless Custom Prints</span>
+          </h2>
+          <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">
+            From high-fidelity digital transfers to precise traditional stencils, we bring industrial-grade printing quality straight to your designs.
+          </p>
         </div>
-      </div>
 
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-4 items-center">
+        {/* 2-Column Next-Gen Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
-          {/* Left Side: 4 Value Props (4 cols) */}
-          <div className="lg:col-span-3 grid grid-cols-2 gap-4">
-            <div className="value-icon-block flex flex-col items-center text-center group">
-              <div className="w-14 h-14 rounded-full border border-blue-500/30 bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/20 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(37,99,235,0.3)] transition-all duration-300">
-                <Award size={28} />
-              </div>
-              <h4 className="mt-3 text-[13px] font-black text-white uppercase leading-tight tracking-wide">Premium<br/>Quality</h4>
-              <p className="mt-1 text-[10px] text-zinc-400 leading-snug px-2">Top quality materials & flawless printing</p>
-            </div>
+          {/* Left Column: 4 Premium Value Prop Cards (7 cols) */}
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5">
             
-            <div className="value-icon-block flex flex-col items-center text-center group">
-              <div className="w-14 h-14 rounded-full border border-blue-500/30 bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/20 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(37,99,235,0.3)] transition-all duration-300">
-                <Clock size={28} />
-              </div>
-              <h4 className="mt-3 text-[13px] font-black text-white uppercase leading-tight tracking-wide">Fast<br/>Turnaround</h4>
-              <p className="mt-1 text-[10px] text-zinc-400 leading-snug px-2">Quick production without compromising</p>
-            </div>
-            
-            <div className="value-icon-block flex flex-col items-center text-center group">
-              <div className="w-14 h-14 rounded-full border border-blue-500/30 bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/20 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(37,99,235,0.3)] transition-all duration-300">
-                <CheckCircle2 size={28} />
-              </div>
-              <h4 className="mt-3 text-[13px] font-black text-white uppercase leading-tight tracking-wide">No Minimum<br/>Orders</h4>
-              <p className="mt-1 text-[10px] text-zinc-400 leading-snug px-2">No minimums, big or small, we got you</p>
-            </div>
-            
-            <div className="value-icon-block flex flex-col items-center text-center group">
-              <div className="w-14 h-14 rounded-full border border-blue-500/30 bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/20 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(37,99,235,0.3)] transition-all duration-300">
-                <Target size={28} />
-              </div>
-              <h4 className="mt-3 text-[13px] font-black text-white uppercase leading-tight tracking-wide">Perfect for<br/>Anything</h4>
-              <p className="mt-1 text-[10px] text-zinc-400 leading-snug px-2">Uniforms, events, streetwear & more</p>
-            </div>
-          </div>
-
-          {/* Center Showcase: Apparel Images Overlapping (5 cols) */}
-          <div ref={centerMockupRef} className="lg:col-span-5 relative h-[380px] w-full flex justify-center items-center">
-            {/* Ambient glowing cloud behind shirts */}
-            <div className="absolute w-[80%] h-[80%] bg-blue-600/20 blur-[80px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
-            
-            {/* Background Shirt (Hoodie) */}
-            <div className="center-mockup mockup-bg-1 absolute left-[10%] top-[15%] w-48 h-48 sm:w-56 sm:h-56 -rotate-6 opacity-70 group hover:opacity-100 hover:scale-105 hover:z-20 transition-all duration-500 drop-shadow-2xl">
-              <Image 
-                src="/images/products/streetwear-hoodie.jpg" 
-                alt="Custom Hoodie" 
-                fill 
-                className="object-cover rounded-xl border border-zinc-800"
-              />
-            </div>
-            
-            {/* Background Shirt (Labubu) */}
-            <div className="center-mockup mockup-bg-2 absolute right-[5%] top-[5%] w-44 h-44 sm:w-52 sm:h-52 rotate-12 opacity-80 group hover:opacity-100 hover:scale-105 hover:z-20 transition-all duration-500 drop-shadow-2xl">
-              <Image 
-                src="/images/products/labubu-new.jpg" 
-                alt="Labubu Custom Tee" 
-                fill 
-                className="object-cover rounded-xl border border-zinc-800"
-              />
-            </div>
-            
-            {/* Foreground Main Shirt (Mountain Tee) */}
-            <div className="center-mockup mockup-fg absolute z-10 w-60 h-60 sm:w-72 sm:h-72 shadow-[0_0_40px_rgba(0,0,0,0.8)] hover:scale-105 transition-transform duration-500">
-              <Image 
-                src="/images/products/mountain-vintage-tee.jpg" 
-                alt="Vintage Mountain Custom Tee" 
-                fill 
-                className="object-cover rounded-xl border-2 border-blue-500/30"
-              />
-            </div>
-          </div>
-
-          {/* Right Side: Service Stack (4 cols) */}
-          <div className="lg:col-span-4 flex flex-col gap-3">
             {/* Card 1 */}
-            <div 
-              className="service-card bg-zinc-900/60 border border-zinc-800 hover:border-blue-500/50 p-4 pr-10 flex items-center gap-4 group cursor-pointer transition-colors backdrop-blur-sm"
-              style={{ clipPath: 'polygon(0 0, 100% 0, 95% 100%, 0 100%)' }}
-            >
-              <div className="text-blue-500 drop-shadow-[0_0_8px_rgba(37,99,235,0.5)]">
-                <Layers size={36} strokeWidth={1.5} />
+            <div className="value-card group relative p-6 rounded-2xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-sm hover:border-violet-500/30 hover:bg-zinc-900/60 transition-all duration-300 shadow-lg">
+              <div className="w-12 h-12 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 group-hover:scale-110 group-hover:bg-violet-500/20 group-hover:text-white transition-all duration-300 mb-5">
+                <Award size={24} />
               </div>
-              <div>
-                <h3 className="text-white font-black italic tracking-wide text-lg group-hover:text-blue-400 transition-colors">DTF PRINTING</h3>
-                <p className="text-[11px] text-zinc-400 leading-snug">Vibrant colours, fine detail & long-lasting prints on any garment.</p>
-              </div>
+              <h3 className="text-base font-bold text-white mb-2 group-hover:text-violet-400 transition-colors">Premium Craftsmanship</h3>
+              <p className="text-zinc-400 text-xs sm:text-[13px] leading-relaxed">
+                Industrial-grade inks, precision laser cuts, and high-density Mylar materials that guarantee vibrant colors and sharp details.
+              </p>
             </div>
 
             {/* Card 2 */}
-            <div 
-              className="service-card bg-zinc-900/60 border border-zinc-800 hover:border-blue-500/50 p-4 pr-10 flex items-center gap-4 group cursor-pointer transition-colors backdrop-blur-sm"
-              style={{ clipPath: 'polygon(0 0, 95% 0, 100% 100%, 0 100%)' }}
-            >
-              <div className="text-blue-500 drop-shadow-[0_0_8px_rgba(37,99,235,0.5)]">
-                <Briefcase size={36} strokeWidth={1.5} />
+            <div className="value-card group relative p-6 rounded-2xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-sm hover:border-violet-500/30 hover:bg-zinc-900/60 transition-all duration-300 shadow-lg">
+              <div className="w-12 h-12 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 group-hover:scale-110 group-hover:bg-violet-500/20 group-hover:text-white transition-all duration-300 mb-5">
+                <Clock size={24} />
               </div>
-              <div>
-                <h3 className="text-white font-black italic tracking-wide text-lg group-hover:text-blue-400 transition-colors">WORKWEAR & UNIFORMS</h3>
-                <p className="text-[11px] text-zinc-400 leading-snug">Custom uniforms & workwear to elevate your brand.</p>
-              </div>
+              <h3 className="text-base font-bold text-white mb-2 group-hover:text-violet-400 transition-colors">Express Delivery</h3>
+              <p className="text-zinc-400 text-xs sm:text-[13px] leading-relaxed">
+                Fast processing timelines and secure local shipping networks to ensure your custom layouts are delivered right when you need them.
+              </p>
             </div>
 
             {/* Card 3 */}
-            <div 
-              className="service-card bg-zinc-900/60 border border-zinc-800 hover:border-blue-500/50 p-4 pr-10 flex items-center gap-4 group cursor-pointer transition-colors backdrop-blur-sm"
-              style={{ clipPath: 'polygon(0 0, 100% 0, 95% 100%, 0 100%)' }}
-            >
-              <div className="text-blue-500 drop-shadow-[0_0_8px_rgba(37,99,235,0.5)]">
-                <Shirt size={36} strokeWidth={1.5} />
+            <div className="value-card group relative p-6 rounded-2xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-sm hover:border-violet-500/30 hover:bg-zinc-900/60 transition-all duration-300 shadow-lg">
+              <div className="w-12 h-12 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 group-hover:scale-110 group-hover:bg-violet-500/20 group-hover:text-white transition-all duration-300 mb-5">
+                <Layers size={24} />
               </div>
-              <div>
-                <h3 className="text-white font-black italic tracking-wide text-lg group-hover:text-blue-400 transition-colors">CUSTOM MERCH & MORE</h3>
-                <p className="text-[11px] text-zinc-400 leading-snug">From hoodies to hats, we bring your ideas to life.</p>
+              <h3 className="text-base font-bold text-white mb-2 group-hover:text-violet-400 transition-colors">No Order Minimums</h3>
+              <p className="text-zinc-400 text-xs sm:text-[13px] leading-relaxed">
+                Whether you want to order a single personalized gang sheet or thousands of custom brand prints, we service all scale demands.
+              </p>
+            </div>
+
+            {/* Card 4 */}
+            <div className="value-card group relative p-6 rounded-2xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-sm hover:border-violet-500/30 hover:bg-zinc-900/60 transition-all duration-300 shadow-lg">
+              <div className="w-12 h-12 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 group-hover:scale-110 group-hover:bg-violet-500/20 group-hover:text-white transition-all duration-300 mb-5">
+                <ShieldCheck size={24} />
+              </div>
+              <h3 className="text-base font-bold text-white mb-2 group-hover:text-violet-400 transition-colors">Universal Fabric Bonding</h3>
+              <p className="text-zinc-400 text-xs sm:text-[13px] leading-relaxed">
+                Perfect adhesion on all fabric groups including cotton, premium polyester, denim, leather, canvas, and tri-blends.
+              </p>
+            </div>
+
+          </div>
+
+          {/* Right Column: Visual Showcase Deck & Quick Services (5 cols) */}
+          <div className="lg:col-span-5 space-y-6">
+            
+            {/* Visual Overlapping Mockups Box */}
+            <div ref={mockupContainerRef} className="mockup-image-frame relative h-[240px] w-full rounded-2xl border border-zinc-800 bg-zinc-950 overflow-hidden flex items-center justify-center p-6 shadow-2xl">
+              {/* Background gradient shadow */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-violet-600/10 via-transparent to-fuchsia-600/5"></div>
+              
+              {/* Overlapping Mockups with safe containerization */}
+              <div className="relative w-full h-full flex items-center justify-center gap-4">
+                
+                {/* Left Card */}
+                <div className="relative w-[30%] h-[85%] rounded-xl overflow-hidden border border-zinc-800 rotate-[-6deg] hover:rotate-0 hover:scale-105 hover:z-20 transition-all duration-300 shadow-lg">
+                  <Image 
+                    src="/images/products/streetwear-hoodie.jpg" 
+                    alt="Custom Hoodie" 
+                    fill 
+                    className="object-cover"
+                  />
+                </div>
+
+                {/* Center Card */}
+                <div className="relative w-[36%] h-[95%] rounded-xl overflow-hidden border-2 border-violet-500/40 hover:scale-105 hover:z-20 transition-all duration-300 shadow-2xl">
+                  <Image 
+                    src="/images/products/mountain-vintage-tee.jpg" 
+                    alt="Custom Tee" 
+                    fill 
+                    className="object-cover"
+                  />
+                </div>
+
+                {/* Right Card */}
+                <div className="relative w-[30%] h-[85%] rounded-xl overflow-hidden border border-zinc-800 rotate-[6deg] hover:rotate-0 hover:scale-105 hover:z-20 transition-all duration-300 shadow-lg">
+                  <Image 
+                    src="/images/products/labubu-new.jpg" 
+                    alt="Custom Tee" 
+                    fill 
+                    className="object-cover"
+                  />
+                </div>
+
               </div>
             </div>
+
+            {/* List Services Info */}
+            <div className="space-y-3.5">
+              
+              {/* Service 1 */}
+              <div className="service-row group flex items-center justify-between p-4 rounded-xl border border-zinc-900 bg-zinc-900/20 hover:border-violet-500/20 hover:bg-zinc-900/40 transition-all duration-300">
+                <div className="flex items-center gap-4">
+                  <div className="p-2.5 rounded-lg bg-violet-600/10 text-violet-400">
+                    <Layers size={20} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white group-hover:text-violet-400 transition-colors">Digital DTF Printing</h4>
+                    <p className="text-[11px] text-zinc-500">Fine details & brilliant color rendering for premium custom apparel.</p>
+                  </div>
+                </div>
+                <ChevronRight size={16} className="text-zinc-600 group-hover:text-violet-400 group-hover:translate-x-1 transition-all" />
+              </div>
+
+              {/* Service 2 */}
+              <div className="service-row group flex items-center justify-between p-4 rounded-xl border border-zinc-900 bg-zinc-900/20 hover:border-violet-500/20 hover:bg-zinc-900/40 transition-all duration-300">
+                <div className="flex items-center gap-4">
+                  <div className="p-2.5 rounded-lg bg-violet-600/10 text-violet-400">
+                    <Briefcase size={20} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white group-hover:text-violet-400 transition-colors">Workwear & Uniforms</h4>
+                    <p className="text-[11px] text-zinc-500">Durable industrial-grade printing for corporate and field uniforms.</p>
+                  </div>
+                </div>
+                <ChevronRight size={16} className="text-zinc-600 group-hover:text-violet-400 group-hover:translate-x-1 transition-all" />
+              </div>
+
+              {/* Service 3 */}
+              <div className="service-row group flex items-center justify-between p-4 rounded-xl border border-zinc-900 bg-zinc-900/20 hover:border-violet-500/20 hover:bg-zinc-900/40 transition-all duration-300">
+                <div className="flex items-center gap-4">
+                  <div className="p-2.5 rounded-lg bg-violet-600/10 text-violet-400">
+                    <Shirt size={20} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white group-hover:text-violet-400 transition-colors">Custom Merch & Accessories</h4>
+                    <p className="text-[11px] text-zinc-500">Bring personalized graphics to life across hoodies, bags, and tri-blends.</p>
+                  </div>
+                </div>
+                <ChevronRight size={16} className="text-zinc-600 group-hover:text-violet-400 group-hover:translate-x-1 transition-all" />
+              </div>
+
+            </div>
+
           </div>
-          
+
         </div>
+
       </div>
 
-      {/* Footer CTA Bar */}
-      <div className="w-full border-t border-blue-900/40 bg-zinc-950/80 backdrop-blur-md">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
+      {/* Next-Gen Footer CTA Bar */}
+      <div className="absolute bottom-0 inset-x-0 border-t border-zinc-900 bg-zinc-950/80 backdrop-blur-md">
+        <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
           
-          {/* Quality Tagline */}
-          <div className="flex items-center gap-2 text-white font-bold italic tracking-wide text-sm sm:text-base">
-            <Globe2 className="text-blue-500" size={20} />
-            <span>QUALITY YOU CAN SEE. SERVICE YOU CAN TRUST.</span>
+          <div className="flex items-center gap-2 text-zinc-400 text-xs sm:text-sm font-semibold">
+            <Globe2 className="text-violet-500" size={16} />
+            <span>Premium Fabric Printing Ecosystem</span>
           </div>
-          
-          {/* Action Area */}
-          <div className="flex items-center gap-6">
+
+          <div className="flex items-center gap-4">
             <Link 
               href="/canvas"
-              className="bg-blue-600 hover:bg-blue-500 text-white font-black italic uppercase tracking-wider text-sm px-6 py-2 flex items-center gap-2 shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:shadow-[0_0_25px_rgba(37,99,235,0.6)] transition-all group"
-              style={{ clipPath: 'polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%)' }}
+              className="px-5 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md shadow-violet-600/10 hover:shadow-violet-600/35"
             >
-              START DESIGNING <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              <span>Start Designing</span>
+              <ChevronRight size={14} />
             </Link>
-            
-            {/* Socials */}
-            <div className="flex items-center gap-3 text-blue-500">
-              <a href="#" className="hover:text-white transition-colors text-sm font-bold">FB</a>
-              <a href="#" className="hover:text-white transition-colors text-sm font-bold">IG</a>
-              <span className="text-zinc-400 font-semibold text-sm hover:text-white transition-colors cursor-pointer ml-1 hidden sm:inline-block">bitiumtechnology.com</span>
-            </div>
+            <span className="text-[11px] text-zinc-600 hover:text-zinc-400 transition-colors cursor-pointer hidden md:inline-block">bitiumtechnology.com</span>
           </div>
-          
+
         </div>
       </div>
     </section>
