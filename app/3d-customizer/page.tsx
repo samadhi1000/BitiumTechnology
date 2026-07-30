@@ -3,14 +3,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as fabric from 'fabric';
 import { 
-  Shirt, Sparkles, RefreshCw, Layers, 
-  Settings2, Eye, Paintbrush, ArrowLeft,
-  Trash2, UploadCloud, ShoppingBag
+  Eye, ArrowLeft, ShoppingBag
 } from 'lucide-react';
 import Link from 'next/link';
 import { useCartStore } from '@/lib/store/cartStore';
 
-const T_SHIRT_COLORS = [
+import { ColorSelector, ColorOption } from '@/components/customizer/ColorSelector';
+import { SizeSelector } from '@/components/customizer/SizeSelector';
+import { PrintStyleSelector, PrintFinish } from '@/components/customizer/PrintStyleSelector';
+import { DesignUploader } from '@/components/customizer/DesignUploader';
+
+const T_SHIRT_COLORS: ColorOption[] = [
   { name: 'Pitch Black', hex: '#09090b' },
   { name: 'Classic White', hex: '#f4f4f5' },
   { name: 'Navy Blue', hex: '#1e3a8a' },
@@ -409,155 +412,38 @@ export default function DynamicMockupCustomizer() {
           <ArrowLeft size={16} /> Back to Home
         </Link>
 
-        {/* Base Colors */}
-        <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-4">
-          <h3 className="font-bold text-sm text-zinc-300 flex items-center gap-2">
-            <Paintbrush size={16} className="text-violet-400" />
-            1. Apparel Color
-          </h3>
-          <div className="flex flex-wrap gap-3">
-            {T_SHIRT_COLORS.map((col) => (
-              <button
-                key={col.name}
-                onClick={() => setSelectedColor(col)}
-                style={{ backgroundColor: col.hex }}
-                className={`w-10 h-10 rounded-full border-2 transition-all ${
-                  selectedColor.name === col.name
-                    ? 'border-violet-500 scale-110 shadow-lg shadow-violet-600/30'
-                    : 'border-zinc-800 hover:border-zinc-500 hover:scale-105'
-                }`}
-                title={col.name}
-              />
-            ))}
-          </div>
-          <p className="text-xs text-zinc-500 font-medium">Selected Color: {selectedColor.name}</p>
-        </div>
+        {/* Base Colors Selector */}
+        <ColorSelector 
+          colors={T_SHIRT_COLORS} 
+          selectedColor={selectedColor} 
+          onChange={setSelectedColor} 
+        />
 
         {/* Size Selector */}
-        <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-4">
-          <h3 className="font-bold text-sm text-zinc-300 flex items-center gap-2">
-            <Shirt size={16} className="text-violet-400" />
-            2. Choose Size
-          </h3>
-          <div className="flex gap-2">
-            {SIZES.map((sz) => (
-              <button
-                key={sz}
-                onClick={() => setSelectedSize(sz)}
-                className={`flex-1 py-2.5 rounded-lg font-bold text-xs border transition-all ${
-                  selectedSize === sz
-                    ? 'bg-violet-600 border-violet-500 text-white shadow-md'
-                    : 'bg-zinc-950 border-zinc-850 text-zinc-400 hover:text-white hover:border-zinc-700'
-                }`}
-              >
-                {sz}
-              </button>
-            ))}
-          </div>
-        </div>
+        <SizeSelector 
+          sizes={SIZES} 
+          selectedSize={selectedSize} 
+          onChange={setSelectedSize} 
+        />
 
         {/* Logo Graphic Upload */}
-        <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-4">
-          <h3 className="font-bold text-sm text-zinc-300 flex items-center gap-2">
-            <Layers size={16} className="text-violet-400" />
-            3. Print Graphic
-          </h3>
-
-          {/* Front / Back Tab */}
-          <div className="flex gap-1.5 p-1 rounded-xl bg-zinc-950 border border-zinc-800">
-            {(['front', 'back'] as const).map((v) => (
-              <button
-                key={v}
-                onClick={() => setActiveView(v)}
-                className={`flex-1 py-1.5 rounded-lg text-xs font-bold capitalize transition-all ${
-                  activeView === v
-                    ? 'bg-violet-600 text-white shadow'
-                    : 'text-zinc-400 hover:text-zinc-200'
-                }`}
-              >
-                {v} View
-              </button>
-            ))}
-          </div>
-
-          <div className="flex flex-col gap-3">
-            {/* Front upload */}
-            {activeView === 'front' && (
-              <>
-                <label className="w-full h-24 rounded-xl border border-dashed border-zinc-800 hover:border-violet-700/50 bg-zinc-950 hover:bg-zinc-950/60 cursor-pointer flex flex-col items-center justify-center gap-2 transition-all">
-                  {loading ? (
-                    <RefreshCw className="animate-spin text-zinc-500" size={20} />
-                  ) : (
-                    <>
-                      <UploadCloud size={20} className="text-zinc-500" />
-                      <span className="text-xs font-semibold text-zinc-400">Upload Front Print</span>
-                    </>
-                  )}
-                  <input type="file" accept="image/png, image/jpeg" className="hidden" onChange={handleLogoUpload} />
-                </label>
-                {logoImage && (
-                  <button onClick={handleRemoveLogo} className="w-full py-2.5 rounded-lg border border-red-500/30 bg-red-950/10 hover:bg-red-950/20 text-red-400 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors">
-                    <Trash2 size={13} /> Remove Front Design
-                  </button>
-                )}
-              </>
-            )}
-
-            {/* Back upload */}
-            {activeView === 'back' && (
-              <>
-                <label className="w-full h-24 rounded-xl border border-dashed border-zinc-800 hover:border-violet-700/50 bg-zinc-950 hover:bg-zinc-950/60 cursor-pointer flex flex-col items-center justify-center gap-2 transition-all">
-                  {loading ? (
-                    <RefreshCw className="animate-spin text-zinc-500" size={20} />
-                  ) : (
-                    <>
-                      <UploadCloud size={20} className="text-zinc-500" />
-                      <span className="text-xs font-semibold text-zinc-400">Upload Back Print</span>
-                    </>
-                  )}
-                  <input type="file" accept="image/png, image/jpeg" className="hidden" onChange={handleBackLogoUpload} />
-                </label>
-                {backLogoImage && (
-                  <button onClick={handleRemoveBackLogo} className="w-full py-2.5 rounded-lg border border-red-500/30 bg-red-950/10 hover:bg-red-950/20 text-red-400 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors">
-                    <Trash2 size={13} /> Remove Back Design
-                  </button>
-                )}
-              </>
-            )}
-          </div>
-        </div>
+        <DesignUploader 
+          activeView={activeView}
+          onViewChange={setActiveView}
+          loading={loading}
+          frontLogo={logoImage}
+          backLogo={backLogoImage}
+          onUploadFront={handleLogoUpload}
+          onUploadBack={handleBackLogoUpload}
+          onRemoveFront={handleRemoveLogo}
+          onRemoveBack={handleRemoveBackLogo}
+        />
 
         {/* Print Emboss Finishes */}
-        <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-4">
-          <h3 className="font-bold text-sm text-zinc-300 flex items-center gap-2">
-            <Sparkles size={16} className="text-violet-400" />
-            4. Print Style & Emboss
-          </h3>
-          <div className="flex flex-col gap-2">
-            {[
-              { id: 'flat', label: 'Vibrant Flat Print', desc: 'Sleek, direct flat ink transfer.' },
-              { id: 'embossed', label: '3D Embossed Print', desc: 'Embossed edges with detailed shadow.' },
-              { id: 'vintage', label: 'Vintage Faded Print', desc: 'A subtle faded look with low opacity.' },
-            ].map((style) => (
-              <button
-                key={style.id}
-                onClick={() => handleStyleChange(style.id as any)}
-                className={`w-full p-3 rounded-xl border text-left flex flex-col gap-1 transition-all ${
-                  printStyle === style.id
-                    ? 'bg-violet-950/20 border-violet-500/60 shadow-lg'
-                    : 'bg-zinc-950 border-zinc-850 hover:bg-zinc-950/60 hover:border-zinc-800'
-                }`}
-              >
-                <span className={`text-xs font-bold ${printStyle === style.id ? 'text-violet-400' : 'text-zinc-300'}`}>
-                  {style.label}
-                </span>
-                <span className="text-[10px] text-zinc-500 font-medium">
-                  {style.desc}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
+        <PrintStyleSelector 
+          selectedStyle={printStyle} 
+          onChange={handleStyleChange} 
+        />
       </div>
 
       {/* CANVAS AREA: Front + Back side-by-side */}
