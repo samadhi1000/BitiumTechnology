@@ -70,12 +70,12 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
   const [phase, setPhase] = useState<'in' | 'hold' | 'out'>('in');
 
   useEffect(() => {
-    // in → hold after 600 ms
-    const t1 = setTimeout(() => setPhase('hold'), 600);
-    // hold → out after 2 600 ms total
-    const t2 = setTimeout(() => setPhase('out'), 2600);
+    // in → hold after 500 ms
+    const t1 = setTimeout(() => setPhase('hold'), 500);
+    // hold → out after 2000 ms total
+    const t2 = setTimeout(() => setPhase('out'), 2000);
     // unmount after fade completes
-    const t3 = setTimeout(() => onDone(), 3400);
+    const t3 = setTimeout(() => onDone(), 2500);
     return () => [t1, t2, t3].forEach(clearTimeout);
   }, [onDone]);
 

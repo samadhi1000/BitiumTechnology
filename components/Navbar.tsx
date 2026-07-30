@@ -22,12 +22,12 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 w-full glass shadow-sm transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="flex items-center space-x-2 group relative px-1 py-1 hover:opacity-80 transition-opacity">
-              <BitiumLogo scale={0.28} withParticles={false} />
+              <BitiumLogo scale={0.42} withParticles={false} />
             </Link>
           </div>
 
