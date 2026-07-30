@@ -19,36 +19,36 @@ const DEFAULT_TRENDING = [
     description: 'High-definition full color DTF transfer sheet. Upload multiple designs with instant background removal.',
     price: 3500,
     original_price: 4500,
-    image_url: '/images/products/dtf-gang-sheet.jpg',
+    image_url: '/images/products/dtf-sheet.jpg',
     badge: '🔥 #1 Trending',
     link: '/canvas',
     btnText: 'Launch Canvas Builder'
   },
   {
     id: 'stencil-saree-1',
-    name: 'Floral Saree Painting Stencil',
+    name: 'Floral Saree Border Stencil',
     category: 'stencil',
     sub_category: 'saree',
     description: 'Reusable precision laser-cut Mylar stencil for elegant saree hand-painting & fabric art.',
     price: 1800,
     original_price: 2400,
-    image_url: '/images/products/stencil-saree.jpg',
+    image_url: '/images/products/saree-border-dtf.jpg',
     badge: '✨ Popular Choice',
     link: '/products/stencil-saree-1',
     btnText: 'View Stencil'
   },
   {
     id: 'batik-stamp-cap-1',
-    name: 'Traditional Copper Cap Batik Stamp',
+    name: 'Stitch Artwork Print Transfer',
     category: 'batik-stamp',
     sub_category: 'cap-batik',
-    description: 'Handcrafted authentic copper batik stamp for traditional fabric pattern wax embossing.',
+    description: 'Handcrafted authentic fabric pattern print transfer for traditional and modern apparel.',
     price: 4900,
     original_price: 6500,
-    image_url: '/images/products/batik-stamp.jpg',
+    image_url: '/images/products/stitch-dtf.jpg',
     badge: '🎨 Craft Special',
     link: '/products/batik-stamp-cap-batik-1',
-    btnText: 'Explore Stamp'
+    btnText: 'Explore Print'
   }
 ];
 
