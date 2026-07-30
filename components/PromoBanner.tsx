@@ -58,10 +58,10 @@ export default function PromoBanner() {
           <div className="lg:col-span-7 space-y-8 flex flex-col items-center lg:items-start text-center lg:text-left">
             <div className="promo-title space-y-1">
               <h2 className="text-6xl sm:text-[90px] font-black tracking-tighter text-blue-500 uppercase leading-none select-none drop-shadow-[0_4px_12px_rgba(59,130,246,0.35)]">
-                EVERYDAY
+                FLAWLESS
               </h2>
               <h2 className="text-6xl sm:text-[90px] font-black tracking-tighter text-blue-500 uppercase leading-none select-none drop-shadow-[0_4px_12px_rgba(59,130,246,0.35)]">
-                PREMIUM
+                PRINTS
               </h2>
             </div>
 
