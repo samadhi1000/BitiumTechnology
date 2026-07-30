@@ -54,11 +54,11 @@ export default function PoweredBy({
         @keyframes su-lava-pulse {
           0%, 100% {
             filter: drop-shadow(0 0 2px rgba(255, 77, 0, 0.75)) drop-shadow(0 0 8px rgba(255, 77, 0, 0.45));
-            opacity: 0.9;
+            opacity: 0.7;
           }
           50% {
             filter: drop-shadow(0 0 5px rgba(255, 107, 0, 1.0)) drop-shadow(0 0 20px rgba(255, 107, 0, 0.75));
-            opacity: 1.0;
+            opacity: 0.95;
           }
         }
         @keyframes su-lava-flow {
@@ -143,116 +143,64 @@ export default function PoweredBy({
         </span>
 
         <div className="flex items-start">
-          {/* Animated SVG Stack Unleash Logo Icon */}
-          <div className="transition-transform duration-300 group-hover:scale-105 flex-shrink-0 mr-2">
+          {/* Animated 3D Logo + Layered SVG Glow Overlays */}
+          <div className="relative w-10 h-10 flex-shrink-0 mr-2 group-hover:scale-105 transition-transform duration-300">
+            {/* Base 3D Logo Image */}
+            <img 
+              src="/images/stack-unleash-logo.png" 
+              alt="Stack Unleash Logo"
+              className="w-full h-full object-contain"
+            />
+            
+            {/* SVG Overlaid Glow Paths (matches the orange curves of the logo) */}
             <svg 
-              className="w-10 h-10" 
+              className="absolute inset-0 w-full h-full pointer-events-none mix-blend-screen"
               viewBox="0 0 100 100" 
               fill="none" 
               xmlns="http://www.w3.org/2000/svg"
             >
               <defs>
-                {/* Metallic column gradients */}
-                <linearGradient id="su-top-face" x1="28" y1="26" x2="72" y2="26" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#2c3e50" />
-                  <stop offset="100%" stopColor="#1a252f" />
-                </linearGradient>
-                <linearGradient id="su-left-face" x1="28" y1="50" x2="50" y2="50" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#0f172a" />
-                  <stop offset="100%" stopColor="#1e293b" />
-                </linearGradient>
-                <linearGradient id="su-right-face" x1="50" y1="50" x2="72" y2="50" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#1e293b" />
-                  <stop offset="100%" stopColor="#0f172a" />
-                </linearGradient>
-
-                {/* Animated glowing lava gradient */}
-                <linearGradient id="su-lava-grad" x1="0" y1="0" x2="1" y2="1">
+                <linearGradient id="su-lava-glow-grad" x1="0" y1="0" x2="1" y2="1">
                   <stop offset="0%" stopColor="#FF3300" />
                   <stop offset="50%" stopColor="#FF9900" />
                   <stop offset="100%" stopColor="#FF3300" />
                 </linearGradient>
               </defs>
-
-              {/* SECTION 1: Lava Ribbon Back Segment (Wraps behind the column for 3D depth) */}
+              
+              {/* Path 1: Front diagonal sweep */}
               <path
-                d="M 32 64 C 18 55, 18 35, 38 24 C 50 16, 68 18, 72 26"
-                stroke="url(#su-lava-grad)"
-                strokeWidth="7"
+                d="M 28 62 C 34 50, 48 40, 68 35"
+                stroke="url(#su-lava-glow-grad)"
+                strokeWidth="5"
                 strokeLinecap="round"
                 fill="none"
-                className="su-animate-lava"
+                className="su-animate-lava opacity-60 filter blur-[1px]"
               />
               <path
-                d="M 32 64 C 18 55, 18 35, 38 24 C 50 16, 68 18, 72 26"
+                d="M 28 62 C 34 50, 48 40, 68 35"
                 stroke="#FFE5B4"
-                strokeWidth="2"
+                strokeWidth="1.5"
                 strokeLinecap="round"
                 fill="none"
-                className="su-animate-flow-dash"
+                className="su-animate-flow-dash opacity-80"
               />
 
-              {/* SECTION 2: 3D Isometric Column (The Stack) */}
-              {/* Left Side Face */}
+              {/* Path 2: Bottom sweep */}
               <path
-                d="M 28 26 L 50 37 L 50 75 L 28 64 Z"
-                fill="url(#su-left-face)"
-                stroke="#334155"
-                strokeWidth="0.5"
-              />
-              {/* Right Side Face */}
-              <path
-                d="M 50 37 L 72 26 L 72 64 L 50 75 Z"
-                fill="url(#su-right-face)"
-                stroke="#1e293b"
-                strokeWidth="0.5"
-              />
-              {/* Top Face */}
-              <path
-                d="M 50 15 L 72 26 L 50 37 L 28 26 Z"
-                fill="url(#su-top-face)"
-                stroke="#475569"
-                strokeWidth="0.75"
-              />
-
-              {/* Coding Symbol Details on Top Face </ > */}
-              <path
-                d="M 43 23 L 39 25 L 43 27"
-                stroke="#00E5FF"
-                strokeWidth="0.75"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M 57 23 L 61 25 L 57 27"
-                stroke="#00E5FF"
-                strokeWidth="0.75"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M 51 21 L 49 29"
-                stroke="#00E5FF"
-                strokeWidth="0.75"
-                strokeLinecap="round"
-              />
-
-              {/* SECTION 3: Lava Ribbon Front Segment (Wraps in front of the column for 3D depth) */}
-              <path
-                d="M 72 26 C 85 45, 62 60, 50 60 C 35 60, 25 72, 35 81 C 45 89, 65 89, 70 75"
-                stroke="url(#su-lava-grad)"
-                strokeWidth="7"
+                d="M 62 60 C 52 70, 40 80, 28 82"
+                stroke="url(#su-lava-glow-grad)"
+                strokeWidth="5"
                 strokeLinecap="round"
                 fill="none"
-                className="su-animate-lava"
+                className="su-animate-lava opacity-60 filter blur-[1px]"
               />
               <path
-                d="M 72 26 C 85 45, 62 60, 50 60 C 35 60, 25 72, 35 81 C 45 89, 65 89, 70 75"
+                d="M 62 60 C 52 70, 40 80, 28 82"
                 stroke="#FFE5B4"
-                strokeWidth="2.5"
+                strokeWidth="1.5"
                 strokeLinecap="round"
                 fill="none"
-                className="su-animate-flow-dash"
+                className="su-animate-flow-dash opacity-80"
               />
             </svg>
           </div>
