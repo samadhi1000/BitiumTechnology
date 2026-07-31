@@ -157,11 +157,11 @@ function HomeContent() {
           </div>
 
           <div className="space-y-3 max-w-3xl">
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tight uppercase">
-              Photorealistic <span className="bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 bg-clip-text text-transparent">3D Showcase</span>
+            <h2 className="text-3xl sm:text-5xl font-black tracking-tight uppercase leading-tight">
+              STREETWEAR EVOLVED: <span className="bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 bg-clip-text text-transparent">THE NEXT GENERATION VISUALIZER</span>
             </h2>
-            <p className="text-zinc-400 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
-              Featuring our Distressed Denim Jacket, Viper Combat Boots, Graphic Apparel & Tech Accessories rendered in an industrial concrete void with gold and silver ambient illumination.
+            <p className="text-zinc-400 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">
+              Discover the ultimate texture and detail before you order. Featuring our high-octane Graphic Apparel, Screen-Printed Hoodies, Custom Accessories, and DTF Prints, presented in immersive, photorealistic 3D.
             </p>
           </div>
 
