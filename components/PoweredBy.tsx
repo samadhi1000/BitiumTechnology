@@ -142,71 +142,9 @@ export default function PoweredBy({
           Powered By
         </span>
 
-        <div className="flex items-start">
-          {/* Animated 3D Logo + Layered SVG Glow Overlays */}
-          <div className="relative w-10 h-10 flex-shrink-0 mr-2 group-hover:scale-105 transition-transform duration-300">
-            {/* Base 3D Logo Image */}
-            <img 
-              src="/images/stack-unleash-logo.png" 
-              alt="Stack Unleash Logo"
-              className="w-full h-full object-contain"
-            />
-            
-            {/* SVG Overlaid Glow Paths (matches the orange curves of the logo) */}
-            <svg 
-              className="absolute inset-0 w-full h-full pointer-events-none mix-blend-screen"
-              viewBox="0 0 100 100" 
-              fill="none" 
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <defs>
-                <linearGradient id="su-lava-glow-grad" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#FF3300" />
-                  <stop offset="50%" stopColor="#FF9900" />
-                  <stop offset="100%" stopColor="#FF3300" />
-                </linearGradient>
-              </defs>
-              
-              {/* Path 1: Front diagonal sweep */}
-              <path
-                d="M 28 62 C 34 50, 48 40, 68 35"
-                stroke="url(#su-lava-glow-grad)"
-                strokeWidth="5"
-                strokeLinecap="round"
-                fill="none"
-                className="su-animate-lava opacity-60 filter blur-[1px]"
-              />
-              <path
-                d="M 28 62 C 34 50, 48 40, 68 35"
-                stroke="#FFE5B4"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                fill="none"
-                className="su-animate-flow-dash opacity-80"
-              />
-
-              {/* Path 2: Bottom sweep */}
-              <path
-                d="M 62 60 C 52 70, 40 80, 28 82"
-                stroke="url(#su-lava-glow-grad)"
-                strokeWidth="5"
-                strokeLinecap="round"
-                fill="none"
-                className="su-animate-lava opacity-60 filter blur-[1px]"
-              />
-              <path
-                d="M 62 60 C 52 70, 40 80, 28 82"
-                stroke="#FFE5B4"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                fill="none"
-                className="su-animate-flow-dash opacity-80"
-              />
-            </svg>
-          </div>
-
+        <div className="flex items-center">
           {/* Typography details */}
-          <div className="flex flex-col items-start leading-none pt-0.5">
+          <div className="flex flex-col items-start leading-none">
             <div className="flex flex-col w-full leading-none">
               {/* STACK text block */}
               <div
