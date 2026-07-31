@@ -14,10 +14,10 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
       });
     }
 
-    // Phase transition timer (video is ~4s long)
+    // Phase transition timer (5 seconds duration)
     const t1 = setTimeout(() => setPhase('playing'), 100);
-    const t2 = setTimeout(() => setPhase('out'), 4000);
-    const t3 = setTimeout(() => onDone(), 4600);
+    const t2 = setTimeout(() => setPhase('out'), 5000);
+    const t3 = setTimeout(() => onDone(), 5600);
 
     return () => {
       clearTimeout(t1);
