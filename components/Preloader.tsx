@@ -7,14 +7,11 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // Attempt video playback
     if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // Fallback for browsers with strict autoplay policies
-      });
+      videoRef.current.play().catch(() => {});
     }
 
-    // Phase transition timer (5 seconds duration)
+    // 5 seconds duration
     const t1 = setTimeout(() => setPhase('playing'), 100);
     const t2 = setTimeout(() => setPhase('out'), 5000);
     const t3 = setTimeout(() => onDone(), 5600);
@@ -38,16 +35,12 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black
+      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#000000]
         transition-all duration-700 ease-in-out ${wrapperCls}`}
+      style={{ backgroundColor: '#000000' }}
     >
-      {/* Ambient background glow */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-[600px] h-[600px] rounded-full bg-violet-600/10 blur-[150px] animate-pulse" />
-      </div>
-
-      {/* Seamless Video Container */}
-      <div className="relative z-10 w-full max-w-4xl px-4 flex flex-col items-center justify-center">
+      {/* 2" x 2" (Compact ~100px) Video Container on 100% Solid Black */}
+      <div className="relative z-10 w-28 h-28 sm:w-32 sm:h-32 flex items-center justify-center bg-[#000000]">
         <video
           ref={videoRef}
           src="/preloader.mp4"
@@ -55,7 +48,8 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
           muted
           playsInline
           onEnded={handleVideoEnded}
-          className="w-full h-auto max-h-[85vh] object-contain mix-blend-screen bg-black"
+          className="w-full h-full object-contain mix-blend-screen bg-[#000000]"
+          style={{ backgroundColor: '#000000' }}
         />
       </div>
     </div>
