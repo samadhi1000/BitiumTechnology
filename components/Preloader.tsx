@@ -39,8 +39,8 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
         transition-all duration-700 ease-in-out ${wrapperCls}`}
       style={{ backgroundColor: '#000000' }}
     >
-      {/* 2" x 2" (Compact ~100px) Video Container on 100% Solid Black */}
-      <div className="relative z-10 w-28 h-28 sm:w-32 sm:h-32 flex items-center justify-center bg-[#000000]">
+      {/* 2.5" x 2.5" (~200px - 225px) Video Container on 100% Solid Black */}
+      <div className="relative z-10 w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center bg-[#000000]">
         <video
           ref={videoRef}
           src="/preloader.mp4"
