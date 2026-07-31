@@ -8,7 +8,7 @@ import { useGSAP } from '@gsap/react';
 import { getProducts, Product } from '@/lib/products';
 import PromoBanner from '@/components/PromoBanner';
 import TrendingHeroShowcase from '@/components/ui/TrendingHeroShowcase';
-import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, PackageCheck, Flame } from 'lucide-react';
+import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, PackageCheck, Flame, CheckCircle2 } from 'lucide-react';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(useGSAP);
@@ -139,49 +139,100 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* 02. Dynamic 3D Product Showcase Section */}
+      {/* 02. Dynamic 3D Product Visualizer Section (Left Image Frame + Right Content) */}
       <section className="relative w-full bg-zinc-950 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-zinc-900 overflow-hidden">
-        <div className="max-w-7xl mx-auto flex flex-col items-center text-center space-y-8 relative z-10">
+        {/* Background Ambient Glows */}
+        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute top-1/2 right-10 -translate-y-1/2 w-[400px] h-[400px] bg-violet-600/10 rounded-full blur-[140px] pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center relative z-10">
           
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-widest">
-            <Flame size={14} />
-            <span>3D Product Visualizer • VIPER Streetwear</span>
-          </div>
-
-          <div className="space-y-3 max-w-3xl">
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tight uppercase leading-tight">
-              STREETWEAR EVOLVED: <span className="bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 bg-clip-text text-transparent">THE NEXT GENERATION VISUALIZER</span>
-            </h2>
-            <p className="text-zinc-400 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">
-              Discover the ultimate texture and detail before you order. Featuring our high-octane Graphic Apparel, Screen-Printed Hoodies, Custom Accessories, and DTF Prints, presented in immersive, photorealistic 3D.
-            </p>
-          </div>
-
-          {/* 3D Showcase Image Frame */}
-          <div className="relative w-full max-w-4xl aspect-[16/10] sm:aspect-[16/9] rounded-3xl overflow-hidden p-[3px] bg-gradient-to-r from-amber-400 via-zinc-100 to-amber-500 shadow-[0_0_80px_rgba(251,191,36,0.25)] border border-zinc-800 group">
-            <div className="relative w-full h-full rounded-[22px] overflow-hidden bg-zinc-950">
-              <Image
-                src="/images/products/viper-3d-showcase.png"
-                alt="VIPER Streetwear 3D Product Showcase"
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-700"
-                sizes="100vw"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-transparent to-transparent pointer-events-none" />
-              
-              <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between text-left">
-                <div>
-                  <p className="text-[10px] font-black text-amber-400 uppercase tracking-widest">VIPER STREETWEAR • EST. 2024</p>
-                  <p className="text-sm font-extrabold text-white">Authentic Trade Quality Apparel</p>
+          {/* Left Side: Square 3D Product Showcase Image Frame (5 Cols) */}
+          <div className="lg:col-span-5 flex justify-center w-full">
+            <div className="relative w-full max-w-md aspect-square rounded-3xl overflow-hidden p-[3px] bg-gradient-to-tr from-amber-400 via-yellow-200 to-amber-500 shadow-[0_0_60px_rgba(245,158,11,0.25)] border border-amber-500/40 group">
+              <div className="relative w-full h-full rounded-[22px] overflow-hidden bg-zinc-950">
+                <Image
+                  src="/images/products/viper-3d-showcase.png"
+                  alt="VIPER Streetwear 3D Product Showcase"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  sizes="(max-width: 768px) 100vw, 500px"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-transparent to-transparent pointer-events-none" />
+                
+                <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between text-left">
+                  <div>
+                    <p className="text-[10px] font-black text-amber-400 uppercase tracking-widest">VIPER STREETWEAR • EST. 2024</p>
+                    <p className="text-xs font-extrabold text-white">Authentic Trade Quality Apparel</p>
+                  </div>
+                  <span className="px-3 py-1 rounded-lg bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-extrabold uppercase">
+                    3D Render
+                  </span>
                 </div>
-                <Link
-                  href="/canvas"
-                  className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs uppercase tracking-wider transition-all shadow-lg shadow-amber-500/20"
-                >
-                  Custom Print
-                </Link>
               </div>
             </div>
+          </div>
+
+          {/* Right Side: Text & Content Section (7 Cols) */}
+          <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
+            
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-extrabold uppercase tracking-widest">
+              <Flame size={14} className="text-amber-400 animate-pulse" />
+              <span>3D Product Visualizer • VIPER Streetwear</span>
+            </div>
+
+            <div className="space-y-4">
+              <h2 className="text-3xl sm:text-5xl font-black tracking-tight uppercase leading-tight">
+                STREETWEAR EVOLVED: <span className="bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-500 bg-clip-text text-transparent">THE NEXT GENERATION VISUALIZER</span>
+              </h2>
+              
+              <p className="text-zinc-300 text-sm sm:text-base leading-relaxed max-w-2xl font-normal">
+                Discover the ultimate texture and detail before you order. Featuring our high-octane Graphic Apparel, Screen-Printed Hoodies, Custom Accessories, and DTF Prints, presented in immersive, photorealistic 3D.
+              </p>
+            </div>
+
+            {/* Feature Highlights */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full pt-2">
+              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-zinc-900/70 border border-zinc-850">
+                <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400 shrink-0">
+                  <Sparkles size={16} />
+                </div>
+                <div className="text-left">
+                  <h4 className="text-xs font-bold text-white">4K Print Texture Fidelity</h4>
+                  <p className="text-[11px] text-zinc-400">Inspect ink depth before print</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-zinc-900/70 border border-zinc-850">
+                <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400 shrink-0">
+                  <Layers size={16} />
+                </div>
+                <div className="text-left">
+                  <h4 className="text-xs font-bold text-white">Multi-Layer DTF Transfers</h4>
+                  <p className="text-[11px] text-zinc-400">Full color film layout options</p>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 pt-4 w-full sm:w-auto">
+              <Link
+                href="/canvas"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black font-black text-xs uppercase tracking-wider transition-all shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-105 flex items-center justify-center gap-2"
+              >
+                <span>Launch 3D Canvas Builder</span>
+                <ArrowRight size={15} />
+              </Link>
+
+              <Link
+                href="/stencil"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-white font-bold text-xs transition-all flex items-center justify-center"
+              >
+                Explore Apparel Prints
+              </Link>
+            </div>
+
           </div>
 
         </div>
