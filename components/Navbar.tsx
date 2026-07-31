@@ -225,12 +225,7 @@ export default function Navbar() {
               Size Guide
             </Link>
 
-            {/* 08. Admin Panel */}
-            <Link href="/admin" className="text-xs font-semibold text-violet-400 hover:text-violet-300 transition-colors h-full flex items-center">
-              Admin Panel
-            </Link>
-
-            {/* 09. Contact Us */}
+            {/* 08. Contact Us */}
             <Link href="/contact" className="text-xs font-semibold hover:text-violet-400 transition-colors h-full flex items-center text-zinc-300">
               Contact Us
             </Link>
@@ -542,17 +537,7 @@ export default function Navbar() {
               <ChevronRight size={16} className="text-zinc-500" />
             </Link>
 
-            {/* 8. Admin Panel */}
-            <Link
-              href="/admin"
-              onClick={closeMobileMenu}
-              className="flex items-center justify-between px-4 py-3 rounded-xl bg-violet-950/40 hover:bg-violet-900/50 border border-violet-800/40 text-sm font-bold text-violet-300"
-            >
-              <span>Admin Panel</span>
-              <ChevronRight size={16} className="text-violet-400" />
-            </Link>
-
-            {/* 9. Contact Us */}
+            {/* 8. Contact Us */}
             <Link
               href="/contact"
               onClick={closeMobileMenu}

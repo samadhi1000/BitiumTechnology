@@ -314,7 +314,7 @@ export default function AdminPanelPage() {
                   required
                   value={usernameInput}
                   onChange={(e) => setUsernameInput(e.target.value)}
-                  placeholder="e.g. admin"
+                  placeholder="Enter admin username"
                   className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-sm text-white focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
                 />
               </div>
@@ -345,10 +345,6 @@ export default function AdminPanelPage() {
             </button>
 
           </form>
-
-          <div className="text-center pt-2">
-            <span className="text-[9px] text-zinc-650 tracking-wider">Default credentials: admin / admin123</span>
-          </div>
 
         </div>
       </div>
