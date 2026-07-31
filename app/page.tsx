@@ -6,9 +6,8 @@ import Link from 'next/link';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { getProducts, Product } from '@/lib/products';
-import TrendingHeroShowcase from '@/components/ui/TrendingHeroShowcase';
 import PromoBanner from '@/components/PromoBanner';
-import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, PackageCheck } from 'lucide-react';
+import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, PackageCheck, Flame } from 'lucide-react';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(useGSAP);
@@ -148,10 +147,58 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* 02. Poster Type Section (Promo Banner) */}
+      {/* 02. Dynamic 3D Product Showcase Section */}
+      <section className="relative w-full bg-zinc-950 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-zinc-900 overflow-hidden">
+        <div className="max-w-7xl mx-auto flex flex-col items-center text-center space-y-8 relative z-10">
+          
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-widest">
+            <Flame size={14} />
+            <span>3D Product Visualizer • VIPER Streetwear</span>
+          </div>
+
+          <div className="space-y-3 max-w-3xl">
+            <h2 className="text-3xl sm:text-5xl font-black tracking-tight uppercase">
+              Photorealistic <span className="bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 bg-clip-text text-transparent">3D Showcase</span>
+            </h2>
+            <p className="text-zinc-400 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
+              Featuring our Distressed Denim Jacket, Viper Combat Boots, Graphic Apparel & Tech Accessories rendered in an industrial concrete void with gold and silver ambient illumination.
+            </p>
+          </div>
+
+          {/* 3D Showcase Image Frame */}
+          <div className="relative w-full max-w-4xl aspect-[16/10] sm:aspect-[16/9] rounded-3xl overflow-hidden p-[3px] bg-gradient-to-r from-amber-400 via-zinc-100 to-amber-500 shadow-[0_0_80px_rgba(251,191,36,0.25)] border border-zinc-800 group">
+            <div className="relative w-full h-full rounded-[22px] overflow-hidden bg-zinc-950">
+              <Image
+                src="/images/products/viper-3d-showcase.png"
+                alt="VIPER Streetwear 3D Product Showcase"
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-700"
+                sizes="100vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-transparent to-transparent pointer-events-none" />
+              
+              <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between text-left">
+                <div>
+                  <p className="text-[10px] font-black text-amber-400 uppercase tracking-widest">VIPER STREETWEAR • EST. 2024</p>
+                  <p className="text-sm font-extrabold text-white">Authentic Trade Quality Apparel</p>
+                </div>
+                <Link
+                  href="/canvas"
+                  className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs uppercase tracking-wider transition-all shadow-lg shadow-amber-500/20"
+                >
+                  Custom Print
+                </Link>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 03. Poster Type Section (Promo Banner) */}
       <PromoBanner />
 
-      {/* 03. Category Quick Access Showcase Section */}
+      {/* 04. Category Quick Access Showcase Section */}
       <section className="max-w-7xl mx-auto py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-zinc-900">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-2xl sm:text-4xl font-black tracking-tight">Explore Our Print Categories</h2>
