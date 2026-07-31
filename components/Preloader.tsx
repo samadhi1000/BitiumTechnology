@@ -43,22 +43,20 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
     >
       {/* Ambient background glow */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-[500px] h-[500px] rounded-full bg-violet-600/15 blur-[140px] animate-pulse" />
+        <div className="w-[600px] h-[600px] rounded-full bg-violet-600/10 blur-[150px] animate-pulse" />
       </div>
 
-      {/* Video Container */}
-      <div className="relative z-10 w-full max-w-2xl px-4 flex flex-col items-center justify-center">
-        <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-[0_0_80px_rgba(139,92,246,0.3)] border border-zinc-800/80 bg-black">
-          <video
-            ref={videoRef}
-            src="/preloader.mp4"
-            autoPlay
-            muted
-            playsInline
-            onEnded={handleVideoEnded}
-            className="w-full h-full object-cover"
-          />
-        </div>
+      {/* Seamless Video Container */}
+      <div className="relative z-10 w-full max-w-4xl px-4 flex flex-col items-center justify-center">
+        <video
+          ref={videoRef}
+          src="/preloader.mp4"
+          autoPlay
+          muted
+          playsInline
+          onEnded={handleVideoEnded}
+          className="w-full h-auto max-h-[85vh] object-contain mix-blend-screen bg-black"
+        />
       </div>
     </div>
   );
