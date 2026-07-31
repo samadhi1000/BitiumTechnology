@@ -26,7 +26,7 @@ export interface Variant {
 // Subcategory definitions (15 subcategories, 9 items each = 135 products total)
 const SUBCAT_DATA = [
   // Stencil
-  { cat: 'stencil', sub: 'hand-painting', names: ['Artistic Flora Hand-Painting Stencil', 'Mystic Lotus Hand-Painting Stencil', 'Modern Mandala Hand-Painting Stencil', 'Chibi Characters Hand-Painting Stencil', 'Abstract Geometry Hand-Painting Stencil', 'Vintage Logo Hand-Painting Stencil', 'Tropical Leaves Hand-Painting Stencil', 'Cyberpunk Accent Hand-Painting Stencil', 'Cute Animal Hand-Painting Stencil'], image: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=600&q=80', price: 450, orig: 600 },
+  { cat: 'stencil', sub: 'hand-painting', names: ['Tropical Palm & Monstera Stencil', 'Feathered Leaf Pattern Stencil', 'Wild Vine Leaves Hand-Painting Stencil', 'Botanical Branch & Leaves Stencil', 'Floral Bouquet Hand-Painting Stencil', 'Vintage Logo Hand-Painting Stencil', 'Tropical Leaves Hand-Painting Stencil', 'Cyberpunk Accent Hand-Painting Stencil', 'Cute Animal Hand-Painting Stencil'], image: '/images/products/stencil-hand-painting-1.jpg', price: 450, orig: 600 },
   { cat: 'stencil', sub: 'saree', names: ['Traditional Gold Zari Saree Stencil', 'Royal Peacock Saree Border Stencil', 'Silver Vines Saree Lace Stencil', 'Copper Paisley Border Saree Stencil', 'Lotus Petals Border Saree Stencil', 'Mandala Lace Border Saree Stencil', 'Chevron Geo Saree Border Stencil', 'Elephant March Saree Stencil', 'Classic Temple Saree Stencil'], image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80', price: 750, orig: 950 },
   { cat: 'stencil', sub: 'tote-bags', names: ['Cute Bear Tote Bag Stencil', 'Save the Earth Eco Tote Stencil', 'Retro Cassette Tote Bag Stencil', 'Aesthetic Line Art Tote Stencil', 'Minimalist Sun & Moon Tote Stencil', 'Coffee Lover Quote Tote Stencil', 'Wildflower Bouquet Tote Stencil', 'Tokyo Street Neon Tote Stencil', 'Kawaii Cat Paw Tote Stencil'], image: 'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&w=600&q=80', price: 380, orig: 500 },
   { cat: 'stencil', sub: 'batik', names: ['Traditional Tjanting Batik Stencil', 'Floral Vine Batik Border Stencil', 'Geometric Kawung Batik Stencil', 'Royal Parang Pattern Batik Stencil', 'Mega Mendung Cloud Batik Stencil', 'Modern Abstract Batik Stencil', 'Symmetrical Mandala Batik Stencil', 'Siriwasa Traditional Batik Stencil', 'Ocean Wave Motif Batik Stencil'], image: 'https://images.unsplash.com/photo-1508807526345-15e988543c28?auto=format&fit=crop&w=600&q=80', price: 650, orig: 850 },
@@ -71,11 +71,11 @@ const MOCK_PRODUCTS: Product[] = [];
 // Dictionary of unique copyright-free Unsplash images mapped to specific subcategory index items
 const UNIQUE_IMAGES: Record<string, string[]> = {
   'hand-painting': [
-    'https://images.unsplash.com/photo-1513364776144-60967b0f800f', // Floral
-    'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5', // Lotus
-    'https://images.unsplash.com/photo-1541701494587-cb58502866ab', // Mandala
-    'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f', // Chibi Characters Stencil
-    'https://images.unsplash.com/photo-1502224562085-639556652f33', // Geometry
+    '/images/products/stencil-hand-painting-1.jpg',
+    '/images/products/stencil-hand-painting-2.jpg',
+    '/images/products/stencil-hand-painting-3.jpg',
+    '/images/products/stencil-hand-painting-4.jpg',
+    '/images/products/stencil-hand-painting-5.jpg',
     'https://images.unsplash.com/photo-1515462277126-270d878326e5', // Vintage Logo
     'https://images.unsplash.com/photo-1448375240586-882707db888b', // Leaves
     'https://images.unsplash.com/photo-1563089145-599997674d42', // Cyberpunk
