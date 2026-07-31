@@ -7,6 +7,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { getProducts, Product } from '@/lib/products';
 import PromoBanner from '@/components/PromoBanner';
+import TrendingHeroShowcase from '@/components/ui/TrendingHeroShowcase';
 import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, PackageCheck, Flame } from 'lucide-react';
 
 if (typeof window !== 'undefined') {
@@ -131,18 +132,9 @@ function HomeContent() {
             </div>
           </div>
 
-          {/* Hero Card Image Showcase Column */}
-          <div className="flex-1 w-full flex flex-col items-center justify-center hero-cards mt-4 lg:mt-0 relative group">
-            <div className="relative w-full max-w-md sm:max-w-lg aspect-[4/5] sm:aspect-square lg:aspect-[4/5] rounded-3xl overflow-hidden border border-zinc-800/80 bg-zinc-900/30 shadow-[0_0_50px_rgba(139,92,246,0.2)] group-hover:shadow-[0_0_70px_rgba(139,92,246,0.35)] group-hover:border-violet-500/50 transition-all duration-500">
-              <Image
-                src="/images/products/hero card.png"
-                alt="Bitium Technology Print Showcase Card"
-                fill
-                priority
-                className="object-contain p-2 group-hover:scale-105 transition-transform duration-700"
-                sizes="(max-w-768px) 100vw, 550px"
-              />
-            </div>
+          {/* Hero Interactive Cards Showcase Column */}
+          <div className="flex-1 w-full flex flex-col items-center justify-center hero-cards mt-4 lg:mt-0 relative">
+            <TrendingHeroShowcase products={products} />
           </div>
         </div>
       </section>
