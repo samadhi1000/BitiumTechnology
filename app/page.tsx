@@ -10,6 +10,7 @@ import PromoBanner from '@/components/PromoBanner';
 import TrendingHeroShowcase from '@/components/ui/TrendingHeroShowcase';
 import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, PackageCheck, Flame, CheckCircle2 } from 'lucide-react';
 import { HeroSearch } from '@/components/HeroSearch';
+import { HeroSlideshow } from '@/components/HeroSlideshow';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(useGSAP);
@@ -90,9 +91,7 @@ function HomeContent() {
     <div ref={container} className="w-full min-h-screen bg-zinc-950 text-white">
       {/* 01. Hero Banner Section */}
       <section className="relative overflow-hidden py-16 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 border-b border-zinc-900 bg-zinc-950">
-        <div className="absolute inset-0 bg-[url('/images/dtf-hero-bg.jpg')] bg-cover bg-center bg-no-repeat pointer-events-none opacity-30"></div>
-        <div className="absolute inset-0 bg-radial-[at_center,_var(--tw-gradient-stops)] from-zinc-950/20 via-zinc-950/80 to-zinc-950 pointer-events-none"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/15 via-transparent to-zinc-950 pointer-events-none"></div>
+        <HeroSlideshow />
         
         <div className="max-w-7xl mx-auto relative z-10 text-center lg:text-left flex flex-col lg:flex-row justify-between items-center gap-10 lg:gap-12">
           <div className="flex-1 space-y-6">
