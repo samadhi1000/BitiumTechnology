@@ -151,25 +151,25 @@ html.light-mode ::-webkit-scrollbar-thumb { background: #cbd5e1; }
 /* Batik Text Mask Animation */
 @keyframes batik-flow {
   0% {
-    background-position: 0% 50%;
+    background-position: 2% 5%;
   }
   50% {
-    background-position: 100% 50%;
+    background-position: 22% 12%;
   }
   100% {
-    background-position: 0% 50%;
+    background-position: 2% 5%;
   }
 }
 
 .batik-text-clip {
   background-image: url('/images/batik-mask.jpg');
-  background-size: 200% auto;
+  background-size: 550% 550%; /* Heavily zoom in to focus on detailed crackle patterns */
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  animation: batik-flow 25s ease infinite;
+  animation: batik-flow 30s ease-in-out infinite;
   display: inline-block;
   /* Add a subtle drop shadow to make it highly readable and stand out */
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
 }
 
