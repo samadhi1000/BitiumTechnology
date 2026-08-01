@@ -1,13 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { getProducts, Product } from '@/lib/products';
 import PromoBanner from '@/components/PromoBanner';
-import TrendingHeroShowcase from '@/components/ui/TrendingHeroShowcase';
 import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, PackageCheck, Flame, CheckCircle2 } from 'lucide-react';
 import { HeroSearch } from '@/components/HeroSearch';
 import { HeroSlideshow } from '@/components/HeroSlideshow';
@@ -17,16 +15,7 @@ if (typeof window !== 'undefined') {
 }
 
 function HomeContent() {
-  const [products, setProducts] = useState<Product[]>([]);
   const container = React.useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    async function load() {
-      const data = await getProducts();
-      setProducts(data);
-    }
-    load();
-  }, []);
 
   // Hero Entrance Animations
   useGSAP(() => {
@@ -35,8 +24,7 @@ function HomeContent() {
       .from('.hero-title', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3')
       .from('.hero-text', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3')
       .from('.hero-search', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3')
-      .from('.hero-buttons', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3')
-      .from('.hero-cards', { scale: 0.9, opacity: 0, duration: 0.6, ease: 'back.out(1.2)' }, '-=0.4');
+      .from('.hero-buttons', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3');
   }, { scope: container });
 
   const categories = [
@@ -93,8 +81,8 @@ function HomeContent() {
       <section className="relative overflow-hidden py-16 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 border-b border-zinc-900 bg-zinc-950">
         <HeroSlideshow />
         
-        <div className="max-w-7xl mx-auto relative z-10 text-center lg:text-left flex flex-col lg:flex-row justify-between items-center gap-10 lg:gap-12">
-          <div className="flex-1 space-y-6">
+        <div className="max-w-4xl mx-auto relative z-10 text-center flex flex-col items-center justify-center gap-8">
+          <div className="w-full space-y-6 flex flex-col items-center justify-center">
             <div 
               className="hero-badge inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-300 text-xs font-semibold"
             >
@@ -109,17 +97,17 @@ function HomeContent() {
             </h1>
             
             <p 
-              className="hero-text text-sm sm:text-base text-zinc-400 max-w-xl mx-auto lg:mx-0 leading-relaxed"
+              className="hero-text text-sm sm:text-base text-zinc-400 max-w-2xl mx-auto leading-relaxed"
             >
               From custom precision stencils to industrial DTF film rolls, exposed screen printing, and traditional batik stamps — explore our specialized print technology store.
             </p>
 
-            <div className="hero-search pt-2">
+            <div className="hero-search pt-2 w-full flex justify-center">
               <HeroSearch />
             </div>
             
             <div 
-              className="hero-buttons flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2"
+              className="hero-buttons flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2"
             >
               <Link 
                 href="/canvas" 
@@ -135,11 +123,6 @@ function HomeContent() {
                 Explore Stencils
               </Link>
             </div>
-          </div>
-
-          {/* Hero Interactive Cards Showcase Column */}
-          <div className="flex-1 w-full flex flex-col items-center justify-center hero-cards mt-4 lg:mt-0 relative">
-            <TrendingHeroShowcase products={products} />
           </div>
         </div>
       </section>
