@@ -112,7 +112,7 @@ export default function CartDrawer() {
             if (item.customization.designLayersCount) parts.push(`Design Layers: ${item.customization.designLayersCount}`);
             if (parts.length) itemDetail += `\n   *(${parts.join(' | ')})*`;
             if (item.customization.frontPreviewCloudinaryUrl) {
-              itemDetail += `\n   🖼️ Design Preview: ${item.customization.frontPreviewCloudinaryUrl}`;
+              itemDetail += `\n   \u{1F5BC}\u{FE0F} Design Preview: ${item.customization.frontPreviewCloudinaryUrl}`;
             }
           }
         }
@@ -123,7 +123,7 @@ export default function CartDrawer() {
           itemDetail += ` - Qty: ${item.quantity} | Price: LKR ${item.price.toLocaleString()}`;
           itemDetail += `\n   *(DTF Sheet: ${w}" x ${h}" | Layers: ${item.customization?.designLayersCount ?? 0})*`;
           if (item.customization?.frontPreviewCloudinaryUrl) {
-            itemDetail += `\n   🖼️ Layout Preview: ${item.customization.frontPreviewCloudinaryUrl}`;
+            itemDetail += `\n   \u{1F5BC}\u{FE0F} Layout Preview: ${item.customization.frontPreviewCloudinaryUrl}`;
           }
         }
         else {
@@ -141,21 +141,21 @@ export default function CartDrawer() {
       const wNotes = sanitizeForWhatsApp(sNotes);
 
       const messageTemplate = 
-`🛒 *NEW ORDER RECEIVED* 🛒
+`\u{1F6D2} *NEW ORDER RECEIVED* \u{1F6D2}
 ----------------------------------
-👤 *Customer Details:*
+\u{1F464} *Customer Details:*
 - Name: ${wName}
 - Phone: ${wPhone}
 - Delivery Address: ${wAddress}, ${wCity}
 
-📦 *Ordered Items:*
+\u{1F4E6} *Ordered Items:*
 ${itemsString}
 
-💵 *Order Summary:*
+\u{1F4B5} *Order Summary:*
 - Total Amount: LKR ${total.toLocaleString()}
 - Payment Option: Cash on Delivery (COD)
 ----------------------------------
-📝 *Notes:* ${wNotes ? wNotes : 'None'}`;
+\u{1F4DD} *Notes:* ${wNotes ? wNotes : 'None'}`;
 
       // 3. Encode safely and open WhatsApp API link
       const encodedText = encodeURIComponent(messageTemplate);
