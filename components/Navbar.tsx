@@ -57,7 +57,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" onClick={closeMobileMenu} className="flex items-center space-x-2.5 sm:space-x-3 group relative py-1 hover:opacity-90 transition-opacity">
-              <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden border-2 border-violet-500/50 shadow-[0_0_20px_rgba(139,92,246,0.5)] group-hover:scale-105 transition-transform">
+              <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-violet-500/50 shadow-[0_0_20px_rgba(139,92,246,0.5)] group-hover:scale-105 transition-transform">
                 <Image
                   src="/images/bitium-logo.jpg"
                   alt="Bitium Technology"
@@ -68,7 +68,7 @@ export default function Navbar() {
               </div>
               <div className="flex flex-col">
                 <span className="text-2xl sm:text-3xl font-black tracking-wider text-white flex items-center gap-0.5 leading-none">
-                  B<span className="text-red-500 drop-shadow-[0_0_12px_rgba(239,68,68,0.9)]">!</span>TIUM
+                  B<span className="text-red-500 drop-shadow-[0_0_12px_rgba(239,68,68,0.9)]">!</span>T<span className="text-red-500 drop-shadow-[0_0_12px_rgba(239,68,68,0.9)]">!</span>UM
                 </span>
                 <span className="text-[10px] sm:text-xs font-extrabold tracking-[0.25em] text-violet-400 uppercase leading-tight mt-0.5 sm:mt-1">
                   Technology

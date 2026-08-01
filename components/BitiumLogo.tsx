@@ -119,7 +119,7 @@ export default function BitiumLogo({ className = "", withParticles = false, scal
           
           <div className="absolute flex flex-col items-center text-center">
             <div className="text-[14px] font-[800] tracking-[3px] text-white uppercase mb-[6px] flex items-center gap-[2px] drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
-              B<span className="text-[#ff1a3c] drop-shadow-[0_0_12px_#ff1a3c]">!</span>TIUM
+              B<span className="text-[#ff1a3c] drop-shadow-[0_0_12px_#ff1a3c]">!</span>T<span className="text-[#ff1a3c] drop-shadow-[0_0_12px_#ff1a3c]">!</span>UM
             </div>
             <div className="text-[11px] font-[600] tracking-[4px] text-[#d1d5db] mb-[8px]">
               TECHNOLOGY
