@@ -9,6 +9,7 @@ import { getProducts, Product } from '@/lib/products';
 import PromoBanner from '@/components/PromoBanner';
 import TrendingHeroShowcase from '@/components/ui/TrendingHeroShowcase';
 import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, PackageCheck, Flame, CheckCircle2 } from 'lucide-react';
+import { HeroSearch } from '@/components/HeroSearch';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(useGSAP);
@@ -32,6 +33,7 @@ function HomeContent() {
     tl.from('.hero-badge', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' })
       .from('.hero-title', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3')
       .from('.hero-text', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3')
+      .from('.hero-search', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3')
       .from('.hero-buttons', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3')
       .from('.hero-cards', { scale: 0.9, opacity: 0, duration: 0.6, ease: 'back.out(1.2)' }, '-=0.4');
   }, { scope: container });
@@ -112,6 +114,10 @@ function HomeContent() {
             >
               From custom precision stencils to industrial DTF film rolls, exposed screen printing, and traditional batik stamps — explore our specialized print technology store.
             </p>
+
+            <div className="hero-search pt-2">
+              <HeroSearch />
+            </div>
             
             <div 
               className="hero-buttons flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2"

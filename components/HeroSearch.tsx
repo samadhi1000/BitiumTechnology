@@ -1,0 +1,443 @@
+'use client';
+
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { Search, X, Clock, TrendingUp, ChevronRight, Command } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { getProducts, Product } from '@/lib/products';
+import { useRouter } from 'next/navigation';
+
+// ─── Constants & Types ────────────────────────────────────────────────────────
+
+const TRENDING_QUICK_SEARCHES = [
+  { label: 'Tropical Monstera Stencil', category: 'stencil' },
+  { label: 'Exposed Screen Printing', category: 'screen-printing' },
+  { label: 'Anime DTF Sticker Pack', category: 'dtf_sheet' },
+  { label: 'Copper Cap Batik Stamp', category: 'batik-stamp' },
+  { label: 'Premium DTF Film Roll', category: 'materials' },
+];
+
+const RECENT_SEARCH_KEY = 'bitium_recent_searches';
+
+interface HeroSearchProps {
+  className?: string;
+}
+
+// ─── Category Style Helpers ──────────────────────────────────────────────────
+
+const getCategoryBadgeStyles = (category: string) => {
+  switch (category) {
+    case 'stencil':
+      return {
+        bg: 'rgba(139, 92, 246, 0.12)',
+        text: 'rgba(167, 139, 250, 0.9)',
+        border: '1px solid rgba(139, 92, 246, 0.25)',
+        label: 'Stencil',
+      };
+    case 'screen-printing':
+      return {
+        bg: 'rgba(59, 130, 246, 0.12)',
+        text: 'rgba(147, 197, 253, 0.9)',
+        border: '1px solid rgba(59, 130, 246, 0.25)',
+        label: 'Screen Print',
+      };
+    case 'dtf_sheet':
+      return {
+        bg: 'rgba(217, 70, 239, 0.12)',
+        text: 'rgba(245, 158, 11, 0.9)', // Custom styling mapping to orange/fuchsia depending on brand
+        border: '1px solid rgba(217, 70, 239, 0.25)',
+        label: 'DTF Print',
+      };
+    case 'batik-stamp':
+      return {
+        bg: 'rgba(245, 158, 11, 0.12)',
+        text: 'rgba(253, 230, 138, 0.9)',
+        border: '1px solid rgba(245, 158, 11, 0.25)',
+        label: 'Batik Cap',
+      };
+    case 'materials':
+      return {
+        bg: 'rgba(16, 185, 129, 0.12)',
+        text: 'rgba(167, 243, 208, 0.9)',
+        border: '1px solid rgba(16, 185, 129, 0.25)',
+        label: 'Consumable',
+      };
+    default:
+      return {
+        bg: 'rgba(113, 113, 122, 0.12)',
+        text: 'rgba(212, 212, 216, 0.9)',
+        border: '1px solid rgba(113, 113, 122, 0.25)',
+        label: category,
+      };
+  }
+};
+
+// ─── HeroSearch Component ─────────────────────────────────────────────────────
+
+export const HeroSearch: React.FC<HeroSearchProps> = ({ className = '' }) => {
+  const router = useRouter();
+  const [query, setQuery] = useState('');
+  const [isFocused, setIsFocused] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filteredResults, setFilteredResults] = useState<Product[]>([]);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  
+  const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Load all products and recent searches
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const catalog = await getProducts();
+        setProducts(catalog);
+      } catch (err) {
+        console.error('Failed to load products for search catalog:', err);
+      }
+    }
+    loadData();
+
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem(RECENT_SEARCH_KEY);
+        if (stored) {
+          setRecentSearches(JSON.parse(stored).slice(0, 3));
+        }
+      } catch (err) {
+        console.error('Failed to parse recent searches:', err);
+      }
+    }
+  }, []);
+
+  // Keyboard shortcut: Ctrl+K or Cmd+K to focus search input
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
+      if (e.key === 'Escape') {
+        inputRef.current?.blur();
+        setIsFocused(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Handle clicking outside the container to dismiss dropdown
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setIsFocused(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Live filter results based on input
+  const handleChange = useCallback((value: string) => {
+    setQuery(value);
+    if (value.trim().length > 0) {
+      const q = value.toLowerCase().trim();
+      const filtered = products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(q) ||
+          product.description.toLowerCase().includes(q) ||
+          product.category.toLowerCase().includes(q) ||
+          (product.sub_category && product.sub_category.toLowerCase().includes(q))
+      );
+      setFilteredResults(filtered.slice(0, 5));
+    } else {
+      setFilteredResults([]);
+    }
+  }, [products]);
+
+  // Submit search and track recent query
+  const handleSubmit = (value: string = query) => {
+    const term = value.trim();
+    if (!term) return;
+
+    // Track in local storage
+    if (typeof window !== 'undefined') {
+      const nextRecent = [term, ...recentSearches.filter((s) => s !== term)].slice(0, 3);
+      setRecentSearches(nextRecent);
+      localStorage.setItem(RECENT_SEARCH_KEY, JSON.stringify(nextRecent));
+    }
+
+    // Attempt direct match or redirect to stencils search query page
+    const matchedProduct = products.find(p => p.name.toLowerCase() === term.toLowerCase());
+    if (matchedProduct) {
+      router.push(`/products/${matchedProduct.id}`);
+    } else {
+      // Redirect to catalog/category or product detail matching category if generic
+      const matchingCategory = ['stencil', 'screen-printing', 'dtf_sheet', 'batik-stamp', 'materials'].find(
+        (cat) => cat === term.toLowerCase() || term.toLowerCase().includes(cat.replace('-', ' '))
+      );
+      if (matchingCategory) {
+        router.push(matchingCategory === 'dtf_sheet' ? '/dtf-printing' : `/${matchingCategory}`);
+      } else {
+        // Fallback to stencils page or canvas
+        router.push(`/stencil?search=${encodeURIComponent(term)}`);
+      }
+    }
+    
+    setIsFocused(false);
+    inputRef.current?.blur();
+  };
+
+  const handleClear = () => {
+    setQuery('');
+    setFilteredResults([]);
+    inputRef.current?.focus();
+  };
+
+  const showDropdown = isFocused;
+
+  return (
+    <div ref={containerRef} className={`relative w-full max-w-2xl ${className}`}>
+      
+      {/* ── Search Bar Input Wrapper ── */}
+      <motion.div
+        animate={{
+          boxShadow: isFocused
+            ? '0 0 0 1.5px rgba(139, 92, 246, 0.6), 0 8px 40px -8px rgba(139, 92, 246, 0.35), 0 2px 12px rgba(0, 0, 0, 0.6)'
+            : '0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 24px rgba(0, 0, 0, 0.45)',
+        }}
+        transition={{ duration: 0.2, ease: 'easeOut' }}
+        className="relative flex items-center rounded-2xl overflow-hidden bg-zinc-900/80 backdrop-blur-xl border border-zinc-800"
+      >
+        {/* Search icon */}
+        <div className="flex-shrink-0 pl-4 pr-2">
+          <motion.div
+            animate={{ color: isFocused ? '#a78bfa' : '#71717a' }}
+            transition={{ duration: 0.2 }}
+          >
+            <Search className="w-5 h-5" aria-hidden="true" />
+          </motion.div>
+        </div>
+
+        {/* Input field */}
+        <input
+          ref={inputRef}
+          type="text"
+          role="combobox"
+          aria-expanded={showDropdown}
+          aria-haspopup="listbox"
+          aria-label="Search print products, stencils, and equipment"
+          autoComplete="off"
+          spellCheck={false}
+          placeholder="Search stencils, screen printing, custom DTF..."
+          value={query}
+          onChange={(e) => handleChange(e.target.value)}
+          onFocus={() => setIsFocused(true)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+          className="flex-1 py-4 pr-2 bg-transparent text-zinc-100 text-sm placeholder-zinc-500 outline-none font-sans"
+        />
+
+        {/* Clear (X) button */}
+        <AnimatePresence>
+          {query.length > 0 && (
+            <motion.button
+              key="clear"
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.6 }}
+              transition={{ duration: 0.15 }}
+              onClick={handleClear}
+              aria-label="Clear search"
+              className="flex-shrink-0 mr-2 p-1.5 rounded-full text-zinc-400 hover:text-zinc-200 hover:bg-white/5 transition-colors"
+            >
+              <X className="w-3.5 h-3.5" />
+            </motion.button>
+          )}
+        </AnimatePresence>
+
+        {/* Keyboard shortcut (Cmd/Ctrl + K) */}
+        {!query && (
+          <div className="hidden sm:flex flex-shrink-0 items-center gap-1 mr-3 px-2 py-1 rounded-md border border-white/5 bg-white/5">
+            <Command className="w-3 h-3 text-zinc-500" />
+            <span className="text-[10px] text-zinc-500 leading-none font-mono">K</span>
+          </div>
+        )}
+
+        {/* Submit search button */}
+        <motion.button
+          whileTap={{ scale: 0.97 }}
+          onClick={() => handleSubmit()}
+          aria-label="Submit search"
+          className="flex-shrink-0 m-1.5 px-4.5 py-2.5 rounded-xl text-white font-bold text-xs tracking-wider uppercase transition-all bg-gradient-to-r from-violet-600 via-fuchsia-500 to-pink-500 hover:opacity-95 shadow-[0_2px_12px_rgba(139,92,246,0.25)]"
+        >
+          <span className="hidden sm:inline">Search</span>
+          <Search className="w-3.5 h-3.5 sm:hidden" aria-hidden="true" />
+        </motion.button>
+      </motion.div>
+
+      {/* ── Dropdown Suggestions ── */}
+      <AnimatePresence>
+        {showDropdown && (
+          <motion.div
+            key="dropdown"
+            initial={{ opacity: 0, y: -10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.98 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            role="listbox"
+            aria-label="Search suggestions"
+            className="absolute top-full left-0 right-0 mt-3 rounded-2xl overflow-hidden z-50 bg-zinc-950/98 backdrop-blur-2xl border border-zinc-800/80 shadow-[0_24px_50px_-12px_rgba(0,0,0,0.85)]"
+          >
+            {/* Live Filter Results */}
+            {filteredResults.length > 0 ? (
+              <div className="p-2">
+                <SectionLabel>Products Found</SectionLabel>
+                {filteredResults.map((product) => {
+                  const badge = getCategoryBadgeStyles(product.category);
+                  return (
+                    <SearchDropdownItem
+                      key={product.id}
+                      label={product.name}
+                      badge={badge.label}
+                      badgeStyles={badge}
+                      icon="search"
+                      onClick={() => router.push(`/products/${product.id}`)}
+                    />
+                  );
+                })}
+              </div>
+            ) : query.length > 0 ? (
+              /* No Search Results */
+              <div className="px-5 py-8 text-center">
+                <Search className="w-8 h-8 text-zinc-700 mx-auto mb-3" />
+                <p className="text-sm text-zinc-400">
+                  No products matching &ldquo;<span className="text-zinc-200">{query}</span>&rdquo;
+                </p>
+                <p className="text-xs text-zinc-500 mt-1">
+                  Try searching for: stencil, screen, dtf, or batik.
+                </p>
+              </div>
+            ) : (
+              /* Default Suggestions: Recents + Trendings */
+              <div className="p-2">
+                {recentSearches.length > 0 && (
+                  <>
+                    <SectionLabel gold={false}>Recent Searches</SectionLabel>
+                    {recentSearches.map((item, i) => (
+                      <SearchDropdownItem
+                        key={`recent-${i}`}
+                        label={item}
+                        icon="clock"
+                        onClick={() => {
+                          setQuery(item);
+                          handleSubmit(item);
+                        }}
+                      />
+                    ))}
+                    {/* Glowing Accent Line Divider */}
+                    <div className="my-2 mx-3 h-[1px] bg-gradient-to-r from-transparent via-violet-500/20 to-transparent" />
+                  </>
+                )}
+
+                <SectionLabel>Trending Categories</SectionLabel>
+                {TRENDING_QUICK_SEARCHES.map((item, i) => {
+                  const badge = getCategoryBadgeStyles(item.category);
+                  return (
+                    <SearchDropdownItem
+                      key={`trending-${i}`}
+                      label={item.label}
+                      badge={badge.label}
+                      badgeStyles={badge}
+                      icon="trending"
+                      onClick={() => {
+                        setQuery(item.label);
+                        handleSubmit(item.label);
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Keyboard hints footer */}
+            <div className="px-4 py-2.5 flex items-center justify-between border-t border-zinc-800/50 text-[10px] text-zinc-500">
+              <span>
+                Press{' '}
+                <kbd className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 font-mono text-[9px]">
+                  ↵
+                </kbd>{' '}
+                to search
+              </span>
+              <span>
+                <kbd className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 font-mono text-[9px]">
+                  Esc
+                </kbd>{' '}
+                to close
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
+
+const SectionLabel: React.FC<{ children: React.ReactNode; gold?: boolean }> = ({
+  children,
+  gold = true,
+}) => (
+  <p
+    className="px-3 py-1.5 text-[9px] font-extrabold uppercase tracking-[0.18em]"
+    style={{ color: gold ? 'rgba(167, 139, 250, 0.7)' : '#71717a' }}
+  >
+    {children}
+  </p>
+);
+
+interface DropdownItemProps {
+  label: string;
+  badge?: string;
+  badgeStyles?: { bg: string; text: string; border: string };
+  icon: 'search' | 'clock' | 'trending';
+  onClick: () => void;
+}
+
+const SearchDropdownItem: React.FC<DropdownItemProps> = ({
+  label,
+  badge,
+  badgeStyles,
+  icon,
+  onClick,
+}) => {
+  const IconComponent = icon === 'clock' ? Clock : icon === 'trending' ? TrendingUp : ChevronRight;
+
+  return (
+    <motion.button
+      whileHover={{ backgroundColor: 'rgba(139, 92, 246, 0.06)' }}
+      onClick={onClick}
+      role="option"
+      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-colors group"
+    >
+      <span className="flex-shrink-0 p-1.5 rounded-lg bg-zinc-800/50 group-hover:bg-violet-500/10 transition-colors">
+        <IconComponent className="w-3.5 h-3.5 text-zinc-500 group-hover:text-violet-400 transition-colors" />
+      </span>
+
+      <span className="flex-1 text-sm text-zinc-300 group-hover:text-zinc-100 transition-colors truncate font-sans">
+        {label}
+      </span>
+
+      {badge && badgeStyles && (
+        <span
+          className="flex-shrink-0 text-[9px] px-2 py-0.5 rounded-full font-extrabold tracking-wide uppercase"
+          style={{
+            background: badgeStyles.bg,
+            color: badgeStyles.text,
+            border: badgeStyles.border,
+          }}
+        >
+          {badge}
+        </span>
+      )}
+    </motion.button>
+  );
+};
