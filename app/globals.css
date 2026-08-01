@@ -4,33 +4,33 @@
   :root {
     --font-geist-sans: "Geist", Inter, system-ui, -apple-system, sans-serif;
     --font-geist-mono: "Geist Mono", ui-monospace, monospace;
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
+    --background: 20 7.4% 10.6%;
+    --foreground: 40 43% 98.4%;
     
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
+    --card: 20 6% 15%;
+    --card-foreground: 40 43% 98.4%;
     
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 20 6% 15%;
+    --popover-foreground: 40 43% 98.4%;
     
-    --primary: 263.4 70% 50.4%;
-    --primary-foreground: 210 20% 98%;
+    --primary: 12 71.4% 40.8%;
+    --primary-foreground: 40 43% 98.4%;
     
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 20 7.4% 10.6%;
+    --secondary-foreground: 40 43% 98.4%;
     
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted: 20 6% 15%;
+    --muted-foreground: 38 12% 65%;
     
-    --accent: 262.1 83.3% 57.8%;
-    --accent-foreground: 210 20% 98%;
+    --accent: 34 76.5% 50.2%;
+    --accent-foreground: 20 7.4% 10.6%;
     
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 263.4 70% 50.4%;
+    --border: 20 6% 18%;
+    --input: 20 6% 18%;
+    --ring: 12 71.4% 40.8%;
     
     --radius: 0.75rem;
   }
@@ -113,40 +113,68 @@ body {
 
 /* ── Light Mode Theme Overrides ─────────────────────────────────── */
 html.light-mode {
-  --background: 220 20% 97%;
-  --foreground: 224 15% 10%;
-  --card: 0 0% 100%;
-  --card-foreground: 224 15% 10%;
-  --muted: 220 14% 90%;
-  --muted-foreground: 220 8% 46%;
-  --border: 220 13% 88%;
-  --input: 220 13% 88%;
+  --background: 40 43% 98.4%;
+  --foreground: 20 7.4% 10.6%;
+  --card: 38 30% 94.5%;
+  --card-foreground: 20 7.4% 10.6%;
+  --muted: 38 20% 86.3%;
+  --muted-foreground: 38 12% 45%;
+  --border: 38 20% 86.3%;
+  --input: 38 20% 86.3%;
 }
 
 html.light-mode body {
-  background-color: hsl(220 20% 97%);
-  color: hsl(224 15% 10%);
+  background-color: #fdfbf7 !important;
+  color: #1c1917 !important;
 }
 
 html.light-mode .glass {
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(247, 243, 235, 0.75);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(28, 25, 23, 0.08);
 }
 
-/* Swap zinc-950 / zinc-900 panels in light mode */
-html.light-mode .bg-zinc-950 { background-color: #f1f5f9 !important; }
-html.light-mode .bg-zinc-900\/40 { background-color: rgba(255,255,255,0.85) !important; }
-html.light-mode .bg-zinc-900 { background-color: #e2e8f0 !important; }
-html.light-mode .border-zinc-800 { border-color: #cbd5e1 !important; }
-html.light-mode .border-zinc-900 { border-color: #e2e8f0 !important; }
-html.light-mode .text-zinc-300 { color: #334155 !important; }
-html.light-mode .text-zinc-400 { color: #475569 !important; }
-html.light-mode .text-zinc-500 { color: #64748b !important; }
-html.light-mode .text-white { color: #0f172a !important; }
-html.light-mode .bg-zinc-950\/80 { background-color: rgba(248,250,252,0.9) !important; }
-html.light-mode ::-webkit-scrollbar-track { background: #f1f5f9; }
-html.light-mode ::-webkit-scrollbar-thumb { background: #cbd5e1; }
+/* Warm, organic overrides for standard Tailwind utilities in dark/default mode */
+.bg-zinc-950 { background-color: #1c1917 !important; }
+.bg-zinc-900 { background-color: #292524 !important; }
+.bg-zinc-900\/40 { background-color: rgba(41, 37, 36, 0.4) !important; }
+.border-zinc-850 { border-color: #383533 !important; }
+.border-zinc-800 { border-color: #44403c !important; }
+.border-zinc-900 { border-color: #292524 !important; }
+.text-zinc-300 { color: #d6d3d1 !important; }
+.text-zinc-400 { color: #a8a29e !important; }
+.text-zinc-500 { color: #78716c !important; }
+
+/* Swap zinc-950 / zinc-900 panels in light mode to warm cotton and sand */
+html.light-mode .bg-zinc-950 { background-color: #fdfbf7 !important; }
+html.light-mode .bg-zinc-900\/40 { background-color: rgba(247, 243, 235, 0.85) !important; }
+html.light-mode .bg-zinc-900 { background-color: #f7f3eb !important; }
+html.light-mode .border-zinc-850 { border-color: #e5dfd5 !important; }
+html.light-mode .border-zinc-800 { border-color: #e5dfd5 !important; }
+html.light-mode .border-zinc-900 { border-color: #e5dfd5 !important; }
+html.light-mode .text-zinc-300 { color: #44403c !important; }
+html.light-mode .text-zinc-400 { color: #57534e !important; }
+html.light-mode .text-zinc-500 { color: #78716c !important; }
+html.light-mode .text-white { color: #1c1917 !important; }
+html.light-mode .bg-zinc-950\/80 { background-color: rgba(253, 251, 247, 0.9) !important; }
+html.light-mode ::-webkit-scrollbar-track { background: #fdfbf7; }
+html.light-mode ::-webkit-scrollbar-thumb { background: #e5dfd5; }
+
+/* Performance-friendly SVG-based linen/paper texture overlay */
+.tactile-grain {
+  position: relative;
+}
+.tactile-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.035; /* Keep it extremely subtle and elegant */
+  pointer-events: none;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
 
 /* Batik Text Mask Animation */
 @keyframes batik-flow {
