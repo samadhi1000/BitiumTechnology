@@ -3,11 +3,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useAuth } from '@/lib/context/AuthContext';
+import { uploadCanvasToCloudinary } from '@/lib/cloudinary';
 import * as fabric from 'fabric';
 import { 
   Upload, Trash2, Copy, Trash, RefreshCw, ZoomIn, 
   HelpCircle, Sparkles, CheckCircle2, AlertTriangle, ArrowRight,
-  Maximize2, Move
+  Maximize2, Move, Loader2
 } from 'lucide-react';
 
 interface SheetPreset {
@@ -42,6 +43,8 @@ export default function CanvasBuilder() {
   const addItem = useCartStore((state) => state.addItem);
   const openCart = useCartStore((state) => state.openCart);
   const [cartSuccess, setCartSuccess] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   // Conversion factor: 1 inch = 30 screen pixels (for rendering scale)
   const PPI = 35; 
@@ -263,46 +266,66 @@ export default function CanvasBuilder() {
     }
   };
 
-  // Add sheet to cart
-  const handleAddToCart = () => {
+  // Add sheet to cart (async — uploads preview to Cloudinary first)
+  const handleAddToCart = async () => {
     if (!canvas) return;
-    
-    // Get preview PNG URL
+    setUploadError(null);
+
+    // Export canvas Data URL (only used locally for upload — not stored in cart)
     const previewDataUrl = canvas.toDataURL({
       format: 'png',
-      quality: 0.8,
-      multiplier: 1
+      quality: 0.9,
+      multiplier: 1,
     });
 
-    const canvasJson = canvas.toJSON();
+    // Capture canvas JSON for potential re-editing
+    const canvasJson = canvas.toJSON() as Record<string, unknown>;
     const layersCount = canvas.getObjects().length;
 
+    // ── Upload to Cloudinary BEFORE dispatching to the store ─────────────
+    setIsUploading(true);
+    let sheetPreviewCloudinaryUrl: string | undefined;
+
+    try {
+      const uploadResult = await uploadCanvasToCloudinary(previewDataUrl, 'bitium/canvas-sheets');
+      sheetPreviewCloudinaryUrl = uploadResult.secureUrl;
+    } catch (err) {
+      console.error('[Canvas Builder] Cloudinary upload failed:', err);
+      // Graceful fallback — item still gets added without a CDN preview image
+      setUploadError('Preview upload failed — your sheet was still added to cart.');
+    } finally {
+      setIsUploading(false);
+    }
+
+    // ── Dispatch to cart store ─────────────────────────────────────────────
     addItem({
       type: 'dtf_sheet',
       product: {
         id: 'b2a8d3e9-4e7a-4e2b-b6c8-2f1a3b4c5d6e',
         name: 'Custom DTF Sheet Builder',
         description: `Custom ${selectedPreset.width}" x ${selectedPreset.height}" DTF Transfer Sheet`,
-        image_url: previewDataUrl,
+        image_url: sheetPreviewCloudinaryUrl, // CDN URL — or undefined if upload failed
       },
       customSheet: {
         width: selectedPreset.width,
         height: selectedPreset.height,
-        canvasJson: canvasJson,
-        previewUrl: previewDataUrl,
         price: selectedPreset.price,
       },
       customization: {
-        previewUrl: previewDataUrl,
+        frontPreviewCloudinaryUrl: sheetPreviewCloudinaryUrl,
+        sheetWidth: selectedPreset.width,
+        sheetHeight: selectedPreset.height,
+        canvasJson,
         designLayersCount: layersCount,
-        printStyle: 'DTF'
+        printStyle: 'DTF',
+        source: 'canvas_builder',
       },
       quantity: 1,
       price: selectedPreset.price,
     });
 
     setCartSuccess(true);
-    setTimeout(() => setCartSuccess(false), 2000);
+    setTimeout(() => setCartSuccess(false), 2500);
     openCart();
   };
 
@@ -485,13 +508,28 @@ export default function CanvasBuilder() {
               Sheet Added to Cart
             </button>
           ) : (
-            <button
-              onClick={handleAddToCart}
-              className="w-full py-4 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-violet-600/10"
-            >
-              Add Custom Sheet to Cart
-              <ArrowRight size={16} />
-            </button>
+            <div className="space-y-2">
+              <button
+                onClick={handleAddToCart}
+                disabled={isUploading}
+                className="w-full py-4 rounded-xl bg-violet-600 hover:bg-violet-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-violet-600/10"
+              >
+                {isUploading ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    Uploading Preview…
+                  </>
+                ) : (
+                  <>
+                    Add Custom Sheet to Cart
+                    <ArrowRight size={16} />
+                  </>
+                )}
+              </button>
+              {uploadError && (
+                <p className="text-[10px] text-amber-400 text-center font-medium">{uploadError}</p>
+              )}
+            </div>
           )}
         </div>
       </div>

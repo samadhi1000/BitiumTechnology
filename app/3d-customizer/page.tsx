@@ -3,10 +3,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as fabric from 'fabric';
 import { 
-  Eye, ArrowLeft, ShoppingBag
+  Eye, ArrowLeft, ShoppingBag, Loader2
 } from 'lucide-react';
 import Link from 'next/link';
 import { useCartStore } from '@/lib/store/cartStore';
+import { uploadCanvasToCloudinary } from '@/lib/cloudinary';
 
 import { ColorSelector, ColorOption } from '@/components/customizer/ColorSelector';
 import { SizeSelector } from '@/components/customizer/SizeSelector';
@@ -37,6 +38,8 @@ export default function DynamicMockupCustomizer() {
   const [backLogoImage, setBackLogoImage] = useState<string | null>(null);
   const [printStyle, setPrintStyle] = useState<'flat' | 'embossed' | 'vintage'>('flat');
   const [loading, setLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   const tShirtRef = useRef<fabric.Path | null>(null);
   const backTShirtRef = useRef<fabric.Path | null>(null);
@@ -371,54 +374,86 @@ export default function DynamicMockupCustomizer() {
     backCanvas.renderAll();
   };
 
-  // Add customized tee to cart
-  const handleAddToCart = () => {
-    if (!canvas) return;
 
-    // Deselect active logo to clean up capture preview
+  // Add customized tee to cart (async — uploads previews to Cloudinary first)
+  const handleAddToCart = async () => {
+    if (!canvas) return;
+    setUploadError(null);
+
+    // Deselect active object to get a clean export
     canvas.discardActiveObject();
     canvas.renderAll();
 
-    // Export mockup layout image
-    const dataUrl = canvas.toDataURL({ format: 'png', multiplier: 1.5 });
+    // Export canvas Data URLs (only used locally — not stored in cart)
+    const frontDataUrl = canvas.toDataURL({ format: 'png', multiplier: 1.5 });
 
-    // Export back mockup layout if active
-    let backDataUrl = undefined;
+    let backDataUrl: string | undefined;
     if (backCanvas) {
       backCanvas.discardActiveObject();
       backCanvas.renderAll();
       backDataUrl = backCanvas.toDataURL({ format: 'png', multiplier: 1.5 });
     }
 
-    const originalFileNames = [];
+    const originalFileNames: string[] = [];
     if (logoImage) originalFileNames.push('front-logo.png');
     if (backLogoImage) originalFileNames.push('back-logo.png');
 
+    // ── Upload previews to Cloudinary ──────────────────────────────────────
+    // We upload BEFORE dispatching to the store so that only tiny CDN URLs
+    // land in localStorage — never raw base64 blobs.
+    setIsUploading(true);
+    let frontPreviewCloudinaryUrl: string | undefined;
+    let backPreviewCloudinaryUrl: string | undefined;
+    let productImageUrl: string | undefined;
+
+    try {
+      const frontResult = await uploadCanvasToCloudinary(frontDataUrl, 'bitium/mockups');
+      frontPreviewCloudinaryUrl = frontResult.secureUrl;
+      productImageUrl = frontResult.secureUrl;
+
+      if (backDataUrl) {
+        const backResult = await uploadCanvasToCloudinary(backDataUrl, 'bitium/mockups');
+        backPreviewCloudinaryUrl = backResult.secureUrl;
+      }
+    } catch (err) {
+      console.error('[3D Customizer] Cloudinary upload failed:', err);
+      // Graceful fallback: proceed without CDN URLs so the customer isn't blocked.
+      // The cart item will show a placeholder image instead of the preview.
+      setUploadError('Preview upload failed — your item was still added to cart.');
+    } finally {
+      setIsUploading(false);
+    }
+
+    // ── Dispatch to cart store ─────────────────────────────────────────────
     addItem({
       id: crypto.randomUUID(),
       type: 'apparel',
       product: {
         id: `custom-shirt-${selectedColor.name.toLowerCase().replace(/\s+/g, '-')}`,
         name: `Customized ${selectedColor.name} Tee`,
-        description: `Custom ${selectedColor.name} blank T-shirt printed with dynamic logo layout. Print Finish: ${printStyle.toUpperCase()}`,
-        image_url: dataUrl
+        description: `Custom ${selectedColor.name} T-shirt. Print Finish: ${printStyle.toUpperCase()}`,
+        image_url: productImageUrl,
       },
       variant: {
         id: `var-custom-${selectedColor.name.toLowerCase().replace(/\s+/g, '-')}-${selectedSize.toLowerCase()}`,
         name: `${selectedSize} / ${selectedColor.name}`,
-        sku: `CUSTOM-${selectedColor.name.substring(0,3).toUpperCase()}-${selectedSize}`,
+        sku: `CUSTOM-${selectedColor.name.substring(0, 3).toUpperCase()}-${selectedSize}`,
         price: 2490.00,
-        attributes: { size: selectedSize, color: selectedColor.name, customPrint: true, printStyle }
+        attributes: { size: selectedSize, color: selectedColor.name, customPrint: true, printStyle },
       },
       customization: {
-        previewUrl: dataUrl,
-        backPreviewUrl: backDataUrl,
-        printStyle: printStyle,
-        originalFileNames: originalFileNames,
-        designLayersCount: originalFileNames.length
+        frontPreviewCloudinaryUrl,
+        backPreviewCloudinaryUrl,
+        garmentColor: { name: selectedColor.name, hex: selectedColor.hex },
+        garmentSize: selectedSize as import('@/lib/store/cartStore').GarmentSize,
+        printStyle: printStyle as import('@/lib/store/cartStore').PrintStyle,
+        printPosition: backPreviewCloudinaryUrl ? 'both' : 'front',
+        originalFileNames,
+        designLayersCount: originalFileNames.length,
+        source: 'mockup_studio',
       },
       quantity: 1,
-      price: 2490.00
+      price: 2490.00,
     });
 
     openCart();
@@ -517,13 +552,26 @@ export default function DynamicMockupCustomizer() {
         </div>
 
         {/* Add to Cart */}
-        <div className="w-full">
+        <div className="w-full space-y-2">
           <button
             onClick={handleAddToCart}
-            className="w-full py-4 rounded-xl bg-violet-600 hover:bg-violet-500 font-bold text-sm text-white flex items-center justify-center gap-2 transition-all glow-primary shadow-lg shadow-violet-600/20"
+            disabled={isUploading}
+            className="w-full py-4 rounded-xl bg-violet-600 hover:bg-violet-500 disabled:opacity-60 disabled:cursor-not-allowed font-bold text-sm text-white flex items-center justify-center gap-2 transition-all glow-primary shadow-lg shadow-violet-600/20"
           >
-            <ShoppingBag size={16} /> Add Custom Design to Cart (Rs. 2,490.00)
+            {isUploading ? (
+              <>
+                <Loader2 size={16} className="animate-spin" />
+                Uploading Preview…
+              </>
+            ) : (
+              <>
+                <ShoppingBag size={16} /> Add Custom Design to Cart (Rs. 2,490.00)
+              </>
+            )}
           </button>
+          {uploadError && (
+            <p className="text-[10px] text-amber-400 text-center font-medium">{uploadError}</p>
+          )}
         </div>
       </div>
     </div>

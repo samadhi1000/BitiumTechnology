@@ -18,15 +18,14 @@ export default function CartDrawer() {
     updateQuantity, 
     removeItem, 
     getSubtotal, 
-    clearCart 
+    clearCart,
+    checkoutDetails,
+    setCheckoutDetails,
+    clearCheckoutDetails,
   } = useCartStore();
 
-  // Form state
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [notes, setNotes] = useState('');
+  // Destructure persisted checkout fields from the store
+  const { name, phone, address, city, notes } = checkoutDetails;
 
   // Form error state
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -65,25 +64,32 @@ export default function CartDrawer() {
       const itemsString = items.map((item, idx) => {
         let itemDetail = `${idx + 1}. *${item.product.name}*`;
         
-        // Add apparel variant attributes
+        // Apparel item
         if (item.type === 'apparel' && item.variant) {
           itemDetail += ` - Variant: ${item.variant.name} | Qty: ${item.quantity} | Price: LKR ${item.price.toLocaleString()}`;
-          
-          // Add customizer attributes if applicable
           if (item.customization) {
-            const printStyle = item.customization.printStyle ? `Print Finish: ${item.customization.printStyle.toUpperCase()}` : '';
-            const layers = item.customization.designLayersCount ? `Layers: ${item.customization.designLayersCount}` : '';
-            const details = [printStyle, layers].filter(Boolean).join(', ');
-            if (details) {
-              itemDetail += `\n   *(Customization Details: ${details})*`;
+            const parts = [];
+            if (item.customization.printStyle) parts.push(`Print Finish: ${item.customization.printStyle.toUpperCase()}`);
+            if (item.customization.garmentSize) parts.push(`Size: ${item.customization.garmentSize}`);
+            if (item.customization.garmentColor) parts.push(`Colour: ${item.customization.garmentColor.name}`);
+            if (item.customization.designLayersCount) parts.push(`Design Layers: ${item.customization.designLayersCount}`);
+            if (parts.length) itemDetail += `\n   *(${parts.join(' | ')})*`;
+            if (item.customization.frontPreviewCloudinaryUrl) {
+              itemDetail += `\n   🖼️ Design Preview: ${item.customization.frontPreviewCloudinaryUrl}`;
             }
           }
-        } 
-        // Add custom DTF sheet attributes
-        else if (item.type === 'dtf_sheet' && item.customSheet) {
+        }
+        // DTF sheet item
+        else if (item.type === 'dtf_sheet') {
+          const w = item.customization?.sheetWidth ?? item.customSheet?.width ?? '?';
+          const h = item.customization?.sheetHeight ?? item.customSheet?.height ?? '?';
           itemDetail += ` - Qty: ${item.quantity} | Price: LKR ${item.price.toLocaleString()}`;
-          itemDetail += `\n   *(Customization Details: Canvas ${item.customSheet.width}" x ${item.customSheet.height}" Sheet)*`;
-        } else {
+          itemDetail += `\n   *(DTF Sheet: ${w}" x ${h}" | Layers: ${item.customization?.designLayersCount ?? 0})*`;
+          if (item.customization?.frontPreviewCloudinaryUrl) {
+            itemDetail += `\n   🖼️ Layout Preview: ${item.customization.frontPreviewCloudinaryUrl}`;
+          }
+        }
+        else {
           itemDetail += ` - Qty: ${item.quantity} | Price: LKR ${item.price.toLocaleString()}`;
         }
 
@@ -121,12 +127,8 @@ ${itemsString}
       // 5. Clear cart and reset state after a short delay
       setTimeout(() => {
         clearCart();
+        clearCheckoutDetails();
         setShowSuccess(false);
-        setName('');
-        setPhone('');
-        setAddress('');
-        setCity('');
-        setNotes('');
         closeCart();
       }, 3500);
 
@@ -238,9 +240,9 @@ ${itemsString}
                     >
                       {/* Image Thumbnail / Preview */}
                       <div className="relative w-20 h-20 rounded-xl overflow-hidden border border-zinc-855 bg-zinc-950 flex-shrink-0 flex items-center justify-center">
-                        {item.customization?.previewUrl || item.product.image_url ? (
+                        {item.customization?.frontPreviewCloudinaryUrl || item.product.image_url ? (
                           <Image
-                            src={item.customization?.previewUrl || item.product.image_url || ''}
+                            src={item.customization?.frontPreviewCloudinaryUrl || item.product.image_url || ''}
                             alt={item.product.name}
                             fill
                             className="object-cover"
@@ -267,6 +269,11 @@ ${itemsString}
                         {item.customization?.printStyle && (
                           <span className="inline-flex mt-1 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-violet-500/10 border border-violet-500/20 text-violet-300">
                             {item.customization.printStyle} Finish
+                          </span>
+                        )}
+                        {item.customization?.garmentSize && (
+                          <span className="inline-flex mt-1 ml-1 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-400">
+                            Size: {item.customization.garmentSize}
                           </span>
                         )}
 
@@ -332,7 +339,7 @@ ${itemsString}
                         placeholder="e.g. Thusitha Weerasinghe"
                         value={name}
                         onChange={(e) => {
-                          setName(e.target.value);
+                          setCheckoutDetails({ name: e.target.value });
                           if (errors.name) setErrors(prev => ({ ...prev, name: '' }));
                         }}
                         className={`w-full p-3 rounded-xl border bg-zinc-900/40 text-sm text-white placeholder-zinc-600 outline-none transition-all ${
@@ -354,7 +361,7 @@ ${itemsString}
                         placeholder="e.g. +94715520897 or 0715520897"
                         value={phone}
                         onChange={(e) => {
-                          setPhone(e.target.value);
+                          setCheckoutDetails({ phone: e.target.value });
                           if (errors.phone) setErrors(prev => ({ ...prev, phone: '' }));
                         }}
                         className={`w-full p-3 rounded-xl border bg-zinc-900/40 text-sm text-white placeholder-zinc-600 outline-none transition-all ${
@@ -376,7 +383,7 @@ ${itemsString}
                         placeholder="e.g. 120/A, Flower Road"
                         value={address}
                         onChange={(e) => {
-                          setAddress(e.target.value);
+                          setCheckoutDetails({ address: e.target.value });
                           if (errors.address) setErrors(prev => ({ ...prev, address: '' }));
                         }}
                         className={`w-full p-3 rounded-xl border bg-zinc-900/40 text-sm text-white placeholder-zinc-600 outline-none transition-all ${
@@ -398,7 +405,7 @@ ${itemsString}
                         placeholder="e.g. Colombo"
                         value={city}
                         onChange={(e) => {
-                          setCity(e.target.value);
+                          setCheckoutDetails({ city: e.target.value });
                           if (errors.city) setErrors(prev => ({ ...prev, city: '' }));
                         }}
                         className={`w-full p-3 rounded-xl border bg-zinc-900/40 text-sm text-white placeholder-zinc-600 outline-none transition-all ${
@@ -418,7 +425,7 @@ ${itemsString}
                       <textarea
                         placeholder="Specify color customizations, fabric preferences, or packaging notes..."
                         value={notes}
-                        onChange={(e) => setNotes(e.target.value)}
+                        onChange={(e) => setCheckoutDetails({ notes: e.target.value })}
                         rows={3}
                         className="w-full p-3 rounded-xl border border-zinc-850 bg-zinc-900/40 text-sm text-white placeholder-zinc-600 focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 outline-none transition-all resize-none"
                       />

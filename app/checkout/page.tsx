@@ -45,8 +45,10 @@ export default function CheckoutPage() {
               user_id: user?.id || null,
               width: item.customSheet.width,
               height: item.customSheet.height,
-              canvas_json: item.customSheet.canvasJson,
-              preview_url: item.customSheet.previewUrl,
+              // canvasJson moved to item.customization.canvasJson in Phase 1 refactor
+              canvas_json: item.customization?.canvasJson ?? null,
+              // previewUrl moved to Cloudinary CDN URL in item.customization
+              preview_url: item.customization?.frontPreviewCloudinaryUrl ?? null,
               price: item.customSheet.price,
             })
             .select()
@@ -116,7 +118,7 @@ export default function CheckoutPage() {
           quantity: item.quantity,
           price: item.price,
           type: item.type,
-          customSheetPreview: item.customSheet?.previewUrl || null,
+          customSheetPreview: item.customization?.frontPreviewCloudinaryUrl ?? item.customSheet?.width ? `${item.customSheet?.width}" x ${item.customSheet?.height}"` : null,
         })),
       };
 
