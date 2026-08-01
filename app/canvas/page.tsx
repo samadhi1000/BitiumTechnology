@@ -40,6 +40,7 @@ export default function CanvasBuilder() {
   
   // Cart adding
   const addItem = useCartStore((state) => state.addItem);
+  const openCart = useCartStore((state) => state.openCart);
   const [cartSuccess, setCartSuccess] = useState(false);
 
   // Conversion factor: 1 inch = 30 screen pixels (for rendering scale)
@@ -274,6 +275,7 @@ export default function CanvasBuilder() {
     });
 
     const canvasJson = canvas.toJSON();
+    const layersCount = canvas.getObjects().length;
 
     addItem({
       type: 'dtf_sheet',
@@ -290,12 +292,18 @@ export default function CanvasBuilder() {
         previewUrl: previewDataUrl,
         price: selectedPreset.price,
       },
+      customization: {
+        previewUrl: previewDataUrl,
+        designLayersCount: layersCount,
+        printStyle: 'DTF'
+      },
       quantity: 1,
       price: selectedPreset.price,
     });
 
     setCartSuccess(true);
-    setTimeout(() => setCartSuccess(false), 3000);
+    setTimeout(() => setCartSuccess(false), 2000);
+    openCart();
   };
 
   return (

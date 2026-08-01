@@ -22,6 +22,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   const [loading, setLoading] = useState(true);
   const [added, setAdded] = useState(false);
   const addItem = useCartStore((state) => state.addItem);
+  const openCart = useCartStore((state) => state.openCart);
 
   useEffect(() => {
     async function load() {
@@ -84,6 +85,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
+    openCart();
   };
 
   // Group variants by color and size if applicable

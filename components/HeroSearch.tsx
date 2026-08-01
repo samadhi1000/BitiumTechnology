@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Search, X, Clock, TrendingUp, ChevronRight, Command } from 'lucide-react';
+import { Search, X, Clock, TrendingUp, ChevronRight, Command, ShoppingCart, Eye } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getProducts, Product } from '@/lib/products';
 import { useRouter } from 'next/navigation';
+import { useCartStore } from '@/lib/store/cartStore';
 
 // ─── Constants & Types ────────────────────────────────────────────────────────
 
@@ -80,6 +81,9 @@ export const HeroSearch: React.FC<HeroSearchProps> = ({ className = '' }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredResults, setFilteredResults] = useState<Product[]>([]);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  
+  const addItem = useCartStore((state) => state.addItem);
+  const openCart = useCartStore((state) => state.openCart);
   
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -288,7 +292,7 @@ export const HeroSearch: React.FC<HeroSearchProps> = ({ className = '' }) => {
           >
             {/* Live Filter Results */}
             {filteredResults.length > 0 ? (
-              <div className="p-2">
+              <div className="p-2 animate-in fade-in slide-in-from-top-1 duration-200">
                 <SectionLabel>Products Found</SectionLabel>
                 {filteredResults.map((product) => {
                   const badge = getCategoryBadgeStyles(product.category);
@@ -299,7 +303,54 @@ export const HeroSearch: React.FC<HeroSearchProps> = ({ className = '' }) => {
                       badge={badge.label}
                       badgeStyles={badge}
                       icon="search"
-                      onClick={() => router.push(`/products/${product.id}`)}
+                      product={product}
+                      onClick={() => {
+                        setIsFocused(false);
+                        router.push(`/products/${product.id}`);
+                      }}
+                      onAddToCart={() => {
+                        const defaultVariant = product.variants?.[0] || {
+                          id: `var-${product.id}`,
+                          name: 'Standard Option',
+                          sku: `VAR-${product.id.toUpperCase()}`,
+                          price_override: null,
+                          stock_quantity: 100,
+                          attributes: { type: 'standard' }
+                        };
+                        const price = defaultVariant.price_override || product.price;
+
+                        addItem({
+                          type: 'apparel',
+                          product: {
+                            id: product.id,
+                            name: product.name,
+                            description: product.description,
+                            image_url: product.image_url,
+                          },
+                          variant: {
+                            id: defaultVariant.id,
+                            name: defaultVariant.name,
+                            sku: defaultVariant.sku,
+                            price: price,
+                            attributes: defaultVariant.attributes,
+                          },
+                          quantity: 1,
+                          price: price,
+                        });
+                        
+                        setQuery('');
+                        setIsFocused(false);
+                        openCart();
+                      }}
+                      onCustomize={() => {
+                        setQuery('');
+                        setIsFocused(false);
+                        if (product.sub_category === 'tshirt-design') {
+                          router.push('/3d-customizer');
+                        } else {
+                          router.push('/canvas');
+                        }
+                      }}
                     />
                   );
                 })}
@@ -400,6 +451,9 @@ interface DropdownItemProps {
   badgeStyles?: { bg: string; text: string; border: string };
   icon: 'search' | 'clock' | 'trending';
   onClick: () => void;
+  product?: Product;
+  onAddToCart?: () => void;
+  onCustomize?: () => void;
 }
 
 const SearchDropdownItem: React.FC<DropdownItemProps> = ({
@@ -408,36 +462,68 @@ const SearchDropdownItem: React.FC<DropdownItemProps> = ({
   badgeStyles,
   icon,
   onClick,
+  product,
+  onAddToCart,
+  onCustomize,
 }) => {
   const IconComponent = icon === 'clock' ? Clock : icon === 'trending' ? TrendingUp : ChevronRight;
 
   return (
-    <motion.button
+    <motion.div
       whileHover={{ backgroundColor: 'rgba(139, 92, 246, 0.06)' }}
+      className="w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl text-left transition-colors group cursor-pointer"
       onClick={onClick}
-      role="option"
-      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-colors group"
     >
-      <span className="flex-shrink-0 p-1.5 rounded-lg bg-zinc-800/50 group-hover:bg-violet-500/10 transition-colors">
-        <IconComponent className="w-3.5 h-3.5 text-zinc-500 group-hover:text-violet-400 transition-colors" />
-      </span>
-
-      <span className="flex-1 text-sm text-zinc-300 group-hover:text-zinc-100 transition-colors truncate font-sans">
-        {label}
-      </span>
-
-      {badge && badgeStyles && (
-        <span
-          className="flex-shrink-0 text-[9px] px-2 py-0.5 rounded-full font-extrabold tracking-wide uppercase"
-          style={{
-            background: badgeStyles.bg,
-            color: badgeStyles.text,
-            border: badgeStyles.border,
-          }}
-        >
-          {badge}
+      <div className="flex items-center gap-3 min-w-0 flex-1">
+        <span className="flex-shrink-0 p-1.5 rounded-lg bg-zinc-800/50 group-hover:bg-violet-500/10 transition-colors">
+          <IconComponent className="w-3.5 h-3.5 text-zinc-500 group-hover:text-violet-400 transition-colors" />
         </span>
-      )}
-    </motion.button>
+
+        <span className="text-sm text-zinc-300 group-hover:text-zinc-100 transition-colors truncate font-sans">
+          {label}
+        </span>
+      </div>
+
+      <div className="flex items-center gap-2 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+        {product && (
+          <div className="hidden group-hover:flex items-center gap-1.5 transition-all">
+            {product.category === 'dtf_sheet' ? (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onCustomize?.();
+                }}
+                className="px-2.5 py-1 text-[10px] font-bold rounded-lg bg-violet-600 hover:bg-violet-500 text-white flex items-center gap-1 transition-colors cursor-pointer"
+              >
+                <Eye size={10} /> Customize
+              </button>
+            ) : (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onAddToCart?.();
+                }}
+                className="px-2.5 py-1 text-[10px] font-bold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1 transition-colors cursor-pointer"
+              >
+                <ShoppingCart size={10} /> Add to Cart
+              </button>
+            )}
+          </div>
+        )}
+
+        {badge && badgeStyles && (
+          <span
+            className="text-[9px] px-2 py-0.5 rounded-full font-extrabold tracking-wide uppercase group-hover:opacity-30 group-hover:scale-95 transition-all"
+            style={{
+              background: badgeStyles.bg,
+              color: badgeStyles.text,
+              border: badgeStyles.border,
+            }}
+          >
+            {badge}
+          </span>
+        )}
+      </div>
+    </motion.div>
   );
 };

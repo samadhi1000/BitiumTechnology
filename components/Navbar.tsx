@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useAuth } from '@/lib/context/AuthContext';
+import CartDrawer from '@/components/CartDrawer';
 import { useTheme } from '@/lib/context/ThemeContext';
 import { 
   ShoppingBag, 
@@ -28,6 +29,7 @@ import {
 
 export default function Navbar() {
   const cartItemsCount = useCartStore((state) => state.getTotalItems());
+  const openCart = useCartStore((state) => state.openCart);
   const { user, profile, signOut } = useAuth();
   const { theme, toggle } = useTheme();
   
@@ -260,14 +262,20 @@ export default function Navbar() {
             </button>
 
             {/* Cart Icon */}
-            <Link href="/cart" onClick={closeMobileMenu} className="relative p-2 rounded-full hover:bg-zinc-800 text-zinc-300 hover:text-white transition-colors">
+            <button
+              onClick={() => {
+                closeMobileMenu();
+                openCart();
+              }}
+              className="relative p-2 rounded-full hover:bg-zinc-800 text-zinc-300 hover:text-white transition-colors cursor-pointer"
+            >
               <ShoppingBag size={20} />
               {cartItemsCount > 0 && (
                 <span className="absolute -top-1 -right-1 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full bg-violet-600 text-[9px] sm:text-[10px] font-bold text-white ring-2 ring-zinc-950 animate-pulse">
                   {cartItemsCount}
                 </span>
               )}
-            </Link>
+            </button>
 
             {/* Desktop Auth */}
             {user ? (
@@ -583,6 +591,7 @@ export default function Navbar() {
           </div>
         </div>
       )}
+      <CartDrawer />
     </nav>
   );
 }

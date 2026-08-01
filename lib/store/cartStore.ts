@@ -25,33 +25,49 @@ export interface CartItem {
     previewUrl?: string;
     price: number;
   };
+  customization?: {
+    previewUrl?: string; // High-res canvas/mockup snapshot Data URL
+    backPreviewUrl?: string; // Optional back view snapshot
+    customText?: string;
+    designLayersCount?: number;
+    printStyle?: string;
+    originalFileNames?: string[];
+  };
   quantity: number;
   price: number; // resolved unit price
 }
 
 interface CartState {
   items: CartItem[];
+  isCartOpen: boolean;
   addItem: (item: Omit<CartItem, 'id'> & { id?: string }) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
   getTotalItems: () => number;
   getSubtotal: () => number;
+  openCart: () => void;
+  closeCart: () => void;
+  toggleCart: () => void;
 }
 
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
+      isCartOpen: false,
+      openCart: () => set({ isCartOpen: true }),
+      closeCart: () => set({ isCartOpen: false }),
+      toggleCart: () => set((state) => ({ isCartOpen: !state.isCartOpen })),
       addItem: (newItem) => {
         const items = get().items;
         // Generate a random id if not provided (especially for custom sheets to allow duplicates with different canvas layouts)
         const itemId = newItem.id || (newItem.type === 'dtf_sheet' ? crypto.randomUUID() : newItem.variant?.id || crypto.randomUUID());
 
         // Check if item already exists (only for standard variants, custom sheets are always unique)
-        if (newItem.type === 'apparel') {
+        if (newItem.type === 'apparel' && !newItem.customization) {
           const existingItemIndex = items.findIndex(
-            (item) => item.type === 'apparel' && item.variant?.id === newItem.variant?.id
+            (item) => item.type === 'apparel' && item.variant?.id === newItem.variant?.id && !item.customization
           );
 
           if (existingItemIndex > -1) {
@@ -92,6 +108,7 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: 'bitium-cart-storage',
+      partialize: (state) => ({ items: state.items }),
     }
   )
 );

@@ -43,6 +43,7 @@ export default function DynamicMockupCustomizer() {
   const foldsRef = useRef<fabric.Object[]>([]);
   const backFoldsRef = useRef<fabric.Object[]>([]);
   const addItem = useCartStore((state) => state.addItem);
+  const openCart = useCartStore((state) => state.openCart);
 
   // Initialize Canvas
   useEffect(() => {
@@ -381,6 +382,18 @@ export default function DynamicMockupCustomizer() {
     // Export mockup layout image
     const dataUrl = canvas.toDataURL({ format: 'png', multiplier: 1.5 });
 
+    // Export back mockup layout if active
+    let backDataUrl = undefined;
+    if (backCanvas) {
+      backCanvas.discardActiveObject();
+      backCanvas.renderAll();
+      backDataUrl = backCanvas.toDataURL({ format: 'png', multiplier: 1.5 });
+    }
+
+    const originalFileNames = [];
+    if (logoImage) originalFileNames.push('front-logo.png');
+    if (backLogoImage) originalFileNames.push('back-logo.png');
+
     addItem({
       id: crypto.randomUUID(),
       type: 'apparel',
@@ -397,11 +410,18 @@ export default function DynamicMockupCustomizer() {
         price: 2490.00,
         attributes: { size: selectedSize, color: selectedColor.name, customPrint: true, printStyle }
       },
+      customization: {
+        previewUrl: dataUrl,
+        backPreviewUrl: backDataUrl,
+        printStyle: printStyle,
+        originalFileNames: originalFileNames,
+        designLayersCount: originalFileNames.length
+      },
       quantity: 1,
       price: 2490.00
     });
 
-    alert('Successfully added customized T-shirt to your shopping cart!');
+    openCart();
   };
 
   return (
