@@ -6,7 +6,7 @@ import Link from 'next/link';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import PromoBanner from '@/components/PromoBanner';
-import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, PackageCheck, Flame, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, PackageCheck, Flame, CheckCircle2, Scissors, FlaskConical } from 'lucide-react';
 import { HeroSearch } from '@/components/HeroSearch';
 import { HeroSlideshow } from '@/components/HeroSlideshow';
 
@@ -63,6 +63,24 @@ function HomeContent() {
       gradient: 'from-amber-500/20 to-orange-500/10',
       border: 'hover:border-amber-500/50',
       badge: 'Traditional Art'
+    },
+    {
+      title: 'Laser Cutting',
+      description: 'Precision CO2 laser cutting, customized acrylic profiles, and custom wood engraving.',
+      href: '/stencil',
+      icon: Scissors,
+      gradient: 'from-rose-500/20 to-red-500/10',
+      border: 'hover:border-rose-500/50',
+      badge: 'CNC Precision'
+    },
+    {
+      title: 'Chemicals & Consumables',
+      description: 'Screen-printing sensitizers, photo emulsions, and recovery wash chemicals.',
+      href: '/materials',
+      icon: FlaskConical,
+      gradient: 'from-sky-500/20 to-indigo-500/10',
+      border: 'hover:border-sky-500/50',
+      badge: 'Industrial Grade'
     },
     {
       title: 'DTF Consumables',
