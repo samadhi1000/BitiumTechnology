@@ -9,6 +9,13 @@ import {
   Send, CheckCircle2, MessageSquare
 } from 'lucide-react';
 import Image from 'next/image';
+import { 
+  sanitizeName, 
+  sanitizePhone, 
+  sanitizeText, 
+  sanitizeForWhatsApp 
+} from '@/lib/security/sanitize';
+import { useRateLimit } from '@/lib/security/rateLimit';
 
 export default function CartDrawer() {
   const { 
@@ -38,24 +45,54 @@ export default function CartDrawer() {
   const shippingCost = 350; // COD Flat Rate
   const total = subtotal + shippingCost;
 
-  const validate = () => {
-    const newErrors: Record<string, string> = {};
-    if (!name.trim()) newErrors.name = 'Full Name is required';
-    if (!phone.trim()) {
-      newErrors.phone = 'Mobile/WhatsApp number is required';
-    } else if (!/^\+?[0-9\s-]{9,15}$/.test(phone.trim())) {
-      newErrors.phone = 'Please enter a valid phone number (e.g. +94771234567)';
+  // Initialize rate limiter: Max 3 checkout attempts per minute (Bot Prevention)
+  const { guarded, isLimited, resetInSeconds } = useRateLimit({
+    maxCalls: 3,
+    windowMs: 60000,
+    onLimitReached: (sec) => {
+      setErrors((prev) => ({
+        ...prev,
+        submit: `Too many attempts. Please wait ${sec} seconds before trying again.`
+      }));
     }
-    if (!address.trim()) newErrors.address = 'Delivery Address is required';
-    if (!city.trim()) newErrors.city = 'City is required';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  });
 
   const handleCheckout = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
+    
+    // Sanitize values
+    const sName = sanitizeName(name);
+    const sPhone = sanitizePhone(phone);
+    const sAddress = sanitizeText(address, 300);
+    const sCity = sanitizeName(city);
+    const sNotes = sanitizeText(notes, 500);
 
+    // Update store with sanitized values so they persist cleanly
+    setCheckoutDetails({
+      name: sName,
+      phone: sPhone,
+      address: sAddress,
+      city: sCity,
+      notes: sNotes
+    });
+
+    // Validate sanitized inputs
+    const newErrors: Record<string, string> = {};
+    if (!sName) newErrors.name = 'Full Name is required';
+    if (!sPhone) {
+      newErrors.phone = 'Mobile/WhatsApp number is required';
+    } else if (!/^\+?[0-9\s-]{9,15}$/.test(sPhone)) {
+      newErrors.phone = 'Please enter a valid phone number (e.g. +94771234567)';
+    }
+    if (!sAddress) newErrors.address = 'Delivery Address is required';
+    if (!sCity) newErrors.city = 'City is required';
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
     setIsSubmitting(true);
 
     // Simulate small loading state for premium micro-feedback
@@ -96,14 +133,20 @@ export default function CartDrawer() {
         return itemDetail;
       }).join('\n');
 
-      // 2. Format the complete WhatsApp template message
+      // 2. Format the complete WhatsApp template message (utilising sanitizeForWhatsApp for dynamic fields)
+      const wName = sanitizeForWhatsApp(sName);
+      const wPhone = sanitizeForWhatsApp(sPhone);
+      const wAddress = sanitizeForWhatsApp(sAddress);
+      const wCity = sanitizeForWhatsApp(sCity);
+      const wNotes = sanitizeForWhatsApp(sNotes);
+
       const messageTemplate = 
 `🛒 *NEW ORDER RECEIVED* 🛒
 ----------------------------------
 👤 *Customer Details:*
-- Name: ${name.trim()}
-- Phone: ${phone.trim()}
-- Delivery Address: ${address.trim()}, ${city.trim()}
+- Name: ${wName}
+- Phone: ${wPhone}
+- Delivery Address: ${wAddress}, ${wCity}
 
 📦 *Ordered Items:*
 ${itemsString}
@@ -112,7 +155,7 @@ ${itemsString}
 - Total Amount: LKR ${total.toLocaleString()}
 - Payment Option: Cash on Delivery (COD)
 ----------------------------------
-📝 *Notes:* ${notes.trim() ? notes.trim() : 'None'}`;
+📝 *Notes:* ${wNotes ? wNotes : 'None'}`;
 
       // 3. Encode safely and open WhatsApp API link
       const encodedText = encodeURIComponent(messageTemplate);
@@ -133,6 +176,12 @@ ${itemsString}
       }, 3500);
 
     }, 1200);
+  };
+
+  // Guard checkout trigger with rate limiter
+  const handleCheckoutGuarded = (e: React.FormEvent) => {
+    e.preventDefault();
+    guarded(handleCheckout)(e);
   };
 
   return (
@@ -487,12 +536,14 @@ ${itemsString}
                 {/* Checkout Trigger */}
                 <button
                   type="button"
-                  disabled={isSubmitting}
-                  onClick={handleCheckout}
-                  className="w-full py-4 rounded-xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-pink-500 hover:opacity-95 text-white font-extrabold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all shadow-[0_4px_20px_rgba(167,139,250,0.2)] hover:shadow-[0_4px_25px_rgba(167,139,250,0.35)]"
+                  disabled={isSubmitting || isLimited}
+                  onClick={handleCheckoutGuarded}
+                  className="w-full py-4 rounded-xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-pink-500 disabled:from-zinc-700 disabled:to-zinc-800 disabled:opacity-60 disabled:cursor-not-allowed hover:opacity-95 text-white font-extrabold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all shadow-[0_4px_20px_rgba(167,139,250,0.2)] hover:shadow-[0_4px_25px_rgba(167,139,250,0.35)]"
                 >
                   {isSubmitting ? (
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : isLimited ? (
+                    <span>Wait {resetInSeconds}s to Avoid Spam</span>
                   ) : (
                     <>
                       <Send size={13} />
@@ -500,6 +551,13 @@ ${itemsString}
                     </>
                   )}
                 </button>
+
+                {/* Cooldown error message display */}
+                {errors.submit && (
+                  <p className="text-[10px] text-amber-400 text-center font-medium mt-1">
+                    {errors.submit}
+                  </p>
+                )}
 
                 {/* Secure checkout info */}
                 <p className="text-[9px] text-zinc-600 text-center font-medium">

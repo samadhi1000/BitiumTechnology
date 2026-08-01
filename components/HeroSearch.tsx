@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { getProducts, Product } from '@/lib/products';
 import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/lib/store/cartStore';
+import { sanitizeSearch } from '@/lib/security/sanitize';
+import { useDebounce } from '@/lib/security/rateLimit';
 
 // ─── Constants & Types ────────────────────────────────────────────────────────
 
@@ -82,6 +84,8 @@ export const HeroSearch: React.FC<HeroSearchProps> = ({ className = '' }) => {
   const [filteredResults, setFilteredResults] = useState<Product[]>([]);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   
+  const debouncedQuery = useDebounce(query, 300); // Prevent filtering on every keystroke
+  
   const addItem = useCartStore((state) => state.addItem);
   const openCart = useCartStore((state) => state.openCart);
   
@@ -104,7 +108,14 @@ export const HeroSearch: React.FC<HeroSearchProps> = ({ className = '' }) => {
       try {
         const stored = localStorage.getItem(RECENT_SEARCH_KEY);
         if (stored) {
-          setRecentSearches(JSON.parse(stored).slice(0, 3));
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) {
+            const sanitized = parsed
+              .map((s) => sanitizeSearch(s))
+              .filter(Boolean)
+              .slice(0, 3);
+            setRecentSearches(sanitized);
+          }
         }
       } catch (err) {
         console.error('Failed to parse recent searches:', err);
@@ -139,27 +150,33 @@ export const HeroSearch: React.FC<HeroSearchProps> = ({ className = '' }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Live filter results based on input
-  const handleChange = useCallback((value: string) => {
-    setQuery(value);
-    if (value.trim().length > 0) {
-      const q = value.toLowerCase().trim();
+  // Debounced live filter of products
+  useEffect(() => {
+    const q = debouncedQuery.trim();
+    if (q.length > 0) {
+      const cleanQ = sanitizeSearch(q.toLowerCase());
       const filtered = products.filter(
         (product) =>
-          product.name.toLowerCase().includes(q) ||
-          product.description.toLowerCase().includes(q) ||
-          product.category.toLowerCase().includes(q) ||
-          (product.sub_category && product.sub_category.toLowerCase().includes(q))
+          product.name.toLowerCase().includes(cleanQ) ||
+          product.description.toLowerCase().includes(cleanQ) ||
+          product.category.toLowerCase().includes(cleanQ) ||
+          (product.sub_category && product.sub_category.toLowerCase().includes(cleanQ))
       );
       setFilteredResults(filtered.slice(0, 5));
     } else {
       setFilteredResults([]);
     }
-  }, [products]);
+  }, [debouncedQuery, products]);
+
+  // Live query change handler
+  const handleChange = useCallback((value: string) => {
+    setQuery(value);
+  }, []);
 
   // Submit search and track recent query
   const handleSubmit = (value: string = query) => {
-    const term = value.trim();
+    const sanitizedVal = sanitizeSearch(value);
+    const term = sanitizedVal.trim();
     if (!term) return;
 
     // Track in local storage

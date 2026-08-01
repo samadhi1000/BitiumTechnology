@@ -2,6 +2,8 @@
 
 @layer base {
   :root {
+    --font-geist-sans: "Geist", Inter, system-ui, -apple-system, sans-serif;
+    --font-geist-mono: "Geist Mono", ui-monospace, monospace;
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     

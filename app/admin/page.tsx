@@ -30,6 +30,15 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 
+// SHA-256 hashing helper using Web Crypto API (Browser Native, Secure)
+async function sha256(str: string): Promise<string> {
+  const buf = new TextEncoder().encode(str);
+  const hash = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(hash))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
 export default function AdminPanelPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,6 +50,19 @@ export default function AdminPanelPage() {
   const [usernameInput, setUsernameInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [loginError, setLoginError] = useState('');
+  
+  // Rate Limit / Lockout states (Brute Force Defense)
+  const [loginAttempts, setLoginAttempts] = useState(0);
+  const [lockoutTimeLeft, setLockoutTimeLeft] = useState(0);
+
+  // Decrement lockout timer
+  useEffect(() => {
+    if (lockoutTimeLeft <= 0) return;
+    const timer = setInterval(() => {
+      setLockoutTimeLeft((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [lockoutTimeLeft]);
 
   // Settings/Change Password States
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -101,20 +123,48 @@ export default function AdminPanelPage() {
   }, [isAuthenticated]);
 
   // Handle Login Action
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (typeof window === 'undefined') return;
+
+    if (lockoutTimeLeft > 0) {
+      setLoginError(`Too many failed attempts. Locked out for ${lockoutTimeLeft} seconds.`);
+      return;
+    }
 
     // Get current stored credentials or defaults
     const storedUsername = localStorage.getItem('bitium_admin_username') || 'admin';
     const storedPassword = localStorage.getItem('bitium_admin_password') || 'admin123';
 
-    if (usernameInput === storedUsername && passwordInput === storedPassword) {
+    // Verify hashed password
+    const inputHash = await sha256(passwordInput);
+    const isSha256 = /^[a-f0-9]{64}$/i.test(storedPassword);
+    let isPasswordCorrect = false;
+
+    if (isSha256) {
+      isPasswordCorrect = inputHash === storedPassword;
+    } else {
+      // Legacy plaintext check + automatic migration upgrade
+      isPasswordCorrect = passwordInput === storedPassword;
+      if (isPasswordCorrect) {
+        localStorage.setItem('bitium_admin_password', inputHash);
+      }
+    }
+
+    if (usernameInput === storedUsername && isPasswordCorrect) {
       sessionStorage.setItem('bitium_admin_session', 'true');
       setIsAuthenticated(true);
       setLoginError('');
+      setLoginAttempts(0);
     } else {
-      setLoginError('Incorrect Admin Username or Password. Please try again.');
+      const nextAttempts = loginAttempts + 1;
+      setLoginAttempts(nextAttempts);
+      if (nextAttempts >= 5) {
+        setLockoutTimeLeft(60); // Lockout for 60 seconds
+        setLoginError('Too many failed login attempts. Locked out for 60 seconds.');
+      } else {
+        setLoginError(`Incorrect Admin Username or Password. Attempt ${nextAttempts} of 5.`);
+      }
     }
   };
 
@@ -129,14 +179,25 @@ export default function AdminPanelPage() {
   };
 
   // Handle Credentials Update Action
-  const handleUpdateCredentials = (e: React.FormEvent) => {
+  const handleUpdateCredentials = async (e: React.FormEvent) => {
     e.preventDefault();
     if (typeof window === 'undefined') return;
 
     const storedUsername = localStorage.getItem('bitium_admin_username') || 'admin';
     const storedPassword = localStorage.getItem('bitium_admin_password') || 'bitium123';
 
-    if (currUser !== storedUsername || currPass !== storedPassword) {
+    // Verify current credentials
+    const inputHash = await sha256(currPass);
+    const isSha256 = /^[a-f0-9]{64}$/i.test(storedPassword);
+    let isCurrentPasswordCorrect = false;
+
+    if (isSha256) {
+      isCurrentPasswordCorrect = inputHash === storedPassword;
+    } else {
+      isCurrentPasswordCorrect = currPass === storedPassword;
+    }
+
+    if (currUser !== storedUsername || !isCurrentPasswordCorrect) {
       setSettingsError('Current Username or Password validation failed.');
       return;
     }
@@ -151,9 +212,10 @@ export default function AdminPanelPage() {
       return;
     }
 
-    // Save credentials
+    // Save hashed credentials
+    const hashedNewPass = await sha256(newPass);
     localStorage.setItem('bitium_admin_username', newUser);
-    localStorage.setItem('bitium_admin_password', newPass);
+    localStorage.setItem('bitium_admin_password', hashedNewPass);
 
     setSettingsSuccess('Credentials updated successfully!');
     setSettingsError('');
@@ -312,10 +374,11 @@ export default function AdminPanelPage() {
                 <input
                   type="text"
                   required
+                  disabled={lockoutTimeLeft > 0}
                   value={usernameInput}
                   onChange={(e) => setUsernameInput(e.target.value)}
                   placeholder="Enter admin username"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-sm text-white focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-sm text-white focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
             </div>
@@ -328,10 +391,11 @@ export default function AdminPanelPage() {
                 <input
                   type="password"
                   required
+                  disabled={lockoutTimeLeft > 0}
                   value={passwordInput}
                   onChange={(e) => setPasswordInput(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-sm text-white focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-sm text-white focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
             </div>
@@ -339,9 +403,10 @@ export default function AdminPanelPage() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-violet-600/10 hover:shadow-violet-600/35 transition-all hover:scale-[1.02]"
+              disabled={lockoutTimeLeft > 0}
+              className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 disabled:from-zinc-700 disabled:to-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-violet-600/10 hover:shadow-violet-600/35 transition-all hover:scale-[1.02]"
             >
-              Unlock Admin Panel
+              {lockoutTimeLeft > 0 ? `Locked Out (Try in ${lockoutTimeLeft}s)` : 'Unlock Admin Panel'}
             </button>
 
           </form>

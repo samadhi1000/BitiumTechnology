@@ -26,6 +26,10 @@
 
 // ─── Return type ──────────────────────────────────────────────────────────────
 
+import { validateDataUrl, sanitizeCloudName } from '@/lib/security/sanitize';
+
+// ─── Return type ──────────────────────────────────────────────────────────────
+
 export interface CloudinaryUploadResult {
   /** Cloudinary public ID, e.g. "bitium/mockups/abc123" */
   publicId: string;
@@ -63,10 +67,10 @@ export async function uploadCanvasToCloudinary(
   folder: string = 'bitium/uploads'
 ): Promise<CloudinaryUploadResult> {
   // ── Env var guard ──────────────────────────────────────────────────────────
-  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+  const rawCloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
   const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
-  if (!cloudName || !uploadPreset) {
+  if (!rawCloudName || !uploadPreset) {
     throw new Error(
       '[Cloudinary] Missing environment variables.\n' +
       'Add these to your .env.local file:\n' +
@@ -76,12 +80,12 @@ export async function uploadCanvasToCloudinary(
     );
   }
 
-  // ── Input validation ───────────────────────────────────────────────────────
-  if (!dataUrl || !dataUrl.startsWith('data:')) {
-    throw new Error(
-      '[Cloudinary] Invalid input: dataUrl must be a Data URL string ' +
-      '(starts with "data:image/..."). Got: ' + typeof dataUrl
-    );
+  const cloudName = sanitizeCloudName(rawCloudName);
+
+  // ── Input validation (MIME + Size Check) ───────────────────────────────────
+  const validation = validateDataUrl(dataUrl);
+  if (!validation.valid) {
+    throw new Error(`[Cloudinary] Input validation failed: ${validation.error}`);
   }
 
   // ── Build FormData ─────────────────────────────────────────────────────────
