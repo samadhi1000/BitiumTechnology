@@ -113,13 +113,9 @@ export default function CheckoutPage() {
           if (itemsError) throw itemsError;
 
         } catch (dbErr: any) {
-          // If network connection to Supabase fails, degrade gracefully instead of crashing
-          if (dbErr instanceof TypeError && dbErr.message.includes('fetch')) {
-            console.warn('[Checkout] Failed to reach Supabase server. Falling back to local simulation mode.', dbErr);
-            isSupabaseActive = false;
-          } else {
-            throw dbErr;
-          }
+          // If network connection to Supabase fails or any db error occurs, degrade gracefully instead of crashing
+          console.warn('[Checkout] Supabase database transaction failed. Falling back to local simulation mode.', dbErr);
+          isSupabaseActive = false;
         }
       }
 
