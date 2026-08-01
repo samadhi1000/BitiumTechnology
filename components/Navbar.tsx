@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useAuth } from '@/lib/context/AuthContext';
-import CartDrawer from '@/components/CartDrawer';
 import { useTheme } from '@/lib/context/ThemeContext';
 import { 
   ShoppingBag, 
@@ -591,7 +590,6 @@ export default function Navbar() {
           </div>
         </div>
       )}
-      <CartDrawer />
     </nav>
   );
 }

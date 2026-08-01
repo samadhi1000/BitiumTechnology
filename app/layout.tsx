@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/lib/context/ThemeContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PreloaderWrapper from "@/components/PreloaderWrapper";
+import CartDrawer from "@/components/CartDrawer";
 
 export const metadata: Metadata = {
   title: "Bitium Technology - High-Performance Custom DTF Sheet Builder",
@@ -30,6 +31,7 @@ export default function RootLayout({
               <Navbar />
               <main className="flex-grow flex flex-col">{children}</main>
               <Footer />
+              <CartDrawer />
             </AuthProvider>
           </PreloaderWrapper>
         </ThemeProvider>
