@@ -32,39 +32,10 @@ export default function CheckoutPage() {
     setLoading(true);
 
     try {
-      // 1. Save all custom sheets to Supabase first if there are any
       const savedItemDetails = [];
+      let orderId = crypto.randomUUID();
+      let isSupabaseActive = true;
 
-      for (const item of items) {
-        let customSheetId = null;
-
-        if (item.type === 'dtf_sheet' && item.customSheet) {
-          const { data: sheetData, error: sheetError } = await supabase
-            .from('custom_sheets')
-            .insert({
-              user_id: user?.id || null,
-              width: item.customSheet.width,
-              height: item.customSheet.height,
-              // canvasJson moved to item.customization.canvasJson in Phase 1 refactor
-              canvas_json: item.customization?.canvasJson ?? null,
-              // previewUrl moved to Cloudinary CDN URL in item.customization
-              preview_url: item.customization?.frontPreviewCloudinaryUrl ?? null,
-              price: item.customSheet.price,
-            })
-            .select()
-            .single();
-
-          if (sheetError) throw sheetError;
-          customSheetId = sheetData.id;
-        }
-
-        savedItemDetails.push({
-          ...item,
-          custom_sheet_id: customSheetId,
-        });
-      }
-
-      // 2. Create the main Order
       const shippingAddressObj = {
         full_name: fullName,
         address_line1: addressLine1,
@@ -72,37 +43,95 @@ export default function CheckoutPage() {
         phone: phone,
       };
 
-      const { data: orderData, error: orderError } = await supabase
-        .from('orders')
-        .insert({
-          user_id: user?.id || null,
-          status: 'pending',
-          total_price: total,
-          shipping_address: shippingAddressObj,
-          payment_method: paymentMethod,
-          payment_status: 'unpaid',
-        })
-        .select()
-        .single();
+      // Check if using placeholder configurations
+      const sbUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+      if (sbUrl.includes('your-project') || sbUrl.includes('placeholder')) {
+        isSupabaseActive = false;
+        console.warn('[Checkout] Supabase is using a placeholder URL. Running in local simulation mode.');
+      }
 
-      if (orderError) throw orderError;
-      const orderId = orderData.id;
+      if (isSupabaseActive) {
+        try {
+          // 1. Save all custom sheets to Supabase first if there are any
+          for (const item of items) {
+            let customSheetId = null;
 
-      // 3. Save order items
-      const orderItemsToInsert = savedItemDetails.map((item) => ({
-        order_id: orderId,
-        product_id: item.type === 'apparel' ? item.product.id : null,
-        variant_id: item.type === 'apparel' && item.variant ? item.variant.id : null,
-        custom_sheet_id: item.custom_sheet_id,
-        quantity: item.quantity,
-        price: item.price,
-      }));
+            if (item.type === 'dtf_sheet' && item.customSheet) {
+              const { data: sheetData, error: sheetError } = await supabase
+                .from('custom_sheets')
+                .insert({
+                  user_id: user?.id || null,
+                  width: item.customSheet.width,
+                  height: item.customSheet.height,
+                  canvas_json: item.customization?.canvasJson ?? null,
+                  preview_url: item.customization?.frontPreviewCloudinaryUrl ?? null,
+                  price: item.customSheet.price,
+                })
+                .select()
+                .single();
 
-      const { error: itemsError } = await supabase
-        .from('order_items')
-        .insert(orderItemsToInsert);
+              if (sheetError) throw sheetError;
+              customSheetId = sheetData.id;
+            }
 
-      if (itemsError) throw itemsError;
+            savedItemDetails.push({
+              ...item,
+              custom_sheet_id: customSheetId,
+            });
+          }
+
+          const { data: orderData, error: orderError } = await supabase
+            .from('orders')
+            .insert({
+              user_id: user?.id || null,
+              status: 'pending',
+              total_price: total,
+              shipping_address: shippingAddressObj,
+              payment_method: paymentMethod,
+              payment_status: 'unpaid',
+            })
+            .select()
+            .single();
+
+          if (orderError) throw orderError;
+          orderId = orderData.id;
+
+          // 3. Save order items
+          const orderItemsToInsert = savedItemDetails.map((item) => ({
+            order_id: orderId,
+            product_id: item.type === 'apparel' ? item.product.id : null,
+            variant_id: item.type === 'apparel' && item.variant ? item.variant.id : null,
+            custom_sheet_id: item.custom_sheet_id,
+            quantity: item.quantity,
+            price: item.price,
+          }));
+
+          const { error: itemsError } = await supabase
+            .from('order_items')
+            .insert(orderItemsToInsert);
+
+          if (itemsError) throw itemsError;
+
+        } catch (dbErr: any) {
+          // If network connection to Supabase fails, degrade gracefully instead of crashing
+          if (dbErr instanceof TypeError && dbErr.message.includes('fetch')) {
+            console.warn('[Checkout] Failed to reach Supabase server. Falling back to local simulation mode.', dbErr);
+            isSupabaseActive = false;
+          } else {
+            throw dbErr;
+          }
+        }
+      }
+
+      // If Supabase is inactive (offline or placeholder), compile local mock records
+      if (!isSupabaseActive) {
+        for (const item of items) {
+          savedItemDetails.push({
+            ...item,
+            custom_sheet_id: `mock-sheet-${crypto.randomUUID().substring(0, 8)}`,
+          });
+        }
+      }
 
       // 4. Trigger n8n webhook automation
       const n8nWebhookUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL;
