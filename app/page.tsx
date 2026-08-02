@@ -102,7 +102,7 @@ function HomeContent() {
         <div className="max-w-4xl mx-auto relative z-10 text-center flex flex-col items-center justify-center gap-8">
           <div className="w-full space-y-6 flex flex-col items-center justify-center">
             <div 
-              className="hero-badge inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#B23B1E]/10 border border-[#B23B1E]/30 text-[#B23B1E] text-xs font-semibold"
+              className="hero-badge inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFCB9A]/10 border border-[#FFCB9A]/30 text-[#FFCB9A] text-xs font-semibold"
             >
               <Sparkles size={13} />
               <span>Bitium Technology Print Store</span>
@@ -129,14 +129,14 @@ function HomeContent() {
             >
               <Link 
                 href="/canvas" 
-                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#B23B1E] hover:bg-[#C84A2B] text-[#FDFBF7] font-bold text-sm transition-all duration-150 border border-[#933018] shadow-[3px_3px_0px_0px_#1C1917] dark:shadow-[3px_3px_0px_0px_#FDFBF7] hover:shadow-[1px_1px_0px_0px_#1C1917] dark:hover:shadow-[1px_1px_0px_0px_#FDFBF7] active:shadow-[0px_0px_0px_0px_#1C1917] dark:active:shadow-[0px_0px_0px_0px_#FDFBF7] hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[3px] active:translate-y-[3px] flex items-center justify-center gap-2 group"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#116466] hover:bg-[#157a7c] text-[#D1E8E2] font-bold text-sm transition-all duration-150 border border-[#0d4e50] shadow-[3px_3px_0px_0px_#2C3531] dark:shadow-[3px_3px_0px_0px_#D1E8E2] hover:shadow-[1px_1px_0px_0px_#2C3531] dark:hover:shadow-[1px_1px_0px_0px_#D1E8E2] active:shadow-[0px_0px_0px_0px_#2C3531] dark:active:shadow-[0px_0px_0px_0px_#D1E8E2] hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[3px] active:translate-y-[3px] flex items-center justify-center gap-2 group"
               >
                 <span>Launch DTF Canvas</span>
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link 
                 href="/stencil" 
-                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#F7F3EB] dark:bg-[#292524] hover:bg-[#EFECE3] dark:hover:bg-[#3E3A38] text-[#1C1917] dark:text-[#FDFBF7] border-[#D5CDBE] dark:border-[#44403c] shadow-[3px_3px_0px_0px_#1C1917] dark:shadow-[3px_3px_0px_0px_#FDFBF7] hover:shadow-[1px_1px_0px_0px_#1C1917] dark:hover:shadow-[1px_1px_0px_0px_#FDFBF7] active:shadow-[0px_0px_0px_0px_#1C1917] dark:active:shadow-[0px_0px_0px_0px_#FDFBF7] hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[3px] active:translate-y-[3px] flex items-center justify-center"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#D1E8E2] dark:bg-[#2C3531] hover:bg-[#c1d9d3] dark:hover:bg-[#38433e] text-[#2C3531] dark:text-[#D1E8E2] border-[#b7d1c9] dark:border-[#45544e] shadow-[3px_3px_0px_0px_#2C3531] dark:shadow-[3px_3px_0px_0px_#D1E8E2] hover:shadow-[1px_1px_0px_0px_#2C3531] dark:hover:shadow-[1px_1px_0px_0px_#D1E8E2] active:shadow-[0px_0px_0px_0px_#2C3531] dark:active:shadow-[0px_0px_0px_0px_#D1E8E2] hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[3px] active:translate-y-[3px] flex items-center justify-center"
               >
                 Explore Stencils
               </Link>
@@ -183,14 +183,14 @@ function HomeContent() {
           {/* Right Side: Text & Content Section (7 Cols) */}
           <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
             
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-[#DF8C21] text-xs font-extrabold uppercase tracking-widest">
-              <Flame size={14} className="text-[#DF8C21] animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-[#D9B08C] text-xs font-extrabold uppercase tracking-widest">
+              <Flame size={14} className="text-[#D9B08C] animate-pulse" />
               <span>3D Product Visualizer • VIPER Streetwear</span>
             </div>
 
             <div className="space-y-4">
               <h2 className="text-3xl sm:text-5xl font-black tracking-tight uppercase leading-tight">
-                STREETWEAR EVOLVED: <span className="bg-gradient-to-r from-[#DF8C21] to-[#B23B1E] bg-clip-text text-transparent">THE NEXT GENERATION VISUALIZER</span>
+                STREETWEAR EVOLVED: <span className="bg-gradient-to-r from-[#FFCB9A] to-[#116466] bg-clip-text text-transparent">THE NEXT GENERATION VISUALIZER</span>
               </h2>
               
               <p className="text-zinc-300 text-sm sm:text-base leading-relaxed max-w-2xl font-normal">
@@ -201,7 +201,7 @@ function HomeContent() {
             {/* Feature Highlights */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full pt-2">
               <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-zinc-900/70 border border-zinc-850">
-                <div className="p-2 rounded-xl bg-amber-500/10 text-[#DF8C21] shrink-0">
+                <div className="p-2 rounded-xl bg-amber-500/10 text-[#D9B08C] shrink-0">
                   <Sparkles size={16} />
                 </div>
                 <div className="text-left">
@@ -211,7 +211,7 @@ function HomeContent() {
               </div>
 
               <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-zinc-900/70 border border-zinc-850">
-                <div className="p-2 rounded-xl bg-amber-500/10 text-[#DF8C21] shrink-0">
+                <div className="p-2 rounded-xl bg-amber-500/10 text-[#D9B08C] shrink-0">
                   <Layers size={16} />
                 </div>
                 <div className="text-left">
@@ -225,7 +225,7 @@ function HomeContent() {
             <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 pt-4 w-full sm:w-auto">
               <Link
                 href="/canvas"
-                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#B23B1E] hover:bg-[#C84A2B] text-[#FDFBF7] font-black text-xs uppercase tracking-wider transition-all duration-150 border border-[#933018] shadow-[3px_3px_0px_0px_#1C1917] dark:shadow-[3px_3px_0px_0px_#FDFBF7] hover:shadow-[1px_1px_0px_0px_#1C1917] dark:hover:shadow-[1px_1px_0px_0px_#FDFBF7] active:shadow-[0px_0px_0px_0px_#1C1917] dark:active:shadow-[0px_0px_0px_0px_#FDFBF7] hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[3px] active:translate-y-[3px] flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#116466] hover:bg-[#157a7c] text-[#D1E8E2] font-black text-xs uppercase tracking-wider transition-all duration-150 border border-[#0d4e50] shadow-[3px_3px_0px_0px_#2C3531] dark:shadow-[3px_3px_0px_0px_#D1E8E2] hover:shadow-[1px_1px_0px_0px_#2C3531] dark:hover:shadow-[1px_1px_0px_0px_#D1E8E2] active:shadow-[0px_0px_0px_0px_#2C3531] dark:active:shadow-[0px_0px_0px_0px_#D1E8E2] hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[3px] active:translate-y-[3px] flex items-center justify-center gap-2"
               >
                 <span>Launch 3D Canvas Builder</span>
                 <ArrowRight size={15} />
@@ -233,7 +233,7 @@ function HomeContent() {
 
               <Link
                 href="/stencil"
-                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#F7F3EB] dark:bg-[#292524] hover:bg-[#EFECE3] dark:hover:bg-[#3E3A38] text-[#1C1917] dark:text-[#FDFBF7] border-[#D5CDBE] dark:border-[#44403c] shadow-[3px_3px_0px_0px_#1C1917] dark:shadow-[3px_3px_0px_0px_#FDFBF7] hover:shadow-[1px_1px_0px_0px_#1C1917] dark:hover:shadow-[1px_1px_0px_0px_#FDFBF7] active:shadow-[0px_0px_0px_0px_#1C1917] dark:active:shadow-[0px_0px_0px_0px_#FDFBF7] hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[3px] active:translate-y-[3px] flex items-center justify-center"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#D1E8E2] dark:bg-[#2C3531] hover:bg-[#c1d9d3] dark:hover:bg-[#38433e] text-[#2C3531] dark:text-[#D1E8E2] border-[#b7d1c9] dark:border-[#45544e] shadow-[3px_3px_0px_0px_#2C3531] dark:shadow-[3px_3px_0px_0px_#D1E8E2] hover:shadow-[1px_1px_0px_0px_#2C3531] dark:hover:shadow-[1px_1px_0px_0px_#D1E8E2] active:shadow-[0px_0px_0px_0px_#2C3531] dark:active:shadow-[0px_0px_0px_0px_#D1E8E2] hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[3px] active:translate-y-[3px] flex items-center justify-center"
               >
                 Explore Apparel Prints
               </Link>
@@ -267,7 +267,7 @@ function HomeContent() {
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <div className="p-3 rounded-2xl bg-zinc-950/80 border border-zinc-800 text-[#B23B1E] dark:text-[#DF8C21] group-hover:scale-110 transition-transform">
+                    <div className="p-3 rounded-2xl bg-zinc-950/80 border border-zinc-800 text-[#116466] dark:text-[#FFCB9A] group-hover:scale-110 transition-transform">
                       <Icon size={24} />
                     </div>
                     <span className="text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full bg-zinc-950/50 border border-zinc-800 text-zinc-300">
@@ -275,7 +275,7 @@ function HomeContent() {
                     </span>
                   </div>
 
-                  <h3 className="text-xl font-extrabold text-foreground group-hover:text-[#B23B1E] dark:group-hover:text-[#DF8C21] transition-colors">
+                  <h3 className="text-xl font-extrabold text-foreground group-hover:text-[#116466] dark:group-hover:text-[#FFCB9A] transition-colors">
                     {cat.title}
                   </h3>
                   <p className="text-xs text-zinc-400 mt-2 leading-relaxed">
@@ -283,7 +283,7 @@ function HomeContent() {
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-zinc-800/60 flex items-center justify-between text-xs font-bold text-[#B23B1E] dark:text-[#DF8C21]">
+                <div className="mt-6 pt-4 border-t border-zinc-800/60 flex items-center justify-between text-xs font-bold text-[#116466] dark:text-[#FFCB9A]">
                   <span>Browse Products</span>
                   <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                 </div>

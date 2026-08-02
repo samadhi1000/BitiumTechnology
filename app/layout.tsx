@@ -24,7 +24,7 @@ export default function RootLayout({
       lang="en"
       className="h-full antialiased dark"
     >
-      <body className="min-h-full flex flex-col bg-zinc-950 text-white selection:bg-[#B23B1E]/30 selection:text-[#FDFBF7] tactile-grain">
+      <body className="min-h-full flex flex-col bg-zinc-950 text-white selection:bg-[#116466]/40 selection:text-[#D1E8E2] tactile-grain">
         <ThemeProvider>
           <PreloaderWrapper>
             <AuthProvider>
