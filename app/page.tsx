@@ -111,7 +111,7 @@ function HomeContent() {
             <h1 
               className="hero-title text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight"
             >
-              High-Definition <span className="batik-text-clip">Print Solutions</span> & Equipment
+              High-Definition <span className="outline-text">Print Solutions</span> & Equipment
             </h1>
             
             <p 
