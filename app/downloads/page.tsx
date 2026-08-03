@@ -58,21 +58,40 @@ export default function DownloadsPage() {
 
     setCheckingOut(true);
     try {
-      const res = await fetch('/api/checkout/digital', {
+      const res = await fetch('/api/checkout/payhere', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          items: [{ id: checkoutArt.id, title: checkoutArt.title, price: checkoutArt.price }],
-          email
+          items: [{ id: checkoutArt.id, quantity: 1 }],
+          customerEmail: email,
+          customerName: 'Digital Customer' // Using a default name as we only collect email
         })
       });
 
       const data = await res.json();
-      if (data.url) {
-        // Redirect user to the Stripe / Mock Success page
-        window.location.href = data.url;
+      if (res.ok && data.hash) {
+        const payhereUrl = data.sandbox
+          ? 'https://sandbox.payhere.lk/pay/checkout'
+          : 'https://www.payhere.lk/pay/checkout';
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = payhereUrl;
+
+        Object.entries(data).forEach(([key, value]) => {
+          if (key !== 'sandbox') {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = String(value);
+            form.appendChild(input);
+          }
+        });
+
+        document.body.appendChild(form);
+        form.submit();
       } else {
-        alert(data.error || 'Checkout failed');
+        alert(data.error || 'Failed to initialize checkout payment');
       }
     } catch (err) {
       console.error('Checkout error:', err);
