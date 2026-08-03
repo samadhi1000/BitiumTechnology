@@ -71,8 +71,16 @@ export async function POST(req: NextRequest) {
     } else {
       // Fallback mode for testing UI without database config
       console.warn('Database config missing, using local fallback mode for testing');
+      
+      let localCatalog = [];
+      try {
+        localCatalog = require('@/lib/digital-catalog.json');
+      } catch (err) {
+        console.error('Error importing local catalog:', err);
+      }
+
       for (const item of items) {
-        const artwork = await getDigitalArtworkById(item.id);
+        const artwork = localCatalog.find((a: any) => a.id === item.id);
         if (artwork) {
           totalAmount += artwork.price * (item.quantity || 1);
           itemNames.push(artwork.title);
