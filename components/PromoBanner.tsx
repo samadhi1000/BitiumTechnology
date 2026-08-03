@@ -39,7 +39,7 @@ export default function PromoBanner() {
       {/* 1. Announcement Bar at the Top */}
       {showPromo && (
         <div className="w-full bg-zinc-900 border-b border-zinc-800 text-zinc-300 py-3 px-4 text-xs font-bold text-center flex items-center justify-center gap-2 relative z-20 transition-all duration-300">
-          <span>10% OFF ON SPIDERMAN T-SHIRTS & GANG SHEETS TODAY!</span>
+          <span>10% OFF YOUR FIRST GANG SHEET — TODAY ONLY</span>
           <button 
             onClick={() => setShowPromo(false)}
             className="hover:text-white transition-colors flex items-center justify-center p-0.5 rounded-full hover:bg-zinc-800"
@@ -58,15 +58,15 @@ export default function PromoBanner() {
           <div className="lg:col-span-7 space-y-8 flex flex-col items-center lg:items-start text-center lg:text-left">
             <div className="promo-title space-y-1">
               <h2 className="text-6xl sm:text-[90px] font-black tracking-tighter text-blue-500 uppercase leading-none select-none drop-shadow-[0_4px_12px_rgba(59,130,246,0.35)]">
-                FLAWLESS
+                10% OFF
               </h2>
               <h2 className="text-6xl sm:text-[90px] font-black tracking-tighter text-blue-500 uppercase leading-none select-none drop-shadow-[0_4px_12px_rgba(59,130,246,0.35)]">
-                PRINTS
+                TODAY
               </h2>
             </div>
 
             <p className="promo-subtitle text-zinc-450 text-xs sm:text-sm font-semibold max-w-xl leading-relaxed">
-              Engineered for Flawless Custom Prints. From high-fidelity digital transfers to precise traditional stencils, we bring industrial-grade printing quality straight to your designs.
+              New here? Build your first DTF sheet and save 10% at checkout.
             </p>
 
             <div className="promo-btn">

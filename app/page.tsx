@@ -9,6 +9,7 @@ import PromoBanner from '@/components/PromoBanner';
 import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, PackageCheck, Flame, CheckCircle2, Scissors, FlaskConical, PlayCircle, MessageSquareHeart } from 'lucide-react';
 import { HeroSearch } from '@/components/HeroSearch';
 import { HeroSlideshow } from '@/components/HeroSlideshow';
+import TrustSection from '@/components/TrustSection';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(useGSAP);
@@ -30,7 +31,7 @@ function HomeContent() {
   const categories = [
     {
       title: 'Stencils',
-      description: 'Precision laser-cut Mylar stencils for saree, hand painting & wall art.',
+      description: 'Laser-cut Mylar stencils for saree work, hand painting, and wall art — cut clean, every time.',
       href: '/stencil',
       icon: Palette,
       gradient: 'from-[#EC4899]/20 to-[#EC4899]/5',
@@ -39,7 +40,7 @@ function HomeContent() {
     },
     {
       title: 'Screen Printing',
-      description: 'Custom exposed screens, artwork vectorizing & positive tracing films.',
+      description: 'Exposed screens, vectorized artwork, and positive tracing films, made to your exact specs.',
       href: '/screen-printing',
       icon: Printer,
       gradient: 'from-[#4F46E5]/20 to-[#4F46E5]/5',
@@ -48,7 +49,7 @@ function HomeContent() {
     },
     {
       title: 'DTF Printing',
-      description: 'Custom canvas layout sheets, anime sticker packs & cloth transfers.',
+      description: 'Custom sheet layouts, anime sticker packs, and cloth transfers — our most popular category.',
       href: '/dtf-printing',
       icon: Layers,
       gradient: 'from-[#06B6D4]/20 to-[#06B6D4]/5',
@@ -57,7 +58,7 @@ function HomeContent() {
     },
     {
       title: 'Batik Stamps',
-      description: 'Traditional copper & carved wood Cap Batik stamps for authentic textiles.',
+      description: 'Traditional copper and hand-carved wood Cap Batik stamps, made the way they\'ve always been made.',
       href: '/batik-stamp',
       icon: Stamp,
       gradient: 'from-[#8B5CF6]/20 to-[#8B5CF6]/5',
@@ -66,7 +67,7 @@ function HomeContent() {
     },
     {
       title: 'Laser Cutting',
-      description: 'Precision CO2 laser cutting, customized acrylic profiles, and custom wood engraving.',
+      description: 'Precision CO2 laser cutting for acrylic, wood, and custom profiles — built to your file, not a template.',
       href: '/laser-cutting',
       icon: Scissors,
       gradient: 'from-[#10B981]/20 to-[#10B981]/5',
@@ -74,8 +75,8 @@ function HomeContent() {
       badge: 'CNC Precision'
     },
     {
-      title: 'Chemicals & Consumables',
-      description: 'Screen-printing sensitizers, photo emulsions, and recovery wash chemicals.',
+      title: 'Consumables',
+      description: 'Inks, hot melt powder, film rolls, emulsions, and wash chemicals — the supplies that keep your shop running.',
       href: '/materials',
       icon: FlaskConical,
       gradient: 'from-[#F97316]/20 to-[#F97316]/5',
@@ -83,17 +84,8 @@ function HomeContent() {
       badge: 'Industrial Grade'
     },
     {
-      title: 'DTF Consumables',
-      description: 'High quality DTF inks, hot melt powders & double-matte film rolls.',
-      href: '/materials',
-      icon: PackageCheck,
-      gradient: 'from-[#06B6D4]/20 to-[#06B6D4]/5',
-      border: 'hover:border-[#06B6D4]/50',
-      badge: 'Trade Inks & Film'
-    },
-    {
       title: 'Video Tutorials',
-      description: 'Learn how to master Screen and DTF printing with our step-by-step video guides.',
+      description: 'Learn how to master Screen & DTF printing with our step-by-step video guides.',
       href: '#',
       icon: PlayCircle,
       gradient: 'from-[#4F46E5]/20 to-[#4F46E5]/5',
@@ -102,7 +94,7 @@ function HomeContent() {
     },
     {
       title: 'Customer Feedbacks',
-      description: 'See what our existing customers have to say about Bitium Technology products.',
+      description: 'See what our existing customers have to say about Bitium Technology Products.',
       href: '#',
       icon: MessageSquareHeart,
       gradient: 'from-[#EC4899]/20 to-[#EC4899]/5',
@@ -123,19 +115,19 @@ function HomeContent() {
               className="hero-badge inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-semibold"
             >
               <Sparkles size={13} />
-              <span>Bitium Technology Print Store</span>
+              <span>Bitium Technology · Print Store</span>
             </div>
             
             <h1 
-              className="hero-title text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight"
+              className="hero-title text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight"
             >
-              High-Definition <span className="outline-text">Print Solutions</span> & Equipment
+              See Your Design Before <span className="outline-text">It's Ever Printed</span>
             </h1>
             
             <p 
               className="hero-text text-sm sm:text-base text-zinc-400 max-w-2xl mx-auto leading-relaxed"
             >
-              From custom precision stencils to industrial DTF film rolls, exposed screen printing, and traditional batik stamps — explore our specialized print technology store.
+              Build your DTF sheet, preview it in 3D, and order it in minutes. From custom transfers to precision stencils, we print it the way you imagined it — not close, exact.
             </p>
 
             <div 
@@ -145,14 +137,14 @@ function HomeContent() {
                 href="/canvas" 
                 className="w-full sm:w-auto px-7 py-3.5 rounded-xl cta-gradient font-bold text-sm transition-all duration-150 border border-transparent shadow-[3px_3px_0px_0px_#020617] dark:shadow-[3px_3px_0px_0px_#F8FAFC] hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[3px] active:translate-y-[3px] flex items-center justify-center gap-2 group"
               >
-                <span>Launch DTF Canvas</span>
+                <span>Start Your Design</span>
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link 
                 href="/stencil" 
-                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-secondary hover:bg-muted text-secondary-foreground border border-border font-bold text-sm transition-all duration-150 shadow-[3px_3px_0px_0px_#020617] dark:shadow-[3px_3px_0px_0px_#F8FAFC] hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[3px] active:translate-y-[3px] flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-xl text-primary font-bold text-sm transition-all duration-150 hover:underline flex items-center justify-center gap-2"
               >
-                Explore Stencils
+                Browse all categories
               </Link>
             </div>
 
@@ -268,9 +260,9 @@ function HomeContent() {
       {/* 04. Category Quick Access Showcase Section */}
       <section className="max-w-7xl mx-auto py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-zinc-900">
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <h2 className="text-2xl sm:text-4xl font-black tracking-tight">Explore Our Print Categories</h2>
+          <h2 className="text-2xl sm:text-4xl font-black tracking-tight">What We Print</h2>
           <p className="text-zinc-400 text-sm mt-2">
-            Select a specialized category below to view dedicated products, custom options, and detailed listings.
+            Pick a category to see products, pricing, and options.
           </p>
         </div>
 
@@ -310,6 +302,9 @@ function HomeContent() {
           })}
         </div>
       </section>
+
+      {/* 05. Trust & Reviews Section */}
+      <TrustSection />
     </div>
   );
 }

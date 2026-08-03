@@ -74,7 +74,10 @@ export async function POST(req: NextRequest) {
       
       let localCatalog = [];
       try {
-        localCatalog = require('@/lib/digital-catalog.json');
+        const fs = require('fs');
+        const path = require('path');
+        const catalogPath = path.join(process.cwd(), 'lib/digital-catalog.json');
+        localCatalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
       } catch (err) {
         console.error('Error importing local catalog:', err);
       }

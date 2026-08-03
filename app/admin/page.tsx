@@ -418,7 +418,8 @@ export default function AdminPanelPage() {
 
   // 2. RENDER MAIN ADMIN DASHBOARD
   return (
-    <div className="w-full min-h-screen bg-zinc-950 text-white py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <>
+      <div className="w-full min-h-screen bg-background text-foreground py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Background glows */}
       <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-violet-600/10 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-1/4 left-1/4 w-[350px] h-[350px] bg-fuchsia-600/5 rounded-full blur-[100px] pointer-events-none"></div>
@@ -686,16 +687,15 @@ export default function AdminPanelPage() {
             </div>
           )}
         </div>
+      </div> {/* End of main dashboard div */}
 
-      </div>
-
-      {/* MODAL: CHANGE CREDENTIALS */}
+      {/* MODAL: CREDENTIALS SETTINGS */}
       {isSettingsOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fade-in">
-          <div className="relative w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-950 p-6 sm:p-8 space-y-6 shadow-2xl">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fade-in">
+          <div className="relative w-full max-w-md rounded-2xl border border-border bg-card p-6 sm:p-8 space-y-6 shadow-2xl">
             
-            <div className="flex justify-between items-center border-b border-zinc-850 pb-4">
-              <h2 className="text-base font-black text-white flex items-center gap-2">
+            <div className="flex justify-between items-center border-b border-border pb-4">
+              <h2 className="text-lg font-black text-foreground flex items-center gap-2">
                 <Settings size={18} className="text-violet-400" />
                 Change Admin Credentials
               </h2>
@@ -815,11 +815,11 @@ export default function AdminPanelPage() {
 
       {/* MODAL: ADD/EDIT PRODUCT */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fade-in">
-          <div className="relative w-full max-w-xl rounded-2xl border border-zinc-800 bg-zinc-950 p-6 sm:p-8 space-y-6 shadow-2xl overflow-y-auto max-h-[90vh]">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fade-in">
+          <div className="relative w-full max-w-xl rounded-2xl border border-border bg-card p-6 sm:p-8 space-y-6 shadow-2xl overflow-y-auto max-h-[90vh]">
             
-            <div className="flex justify-between items-center border-b border-zinc-850 pb-4">
-              <h2 className="text-lg font-black text-white flex items-center gap-2">
+            <div className="flex justify-between items-center border-b border-border pb-4">
+              <h2 className="text-lg font-black text-foreground flex items-center gap-2">
                 {editingProduct ? <Edit size={18} className="text-violet-400" /> : <Plus size={18} className="text-violet-400" />}
                 {editingProduct ? 'Edit Product Details' : 'Add New Catalog Item'}
               </h2>
@@ -972,6 +972,6 @@ export default function AdminPanelPage() {
         </div>
       )}
 
-    </div>
+    </>
   );
 }
