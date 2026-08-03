@@ -32,7 +32,6 @@ function ScreenPrintingContent() {
 
   const subCategories = [
     { id: 'screen-exposed', label: 'Screen Exposed Frames' },
-    { id: 'artwork', label: 'Vector Artwork Designs' },
     { id: 'tracing-printouts', label: 'Tracing Printouts' },
     { id: 'positive-printouts', label: 'Positive Film Printouts' }
   ];

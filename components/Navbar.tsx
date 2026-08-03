@@ -23,7 +23,8 @@ import {
   Palette,
   Printer,
   Stamp,
-  PackageCheck
+  PackageCheck,
+  Download
 } from 'lucide-react';
 
 export default function Navbar() {
@@ -139,7 +140,6 @@ export default function Navbar() {
                   <hr className="border-zinc-800 my-0.5" />
                   {[
                     { sub: 'screen-exposed', label: 'Screen Exposed' },
-                    { sub: 'artwork', label: 'Artwork' },
                     { sub: 'tracing-printouts', label: 'Tracing Printouts' },
                     { sub: 'positive-printouts', label: 'Positive Printouts' }
                   ].map((item) => (
@@ -216,7 +216,12 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* 06. DTF Printing Consumables */}
+            {/* 06. Digital downloads */}
+            <Link href="/downloads" className="text-xs font-semibold hover:text-violet-400 transition-colors h-full flex items-center text-zinc-300">
+              Digital downloads
+            </Link>
+
+            {/* 07. DTF Printing Consumables */}
             <Link href="/materials" className="text-xs font-semibold hover:text-violet-400 transition-colors h-full flex items-center text-zinc-300">
               DTF Printing Consumables
             </Link>
@@ -234,11 +239,6 @@ export default function Navbar() {
 
           {/* Action Buttons & Mobile Hamburger */}
           <div className="flex items-center space-x-2 sm:space-x-3">
-            {/* Quick Canvas Link */}
-            <Link href="/canvas" className="hidden sm:flex text-xs font-semibold px-3 py-1.5 rounded-full bg-violet-600/30 border border-violet-500/50 hover:bg-violet-600/50 text-violet-200 transition-all items-center gap-1">
-              <LayoutGrid size={13} />
-              Canvas
-            </Link>
 
             {/* 🌙 Light / Dark Mode Toggle */}
             <button
@@ -277,7 +277,7 @@ export default function Navbar() {
             </button>
 
             {/* Desktop Auth */}
-            {user ? (
+            {user && (
               <div className="hidden lg:flex items-center space-x-3">
                 <Link href="/profile" className="flex items-center space-x-2 text-sm font-medium hover:text-violet-400 transition-colors">
                   <User size={18} className="text-zinc-400" />
@@ -293,14 +293,6 @@ export default function Navbar() {
                   <LogOut size={18} />
                 </button>
               </div>
-            ) : (
-              <Link
-                href="/login"
-                className="hidden lg:flex items-center space-x-1.5 text-xs font-semibold px-4 py-2 rounded-xl bg-violet-600 text-white hover:bg-violet-500 transition-all"
-              >
-                <User size={15} />
-                <span>Login</span>
-              </Link>
             )}
 
             {/* Mobile Hamburger Toggle Button */}
@@ -320,20 +312,12 @@ export default function Navbar() {
         <div className="lg:hidden w-full bg-zinc-950/95 border-t border-zinc-800 shadow-2xl backdrop-blur-xl max-h-[calc(100vh-80px)] overflow-y-auto animate-in slide-in-from-top duration-300">
           <div className="px-4 pt-3 pb-8 space-y-2">
             
-            {/* Quick Canvas & Studio Bar */}
-            <div className="grid grid-cols-2 gap-2 mb-4">
-              <Link
-                href="/canvas"
-                onClick={closeMobileMenu}
-                className="p-3 rounded-xl bg-violet-600/20 border border-violet-500/40 text-violet-200 flex items-center justify-center gap-2 font-bold text-xs hover:bg-violet-600/30 transition-all"
-              >
-                <LayoutGrid size={15} />
-                <span>DTF Canvas</span>
-              </Link>
+            {/* Quick Studio Bar */}
+            <div className="mb-4">
               <Link
                 href="/3d-customizer"
                 onClick={closeMobileMenu}
-                className="p-3 rounded-xl bg-fuchsia-600/20 border border-fuchsia-500/40 text-fuchsia-200 flex items-center justify-center gap-2 font-bold text-xs hover:bg-fuchsia-600/30 transition-all"
+                className="w-full p-3 rounded-xl bg-fuchsia-600/20 border border-fuchsia-500/40 text-fuchsia-200 flex items-center justify-center gap-2 font-bold text-xs hover:bg-fuchsia-600/30 transition-all"
               >
                 <Shirt size={15} />
                 <span>3D Mockup</span>
@@ -428,7 +412,6 @@ export default function Navbar() {
                   </Link>
                   {[
                     { sub: 'screen-exposed', label: 'Screen Exposed' },
-                    { sub: 'artwork', label: 'Artwork' },
                     { sub: 'tracing-printouts', label: 'Tracing Printouts' },
                     { sub: 'positive-printouts', label: 'Positive Printouts' }
                   ].map((item) => (
@@ -521,6 +504,19 @@ export default function Navbar() {
               )}
             </div>
 
+            {/* 06. Digital downloads */}
+            <Link
+              href="/downloads"
+              onClick={closeMobileMenu}
+              className="flex items-center justify-between px-4 py-3 rounded-xl bg-zinc-900/50 hover:bg-zinc-900 border border-zinc-850 text-sm font-bold text-zinc-100"
+            >
+              <div className="flex items-center gap-2">
+                <Download size={16} className="text-violet-400" />
+                <span>Digital downloads</span>
+              </div>
+              <ChevronRight size={16} className="text-zinc-500" />
+            </Link>
+
             {/* 6. DTF Printing Consumables */}
             <Link
               href="/materials"
@@ -555,8 +551,8 @@ export default function Navbar() {
             </Link>
 
             {/* User Auth Footer in Mobile Menu */}
-            <div className="pt-4 border-t border-zinc-800 mt-4">
-              {user ? (
+            {user && (
+              <div className="pt-4 border-t border-zinc-800 mt-4">
                 <div className="flex items-center justify-between bg-zinc-900 p-3 rounded-xl border border-zinc-800">
                   <Link href="/profile" onClick={closeMobileMenu} className="flex items-center space-x-2 text-sm font-medium text-zinc-200">
                     <User size={18} className="text-violet-400" />
@@ -575,17 +571,8 @@ export default function Navbar() {
                     <span>Sign Out</span>
                   </button>
                 </div>
-              ) : (
-                <Link
-                  href="/login"
-                  onClick={closeMobileMenu}
-                  className="w-full flex items-center justify-center space-x-2 text-sm font-bold py-3 rounded-xl bg-violet-600 text-white hover:bg-violet-500 transition-all shadow-lg shadow-violet-600/20"
-                >
-                  <User size={16} />
-                  <span>Login to Account</span>
-                </Link>
-              )}
-            </div>
+              </div>
+            )}
 
           </div>
         </div>

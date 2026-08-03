@@ -99,7 +99,7 @@ function HomeContent() {
       <section className="relative overflow-hidden py-16 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 border-b border-zinc-900 bg-zinc-950">
         <HeroSlideshow />
         
-        <div className="max-w-4xl mx-auto relative z-10 text-center flex flex-col items-center justify-center gap-8">
+        <div className="max-w-4xl mx-auto relative z-10 text-center flex flex-col items-center justify-center bg-zinc-950/65 border border-zinc-900/60 backdrop-blur-md p-6 sm:p-10 rounded-[32px] shadow-2xl">
           <div className="w-full space-y-6 flex flex-col items-center justify-center">
             <div 
               className="hero-badge inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFCB9A]/10 border border-[#FFCB9A]/30 text-[#FFCB9A] text-xs font-semibold"
@@ -120,10 +120,6 @@ function HomeContent() {
               From custom precision stencils to industrial DTF film rolls, exposed screen printing, and traditional batik stamps — explore our specialized print technology store.
             </p>
 
-            <div className="hero-search pt-2 w-full flex justify-center">
-              <HeroSearch />
-            </div>
-            
             <div 
               className="hero-buttons flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2"
             >
@@ -140,6 +136,10 @@ function HomeContent() {
               >
                 Explore Stencils
               </Link>
+            </div>
+
+            <div className="hero-search pt-2 w-full flex justify-center z-30">
+              <HeroSearch />
             </div>
           </div>
         </div>

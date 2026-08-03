@@ -1,0 +1,80 @@
+[
+  {
+    "id": "art-001",
+    "title": "Royal Peacock Traditional Batik",
+    "description": "Exquisite Sri Lankan traditional peacock batik motif, detailed with classic border patterns. Hand-drawn and vectorized for high-resolution large-format printing.",
+    "price": 1250.00,
+    "preview_url": "https://images.unsplash.com/photo-1590736704728-f4730bb30770?auto=format&fit=crop&w=600&q=80",
+    "file_key": "artworks/high_res/royal_peacock_batik.zip",
+    "category": "batik",
+    "tags": ["peacock", "traditional", "blue", "gold", "border"],
+    "file_format": "ZIP (SVG/PNG)",
+    "file_size": "24.5 MB",
+    "resolution": "Vector (Scalable) / 6000x4000 px PNG"
+  },
+  {
+    "id": "art-002",
+    "title": "Cyberpunk Streetwear Viper Graphic",
+    "description": "High-octane cyberpunk viper snake illustration, optimized for streetwear front and back t-shirt prints. Clean SVG outlines and pre-separated colors.",
+    "price": 950.00,
+    "preview_url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
+    "file_key": "artworks/high_res/cyberpunk_viper.zip",
+    "category": "vector",
+    "tags": ["cyberpunk", "viper", "streetwear", "snake", "t-shirt"],
+    "file_format": "ZIP (AI/SVG/PNG)",
+    "file_size": "15.2 MB",
+    "resolution": "Vector SVG / 4500x5400 px PNG"
+  },
+  {
+    "id": "art-003",
+    "title": "Tropical Palm Leaves Pattern Sheet",
+    "description": "Full-size gang sheet layout of tropical palm and monstera leaves. Perfect for screen printing positive tracing and DTF multi-logo sheets.",
+    "price": 1500.00,
+    "preview_url": "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=80",
+    "file_key": "artworks/high_res/tropical_palms_layout.zip",
+    "category": "dtf",
+    "tags": ["tropical", "leaves", "monstera", "gang-sheet", "botanical"],
+    "file_format": "ZIP (PDF/SVG)",
+    "file_size": "38.1 MB",
+    "resolution": "Scalable PDF Layout / A3 Size"
+  },
+  {
+    "id": "art-004",
+    "title": "Luxury Damask Ornament Stencil",
+    "description": "Detailed renaissance-style luxury damask wall ornament stencil layout. Perfect for precision CNC, laser cutting, or wall decor painting.",
+    "price": 1800.00,
+    "preview_url": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=600&q=80",
+    "file_key": "artworks/high_res/luxury_damask_stencil.zip",
+    "category": "wall-art",
+    "tags": ["damask", "luxury", "stencil", "ornament", "wall-decor"],
+    "file_format": "ZIP (DXF/SVG/PDF)",
+    "file_size": "12.8 MB",
+    "resolution": "CNC DXF Vector / Vector PDF"
+  },
+  {
+    "id": "art-005",
+    "title": "Sri Lankan Siriwasa Floral Border",
+    "description": "Traditional Sri Lankan Siriwasa border artwork featuring local flowers and leaves. Fully traced, optimized for fabric borders and sarees.",
+    "price": 1100.00,
+    "preview_url": "https://images.unsplash.com/photo-1508807526345-15e988543c28?auto=format&fit=crop&w=600&q=80",
+    "file_key": "artworks/high_res/siriwasa_floral_border.zip",
+    "category": "batik",
+    "tags": ["floral", "saree", "border", "traditional", "sinhala"],
+    "file_format": "ZIP (SVG/PDF/PNG)",
+    "file_size": "18.4 MB",
+    "resolution": "Vector SVG / 5000x2000 px PNG"
+  },
+  {
+    "id": "art-006",
+    "title": "Minimalist Sun & Moon Line Art",
+    "description": "Elegant minimal vector outline drawing of the sun and moon, suited for tote bag screen printing and aesthetic posters.",
+    "price": 650.00,
+    "preview_url": "https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6?auto=format&fit=crop&w=600&q=80",
+    "file_key": "artworks/high_res/minimal_sun_moon.zip",
+    "category": "vector",
+    "tags": ["minimalist", "line-art", "sun", "moon", "boho"],
+    "file_format": "ZIP (SVG/PNG)",
+    "file_size": "4.1 MB",
+    "resolution": "Vector SVG / 4000x4000 px PNG"
+  }
+]
