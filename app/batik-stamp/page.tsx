@@ -46,7 +46,7 @@ function BatikStampContent() {
   return (
     <div className="w-full min-h-screen bg-zinc-950 text-white">
       {/* Header Banner */}
-      <div className="border-b border-zinc-900 bg-gradient-to-b from-amber-950/30 via-zinc-950 to-zinc-950 py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
+      <div className="border-b border-zinc-900 hero-gradient py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-xs text-zinc-400 mb-4">

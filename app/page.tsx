@@ -33,8 +33,8 @@ function HomeContent() {
       description: 'Precision laser-cut Mylar stencils for saree, hand painting & wall art.',
       href: '/stencil',
       icon: Palette,
-      gradient: 'from-violet-500/20 to-purple-500/10',
-      border: 'hover:border-violet-500/50',
+      gradient: 'from-[#EC4899]/20 to-[#EC4899]/5',
+      border: 'hover:border-[#EC4899]/50',
       badge: '6 Categories'
     },
     {
@@ -42,8 +42,8 @@ function HomeContent() {
       description: 'Custom exposed screens, artwork vectorizing & positive tracing films.',
       href: '/screen-printing',
       icon: Printer,
-      gradient: 'from-blue-500/20 to-cyan-500/10',
-      border: 'hover:border-blue-500/50',
+      gradient: 'from-[#4F46E5]/20 to-[#4F46E5]/5',
+      border: 'hover:border-[#4F46E5]/50',
       badge: 'Professional Grade'
     },
     {
@@ -51,8 +51,8 @@ function HomeContent() {
       description: 'Custom canvas layout sheets, anime sticker packs & cloth transfers.',
       href: '/dtf-printing',
       icon: Layers,
-      gradient: 'from-fuchsia-500/20 to-pink-500/10',
-      border: 'hover:border-fuchsia-500/50',
+      gradient: 'from-[#06B6D4]/20 to-[#06B6D4]/5',
+      border: 'hover:border-[#06B6D4]/50',
       badge: 'Hot Seller'
     },
     {
@@ -60,17 +60,17 @@ function HomeContent() {
       description: 'Traditional copper & carved wood Cap Batik stamps for authentic textiles.',
       href: '/batik-stamp',
       icon: Stamp,
-      gradient: 'from-amber-500/20 to-orange-500/10',
-      border: 'hover:border-amber-500/50',
+      gradient: 'from-[#8B5CF6]/20 to-[#8B5CF6]/5',
+      border: 'hover:border-[#8B5CF6]/50',
       badge: 'Traditional Art'
     },
     {
       title: 'Laser Cutting',
       description: 'Precision CO2 laser cutting, customized acrylic profiles, and custom wood engraving.',
-      href: '/stencil',
+      href: '/laser-cutting',
       icon: Scissors,
-      gradient: 'from-rose-500/20 to-red-500/10',
-      border: 'hover:border-rose-500/50',
+      gradient: 'from-[#10B981]/20 to-[#10B981]/5',
+      border: 'hover:border-[#10B981]/50',
       badge: 'CNC Precision'
     },
     {
@@ -78,8 +78,8 @@ function HomeContent() {
       description: 'Screen-printing sensitizers, photo emulsions, and recovery wash chemicals.',
       href: '/materials',
       icon: FlaskConical,
-      gradient: 'from-sky-500/20 to-indigo-500/10',
-      border: 'hover:border-sky-500/50',
+      gradient: 'from-[#F97316]/20 to-[#F97316]/5',
+      border: 'hover:border-[#F97316]/50',
       badge: 'Industrial Grade'
     },
     {
@@ -87,8 +87,8 @@ function HomeContent() {
       description: 'High quality DTF inks, hot melt powders & double-matte film rolls.',
       href: '/materials',
       icon: PackageCheck,
-      gradient: 'from-emerald-500/20 to-teal-500/10',
-      border: 'hover:border-emerald-500/50',
+      gradient: 'from-[#06B6D4]/20 to-[#06B6D4]/5',
+      border: 'hover:border-[#06B6D4]/50',
       badge: 'Trade Inks & Film'
     },
     {
@@ -96,8 +96,8 @@ function HomeContent() {
       description: 'Learn how to master Screen and DTF printing with our step-by-step video guides.',
       href: '#',
       icon: PlayCircle,
-      gradient: 'from-yellow-500/20 to-orange-500/10',
-      border: 'hover:border-yellow-500/50',
+      gradient: 'from-[#4F46E5]/20 to-[#4F46E5]/5',
+      border: 'hover:border-[#4F46E5]/50',
       badge: 'Learn & Master'
     },
     {
@@ -105,22 +105,22 @@ function HomeContent() {
       description: 'See what our existing customers have to say about Bitium Technology products.',
       href: '#',
       icon: MessageSquareHeart,
-      gradient: 'from-pink-500/20 to-rose-500/10',
-      border: 'hover:border-pink-500/50',
+      gradient: 'from-[#EC4899]/20 to-[#EC4899]/5',
+      border: 'hover:border-[#EC4899]/50',
       badge: 'Real Stories'
     }
   ];
 
   return (
-    <div ref={container} className="w-full min-h-screen bg-zinc-950 text-white tactile-grain">
+    <div ref={container} className="w-full min-h-screen bg-background text-foreground">
       {/* 01. Hero Banner Section */}
-      <section className="relative overflow-hidden py-16 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 border-b border-zinc-900 bg-zinc-950">
+      <section className="relative overflow-hidden py-16 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 border-b border-border hero-gradient">
         <HeroSlideshow />
         
-        <div className="max-w-4xl mx-auto relative z-10 text-center flex flex-col items-center justify-center bg-zinc-950/65 border border-zinc-900/60 backdrop-blur-md p-6 sm:p-10 rounded-[32px] shadow-2xl">
+        <div className="max-w-4xl mx-auto relative z-10 text-center flex flex-col items-center justify-center bg-card/65 border border-border/60 backdrop-blur-md p-6 sm:p-10 rounded-[32px] shadow-2xl">
           <div className="w-full space-y-6 flex flex-col items-center justify-center">
             <div 
-              className="hero-badge inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFCB9A]/10 border border-[#FFCB9A]/30 text-[#FFCB9A] text-xs font-semibold"
+              className="hero-badge inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-semibold"
             >
               <Sparkles size={13} />
               <span>Bitium Technology Print Store</span>
@@ -143,14 +143,14 @@ function HomeContent() {
             >
               <Link 
                 href="/canvas" 
-                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#116466] hover:bg-[#157a7c] text-[#D1E8E2] font-bold text-sm transition-all duration-150 border border-[#0d4e50] shadow-[3px_3px_0px_0px_#2C3531] dark:shadow-[3px_3px_0px_0px_#D1E8E2] hover:shadow-[1px_1px_0px_0px_#2C3531] dark:hover:shadow-[1px_1px_0px_0px_#D1E8E2] active:shadow-[0px_0px_0px_0px_#2C3531] dark:active:shadow-[0px_0px_0px_0px_#D1E8E2] hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[3px] active:translate-y-[3px] flex items-center justify-center gap-2 group"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-xl cta-gradient font-bold text-sm transition-all duration-150 border border-transparent shadow-[3px_3px_0px_0px_#020617] dark:shadow-[3px_3px_0px_0px_#F8FAFC] hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[3px] active:translate-y-[3px] flex items-center justify-center gap-2 group"
               >
                 <span>Launch DTF Canvas</span>
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link 
                 href="/stencil" 
-                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#D1E8E2] dark:bg-[#2C3531] hover:bg-[#c1d9d3] dark:hover:bg-[#38433e] text-[#2C3531] dark:text-[#D1E8E2] border-[#b7d1c9] dark:border-[#45544e] shadow-[3px_3px_0px_0px_#2C3531] dark:shadow-[3px_3px_0px_0px_#D1E8E2] hover:shadow-[1px_1px_0px_0px_#2C3531] dark:hover:shadow-[1px_1px_0px_0px_#D1E8E2] active:shadow-[0px_0px_0px_0px_#2C3531] dark:active:shadow-[0px_0px_0px_0px_#D1E8E2] hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[3px] active:translate-y-[3px] flex items-center justify-center"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-secondary hover:bg-muted text-secondary-foreground border border-border font-bold text-sm transition-all duration-150 shadow-[3px_3px_0px_0px_#020617] dark:shadow-[3px_3px_0px_0px_#F8FAFC] hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[3px] active:translate-y-[3px] flex items-center justify-center gap-2"
               >
                 Explore Stencils
               </Link>

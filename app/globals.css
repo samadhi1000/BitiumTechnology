@@ -5,261 +5,175 @@
     --font-geist-sans: "Geist", Inter, system-ui, -apple-system, sans-serif;
     --font-geist-mono: "Geist Mono", ui-monospace, monospace;
     
-    /* New theme mapping (Solarin-inspired): */
-    /* background: #1C2220 (very dark charcoal green/black) */
-    --background: 160 11% 12%; 
-    /* foreground: #D1E8E2 (light mint/ice blue) */
-    --foreground: 164.3 33.3% 86.5%;
+    /* Dark Mode Defaults (Bitium Official System) */
+    --background: #020617;
+    --foreground: #F8FAFC;
     
-    /* card: #2C3531 (dark slate green from palette) */
-    --card: 153.3 9.3% 19%;
-    --card-foreground: 164.3 33.3% 86.5%;
+    --card: #0F172A;
+    --card-foreground: #F8FAFC;
     
-    --popover: 153.3 9.3% 19%;
-    --popover-foreground: 164.3 33.3% 86.5%;
+    --popover: #0F172A;
+    --popover-foreground: #F8FAFC;
     
-    /* primary: #116466 (teal/deep cyan from palette) */
-    --primary: 181.4 71.4% 23.3%;
-    --primary-foreground: 164.3 33.3% 86.5%;
+    --primary: #6366F1;
+    --primary-foreground: #F8FAFC;
     
-    --secondary: 28.1 50.3% 70%; /* #D9B08C (sand beige) */
-    --secondary-foreground: 153.3 9.3% 19%;
+    --secondary: #1E293B;
+    --secondary-foreground: #F8FAFC;
     
-    --muted: 153.3 9.3% 19%;
-    --muted-foreground: 164.3 15% 65%;
+    --muted: #1E293B;
+    --muted-foreground: #CBD5E1;
     
-    --accent: 29.1 100% 80.2%; /* #FFCB9A (apricot peach) */
-    --accent-foreground: 153.3 9.3% 19%;
+    --accent: #22D3EE;
+    --accent-foreground: #020617;
     
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: #BE185D;
+    --destructive-foreground: #F8FAFC;
     
-    --border: 153.3 9.3% 25%; /* slightly lighter slate green */
-    --input: 153.3 9.3% 23%;
-    --ring: 181.4 71.4% 23.3%;
+    --border: #334155;
+    --input: #334155;
+    --ring: #6366F1;
     
     --radius: 0.75rem;
+
+    /* Category Brand Colors */
+    --brand-screen: #4F46E5;
+    --brand-dtf: #06B6D4;
+    --brand-tshirt: #EC4899;
+    --brand-saree: #8B5CF6;
+    --brand-tote: #10B981;
+    --brand-corp: #F97316;
   }
 }
 
 @theme {
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-sans), system-ui, sans-serif;
+  --font-heading: var(--font-heading), system-ui, sans-serif;
+
+  /* Aliasing legacy zinc/amber colors used across the site to the new system tokens to prevent mass refactoring */
+  --color-zinc-950: var(--background);
+  --color-zinc-900: var(--card);
+  --color-zinc-850: var(--border);
+  --color-zinc-800: var(--border);
+  --color-zinc-500: #64748b;
+  --color-zinc-400: var(--muted-foreground);
+  --color-zinc-300: var(--foreground);
+  --color-zinc-200: var(--foreground);
+  --color-zinc-100: var(--foreground);
+  --color-zinc-50: var(--foreground);
   
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
-  
-  --font-sans: var(--font-geist-sans), Inter, sans-serif;
-  --font-mono: var(--font-geist-mono), monospace;
-
-  /* Redefine violet utility classes to resolve to deep teal/cyan colors from the new scheme */
-  --color-violet-50: #e3f3f2;
-  --color-violet-100: #d1e8e2;
-  --color-violet-200: #9bcbc1;
-  --color-violet-300: #68ad9f;
-  --color-violet-400: #3f9082;
-  --color-violet-500: #167d80;
-  --color-violet-600: #116466;
-  --color-violet-700: #0d4e50;
-  --color-violet-800: #0a383b;
-  --color-violet-900: #072528;
-  --color-violet-950: #031214;
-
-  /* Redefine purple utility classes to resolve to deep teal/cyan */
-  --color-purple-50: #e3f3f2;
-  --color-purple-100: #d1e8e2;
-  --color-purple-200: #9bcbc1;
-  --color-purple-300: #68ad9f;
-  --color-purple-400: #3f9082;
-  --color-purple-500: #167d80;
-  --color-purple-600: #116466;
-  --color-purple-700: #0d4e50;
-
-  /* Redefine amber utility classes to resolve to warm sand beige & apricot peach */
-  --color-amber-50: #fffbf7;
-  --color-amber-100: #ffe8d1;
-  --color-amber-200: #ffd4ab;
-  --color-amber-300: #ffcb9a; /* exact peach */
-  --color-amber-400: #ebc095;
-  --color-amber-500: #d9b08c; /* exact sand beige */
-  --color-amber-600: #bfa080;
-  --color-amber-700: #a1886b;
-}
-
-body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-  font-family: var(--font-sans);
-  overflow-x: hidden;
-}
-
-/* Premium Custom Utilities */
-.glass {
-  background: rgba(44, 53, 49, 0.45);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(209, 232, 226, 0.08);
-}
-
-.glass-light {
-  background: rgba(209, 232, 226, 0.65);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(44, 53, 49, 0.05);
-}
-
-/* Custom scrollbars */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: hsl(var(--background));
-}
-
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted));
-  border-radius: 9999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--primary));
-}
-
-/* Custom Grid Pattern background for Canvas Ruler */
-.canvas-grid-pattern {
-  background-size: 20px 20px;
-  background-image: 
-    linear-gradient(to right, rgba(209, 232, 226, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(209, 232, 226, 0.03) 1px, transparent 1px);
-}
-
-/* Custom glow effect updated to use the new primary teal color (#116466) */
-.glow-primary {
-  box-shadow: 0 0 20px rgba(17, 100, 102, 0.3);
+  /* Legacy Primary overrides */
+  --color-violet-500: var(--primary);
+  --color-violet-600: var(--primary);
+  --color-amber-500: var(--accent);
+  --color-amber-600: var(--primary);
 }
 
 /* ── Light Mode Theme Overrides ─────────────────────────────────── */
 html.light-mode {
-  --background: 165 30% 96%; /* very light mint #eff8f6 */
-  --foreground: 153.3 9.3% 19%; /* charcoal green #2C3531 */
-  --card: 164.3 33.3% 86.5%; /* light mint #D1E8E2 */
-  --card-foreground: 153.3 9.3% 19%;
-  --muted: 164.3 22% 80%;
-  --muted-foreground: 153.3 9.3% 40%;
-  --border: 164.3 22% 77%; /* light mint border #B7D1C9 */
-  --input: 164.3 22% 77%;
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  
+  --card: #FFFFFF;
+  --card-foreground: #0F172A;
+  
+  --popover: #FFFFFF;
+  --popover-foreground: #0F172A;
+  
+  --primary: #4F46E5;
+  --primary-foreground: #FFFFFF;
+  
+  --secondary: #F1F5F9;
+  --secondary-foreground: #0F172A;
+  
+  --muted: #F1F5F9;
+  --muted-foreground: #475569;
+  
+  --accent: #06B6D4;
+  --accent-foreground: #FFFFFF;
+  
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: #4F46E5;
 }
 
 html.light-mode body {
-  background-color: #eff8f6 !important;
-  color: #2c3531 !important;
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
 }
 
 html.light-mode .glass {
-  background: rgba(209, 232, 226, 0.75);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(44, 53, 49, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.08);
 }
 
-/* Overrides for standard Tailwind utilities in dark/default mode */
-.bg-zinc-950 { background-color: #1c2220 !important; }
-.bg-zinc-900 { background-color: #2c3531 !important; }
-.bg-zinc-900\/40 { background-color: rgba(44, 53, 49, 0.4) !important; }
-.border-zinc-850 { border-color: #3b4843 !important; }
-.border-zinc-800 { border-color: #46554f !important; }
-.border-zinc-900 { border-color: #2c3531 !important; }
-.text-zinc-300 { color: #b7d1c9 !important; }
-.text-zinc-400 { color: #9abcb1 !important; }
-.text-zinc-500 { color: #698b80 !important; }
-
-/* Swap zinc-950 / zinc-900 panels in light mode */
-html.light-mode .bg-zinc-950 { background-color: #eff8f6 !important; }
-html.light-mode .bg-zinc-900\/40 { background-color: rgba(209, 232, 226, 0.5) !important; }
-html.light-mode .bg-zinc-900 { background-color: #d1e8e2 !important; }
-html.light-mode .border-zinc-850 { border-color: #b7d1c9 !important; }
-html.light-mode .border-zinc-800 { border-color: #b7d1c9 !important; }
-html.light-mode .border-zinc-900 { border-color: #b7d1c9 !important; }
-html.light-mode .text-zinc-300 { color: #2c3531 !important; }
-html.light-mode .text-zinc-400 { color: #45544f !important; }
-html.light-mode .text-zinc-500 { color: #5e736c !important; }
-html.light-mode .text-white,
-html.light-mode .text-zinc-50,
-html.light-mode .text-zinc-100,
-html.light-mode .text-zinc-200 { color: #2c3531 !important; }
-html.light-mode .bg-zinc-950\/80 { background-color: rgba(239, 248, 246, 0.9) !important; }
-html.light-mode .bg-zinc-950\/65 { background-color: rgba(239, 248, 246, 0.75) !important; }
-html.light-mode .bg-zinc-950\/50 { background-color: rgba(239, 248, 246, 0.6) !important; }
-html.light-mode .border-zinc-900\/60 { border-color: rgba(183, 209, 201, 0.6) !important; }
-
-/* Light mode overrides for Tailwind Gradients */
-html.light-mode .via-zinc-950 { --tw-gradient-via: #eff8f6 !important; }
-html.light-mode .to-zinc-950 { --tw-gradient-to: #eff8f6 !important; }
-html.light-mode .from-zinc-950 { --tw-gradient-from: #eff8f6 !important; }
-html.light-mode .from-zinc-900 { --tw-gradient-from: #d1e8e2 !important; }
-html.light-mode .to-zinc-900 { --tw-gradient-to: #d1e8e2 !important; }
-html.light-mode .from-amber-950\/30 { --tw-gradient-from: rgba(251, 191, 36, 0.1) !important; }
-html.light-mode .from-rose-950\/30 { --tw-gradient-from: rgba(251, 113, 133, 0.1) !important; }
-html.light-mode .from-fuchsia-950\/30 { --tw-gradient-from: rgba(232, 121, 249, 0.1) !important; }
-html.light-mode .from-violet-950\/30 { --tw-gradient-from: rgba(167, 139, 250, 0.1) !important; }
-html.light-mode .from-blue-950\/30 { --tw-gradient-from: rgba(96, 165, 250, 0.1) !important; }
-html.light-mode .from-emerald-950\/30 { --tw-gradient-from: rgba(52, 211, 153, 0.1) !important; }
-html.light-mode .bg-zinc-950\/65 { background-color: rgba(239, 248, 246, 0.75) !important; }
-html.light-mode .bg-zinc-950\/50 { background-color: rgba(239, 248, 246, 0.6) !important; }
-html.light-mode .border-zinc-900\/60 { border-color: rgba(183, 209, 201, 0.6) !important; }
-html.light-mode ::-webkit-scrollbar-track { background: #eff8f6; }
-html.light-mode ::-webkit-scrollbar-thumb { background: #d1e8e2; }
-
-/* Performance-friendly SVG-based linen/paper texture overlay */
-.tactile-grain {
-  position: relative;
+/* Helper utility for the Hero Gradient */
+.hero-gradient {
+  background: linear-gradient(135deg, #312E81 0%, #0F766E 50%, #BE185D 100%);
 }
+html.light-mode .hero-gradient {
+  background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 50%, #EC4899 100%);
+}
+
+/* Helper utility for the CTA Gradient */
+.cta-gradient {
+  background: linear-gradient(135deg, #EC4899, #F97316);
+  color: white;
+}
+html.light-mode .cta-gradient {
+  background: linear-gradient(135deg, #EC4899, #F97316);
+  color: white;
+}
+
+/* Tailwind Gradients Overrides for backwards compatibility in light mode */
+html.light-mode .via-zinc-950 { --tw-gradient-via: var(--background) !important; }
+html.light-mode .to-zinc-950 { --tw-gradient-to: var(--background) !important; }
+html.light-mode .from-zinc-950 { --tw-gradient-from: var(--background) !important; }
+html.light-mode .from-zinc-900 { --tw-gradient-from: var(--card) !important; }
+html.light-mode .to-zinc-900 { --tw-gradient-to: var(--card) !important; }
+
+/* Base resets */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+/* Fix up arbitrary bg opacity classes used heavily */
+.bg-zinc-950\/65 { background-color: color-mix(in srgb, var(--background) 65%, transparent) !important; }
+.bg-zinc-950\/50 { background-color: color-mix(in srgb, var(--background) 50%, transparent) !important; }
+.bg-zinc-950\/80 { background-color: color-mix(in srgb, var(--background) 80%, transparent) !important; }
+.bg-zinc-900\/40 { background-color: color-mix(in srgb, var(--card) 40%, transparent) !important; }
+.border-zinc-900\/60 { border-color: color-mix(in srgb, var(--border) 60%, transparent) !important; }
+
+/* Remove tactile grain override logic (we deleted tactile grain from body but in case it's in other places) */
 .tactile-grain::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.035; /* Keep it extremely subtle and elegant */
-  pointer-events: none;
-  z-index: 1;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  display: none !important;
 }
-
-/* Batik Text Mask Animation */
-@keyframes batik-flow {
-  0% {
-    background-position: 2% 5%;
-  }
-  50% {
-    background-position: 22% 12%;
-  }
-  100% {
-    background-position: 2% 5%;
-  }
-}
-
-.outline-text {
-  color: transparent;
-  -webkit-text-stroke: 1.5px hsl(var(--foreground));
-  text-shadow: 0 0 15px rgba(17, 100, 102, 0.4);
-  display: inline-block;
-  transition: all 0.3s ease;
-}
-
-.outline-text:hover {
-  text-shadow: 0 0 25px rgba(17, 100, 102, 0.8);
-  -webkit-text-stroke: 1.5px #ffcb9a; /* apricot peach on hover */
-}
-
