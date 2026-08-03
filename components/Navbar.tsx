@@ -24,7 +24,8 @@ import {
   Printer,
   Stamp,
   PackageCheck,
-  Download
+  Download,
+  Scissors
 } from 'lucide-react';
 
 export default function Navbar() {
@@ -38,6 +39,7 @@ export default function Navbar() {
   const [screenPrintingHovered, setScreenPrintingHovered] = useState(false);
   const [dtfPrintingHovered, setDtfPrintingHovered] = useState(false);
   const [batikStampHovered, setBatikStampHovered] = useState(false);
+  const [laserCuttingHovered, setLaserCuttingHovered] = useState(false);
 
   // Mobile menu open state & mobile accordion states
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -212,6 +214,39 @@ export default function Navbar() {
                   >
                     Cap Batik
                   </Link>
+                </div>
+              )}
+            </div>
+
+            {/* 06. Laser Cutting Dropdown */}
+            <div 
+              className="relative h-full flex items-center"
+              onMouseEnter={() => setLaserCuttingHovered(true)}
+              onMouseLeave={() => setLaserCuttingHovered(false)}
+            >
+              <Link href="/laser-cutting" className="text-xs font-semibold hover:text-violet-400 transition-colors flex items-center gap-1 cursor-pointer text-zinc-300">
+                <span>Laser Cutting</span>
+                <ChevronDown size={12} className={`transition-transform duration-200 ${laserCuttingHovered ? 'rotate-180' : ''}`} />
+              </Link>
+              {laserCuttingHovered && (
+                <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-zinc-800 bg-zinc-950 p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
+                  <Link href="/laser-cutting" className="px-3 py-2 rounded-lg text-[11px] font-bold text-violet-400 hover:bg-zinc-900 transition-colors">
+                    All Laser Cutting
+                  </Link>
+                  <hr className="border-zinc-800 my-0.5" />
+                  {[
+                    { sub: 'acrylic', label: 'Acrylic Cut & Engrave' },
+                    { sub: 'wood', label: 'Wood Engraving' },
+                    { sub: 'custom-profile', label: 'Custom Profiles' }
+                  ].map((item) => (
+                    <Link 
+                      key={item.sub} 
+                      href={`/laser-cutting?sub=${item.sub}`} 
+                      className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-zinc-900 transition-colors text-zinc-300 hover:text-white"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>
@@ -500,6 +535,51 @@ export default function Navbar() {
                   >
                     View All Batik Stamps →
                   </Link>
+                </div>
+              )}
+            </div>
+
+            {/* 6. Laser Cutting */}
+            <div className="rounded-xl bg-zinc-900/50 border border-zinc-850 overflow-hidden">
+              <div
+                onClick={() => toggleMobileSub('laser')}
+                className="flex items-center justify-between px-4 py-3 cursor-pointer text-sm font-bold text-zinc-100"
+              >
+                <div className="flex items-center gap-2">
+                  <Scissors size={16} className="text-violet-400" />
+                  <span>Laser Cutting</span>
+                </div>
+                <ChevronDown
+                  size={16}
+                  className={`text-zinc-400 transition-transform duration-200 ${
+                    mobileSubOpen === 'laser' ? 'rotate-180' : ''
+                  }`}
+                />
+              </div>
+
+              {mobileSubOpen === 'laser' && (
+                <div className="px-4 pb-3 space-y-1.5 bg-zinc-950/60 pt-1 border-t border-zinc-850/50">
+                  <Link
+                    href="/laser-cutting"
+                    onClick={closeMobileMenu}
+                    className="block px-3 py-2 rounded-lg text-xs font-bold text-violet-400 bg-violet-500/10"
+                  >
+                    View All Laser Cutting →
+                  </Link>
+                  {[
+                    { sub: 'acrylic', label: 'Acrylic Cut & Engrave' },
+                    { sub: 'wood', label: 'Wood Engraving' },
+                    { sub: 'custom-profile', label: 'Custom Profiles' }
+                  ].map((item) => (
+                    <Link
+                      key={item.sub}
+                      href={`/laser-cutting?sub=${item.sub}`}
+                      onClick={closeMobileMenu}
+                      className="block px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-300 hover:bg-zinc-900 hover:text-white"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>

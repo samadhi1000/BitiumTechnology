@@ -4,12 +4,15 @@ import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { getProducts, Product } from '@/lib/products';
 import HoverZoomImage from '@/components/ui/HoverZoomImage';
+import CatalogPagination from '@/components/CatalogPagination';
 import { PackageCheck, Search, ChevronRight, Home, ShieldCheck } from 'lucide-react';
 
 function MaterialsContent() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 16;
 
   useEffect(() => {
     async function load() {
@@ -21,6 +24,10 @@ function MaterialsContent() {
     load();
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
   const filteredProducts = products.filter((p) => {
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
@@ -28,6 +35,9 @@ function MaterialsContent() {
     }
     return true;
   });
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const paginatedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <div className="w-full min-h-screen bg-zinc-950 text-white">
@@ -53,6 +63,9 @@ function MaterialsContent() {
               <h1 className="text-3xl sm:text-5xl font-black tracking-tight">DTF Consumables</h1>
               <p className="text-zinc-400 text-sm mt-2 max-w-xl">
                 Trade grade White & CMYK textile inks, premium high-adhesive hot melt TPU powders, and double-matte hot peel DTF film rolls (30cm & 60cm).
+              </p>
+              <p className="text-emerald-300 text-sm mt-4 font-medium max-w-2xl leading-relaxed border-l-2 border-emerald-500 pl-4">
+                Everything your print floor runs on - DTF inks and film, hot-melt powder, screen-printing emulsions, sensitizers, and wash chemicals - in stock and ready to ship.
               </p>
             </div>
 
@@ -92,8 +105,9 @@ function MaterialsContent() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-            {filteredProducts.map((product) => (
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+              {paginatedProducts.map((product) => (
               <div
                 key={product.id}
                 className="group relative rounded-2xl border border-zinc-850 bg-zinc-900/40 hover:border-emerald-500/40 hover:bg-zinc-900/80 transition-all duration-300 flex flex-col h-full overflow-hidden shadow-sm hover:shadow-xl"
@@ -145,9 +159,47 @@ function MaterialsContent() {
                 </div>
               </div>
             ))}
-          </div>
+            </div>
+            
+            <CatalogPagination 
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </>
         )}
       </div>
+
+      {/* After Listings Section */}
+      <section className="border-t border-zinc-900 bg-zinc-950 py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto space-y-12">
+          
+          <div className="space-y-4">
+            <h2 className="text-2xl font-black text-white">Stocked for both DTF and screen printing</h2>
+            <p className="text-sm text-zinc-400 leading-relaxed">
+              Whether you're running a DTF printer or exposing your own screens, running out of a consumable mid-job stalls your whole order queue. We keep the essentials in stock so a low-ink day doesn't turn into a lost week.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-2xl font-black text-white">What's available</h2>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-zinc-400">
+              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> DTF inks and double-matte film rolls</li>
+              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Hot-melt transfer powder</li>
+              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Screen-printing photo emulsions and sensitizers</li>
+              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Emulsion remover and screen reclaiming chemicals</li>
+            </ul>
+          </div>
+
+          <div className="space-y-3 p-6 rounded-2xl bg-zinc-900/50 border border-zinc-850">
+            <h3 className="text-lg font-bold text-emerald-300">Buying in bulk</h3>
+            <p className="text-xs text-zinc-400 leading-relaxed">
+              Running a shop day to day? Ask us about standing orders - we can set up a recurring delivery so consumables show up before you run low, instead of after.
+            </p>
+          </div>
+
+        </div>
+      </section>
     </div>
   );
 }

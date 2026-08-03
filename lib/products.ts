@@ -7,7 +7,7 @@ export interface Product {
   price: number;
   original_price?: number;
   image_url: string;
-  category: 'stencil' | 'screen-printing' | 'dtf_sheet' | 'batik-stamp' | 'materials';
+  category: 'stencil' | 'screen-printing' | 'dtf_sheet' | 'batik-stamp' | 'materials' | 'laser-cutting';
   sub_category?: string;
   is_active: boolean;
   variants?: Variant[];
@@ -46,6 +46,11 @@ const SUBCAT_DATA = [
 
   // Batik Stamp
   { cat: 'batik-stamp', sub: 'cap-batik', names: ['Traditional Copper Cap Batik Stamp', 'Wood Carved Lotus Cap Batik Stamp', 'Royal Parang Pattern Cap Batik Stamp', 'Symmetrical Mandala Cap Batik Stamp', 'Peacock Tail Motif Cap Batik Stamp', 'Classic Siriwasa Cap Batik Stamp', 'Kawung Geometry Cap Batik Stamp', 'Geometric Grid Pattern Cap Batik Stamp', 'Modern Wave Abstract Cap Batik Stamp'], image: 'https://images.unsplash.com/photo-1590736704728-f4730bb30770?auto=format&fit=crop&w=600&q=80', price: 4900, orig: 6500 },
+
+  // Laser Cutting
+  { cat: 'laser-cutting', sub: 'acrylic', names: ['Custom Acrylic LED Sign Panel', 'Clear Acrylic Display Stand', 'Frosted Acrylic Name Plate', 'Layered Acrylic Award Plaque', 'Acrylic Keychain Bulk Pack', 'Colored Acrylic Lettering Set', 'Acrylic Box Enclosure Panels', 'Neon Edge-Lit Acrylic Sign Base', 'Custom Acrylic Stencil Template'], image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=600&q=80', price: 2500, orig: 3200 },
+  { cat: 'laser-cutting', sub: 'wood', names: ['Engraved Wood Coaster Set', 'Custom Plywood Wall Art', 'Bamboo Wood Menu Board', 'Laser Cut Wooden Nameplate', 'Wood Veneer Business Cards', 'Intricate Wood Mandala Panel', 'Custom Hardwood Cutting Board', 'Wooden Key Organizer Rack', 'Layered Wood Topography Map'], image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80', price: 1800, orig: 2400 },
+  { cat: 'laser-cutting', sub: 'custom-profile', names: ['Custom Profile MDF Cutout', 'Bespoke Foam Insert Profile', 'Leather Engraved Patch Profile', 'Felt Acoustic Panel Cutout', 'Cardboard Prototyping Shape', 'Rubber Stamp Matrix Profile', 'Gasket and Seal Laser Cut', 'Fabric Template Profile Cut', 'Precision Shims Profile Cut'], image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=600&q=80', price: 1500, orig: 2000 },
 
   // Printing Materials & Ink (DTF Printing Consumables)
   { 

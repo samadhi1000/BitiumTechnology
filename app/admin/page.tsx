@@ -80,7 +80,7 @@ export default function AdminPanelPage() {
 
   // Product Form states
   const [name, setName] = useState('');
-  const [category, setCategory] = useState<'stencil' | 'screen-printing' | 'dtf_sheet' | 'batik-stamp' | 'materials'>('dtf_sheet');
+  const [category, setCategory] = useState<'stencil' | 'screen-printing' | 'dtf_sheet' | 'batik-stamp' | 'materials' | 'laser-cutting'>('dtf_sheet');
   const [subCategory, setSubCategory] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState(0);

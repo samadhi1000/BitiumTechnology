@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { getProducts, Product } from '@/lib/products';
 import HoverZoomImage from '@/components/ui/HoverZoomImage';
+import CatalogPagination from '@/components/CatalogPagination';
 import { Layers, LayoutGrid, Shirt, Search, ChevronRight, Home, Sparkles } from 'lucide-react';
 
 function DtfPrintingContent() {
@@ -14,6 +15,8 @@ function DtfPrintingContent() {
   const [products, setProducts] = useState<Product[]>([]);
   const [activeSub, setActiveSub] = useState<string | null>(subParam);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15;
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,7 +31,12 @@ function DtfPrintingContent() {
 
   useEffect(() => {
     setActiveSub(subParam);
+    setCurrentPage(1);
   }, [subParam]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
 
   const subCategories = [
     { id: 'tshirt-design', label: 'T-Shirt Designs' },
@@ -44,6 +52,9 @@ function DtfPrintingContent() {
     }
     return true;
   });
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const paginatedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <div className="w-full min-h-screen bg-zinc-950 text-white">
@@ -69,6 +80,9 @@ function DtfPrintingContent() {
               <h1 className="text-3xl sm:text-5xl font-black tracking-tight">DTF Printing</h1>
               <p className="text-zinc-400 text-sm mt-2 max-w-xl">
                 High-definition DTF transfer films, custom t-shirt graphic sheets, sticker packs, and cloth transfer designs for industrial & custom print runs.
+              </p>
+              <p className="text-fuchsia-300 text-sm mt-4 font-medium max-w-2xl leading-relaxed border-l-2 border-fuchsia-500 pl-4">
+                Custom gang sheet layouts, anime sticker packs, and cloth transfers - build your sheet online, preview it, and we print and ship it.
               </p>
             </div>
 
@@ -158,8 +172,9 @@ function DtfPrintingContent() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProducts.map((product) => (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {paginatedProducts.map((product) => (
               <div
                 key={product.id}
                 className="group relative rounded-2xl border border-zinc-850 bg-zinc-900/40 hover:border-fuchsia-500/40 hover:bg-zinc-900/80 transition-all duration-300 flex flex-col h-full overflow-hidden shadow-sm hover:shadow-xl"
@@ -211,9 +226,56 @@ function DtfPrintingContent() {
                 </div>
               </div>
             ))}
-          </div>
+            </div>
+            
+            <CatalogPagination 
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </>
         )}
       </div>
+
+      {/* After Listings Section */}
+      <section className="border-t border-zinc-900 bg-zinc-950 py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto space-y-12">
+          
+          <div className="space-y-4">
+            <h2 className="text-2xl font-black text-white">How a DTF order works</h2>
+            <p className="text-sm text-zinc-400 leading-relaxed">
+              Your design gets printed onto film, layered with a white base so colors stay bright on any fabric color, then coated with a hot-melt powder. When it arrives, you heat-press it onto the garment - no screens, no setup, no minimum order.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-2xl font-black text-white">Why people choose DTF over screen printing</h2>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-zinc-400">
+              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-fuchsia-500" /> Works on cotton, polyester, and blends without changing your process</li>
+              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-fuchsia-500" /> No cost jump for full-color or photo-style designs</li>
+              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-fuchsia-500" /> Makes sense for a single shirt or a full gang sheet of small designs</li>
+              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-fuchsia-500" /> Transfers store flat until you're ready to press them</li>
+            </ul>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-3 p-6 rounded-2xl bg-zinc-900/50 border border-zinc-850">
+              <h3 className="text-lg font-bold text-fuchsia-300">Build your own sheet</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Use the DTF Sheet Builder to lay out your designs, see exact spacing, and check the finished size before you pay - what you see in the builder is what gets printed.
+              </p>
+            </div>
+            
+            <div className="space-y-3 p-6 rounded-2xl bg-zinc-900/50 border border-zinc-850">
+              <h3 className="text-lg font-bold text-fuchsia-300">Turnaround</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Standard sheets ship within 24–48 hours of approval. Contact us for bulk orders.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
     </div>
   );
 }

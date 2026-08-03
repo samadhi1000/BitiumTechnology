@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { getProducts, Product } from '@/lib/products';
 import HoverZoomImage from '@/components/ui/HoverZoomImage';
+import CatalogPagination from '@/components/CatalogPagination';
 import { Stamp, Search, ChevronRight, Home } from 'lucide-react';
 
 function BatikStampContent() {
@@ -13,6 +14,8 @@ function BatikStampContent() {
 
   const [products, setProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15;
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,6 +28,10 @@ function BatikStampContent() {
     load();
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
   const filteredProducts = products.filter((p) => {
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
@@ -32,6 +39,9 @@ function BatikStampContent() {
     }
     return true;
   });
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const paginatedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <div className="w-full min-h-screen bg-zinc-950 text-white">
@@ -57,6 +67,9 @@ function BatikStampContent() {
               <h1 className="text-3xl sm:text-5xl font-black tracking-tight">Cap Batik Stamps</h1>
               <p className="text-zinc-400 text-sm mt-2 max-w-xl">
                 Authentic handcrafted copper and solid wood Cap Batik printing stamps for traditional fabric waxing, textile design, and batik manufacturing.
+              </p>
+              <p className="text-amber-300 text-sm mt-4 font-medium max-w-2xl leading-relaxed border-l-2 border-amber-500 pl-4">
+                Traditional copper and hand-carved wood Cap Batik stamps, made the way batik makers have always made them.
               </p>
             </div>
 
@@ -96,8 +109,9 @@ function BatikStampContent() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProducts.map((product) => (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {paginatedProducts.map((product) => (
               <div
                 key={product.id}
                 className="group relative rounded-2xl border border-zinc-850 bg-zinc-900/40 hover:border-amber-500/40 hover:bg-zinc-900/80 transition-all duration-300 flex flex-col h-full overflow-hidden shadow-sm hover:shadow-xl"
@@ -149,9 +163,46 @@ function BatikStampContent() {
                 </div>
               </div>
             ))}
-          </div>
+            </div>
+            
+            <CatalogPagination 
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </>
         )}
       </div>
+
+      {/* After Listings Section */}
+      <section className="border-t border-zinc-900 bg-zinc-950 py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto space-y-12">
+          
+          <div className="space-y-4">
+            <h2 className="text-2xl font-black text-white">Copper vs. wood stamps</h2>
+            <p className="text-sm text-zinc-400 leading-relaxed">
+              Copper stamps (cap) hold fine, repeating detail well and last through heavy daily use - the standard choice for production batik. Wood stamps carve more freely, so they suit bolder, one-off, or hand-carved motifs where a little natural variation is part of the look.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-3 p-6 rounded-2xl bg-zinc-900/50 border border-zinc-850">
+              <h3 className="text-lg font-bold text-amber-300">What we need from you</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                A photo or drawing of the motif is enough to start. We'll confirm sizing and repeat spacing with you before anything is carved or cast, so there are no surprises on the finished stamp.
+              </p>
+            </div>
+            
+            <div className="space-y-3 p-6 rounded-2xl bg-zinc-900/50 border border-zinc-850">
+              <h3 className="text-lg font-bold text-amber-300">Who orders these</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Batik studios keeping traditional methods alive, textile schools, and makers who want a stamp built to their own pattern instead of a stock design.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
     </div>
   );
 }

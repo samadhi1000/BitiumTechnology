@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { getProducts, Product } from '@/lib/products';
 import HoverZoomImage from '@/components/ui/HoverZoomImage';
+import CatalogPagination from '@/components/CatalogPagination';
 import { Palette, Filter, Search, Sparkles, ChevronRight, Home } from 'lucide-react';
 
 function StencilContent() {
@@ -14,6 +15,8 @@ function StencilContent() {
   const [products, setProducts] = useState<Product[]>([]);
   const [activeSub, setActiveSub] = useState<string | null>(subParam);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15;
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,7 +31,12 @@ function StencilContent() {
 
   useEffect(() => {
     setActiveSub(subParam);
+    setCurrentPage(1);
   }, [subParam]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
 
   const subCategories = [
     { id: 'hand-painting', label: 'Hand Painting Stencils' },
@@ -47,6 +55,9 @@ function StencilContent() {
     }
     return true;
   });
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const paginatedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <div className="w-full min-h-screen bg-zinc-950 text-white">
@@ -72,6 +83,9 @@ function StencilContent() {
               <h1 className="text-3xl sm:text-5xl font-black tracking-tight">Stencil Collection</h1>
               <p className="text-zinc-400 text-sm mt-2 max-w-xl">
                 Explore reusable precision laser-cut Mylar and titanium stencils for fabric hand-painting, saree borders, tote bags, and wall decorations.
+              </p>
+              <p className="text-violet-300 text-sm mt-4 font-medium max-w-2xl leading-relaxed border-l-2 border-violet-500 pl-4">
+                Precision-cut Mylar stencils for saree work, hand painting, and wall art. Every stencil is laser-cut from your design, so the lines stay sharp no matter how detailed the pattern is.
               </p>
             </div>
 
@@ -142,8 +156,9 @@ function StencilContent() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProducts.map((product) => (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {paginatedProducts.map((product) => (
               <div
                 key={product.id}
                 className="group relative rounded-2xl border border-zinc-850 bg-zinc-900/40 hover:border-violet-500/40 hover:bg-zinc-900/80 transition-all duration-300 flex flex-col h-full overflow-hidden shadow-sm hover:shadow-xl"
@@ -195,9 +210,56 @@ function StencilContent() {
                 </div>
               </div>
             ))}
-          </div>
+            </div>
+            
+            <CatalogPagination 
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </>
         )}
       </div>
+
+      {/* After Listings Section */}
+      <section className="border-t border-zinc-900 bg-zinc-950 py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto space-y-12">
+          
+          <div className="space-y-4">
+            <h2 className="text-2xl font-black text-white">Why laser-cut stencils?</h2>
+            <p className="text-sm text-zinc-400 leading-relaxed">
+              Hand-cut stencils shift a little every time - a curve here, a corner there. A laser follows your file exactly, so if you're repeating a pattern across ten sarees or a whole wall mural, every cut matches the last one.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-2xl font-black text-white">What you can use them for</h2>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-zinc-400">
+              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-violet-500" /> Saree and fabric block printing</li>
+              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-violet-500" /> Wall art and mural templates</li>
+              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-violet-500" /> Henna and hand-painting guides</li>
+              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-violet-500" /> Repeat-pattern textile work</li>
+            </ul>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-3 p-6 rounded-2xl bg-zinc-900/50 border border-zinc-850">
+              <h3 className="text-lg font-bold text-violet-300">Getting your design ready</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                You can send us a photo of a sketch, a vector file, or just describe what you want - we'll clean it up and turn it into a cuttable design before anything goes near the laser. If a detail is too fine to hold its shape once cut, we'll flag it and suggest a fix rather than print it as-is.
+              </p>
+            </div>
+            
+            <div className="space-y-3 p-6 rounded-2xl bg-zinc-900/50 border border-zinc-850">
+              <h3 className="text-lg font-bold text-violet-300">Turnaround</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Most stencil orders are ready within a couple of days, depending on size and how many you need cut. Contact us for bulk or urgent inquiries.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
     </div>
   );
 }
