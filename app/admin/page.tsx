@@ -687,6 +687,7 @@ export default function AdminPanelPage() {
             </div>
           )}
         </div>
+      </div>
       </div> {/* End of main dashboard div */}
 
       {/* MODAL: CREDENTIALS SETTINGS */}
