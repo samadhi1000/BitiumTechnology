@@ -6,7 +6,7 @@ import Link from 'next/link';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import PromoBanner from '@/components/PromoBanner';
-import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, PackageCheck, Flame, CheckCircle2, Scissors, FlaskConical } from 'lucide-react';
+import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, PackageCheck, Flame, CheckCircle2, Scissors, FlaskConical, PlayCircle, MessageSquareHeart } from 'lucide-react';
 import { HeroSearch } from '@/components/HeroSearch';
 import { HeroSlideshow } from '@/components/HeroSlideshow';
 
@@ -90,6 +90,24 @@ function HomeContent() {
       gradient: 'from-emerald-500/20 to-teal-500/10',
       border: 'hover:border-emerald-500/50',
       badge: 'Trade Inks & Film'
+    },
+    {
+      title: 'Video Tutorials',
+      description: 'Learn how to master Screen and DTF printing with our step-by-step video guides.',
+      href: '#',
+      icon: PlayCircle,
+      gradient: 'from-yellow-500/20 to-orange-500/10',
+      border: 'hover:border-yellow-500/50',
+      badge: 'Learn & Master'
+    },
+    {
+      title: 'Customer Feedbacks',
+      description: 'See what our existing customers have to say about Bitium Technology products.',
+      href: '#',
+      icon: MessageSquareHeart,
+      gradient: 'from-pink-500/20 to-rose-500/10',
+      border: 'hover:border-pink-500/50',
+      badge: 'Real Stories'
     }
   ];
 
