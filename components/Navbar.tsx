@@ -256,9 +256,9 @@ export default function Navbar() {
               Digital downloads
             </Link>
 
-            {/* 07. DTF Printing Consumables */}
+            {/* 07. Materials / Consumables */}
             <Link href="/materials" className="text-xs font-semibold hover:text-violet-400 transition-colors h-full flex items-center text-zinc-300">
-              DTF Printing Consumables
+              Materials / Consumables
             </Link>
 
             {/* 07. Size Guide */}
@@ -597,7 +597,7 @@ export default function Navbar() {
               <ChevronRight size={16} className="text-zinc-500" />
             </Link>
 
-            {/* 6. DTF Printing Consumables */}
+            {/* 6. Materials / Consumables */}
             <Link
               href="/materials"
               onClick={closeMobileMenu}
@@ -605,7 +605,7 @@ export default function Navbar() {
             >
               <div className="flex items-center gap-2">
                 <PackageCheck size={16} className="text-violet-400" />
-                <span>DTF Printing Consumables</span>
+                <span>Materials / Consumables</span>
               </div>
               <ChevronRight size={16} className="text-zinc-500" />
             </Link>
