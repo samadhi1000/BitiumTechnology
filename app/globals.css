@@ -196,6 +196,9 @@ html.light-mode .text-zinc-400 { color: #45544f !important; }
 html.light-mode .text-zinc-500 { color: #5e736c !important; }
 html.light-mode .text-white { color: #2c3531 !important; }
 html.light-mode .bg-zinc-950\/80 { background-color: rgba(239, 248, 246, 0.9) !important; }
+html.light-mode .bg-zinc-950\/65 { background-color: rgba(239, 248, 246, 0.75) !important; }
+html.light-mode .bg-zinc-950\/50 { background-color: rgba(239, 248, 246, 0.6) !important; }
+html.light-mode .border-zinc-900\/60 { border-color: rgba(183, 209, 201, 0.6) !important; }
 html.light-mode ::-webkit-scrollbar-track { background: #eff8f6; }
 html.light-mode ::-webkit-scrollbar-thumb { background: #d1e8e2; }
 
