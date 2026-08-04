@@ -1,6 +1,5 @@
 import { supabase } from './supabase';
-import fs from 'fs';
-import path from 'path';
+import catalogData from './digital-catalog.json';
 
 export interface DigitalArtwork {
   id: string;
@@ -30,19 +29,9 @@ export interface DigitalPurchase {
   created_at: string;
 }
 
-// Local fallback database helpers
-const localCatalogPath = path.join(process.cwd(), 'lib', 'digital-catalog.json');
-
+// Static in-memory fallback catalog (embedded at build time, works on Vercel)
 const getLocalCatalog = (): DigitalArtwork[] => {
-  try {
-    if (fs.existsSync(localCatalogPath)) {
-      const data = fs.readFileSync(localCatalogPath, 'utf8');
-      return JSON.parse(data || '[]');
-    }
-  } catch (err) {
-    console.error('Failed reading local digital-catalog.json:', err);
-  }
-  return [];
+  return catalogData as DigitalArtwork[];
 };
 
 // 1. Fetch all digital artworks (queries database, falls back to local JSON)
