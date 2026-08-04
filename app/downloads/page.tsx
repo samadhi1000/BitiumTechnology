@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Search, Grid, Eye, Shield, Tag, Download, ShoppingBag, Loader2, ArrowRight } from 'lucide-react';
+import { loadPayHereScript } from '@/lib/payhere-loader';
 
 interface DigitalArtwork {
   id: string;
@@ -70,26 +71,29 @@ export default function DownloadsPage() {
 
       const data = await res.json();
       if (res.ok && data.hash) {
-        const payhereUrl = data.sandbox
-          ? 'https://sandbox.payhere.lk/pay/checkout'
-          : 'https://www.payhere.lk/pay/checkout';
+        try {
+          await loadPayHereScript(!!data.sandbox);
+        } catch (scriptErr) {
+          console.error('Failed to load PayHere script:', scriptErr);
+          alert('Could not load the payment gateway. Please check your internet connection or disable ad blockers and try again.');
+          return;
+        }
 
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = payhereUrl;
+        (window as any).payhere.onCompleted = function onCompleted(orderId: string) {
+          console.log("Payment completed. OrderID:" + orderId);
+          window.location.href = data.return_url;
+        };
 
-        Object.entries(data).forEach(([key, value]) => {
-          if (key !== 'sandbox') {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = key;
-            input.value = String(value);
-            form.appendChild(input);
-          }
-        });
+        (window as any).payhere.onDismissed = function onDismissed() {
+          console.log("Payment window closed by the customer");
+        };
 
-        document.body.appendChild(form);
-        form.submit();
+        (window as any).payhere.onError = function onError(error: string) {
+          console.log("Payment Error:" + error);
+          alert("Payment failed: " + error);
+        };
+
+        (window as any).payhere.startPayment(data);
       } else {
         alert(data.error || 'Failed to initialize checkout payment');
       }
