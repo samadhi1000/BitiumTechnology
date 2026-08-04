@@ -8,8 +8,8 @@ export async function POST(req: Request) {
         const { orderId, amount, currency } = body;
 
         // .env.local eken keys tika gannawa
-        const merchantId = process.env.PAYHERE_MERCHANT_ID;
-        const merchantSecret = process.env.PAYHERE_SECRET;
+        const merchantId = (process.env.PAYHERE_MERCHANT_ID || '').trim();
+        const merchantSecret = (process.env.PAYHERE_MERCHANT_SECRET || process.env.PAYHERE_SECRET || '').trim();
 
         if (!merchantId || !merchantSecret) {
              return NextResponse.json({ success: false, message: "Credentials missing in .env.local" }, { status: 500 });

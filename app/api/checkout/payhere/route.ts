@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
 
     // Trim to remove any accidental whitespace from env vars
     const merchantId = (process.env.PAYHERE_MERCHANT_ID || '1222222').trim();
-    const merchantSecret = (process.env.PAYHERE_MERCHANT_SECRET || 'dummy_secret').trim();
+    const merchantSecret = (process.env.PAYHERE_MERCHANT_SECRET || process.env.PAYHERE_SECRET || 'dummy_secret').trim();
     const currency = 'LKR';
 
     // Format amount: parseFloat ensures no stale comma separators, toFixed(2) gives exactly 2 decimals
@@ -112,7 +112,9 @@ export async function POST(req: NextRequest) {
       .toUpperCase();
 
     const payherePayload = {
-      sandbox: process.env.NODE_ENV !== 'production' || isMock,
+      // PAYHERE_SANDBOX=true forces sandbox mode even on Vercel production
+      // Falls back to: true in development/mock mode, false in production with DB
+      sandbox: process.env.PAYHERE_SANDBOX === 'true' || process.env.NODE_ENV !== 'production' || isMock,
       merchant_id: merchantId,
       return_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/checkout/success?order_id=${orderId}`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/checkout/cancel?order_id=${orderId}`,
