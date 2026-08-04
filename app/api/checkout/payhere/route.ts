@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
-import { getDigitalArtworkById } from '@/lib/digital';
+import catalogData from '@/lib/digital-catalog.json';
 
 export async function POST(req: NextRequest) {
   try {
@@ -69,18 +69,9 @@ export async function POST(req: NextRequest) {
       
       await supabaseAdmin.from('order_items').insert(itemsWithOrderId);
     } else {
-      // Fallback mode for testing UI without database config
+      // Fallback mode — use statically imported catalog (works on Vercel)
       console.warn('Database config missing, using local fallback mode for testing');
-      
-      let localCatalog = [];
-      try {
-        const fs = require('fs');
-        const path = require('path');
-        const catalogPath = path.join(process.cwd(), 'lib/digital-catalog.json');
-        localCatalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
-      } catch (err) {
-        console.error('Error importing local catalog:', err);
-      }
+      const localCatalog = catalogData as any[];
 
       for (const item of items) {
         const artwork = localCatalog.find((a: any) => a.id === item.id);
@@ -94,21 +85,29 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const merchantId = process.env.PAYHERE_MERCHANT_ID || '1222222';
-    const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET || 'dummy_secret';
-    const currency = 'LKR'; 
+    // Trim to remove any accidental whitespace from env vars
+    const merchantId = (process.env.PAYHERE_MERCHANT_ID || '1222222').trim();
+    const merchantSecret = (process.env.PAYHERE_MERCHANT_SECRET || 'dummy_secret').trim();
+    const currency = 'LKR';
 
-    const amountFormatted = totalAmount.toFixed(2);
+    // Format amount: parseFloat ensures no stale comma separators, toFixed(2) gives exactly 2 decimals
+    // e.g. 1800 → "1800.00", never "1,800.00"
+    const amountFormatted = parseFloat(totalAmount.toString()).toFixed(2);
 
+    // PayHere hash formula:
+    // MD5( merchant_id + order_id + amount + currency + MD5(merchant_secret).toUpperCase() ).toUpperCase()
     const hashedSecret = crypto
       .createHash('md5')
       .update(merchantSecret)
       .digest('hex')
       .toUpperCase();
 
+    const hashInput = merchantId + orderId + amountFormatted + currency + hashedSecret;
+    console.log('[PayHere Hash Debug]', { merchantId, orderId, amountFormatted, currency, hashedSecret, hashInput });
+
     const md5Signature = crypto
       .createHash('md5')
-      .update(merchantId + orderId + amountFormatted + currency + hashedSecret)
+      .update(hashInput)
       .digest('hex')
       .toUpperCase();
 
@@ -138,3 +137,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
+

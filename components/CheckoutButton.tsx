@@ -55,6 +55,7 @@ export default function CheckoutButton({ cartItems, customerEmail, customerName 
           alert("Payment failed: " + error);
         };
 
+        console.log('🔍 [PayHere] Payment object being sent:', JSON.stringify(data, null, 2));
         (window as any).payhere.startPayment(data);
       } else {
         alert(data.error || 'Failed to initialize checkout payment');
