@@ -9,6 +9,20 @@ export const loadPayHereScript = (sandbox: boolean): Promise<any> => {
       return;
     }
 
+    const expectedSrc = sandbox 
+      ? 'https://sandbox.payhere.lk/lib/payhere.js' 
+      : 'https://www.payhere.lk/lib/payhere.js';
+
+    // Find any script with payhere.js in its src
+    const existingScript = Array.from(document.getElementsByTagName('script')).find(
+      (s) => s.src && s.src.includes('payhere.js')
+    );
+
+    if (existingScript && existingScript.src !== expectedSrc) {
+      existingScript.remove();
+      delete (window as any).payhere;
+    }
+
     if ((window as any).payhere) {
       resolve((window as any).payhere);
       return;

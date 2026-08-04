@@ -7,7 +7,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PreloaderWrapper from "@/components/PreloaderWrapper";
 import CartDrawer from "@/components/CartDrawer";
-import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const poppins = Poppins({ weight: ["400", "500", "600", "700", "800", "900"], subsets: ["latin"], variable: "--font-heading" });
@@ -40,10 +39,6 @@ export default function RootLayout({
             </AuthProvider>
           </PreloaderWrapper>
         </ThemeProvider>
-        <Script
-          src="https://www.payhere.lk/lib/payhere.js"
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   );
