@@ -34,7 +34,7 @@ export default function CheckoutButton({ cartItems, customerEmail, customerName 
       const data = await res.json();
       if (res.ok && data.hash) {
         try {
-          await loadPayHereScript(!!data.sandbox);
+          await loadPayHereScript();
         } catch (scriptErr) {
           console.error('Failed to load PayHere script:', scriptErr);
           alert('Could not load the payment gateway. Please check your internet connection or disable ad blockers and try again.');

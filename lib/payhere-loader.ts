@@ -1,76 +1,64 @@
 /**
  * Dynamically loads the PayHere JavaScript SDK.
- * Supports sandbox or production depending on the payload/configuration.
+ *
+ * IMPORTANT: PayHere only has ONE script URL for both sandbox and production:
+ *   https://www.payhere.lk/lib/payhere.js
+ *
+ * Sandbox vs. Live mode is controlled by the `sandbox: true/false` flag
+ * in the payment payload object — NOT by a different script URL.
  */
-export const loadPayHereScript = (sandbox: boolean): Promise<any> => {
+
+const PAYHERE_SCRIPT_SRC = 'https://www.payhere.lk/lib/payhere.js';
+const PAYHERE_SCRIPT_ID = 'payhere-sdk-script';
+
+export const loadPayHereScript = (): Promise<any> => {
   return new Promise((resolve, reject) => {
     if (typeof window === 'undefined') {
-      reject(new Error('Window is not defined'));
+      reject(new Error('Window is not defined (SSR context)'));
       return;
     }
 
-    const expectedSrc = sandbox 
-      ? 'https://sandbox.payhere.lk/lib/payhere.js' 
-      : 'https://www.payhere.lk/lib/payhere.js';
-
-    // Find any script with payhere.js in its src
-    const existingScript = Array.from(document.getElementsByTagName('script')).find(
-      (s) => s.src && s.src.includes('payhere.js')
-    );
-
-    if (existingScript && existingScript.src !== expectedSrc) {
-      existingScript.remove();
-      delete (window as any).payhere;
-    }
-
+    // Already loaded — resolve immediately
     if ((window as any).payhere) {
       resolve((window as any).payhere);
       return;
     }
 
-    const scriptId = 'payhere-sdk-script';
-    let script = document.getElementById(scriptId) as HTMLScriptElement;
-
-    if (script) {
-      // Script is already in DOM but payhere is not loaded yet (maybe still downloading)
-      // Listen to load/error events on the existing script
+    // Script tag already injected but still loading — attach listeners
+    const existingScript = document.getElementById(PAYHERE_SCRIPT_ID) as HTMLScriptElement | null;
+    if (existingScript) {
       const handleLoad = () => {
         if ((window as any).payhere) {
           resolve((window as any).payhere);
         } else {
-          reject(new Error('PayHere SDK did not define payhere on window.'));
+          reject(new Error('PayHere SDK loaded but did not define window.payhere'));
         }
         cleanup();
       };
-
       const handleError = () => {
         reject(new Error('Failed to load PayHere SDK script.'));
         cleanup();
       };
-
       const cleanup = () => {
-        script.removeEventListener('load', handleLoad);
-        script.removeEventListener('error', handleError);
+        existingScript.removeEventListener('load', handleLoad);
+        existingScript.removeEventListener('error', handleError);
       };
-
-      script.addEventListener('load', handleLoad);
-      script.addEventListener('error', handleError);
+      existingScript.addEventListener('load', handleLoad);
+      existingScript.addEventListener('error', handleError);
       return;
     }
 
-    // Otherwise, create and inject the script
-    script = document.createElement('script');
-    script.id = scriptId;
-    script.src = sandbox 
-      ? 'https://sandbox.payhere.lk/lib/payhere.js' 
-      : 'https://www.payhere.lk/lib/payhere.js';
+    // Inject the script for the first time
+    const script = document.createElement('script');
+    script.id = PAYHERE_SCRIPT_ID;
+    script.src = PAYHERE_SCRIPT_SRC;
     script.async = true;
 
     script.onload = () => {
       if ((window as any).payhere) {
         resolve((window as any).payhere);
       } else {
-        reject(new Error('PayHere SDK did not define payhere on window.'));
+        reject(new Error('PayHere SDK loaded but did not define window.payhere'));
       }
     };
 
