@@ -12,6 +12,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const poppins = Poppins({ weight: ["400", "500", "600", "700", "800", "900"], subsets: ["latin"], variable: "--font-heading" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.bitiumtechnology.com"),
   title: "Bitium Technology - High-Performance Custom DTF Sheet Builder",
   description: "Create, customize, and order premium DTF prints and apparel online with Bitium Technology.",
   keywords: "DTF prints, apparel, t-shirt design, custom printing, virtual canvas, fabricjs, next.js, Bitium Technology",
