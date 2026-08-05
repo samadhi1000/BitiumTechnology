@@ -40,6 +40,7 @@ export default function Navbar() {
   const [dtfPrintingHovered, setDtfPrintingHovered] = useState(false);
   const [batikStampHovered, setBatikStampHovered] = useState(false);
   const [laserCuttingHovered, setLaserCuttingHovered] = useState(false);
+  const [toolkitHovered, setToolkitHovered] = useState(false);
 
   // Mobile menu open state & mobile accordion states
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -83,11 +84,6 @@ export default function Navbar() {
 
           {/* Desktop Navigation Links */}
           <div className="hidden lg:flex space-x-5 xl:space-x-6 h-full items-center">
-            {/* 01. Home Page */}
-            <Link href="/" className="text-xs font-semibold hover:text-primary transition-colors h-full flex items-center text-zinc-300">
-              Home
-            </Link>
-
             {/* 02. Stencil Page Dropdown */}
             <div 
               className="relative h-full flex items-center"
@@ -172,12 +168,6 @@ export default function Navbar() {
                   <Link href="/dtf-printing" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-primary hover:bg-card transition-colors">
                     All DTF Printing
                   </Link>
-                  <Link href="/canvas" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-violet-300 hover:bg-card transition-colors flex items-center gap-1">
-                    <LayoutGrid size={11} /> Canvas Builder
-                  </Link>
-                  <Link href="/3d-customizer" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-fuchsia-400 hover:bg-card transition-colors flex items-center gap-1">
-                    <Shirt size={11} /> Mockup Studio
-                  </Link>
                   <hr className="border-border my-0.5" />
                   {[
                     { sub: 'tshirt-design', label: 'T-Shirt Design' },
@@ -251,24 +241,39 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* 06. Digital downloads */}
+            {/* Toolkit Dropdown */}
+            <div 
+              className="relative h-full flex items-center"
+              onMouseEnter={() => setToolkitHovered(true)}
+              onMouseLeave={() => setToolkitHovered(false)}
+            >
+              <span className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-zinc-300">
+                <span>Toolkit</span>
+                <ChevronDown size={12} className={`transition-transform duration-200 ${toolkitHovered ? 'rotate-180' : ''}`} />
+              </span>
+              {toolkitHovered && (
+                <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
+                  <Link href="/3d-customizer" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-fuchsia-400 hover:bg-card transition-colors flex items-center gap-1">
+                    <Shirt size={11} /> Mockup Studio
+                  </Link>
+                  <Link href="/canvas" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-violet-300 hover:bg-card transition-colors flex items-center gap-1">
+                    <LayoutGrid size={11} /> Canvas Builder
+                  </Link>
+                  <Link href="/size-guide" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-emerald-400 hover:bg-card transition-colors flex items-center gap-1">
+                    <Layers size={11} /> Size Guide
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* 07. Digital downloads */}
             <Link href="/downloads" className="text-xs font-semibold hover:text-primary transition-colors h-full flex items-center text-zinc-300">
               Digital downloads
             </Link>
 
-            {/* 07. Materials / Consumables */}
+            {/* 08. Materials / Consumables */}
             <Link href="/materials" className="text-xs font-semibold hover:text-primary transition-colors h-full flex items-center text-zinc-300">
               Materials / Consumables
-            </Link>
-
-            {/* 07. Size Guide */}
-            <Link href="/size-guide" className="text-xs font-semibold hover:text-primary transition-colors h-full flex items-center text-zinc-300">
-              Size Guide
-            </Link>
-
-            {/* 08. Contact Us */}
-            <Link href="/contact" className="text-xs font-semibold hover:text-primary transition-colors h-full flex items-center text-zinc-300">
-              Contact Us
             </Link>
           </div>
 
@@ -360,16 +365,6 @@ export default function Navbar() {
             </div>
 
             {/* Navigation Accordion Items */}
-            {/* 1. Home */}
-            <Link
-              href="/"
-              onClick={closeMobileMenu}
-              className="flex items-center justify-between px-4 py-3 rounded-xl bg-card/50 hover:bg-card border border-zinc-850 text-sm font-bold text-zinc-100"
-            >
-              <span>Home</span>
-              <ChevronRight size={16} className="text-zinc-500" />
-            </Link>
-
             {/* 2. Stencil */}
             <div className="rounded-xl bg-card/50 border border-zinc-850 overflow-hidden">
               <div
@@ -584,6 +579,51 @@ export default function Navbar() {
               )}
             </div>
 
+            {/* Toolkit Accordion */}
+            <div className="rounded-xl bg-card/50 border border-zinc-850 overflow-hidden">
+              <div
+                onClick={() => toggleMobileSub('toolkit')}
+                className="flex items-center justify-between px-4 py-3 cursor-pointer text-sm font-bold text-zinc-100"
+              >
+                <div className="flex items-center gap-2">
+                  <Sparkles size={16} className="text-primary" />
+                  <span>Toolkit</span>
+                </div>
+                <ChevronDown
+                  size={16}
+                  className={`text-zinc-400 transition-transform duration-200 ${
+                    mobileSubOpen === 'toolkit' ? 'rotate-180' : ''
+                  }`}
+                />
+              </div>
+
+              {mobileSubOpen === 'toolkit' && (
+                <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-zinc-850/50">
+                  <Link
+                    href="/3d-customizer"
+                    onClick={closeMobileMenu}
+                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-fuchsia-300 hover:bg-card hover:text-white"
+                  >
+                    Mockup Studio
+                  </Link>
+                  <Link
+                    href="/canvas"
+                    onClick={closeMobileMenu}
+                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-violet-300 hover:bg-card hover:text-white"
+                  >
+                    Canvas Builder
+                  </Link>
+                  <Link
+                    href="/size-guide"
+                    onClick={closeMobileMenu}
+                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-300 hover:bg-card hover:text-white"
+                  >
+                    Size Guide
+                  </Link>
+                </div>
+              )}
+            </div>
+
             {/* 06. Digital downloads */}
             <Link
               href="/downloads"
@@ -607,26 +647,6 @@ export default function Navbar() {
                 <PackageCheck size={16} className="text-primary" />
                 <span>Materials / Consumables</span>
               </div>
-              <ChevronRight size={16} className="text-zinc-500" />
-            </Link>
-
-            {/* 7. Size Guide */}
-            <Link
-              href="/size-guide"
-              onClick={closeMobileMenu}
-              className="flex items-center justify-between px-4 py-3 rounded-xl bg-card/50 hover:bg-card border border-zinc-850 text-sm font-bold text-zinc-100"
-            >
-              <span>Size Guide</span>
-              <ChevronRight size={16} className="text-zinc-500" />
-            </Link>
-
-            {/* 8. Contact Us */}
-            <Link
-              href="/contact"
-              onClick={closeMobileMenu}
-              className="flex items-center justify-between px-4 py-3 rounded-xl bg-card/50 hover:bg-card border border-zinc-850 text-sm font-bold text-zinc-100"
-            >
-              <span>Contact Us</span>
               <ChevronRight size={16} className="text-zinc-500" />
             </Link>
 

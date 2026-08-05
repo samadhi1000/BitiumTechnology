@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { Search, Grid, Eye, Shield, Tag, Download, ShoppingBag, Loader2, ArrowRight } from 'lucide-react';
+import { Search, Grid, Eye, Shield, Tag, Download, ShoppingBag, Loader2, ArrowRight, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { loadPayHereScript } from '@/lib/payhere-loader';
+import SecureWatermarkedImage from '@/components/SecureWatermarkedImage';
 
 interface DigitalArtwork {
   id: string;
@@ -30,9 +30,42 @@ export default function DownloadsPage() {
   const [email, setEmail] = useState<string>('');
   const [checkingOut, setCheckingOut] = useState<boolean>(false);
 
+  // Secure Fulfillment State (revealing Google Drive links)
+  const [fulfillmentOrderId, setFulfillmentOrderId] = useState<string | null>(null);
+  const [fulfillmentEmail, setFulfillmentEmail] = useState<string>('');
+  const [fulfillmentLinks, setFulfillmentLinks] = useState<{ title: string; link: string }[]>([]);
+  const [fulfillmentStatus, setFulfillmentStatus] = useState<'idle' | 'verifying' | 'input_email' | 'ready' | 'error'>('idle');
+  const [fulfillmentError, setFulfillmentError] = useState<string>('');
+
   useEffect(() => {
     fetchCatalog();
   }, [category, search]);
+
+  // Handle PayHere Success/Cancel redirect detection
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('status');
+    const orderId = params.get('order_id');
+
+    if (orderId) {
+      if (status === 'success') {
+        setFulfillmentOrderId(orderId);
+        const storedEmail = localStorage.getItem(`bitium_order_email_${orderId}`);
+        if (storedEmail) {
+          setFulfillmentEmail(storedEmail);
+          verifyFulfillment(orderId, storedEmail);
+        } else {
+          setFulfillmentStatus('input_email');
+        }
+      } else if (status === 'cancelled') {
+        alert('Payment was cancelled. You can try checking out again.');
+        // Clean URL params
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
+  }, []);
 
   const fetchCatalog = async () => {
     setLoading(true);
@@ -53,19 +86,57 @@ export default function DownloadsPage() {
     }
   };
 
+  // Securely query post-payment assets
+  const verifyFulfillment = async (orderId: string, emailAddress: string, attempts = 0) => {
+    setFulfillmentStatus('verifying');
+    setFulfillmentError('');
+
+    try {
+      const res = await fetch('/api/downloads/retrieve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId, email: emailAddress.trim() })
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success && data.links) {
+        setFulfillmentLinks(data.links);
+        setFulfillmentStatus('ready');
+        // Save to localStorage so email is persisted
+        localStorage.setItem(`bitium_order_email_${orderId}`, emailAddress.trim());
+      } else {
+        // Webhooks might have minor transit delays, poll a few times
+        if (attempts < 8) {
+          setTimeout(() => {
+            verifyFulfillment(orderId, emailAddress, attempts + 1);
+          }, 3000);
+        } else {
+          setFulfillmentStatus('error');
+          setFulfillmentError(data.error || 'Unable to verify payment or retrieve download permissions. Please check if your email is correct or contact support.');
+        }
+      }
+    } catch (err) {
+      console.error('Fulfillment error:', err);
+      setFulfillmentStatus('error');
+      setFulfillmentError('Connection error occurred while fetching download keys.');
+    }
+  };
+
   const handleCheckoutSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!checkoutArt || !email) return;
 
     setCheckingOut(true);
     try {
-      const res = await fetch('/api/checkout/payhere', {
+      // Call secure Next.js API hash generator
+      const res = await fetch('/api/payhere/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           items: [{ id: checkoutArt.id, quantity: 1 }],
           customerEmail: email,
-          customerName: 'Digital Customer' // Using a default name as we only collect email
+          customerName: 'Digital Customer'
         })
       });
 
@@ -78,6 +149,9 @@ export default function DownloadsPage() {
           alert('Could not load the payment gateway. Please check your internet connection or disable ad blockers and try again.');
           return;
         }
+
+        // Cache customer email to handle post-payment download access auto-verification
+        localStorage.setItem(`bitium_order_email_${data.order_id}`, email);
 
         (window as any).payhere.onCompleted = function onCompleted(orderId: string) {
           console.log("Payment completed. OrderID:" + orderId);
@@ -93,16 +167,23 @@ export default function DownloadsPage() {
           alert("Payment failed: " + error);
         };
 
-        console.log('🔍 [PayHere] Payment object being sent:', JSON.stringify(data, null, 2));
+        console.log('🔍 [PayHere] Initiating payment:', JSON.stringify(data, null, 2));
         (window as any).payhere.startPayment(data);
       } else {
         alert(data.error || 'Failed to initialize checkout payment');
       }
     } catch (err) {
       console.error('Checkout error:', err);
-      alert('Network request failed');
+      alert('Network request failed. Unable to initiate gateway.');
     } finally {
       setCheckingOut(false);
+    }
+  };
+
+  const handleFulfillmentEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (fulfillmentOrderId && fulfillmentEmail) {
+      verifyFulfillment(fulfillmentOrderId, fulfillmentEmail);
     }
   };
 
@@ -124,7 +205,7 @@ export default function DownloadsPage() {
           backgroundSize: '20px 20px',
         }} />
         <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-4">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-violet-600/10 border border-violet-500/20 text-[#FFCB9A] text-xs font-bold uppercase tracking-wider">
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#116466]/10 border border-[#116466]/30 text-[#D1E8E2] text-xs font-bold uppercase tracking-wider">
             <Shield size={12} className="text-[#FFCB9A]" />
             Secure Asset Vault
           </span>
@@ -132,7 +213,7 @@ export default function DownloadsPage() {
             Digital Designs & <span className="outline-text">Downloads</span>
           </h1>
           <p className="text-sm text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-            Browse and purchase from our catalog of 2,000+ print-ready, high-resolution original digital vector files, batik layouts, and stencils. Instantly access signed storage download keys upon payment.
+            Browse and purchase from our catalog of print-ready, high-resolution original digital vector files, batik layouts, and stencils. Instantly access Google Drive download keys upon payment.
           </p>
         </div>
       </section>
@@ -190,29 +271,17 @@ export default function DownloadsPage() {
                 key={art.id}
                 className="group flex flex-col bg-zinc-900 border border-zinc-850 rounded-3xl overflow-hidden hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 relative"
               >
-                {/* Image Container with Watermark */}
-                <div className="relative aspect-[4/3] bg-zinc-950 overflow-hidden select-none">
-                  {/* Actual preview image */}
-                  <Image
+                {/* Image Container with Dynamic Canvas Watermark & Security Overlay */}
+                <div className="relative overflow-hidden bg-zinc-950">
+                  <SecureWatermarkedImage
                     src={art.preview_url}
                     alt={art.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    sizes="(max-width: 768px) 100vw, 33vw"
+                    watermarkText="Bitium Technology"
+                    aspectRatio="4/3"
                   />
-                  
-                  {/* Dynamic Protective Watermark Pattern Overlay */}
-                  <div className="absolute inset-0 z-10 pointer-events-none bg-[repeating-linear-gradient(45deg,transparent,transparent_30px,rgba(0,0,0,0.06)_30px,rgba(0,0,0,0.06)_60px)] opacity-80" />
-                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 pointer-events-none select-none">
-                    <div className="px-3 py-1 rounded-md bg-zinc-950/70 border border-white/5 backdrop-blur-[2px]">
-                      <span className="text-[10px] font-black text-white/35 uppercase tracking-[0.2em] rotate-[-15deg] block">
-                        Bitium Technologies
-                      </span>
-                    </div>
-                  </div>
 
                   {/* Format Badge */}
-                  <span className="absolute top-3 right-3 z-20 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded bg-zinc-950/80 border border-zinc-800 text-zinc-300">
+                  <span className="absolute top-3 right-3 z-40 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded bg-zinc-950/80 border border-zinc-800 text-zinc-300">
                     {art.file_format}
                   </span>
                 </div>
@@ -251,14 +320,14 @@ export default function DownloadsPage() {
                   <div className="grid grid-cols-2 gap-2 pt-1">
                     <button
                       onClick={() => setSelectedArt(art)}
-                      className="w-full py-2.5 rounded-xl border border-zinc-800 hover:border-zinc-700 bg-zinc-950/60 hover:bg-zinc-850 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
+                      className="w-full py-2.5 rounded-xl border border-zinc-800 hover:border-zinc-700 bg-zinc-950/60 hover:bg-zinc-850 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                     >
                       <Eye size={13} />
                       Details
                     </button>
                     <button
                       onClick={() => setCheckoutArt(art)}
-                      className="w-full py-2.5 rounded-xl bg-[#116466] hover:bg-[#157a7c] text-[#D1E8E2] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors border border-[#0d4e50] shadow-md shadow-[#116466]/10"
+                      className="w-full py-2.5 rounded-xl bg-[#116466] hover:bg-[#157a7c] text-[#D1E8E2] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors border border-[#0d4e50] shadow-md shadow-[#116466]/10 cursor-pointer"
                     >
                       <ShoppingBag size={13} />
                       Buy Now
@@ -277,24 +346,28 @@ export default function DownloadsPage() {
           <div className="relative w-full max-w-xl rounded-3xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl space-y-6">
             <button 
               onClick={() => setSelectedArt(null)}
-              className="absolute top-4 right-4 text-zinc-400 hover:text-white"
+              className="absolute top-4 right-4 text-zinc-400 hover:text-white cursor-pointer"
             >
               ✕
             </button>
             <div className="flex flex-col sm:flex-row gap-5">
-              <div className="w-full sm:w-1/2 aspect-square relative bg-zinc-950 rounded-2xl overflow-hidden select-none border border-zinc-850">
-                <Image src={selectedArt.preview_url} alt={selectedArt.title} fill className="object-cover" />
-                <div className="absolute inset-0 z-10 pointer-events-none bg-[repeating-linear-gradient(45deg,transparent,transparent_35px,rgba(0,0,0,0.06)_35px,rgba(0,0,0,0.06)_70px)]" />
+              <div className="w-full sm:w-1/2 relative bg-zinc-950 rounded-2xl overflow-hidden select-none border border-zinc-850">
+                <SecureWatermarkedImage
+                  src={selectedArt.preview_url}
+                  alt={selectedArt.title}
+                  watermarkText="Bitium Technology"
+                  aspectRatio="1/1"
+                />
               </div>
               <div className="w-full sm:w-1/2 flex flex-col justify-between">
                 <div>
-                  <span className="text-[10px] font-black text-violet-400 uppercase tracking-widest block">{selectedArt.category}</span>
+                  <span className="text-[10px] font-black text-[#116466] uppercase tracking-widest block">{selectedArt.category}</span>
                   <h2 className="text-xl font-black mt-1 text-white">{selectedArt.title}</h2>
                   <p className="text-xs text-zinc-400 mt-2 leading-relaxed">{selectedArt.description}</p>
                 </div>
                 <div className="space-y-2 pt-4 border-t border-zinc-850 mt-4">
                   <div className="flex justify-between text-xs"><span className="text-zinc-500">File Size:</span><span className="font-bold">{selectedArt.file_size || 'N/A'}</span></div>
-                  <div className="flex justify-between text-xs"><span className="text-zinc-500">Format:</span><span className="font-bold text-violet-400">{selectedArt.file_format}</span></div>
+                  <div className="flex justify-between text-xs"><span className="text-zinc-500">Format:</span><span className="font-bold text-[#116466]">{selectedArt.file_format}</span></div>
                   <div className="flex justify-between text-xs"><span className="text-zinc-500">Resolution:</span><span className="font-bold">{selectedArt.resolution || 'Vector'}</span></div>
                   <div className="flex justify-between text-xs pt-1 border-t border-zinc-850/60"><span className="text-zinc-400 font-bold">Secure Price:</span><span className="font-extrabold text-[#FFCB9A]">Rs. {selectedArt.price.toLocaleString()}</span></div>
                 </div>
@@ -305,7 +378,7 @@ export default function DownloadsPage() {
                 setCheckoutArt(selectedArt);
                 setSelectedArt(null);
               }}
-              className="w-full py-3.5 rounded-xl bg-[#116466] hover:bg-[#157a7c] text-[#D1E8E2] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 border border-[#0d4e50]"
+              className="w-full py-3.5 rounded-xl bg-[#116466] hover:bg-[#157a7c] text-[#D1E8E2] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 border border-[#0d4e50] cursor-pointer"
             >
               <ShoppingBag size={14} />
               Confirm Checkout & Buy Now
@@ -314,24 +387,24 @@ export default function DownloadsPage() {
         </div>
       )}
 
-      {/* 2. Direct Checkout Email input Modal */}
+      {/* 2. Direct Checkout Email Input Modal */}
       {checkoutArt && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm animate-fade-in">
           <div className="relative w-full max-w-md rounded-3xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl space-y-5">
             <button 
               onClick={() => setCheckoutArt(null)}
-              className="absolute top-4 right-4 text-zinc-400 hover:text-white"
+              className="absolute top-4 right-4 text-zinc-400 hover:text-white cursor-pointer"
               disabled={checkingOut}
             >
               ✕
             </button>
             <div className="text-center space-y-2">
-              <span className="inline-flex items-center justify-center p-3 rounded-full bg-violet-600/10 border border-violet-500/20 text-[#FFCB9A] mb-1">
+              <span className="inline-flex items-center justify-center p-3 rounded-full bg-[#116466]/10 border border-[#116466]/30 text-[#FFCB9A] mb-1">
                 <Shield size={24} />
               </span>
               <h2 className="text-lg font-black text-white">Secure Checkout</h2>
               <p className="text-xs text-zinc-400">
-                You are purchasing **{checkoutArt.title}** for **Rs. {checkoutArt.price.toLocaleString()}**. Enter your email to confirm transaction and receive the secure download credentials.
+                You are purchasing <strong>{checkoutArt.title}</strong> for <strong>Rs. {checkoutArt.price.toLocaleString()}</strong>. Enter your email to confirm the transaction and receive secure Google Drive access.
               </p>
             </div>
 
@@ -345,14 +418,14 @@ export default function DownloadsPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={checkingOut}
-                  className="w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-xs text-white focus:outline-none focus:border-violet-500 transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-xs text-white focus:outline-none focus:border-[#116466] transition-colors"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={checkingOut}
-                className="w-full py-3.5 rounded-xl bg-[#116466] hover:bg-[#157a7c] disabled:opacity-50 text-[#D1E8E2] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all border border-[#0d4e50] shadow-lg shadow-[#116466]/10"
+                className="w-full py-3.5 rounded-xl bg-[#116466] hover:bg-[#157a7c] disabled:opacity-50 text-[#D1E8E2] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all border border-[#0d4e50] shadow-lg shadow-[#116466]/10 cursor-pointer"
               >
                 {checkingOut ? (
                   <>
@@ -367,6 +440,142 @@ export default function DownloadsPage() {
                 )}
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* 3. Secure Asset Delivery Fulfillment Modal */}
+      {fulfillmentOrderId && fulfillmentStatus !== 'idle' && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-zinc-950/90 backdrop-blur-md">
+          <div className="relative w-full max-w-lg rounded-3xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl space-y-6 text-center">
+            
+            {fulfillmentStatus === 'verifying' && (
+              <div className="space-y-4 py-8">
+                <Loader2 className="w-12 h-12 animate-spin text-[#116466] mx-auto" />
+                <h2 className="text-xl font-bold uppercase tracking-tight">Verifying Payment Status</h2>
+                <p className="text-xs text-zinc-400 max-w-xs mx-auto leading-relaxed">
+                  We are securely checking your payment status with PayHere. Please do not close this window. This may take a few seconds.
+                </p>
+                <div className="inline-block px-3 py-1.5 rounded-full bg-zinc-950/60 border border-zinc-800 text-[10px] font-mono text-zinc-500">
+                  Order ID: {fulfillmentOrderId}
+                </div>
+              </div>
+            )}
+
+            {fulfillmentStatus === 'input_email' && (
+              <div className="space-y-4 py-4">
+                <Shield className="w-12 h-12 text-[#FFCB9A] mx-auto animate-pulse" />
+                <h2 className="text-xl font-bold uppercase tracking-tight">Access Verification Required</h2>
+                <p className="text-xs text-zinc-400 max-w-sm mx-auto leading-relaxed">
+                  To securely download your digital products, please verify the customer email address used during checkout.
+                </p>
+                <form onSubmit={handleFulfillmentEmailSubmit} className="space-y-4 max-w-xs mx-auto">
+                  <input
+                    type="email"
+                    required
+                    placeholder="Enter your checkout email"
+                    value={fulfillmentEmail}
+                    onChange={(e) => setFulfillmentEmail(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-xs text-center text-white focus:outline-none focus:border-[#116466] transition-colors"
+                  />
+                  <button
+                    type="submit"
+                    className="w-full py-3 rounded-xl bg-[#116466] hover:bg-[#157a7c] text-[#D1E8E2] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-[#0d4e50]"
+                  >
+                    Unlock My Downloads
+                    <ArrowRight size={13} />
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {fulfillmentStatus === 'ready' && (
+              <div className="space-y-4 py-4 text-left">
+                <div className="text-center space-y-2 mb-4">
+                  <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto" />
+                  <h2 className="text-xl font-bold uppercase tracking-tight">Assets Unlocked!</h2>
+                  <p className="text-xs text-zinc-400">
+                    Payment verified. High-resolution files have been successfully shared and are ready for download.
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block border-b border-zinc-800 pb-1.5">Your Download Links</span>
+                  <div className="max-h-60 overflow-y-auto space-y-2.5 pr-1">
+                    {fulfillmentLinks.map((item, idx) => (
+                      <div key={idx} className="flex items-center justify-between p-3.5 bg-zinc-950 border border-zinc-850 rounded-2xl">
+                        <div className="space-y-0.5">
+                          <span className="text-xs font-bold text-zinc-200 block truncate max-w-[260px]">{item.title}</span>
+                          <span className="text-[9px] text-zinc-500 uppercase block font-medium">Shared via Google Drive</span>
+                        </div>
+                        <a 
+                          href={item.link} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 transition-all shadow-md shadow-violet-600/10 cursor-pointer"
+                        >
+                          <Download size={13} />
+                          Download
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-zinc-800 flex justify-between items-center text-[10px] text-zinc-500">
+                  <span>Authorized to: {fulfillmentEmail}</span>
+                  <button 
+                    onClick={() => {
+                      setFulfillmentOrderId(null);
+                      setFulfillmentStatus('idle');
+                      window.history.replaceState({}, document.title, window.location.pathname);
+                    }}
+                    className="underline text-zinc-400 hover:text-white cursor-pointer"
+                  >
+                    Done
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {fulfillmentStatus === 'error' && (
+              <div className="space-y-4 py-6">
+                <AlertTriangle className="w-12 h-12 text-rose-500 mx-auto animate-bounce" />
+                <h2 className="text-xl font-bold uppercase tracking-tight">Fulfillment Error</h2>
+                <p className="text-xs text-rose-400 max-w-sm mx-auto leading-relaxed bg-rose-500/10 border border-rose-500/20 p-3 rounded-2xl">
+                  {fulfillmentError}
+                </p>
+                <div className="flex gap-2 justify-center max-w-xs mx-auto pt-2">
+                  <button
+                    onClick={() => setFulfillmentStatus('input_email')}
+                    className="w-1/2 py-3 rounded-xl border border-zinc-800 hover:border-zinc-700 bg-zinc-950 text-xs font-bold transition-colors cursor-pointer"
+                  >
+                    Try Another Email
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (fulfillmentOrderId && fulfillmentEmail) {
+                        verifyFulfillment(fulfillmentOrderId, fulfillmentEmail);
+                      }
+                    }}
+                    className="w-1/2 py-3 rounded-xl bg-[#116466] hover:bg-[#157a7c] text-[#D1E8E2] text-xs font-black transition-colors cursor-pointer border border-[#0d4e50]"
+                  >
+                    Retry Verification
+                  </button>
+                </div>
+                <button
+                  onClick={() => {
+                    setFulfillmentOrderId(null);
+                    setFulfillmentStatus('idle');
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                  }}
+                  className="text-xs text-zinc-500 hover:text-white underline cursor-pointer mt-4 block"
+                >
+                  Close & Browse Products
+                </button>
+              </div>
+            )}
+
           </div>
         </div>
       )}
