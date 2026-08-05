@@ -51,7 +51,7 @@ export default function PromoBanner() {
       )}
 
       {/* 2. Main content container */}
-      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 w-full py-16 sm:py-24 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16 sm:py-24 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Left Column: Everyday Premium Text (6 cols) */}
@@ -101,7 +101,7 @@ export default function PromoBanner() {
 
       {/* 3. Bottom Accent Banner: WHY CHOOSE PRINTGRID? */}
       <div className="promo-accent-bar w-full bg-blue-600 py-6 relative z-10 border-t border-blue-500 select-none">
-        <div className="max-w-[1500px] mx-auto px-4 text-center">
+        <div className="max-w-7xl mx-auto px-4 text-center">
           <h3 className="text-xl sm:text-3xl font-black text-black tracking-[0.2em] uppercase">
             WHY CHOOSE BITIUM TECHNOLOGY?
           </h3>
