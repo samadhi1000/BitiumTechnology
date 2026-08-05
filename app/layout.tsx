@@ -16,6 +16,28 @@ export const metadata: Metadata = {
   description: "Create, customize, and order premium DTF prints and apparel online with Bitium Technology.",
   keywords: "DTF prints, apparel, t-shirt design, custom printing, virtual canvas, fabricjs, next.js, Bitium Technology",
   authors: [{ name: "Bitium Technology" }],
+  openGraph: {
+    title: "Bitium Technology - High-Performance Custom DTF Sheet Builder",
+    description: "Create, customize, and order premium DTF prints and apparel online with Bitium Technology.",
+    url: "https://www.bitiumtechnology.com",
+    siteName: "Bitium Technology",
+    images: [
+      {
+        url: "/images/og-image.jpg",
+        width: 1200,
+        height: 675, // Aspect ratio 16:9 for our generated image
+        alt: "Bitium Technology - Custom Printing & DTF Visualizer Solutions",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bitium Technology - High-Performance Custom DTF Sheet Builder",
+    description: "Create, customize, and order premium DTF prints and apparel online with Bitium Technology.",
+    images: ["/images/og-image.jpg"],
+  },
 };
 
 export default function RootLayout({
