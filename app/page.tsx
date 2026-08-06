@@ -16,12 +16,12 @@ const GridIcon = () => <Grid size={28} color="#8DFF00" strokeWidth={1.8} />;
 const CubeIcon = () => <Cuboid size={28} color="#8DFF00" strokeWidth={1.8} />;
 const PackageIcon = () => <Package size={28} color="#8DFF00" strokeWidth={1.8} />;
 
-const ShieldIcon = () => <Shield size={22} color="#8DFF00" strokeWidth={1.8} />;
-const ZapIcon = () => <Zap size={22} color="#8DFF00" strokeWidth={1.8} />;
-const DropletIcon = () => <Droplet size={22} color="#8DFF00" strokeWidth={1.8} />;
-const LayersIcon = () => <Layers size={22} color="#8DFF00" strokeWidth={1.8} />;
-const HeadphonesIcon = () => <Phone size={22} color="#8DFF00" strokeWidth={1.8} />;
-const ThumbsUpIcon = () => <ThumbsUp size={22} color="#8DFF00" strokeWidth={1.8} />;
+const ShieldIcon = () => <Shield size={22} className="text-primary" strokeWidth={1.8} />;
+const ZapIcon = () => <Zap size={22} className="text-primary" strokeWidth={1.8} />;
+const DropletIcon = () => <Droplet size={22} className="text-primary" strokeWidth={1.8} />;
+const LayersIcon = () => <Layers size={22} className="text-primary" strokeWidth={1.8} />;
+const HeadphonesIcon = () => <Phone size={22} className="text-primary" strokeWidth={1.8} />;
+const ThumbsUpIcon = () => <ThumbsUp size={22} className="text-primary" strokeWidth={1.8} />;
 const StarIcon = ({ filled = true }: { filled?: boolean }) => (
   <svg width="14" height="14" fill={filled ? '#f59e0b' : 'none'} stroke="#f59e0b" strokeWidth="1.5" viewBox="0 0 24 24">
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
@@ -419,7 +419,7 @@ function HomeContent() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 benefits-grid">
             {benefits.map(b => (
               <div key={b.title} className="text-center py-8 px-5 rounded-[16px] border-[1.5px] border-border bg-card transition-all duration-200 hover:border-[#8DFF00] hover:shadow-[0_8px_32px_rgba(141,255,0,0.12)]">
-                <div className="w-[52px] h-[52px] bg-[#f0ffd6] dark:bg-[#f0ffd6]/10 border border-[#8DFF00]/20 rounded-[14px] flex items-center justify-center mx-auto mb-4">
+                <div className="w-[52px] h-[52px] bg-primary/10 border border-primary/20 rounded-[14px] flex items-center justify-center mx-auto mb-4">
                   {b.icon}
                 </div>
                 <h3 className="font-heading font-extrabold text-[15px] text-foreground mb-2">{b.title}</h3>
