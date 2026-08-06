@@ -194,7 +194,6 @@ function generateUUID(): string {
 }
 
 function isSupabaseConfigured(): boolean {
-  if (typeof window === 'undefined') return false;
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || url.includes('placeholder') || url.includes('your-project')) return false;
