@@ -34,19 +34,26 @@ export async function GET(request: Request) {
       }, { status: 403 });
     }
 
-    // 4. Secure signed URL generation from private Supabase storage bucket
-    // The link will expire in exactly 60 seconds (prevents sharing/hotlinking)
-    const { data, error: storageError } = await supabase
-      .storage
-      .from('digital-artworks-secure')
-      .createSignedUrl(artwork.file_key, 60);
+    // 4. Secure signed URL generation or direct external URL retrieval (e.g. Google Drive link)
+    let signedUrl = '';
 
-    let signedUrl = data?.signedUrl;
+    if (artwork.file_key.startsWith('http://') || artwork.file_key.startsWith('https://')) {
+      // Direct external link (Google Drive, Cloudinary, AWS S3 etc.)
+      signedUrl = artwork.file_key;
+    } else {
+      // Retrieve signed URL from Supabase storage
+      const { data, error: storageError } = await supabase
+        .storage
+        .from('digital-artworks-secure')
+        .createSignedUrl(artwork.file_key, 60);
 
-    if (storageError || !signedUrl) {
-      console.warn('Supabase storage signed URL generation failed. Providing mock signed URL for demonstration.');
-      // Local fallback url for demonstration (points to a placeholder download file)
-      signedUrl = `https://placeholder-storage.local/${artwork.file_key}?token=${token}&expires=${Math.floor(Date.now() / 1000) + 60}`;
+      signedUrl = data?.signedUrl || '';
+
+      if (storageError || !signedUrl) {
+        console.warn('Supabase storage signed URL generation failed. Providing mock signed URL for demonstration.');
+        // Local fallback url for demonstration (points to a placeholder download file)
+        signedUrl = `https://placeholder-storage.local/${artwork.file_key}?token=${token}&expires=${Math.floor(Date.now() / 1000) + 60}`;
+      }
     }
 
     // 5. Audit: Increment download counter in DB
