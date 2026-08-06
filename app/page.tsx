@@ -223,70 +223,19 @@ function HomeContent() {
 
           {/* Right – Product Mockup */}
           <div className="relative flex justify-center mt-10 lg:mt-0">
-            {/* Main browser card */}
-            <div className="bg-card rounded-[20px] shadow-[0_24px_80px_rgba(0,0,0,0.12)] border border-border overflow-hidden w-full max-w-[520px]">
-              {/* Browser bar */}
-              <div className="bg-muted border-b border-border py-2.5 px-4 flex items-center gap-3">
-                <div className="flex gap-1.5">
-                  {['#ff5f57','#ffbd2e','#28c840'].map(c => <div key={c} className="w-2.5 h-2.5 rounded-full" style={{ background: c }} />)}
-                </div>
-                <div className="flex-1 bg-background rounded-md py-1 px-3 border border-border flex items-center gap-2">
-                  <span className="text-[10px] text-muted-foreground">🔒</span>
-                  <span className="font-sans text-[11px] text-muted-foreground dark:text-muted-foreground">app.bitiumtechnology.com/builder</span>
-                </div>
-                <button className="bg-[#8DFF00] border-none rounded-md py-1 px-2.5 font-heading font-bold text-[10px] cursor-pointer text-[#0a0a0a]">Preview in 3D</button>
-              </div>
-
-              {/* App content */}
-              <div className="flex min-h-[280px]">
-                {/* Sidebar toolbar */}
-                <div className="w-[42px] bg-muted border-r border-border flex flex-col items-center pt-3 gap-3.5">
-                  {['✏️','🔲','📐','🔡','🖼️','⚙️'].map((emoji, i) => (
-                    <div key={i} className={`w-7 h-7 rounded-md flex items-center justify-center text-[13px] cursor-pointer ${i === 0 ? 'bg-[#8DFF00] text-black' : 'bg-transparent text-[#0a0a0a]'}`}>
-                      {emoji}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Canvas area */}
-                <div className="flex-1 bg-zinc-50 dark:bg-background/50 relative p-3 grid grid-cols-3 gap-2 content-start">
-                  {/* Sticker designs */}
-                  {stickers.map((s, i) => (
-                    <div 
-                      key={i} 
-                      onClick={() => setSelectedSticker(s)}
-                      className={`rounded-[10px] aspect-square flex items-center justify-center text-[28px] shadow-[0_4px_12px_rgba(0,0,0,0.2)] cursor-pointer transition-all hover:scale-105 hover:shadow-[0_8px_20px_rgba(0,0,0,0.3)] ${selectedSticker.emoji === s.emoji ? 'ring-2 ring-white scale-110 z-10' : ''}`} 
-                      style={{ background: s.bg, transform: selectedSticker.emoji === s.emoji ? `rotate(0deg) scale(1.1)` : `rotate(${s.rotate})` }}
-                    >
-                      {s.emoji}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Hoodie preview */}
-                <div className="w-[140px] bg-card border-l border-border flex flex-col items-center justify-center gap-2 py-4 px-2">
-                  <div className="text-[11px] font-heading font-semibold text-muted-foreground uppercase tracking-wider">Preview</div>
-                  {/* Hoodie SVG illustration */}
-                  <svg viewBox="0 0 100 120" className="w-[100px] h-[120px]">
-                    <path d="M25 15 L15 35 L5 40 L12 50 L22 45 L22 110 L78 110 L78 45 L88 50 L95 40 L85 35 L75 15 C70 12 65 10 50 10 C35 10 30 12 25 15Z" fill="currentColor" className="text-foreground dark:text-zinc-800" stroke="currentColor" strokeWidth="1.5"/>
-                    <path d="M35 15 C35 20 40 25 50 25 C60 25 65 20 65 15" fill="none" stroke="currentColor" className="text-foreground dark:text-muted-foreground" strokeWidth="1"/>
-                    {/* Design on hoodie */}
-                    <rect x="38" y="50" width="24" height="24" rx="4" fill={selectedSticker.bg} opacity="0.9"/>
-                    <text x="50" y="66" textAnchor="middle" fontSize="14" fill="#0a0a0a">{selectedSticker.emoji}</text>
-                  </svg>
-                  <div className="text-[10px] text-muted-foreground text-center font-sans">White Hoodie</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Floating 3D Preview card */}
-            <div className="float-anim absolute -bottom-4 -right-2 bg-card rounded-[14px] shadow-[0_12px_40px_rgba(0,0,0,0.15)] border border-border py-3 px-4 flex items-center gap-3">
-              <div className="w-9 h-9 bg-[#8DFF00] rounded-[10px] flex items-center justify-center text-[18px]">🎨</div>
-              <div>
-                <div className="font-heading font-bold text-[12px] text-foreground">3D Preview Ready</div>
-                <div className="text-[11px] text-muted-foreground">6 designs on sheet</div>
-              </div>
-            </div>
+            <Link 
+              href="/3d-customizer" 
+              className="group block relative w-full max-w-[520px] rounded-[20px] overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.18)] border border-border transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_32px_96px_rgba(141,255,0,0.15)] cursor-pointer"
+            >
+              <Image 
+                src="/images/products/builder-mockup-traditional.png" 
+                alt="3D Mockup Studio Builder" 
+                width={520} 
+                height={350}
+                className="w-full h-auto object-cover"
+                priority
+              />
+            </Link>
           </div>
         </div>
       </section>
