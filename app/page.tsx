@@ -564,10 +564,10 @@ function HomeContent() {
       {/* CTA Section */}
       <section className="py-12 px-6 pb-20 bg-background">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-card dark:bg-[#0a0a0a] rounded-[24px] p-16 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 items-center overflow-hidden relative border border-border shadow-xl cta-grid">
+          <div className="bg-card dark:bg-[#0a0a0a] rounded-[24px] p-6 sm:p-16 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 lg:gap-12 items-center overflow-hidden relative border border-border shadow-xl cta-grid">
             {/* Background accent */}
             <div className="absolute -top-[60px] right-[300px] w-[200px] h-[200px] bg-[#8DFF00] rounded-full opacity-[0.08] blur-[40px]" />
-            <div className="relative z-10">
+            <div className="relative z-10 flex flex-col items-center lg:items-start text-center lg:text-left">
               <div className="inline-flex items-center gap-2 bg-[#8DFF00]/15 rounded-full px-3.5 py-1.5 mb-5">
                 <div className="w-1.5 h-1.5 rounded-full bg-[#8DFF00]" />
                 <span className="font-heading font-semibold text-[12px] text-[#8DFF00]">Ready to get started?</span>
@@ -584,10 +584,10 @@ function HomeContent() {
             </div>
 
             {/* Mockup images */}
-            <div className="flex gap-3 items-end relative z-10">
-              <img src="https://images.unsplash.com/photo-1601754664414-aa3e4f42e6d4?w=200&h=260&fit=crop&auto=format" alt="Custom printed shirt" className="w-[120px] h-[160px] object-cover rounded-2xl -rotate-6 shadow-lg" />
-              <img src="https://images.unsplash.com/photo-1680292783974-a9a336c10366?w=200&h=280&fit=crop&auto=format" alt="Custom hoodie" className="w-[130px] h-[180px] object-cover rounded-2xl shadow-xl z-10" />
-              <img src="https://images.unsplash.com/photo-1615397587950-3cbb55f95b77?w=200&h=260&fit=crop&auto=format" alt="White hoodie" className="w-[120px] h-[160px] object-cover rounded-2xl rotate-6 shadow-lg" />
+            <div className="flex gap-3 items-end justify-center relative z-10 w-full max-w-[340px] sm:max-w-none mx-auto lg:mx-0 mt-4 lg:mt-0 overflow-visible">
+              <img src="https://images.unsplash.com/photo-1601754664414-aa3e4f42e6d4?w=200&h=260&fit=crop&auto=format" alt="Custom printed shirt" className="w-[85px] sm:w-[120px] h-[115px] sm:h-[160px] object-cover rounded-2xl -rotate-6 shadow-lg shrink-0" />
+              <img src="https://images.unsplash.com/photo-1680292783974-a9a336c10366?w=200&h=280&fit=crop&auto=format" alt="Custom hoodie" className="w-[95px] sm:w-[130px] h-[130px] sm:h-[180px] object-cover rounded-2xl shadow-xl z-10 shrink-0" />
+              <img src="https://images.unsplash.com/photo-1615397587950-3cbb55f95b77?w=200&h=260&fit=crop&auto=format" alt="White hoodie" className="w-[85px] sm:w-[120px] h-[115px] sm:h-[160px] object-cover rounded-2xl rotate-6 shadow-lg shrink-0" />
             </div>
           </div>
         </div>
