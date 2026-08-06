@@ -45,15 +45,15 @@ if (typeof window !== 'undefined') {
 function HomeContent() {
   const container = React.useRef<HTMLDivElement>(null);
 
-  const stickers = [
-    { bg: '#ff6b35', emoji: '🐯', rotate: '-5deg' },
-    { bg: '#7c3aed', emoji: '⚡', rotate: '3deg' },
-    { bg: '#059669', emoji: '🌊', rotate: '-2deg' },
-    { bg: '#dc2626', emoji: '🔥', rotate: '6deg' },
-    { bg: '#d97706', emoji: '😎', rotate: '-4deg' },
-    { bg: '#0284c7', emoji: '💎', rotate: '2deg' },
+  const traditionalDesigns = [
+    { id: 1, bg: '#ff6b35', cardImage: '/images/products/design_1_card.png', motifImage: '/images/products/design_1_motif.png', title: 'Sri Lankan Peacock Motif' },
+    { id: 2, bg: '#7c3aed', cardImage: '/images/products/design_2_card.png', motifImage: '/images/products/design_2_motif.png', title: 'Traditional Sun Motif' },
+    { id: 3, bg: '#059669', cardImage: '/images/products/design_3_card.png', motifImage: '/images/products/design_3_motif.png', title: 'Sri Lankan Traditional Dancers' },
+    { id: 4, bg: '#dc2626', cardImage: '/images/products/design_4_card.png', motifImage: '/images/products/design_4_motif.png', title: 'Traditional Bird Line Art' },
+    { id: 5, bg: '#d97706', cardImage: '/images/products/design_5_card.png', motifImage: '/images/products/design_5_motif.png', title: 'Majestic Lion Motif' },
+    { id: 6, bg: '#0284c7', cardImage: '/images/products/design_6_card.png', motifImage: '/images/products/design_6_motif.png', title: 'Batik Symmetrical Border Pattern' }
   ];
-  const [selectedSticker, setSelectedSticker] = useState(stickers[0]);
+  const [selectedDesign, setSelectedDesign] = useState(traditionalDesigns[0]);
 
   // Hero Entrance Animations
   useGSAP(() => {
@@ -223,19 +223,90 @@ function HomeContent() {
 
           {/* Right – Product Mockup */}
           <div className="relative flex justify-center mt-10 lg:mt-0">
-            <Link 
-              href="/3d-customizer" 
-              className="group block relative w-full max-w-[520px] rounded-[20px] overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.18)] border border-border transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_32px_96px_rgba(141,255,0,0.15)] cursor-pointer"
-            >
-              <Image 
-                src="/images/products/builder-mockup-traditional.png" 
-                alt="3D Mockup Studio Builder" 
-                width={520} 
-                height={350}
-                className="w-full h-auto object-cover"
-                priority
-              />
-            </Link>
+            {/* Main browser card */}
+            <div className="bg-card rounded-[20px] shadow-[0_24px_80px_rgba(0,0,0,0.12)] border border-border overflow-hidden w-full max-w-[520px] flex flex-col">
+              {/* Browser bar */}
+              <div className="bg-muted border-b border-border py-2.5 px-4 flex items-center gap-3">
+                <div className="flex gap-1.5">
+                  {['#ff5f57','#ffbd2e','#28c840'].map(c => <div key={c} className="w-2.5 h-2.5 rounded-full" style={{ background: c }} />)}
+                </div>
+                <div className="flex-1 bg-background rounded-md py-1 px-3 border border-border flex items-center gap-2">
+                  <span className="text-[10px] text-muted-foreground">🔒</span>
+                  <span className="font-sans text-[11px] text-muted-foreground dark:text-muted-foreground">app.bitiumtechnology.com/builder</span>
+                </div>
+                <Link href="/3d-customizer" className="bg-[#8DFF00] hover:bg-[#7ce000] border-none rounded-md py-1.5 px-3 font-heading font-bold text-[10px] cursor-pointer text-[#0a0a0a] transition-colors decoration-none flex items-center justify-center">Preview in 3D</Link>
+              </div>
+
+              {/* App content */}
+              <div className="flex min-h-[280px]">
+                {/* Sidebar toolbar */}
+                <div className="w-[42px] bg-muted border-r border-border flex flex-col items-center pt-3 gap-3.5">
+                  {['✏️','🔲','📐','🔡','🖼️','⚙️'].map((emoji, i) => (
+                    <div key={i} className={`w-7 h-7 rounded-md flex items-center justify-center text-[13px] cursor-pointer ${i === 0 ? 'bg-[#8DFF00] text-black' : 'bg-transparent text-[#0a0a0a] dark:text-[#f8fafc]'}`}>
+                      {emoji}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Canvas area */}
+                <div className="flex-1 bg-zinc-50 dark:bg-background/50 relative p-3 grid grid-cols-3 gap-2 content-start">
+                  {/* Design cards */}
+                  {traditionalDesigns.map((d, i) => (
+                    <div 
+                      key={d.id} 
+                      onClick={() => setSelectedDesign(d)}
+                      className={`relative rounded-[10px] aspect-square flex items-center justify-center overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.2)] cursor-pointer transition-all hover:scale-105 hover:shadow-[0_8px_20px_rgba(0,0,0,0.3)] ${selectedDesign.id === d.id ? 'ring-2 ring-primary scale-105 z-10' : ''}`}
+                    >
+                      <Image 
+                        src={d.cardImage} 
+                        alt={d.title} 
+                        fill 
+                        className="object-cover" 
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Hoodie preview */}
+                <div className="w-[140px] bg-card border-l border-border flex flex-col items-center justify-center gap-2 py-4 px-2 select-none">
+                  <div className="text-[11px] font-heading font-semibold text-muted-foreground uppercase tracking-wider">Preview</div>
+                  
+                  {/* Hoodie SVG representation */}
+                  <div className="relative w-[100px] h-[120px]">
+                    {/* SVG Black Hoodie outline and base */}
+                    <svg viewBox="0 0 100 120" className="w-[100px] h-[120px]">
+                      {/* Dark/black base path for the hoodie */}
+                      <path d="M25 15 L15 35 L5 40 L12 50 L22 45 L22 110 L78 110 L78 45 L88 50 L95 40 L85 35 L75 15 C70 12 65 10 50 10 C35 10 30 12 25 15Z" fill="#18181b" stroke="#3f3f46" strokeWidth="1.5"/>
+                      {/* Hood inner fold path */}
+                      <path d="M35 15 C35 20 40 25 50 25 C60 25 65 20 65 15" fill="none" stroke="#27272a" strokeWidth="1"/>
+                    </svg>
+                    
+                    {/* Selected motif printed in the middle of the black hoodie */}
+                    <div className="absolute inset-0 flex items-center justify-center pt-3">
+                      <div className="relative w-[28px] h-[28px]">
+                        <Image 
+                          src={selectedDesign.motifImage} 
+                          alt="Printed motif" 
+                          fill 
+                          className="object-contain" 
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-[10px] text-muted-foreground text-center font-sans">Black Hoodie</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Floating 3D Preview card */}
+            <div className="float-anim absolute -bottom-4 -right-2 bg-card rounded-[14px] shadow-[0_12px_40px_rgba(0,0,0,0.15)] border border-border py-3 px-4 flex items-center gap-3 z-20">
+              <div className="w-9 h-9 bg-primary rounded-[10px] flex items-center justify-center text-[18px]">🎨</div>
+              <div>
+                <div className="font-heading font-bold text-[12px] text-foreground">3D Preview Ready</div>
+                <div className="text-[11px] text-muted-foreground">6 designs on sheet</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
