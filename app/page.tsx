@@ -268,56 +268,32 @@ function HomeContent() {
                 </div>
 
                 {/* Hoodie preview */}
-                <div className="w-[140px] bg-card border-l border-border flex flex-col items-center justify-center gap-2 py-4 px-2 select-none">
-                  <div className="text-[11px] font-heading font-semibold text-muted-foreground uppercase tracking-wider">Preview</div>
+                <div className="w-[140px] bg-[#111827] dark:bg-[#0c101b] border-l border-border flex flex-col items-center justify-between py-4 select-none">
+                  <div className="text-[11px] font-heading font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Preview</div>
                   
-                  {/* Hoodie SVG representation */}
-                  <div className="w-[100px] h-[120px]">
-                    <svg viewBox="0 0 100 120" className="w-[100px] h-[120px]">
-                      {/* Body & Sleeves (Long sleeves for hoodie) */}
-                      <path 
-                        d="M32 30 L12 48 L4 43 L16 85 L22 83 L26 48 L26 110 L74 110 L74 48 L78 83 L84 85 L96 43 L88 48 L68 30 Z" 
-                        fill="#18181b" 
-                        stroke="#3f3f46" 
-                        strokeWidth="1.5"
-                      />
-                      {/* Hood */}
-                      <path 
-                        d="M32 30 C30 12, 38 8, 50 8 C62 8, 70 12, 68 30 C64 34, 36 34, 32 30 Z" 
-                        fill="#27272a" 
-                        stroke="#3f3f46" 
-                        strokeWidth="1.5"
-                      />
-                      {/* Hood Opening & Fold */}
-                      <path 
-                        d="M38 30 C42 22, 58 22, 62 30" 
-                        fill="none" 
-                        stroke="#52525b" 
-                        strokeWidth="1"
-                      />
-                      {/* Kangaroo Pouch pocket */}
-                      <path 
-                        d="M34 85 L66 85 L60 68 L40 68 Z" 
-                        fill="#18181b" 
-                        stroke="#3f3f46" 
-                        strokeWidth="1.2"
-                      />
-                      {/* Drawstrings */}
-                      <path d="M46 32 L46 45" stroke="#52525b" strokeWidth="1" />
-                      <path d="M54 32 L54 48" stroke="#52525b" strokeWidth="1" />
-                      
-                      {/* Selected motif printed in the middle of the black hoodie chest */}
-                      <image 
-                        href={selectedDesign.motifImage} 
-                        x="37" 
-                        y="42" 
-                        width="26" 
-                        height="26" 
-                      />
-                    </svg>
+                  {/* Realistic Hoodie Preview */}
+                  <div className="relative w-full h-[180px] flex items-center justify-center overflow-hidden">
+                    <Image 
+                      src="/images/products/black_hoodie_blank.png" 
+                      alt="Black Hoodie Preview" 
+                      fill 
+                      className="object-cover scale-110"
+                    />
+                    
+                    {/* Selected Motif Overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center pt-2.5">
+                      <div className="relative w-[34px] h-[34px]">
+                        <Image 
+                          src={selectedDesign.motifImage} 
+                          alt="Printed motif" 
+                          fill 
+                          className="object-contain" 
+                        />
+                      </div>
+                    </div>
                   </div>
                   
-                  <div className="text-[10px] text-muted-foreground text-center font-sans">Black Hoodie</div>
+                  <div className="text-[10px] text-zinc-400 dark:text-zinc-500 text-center font-sans font-bold">Black Hoodie</div>
                 </div>
               </div>
             </div>
