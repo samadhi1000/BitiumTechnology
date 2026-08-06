@@ -149,20 +149,18 @@ export async function getDigitalArtworks(category?: string, search?: string): Pr
     }
   }
 
-  // Merge datasets
-  const merged = [...customArtworks];
-  dbArtworks.forEach((dbArt) => {
-    if (!merged.some((art) => art.id === dbArt.id)) {
-      merged.push(dbArt);
+  // Merge datasets: DB items take precedence and override custom catalog items with the same ID
+  const merged = [...dbArtworks];
+  customArtworks.forEach((customArt) => {
+    if (!merged.some((art) => art.id === customArt.id)) {
+      merged.push(customArt);
     }
   });
 
   // If both empty, fallback to getLocalCatalog static mock
   if (merged.length === 0) {
     getLocalCatalog().forEach((mock) => {
-      if (!merged.some((art) => art.id === mock.id)) {
-        merged.push({ ...mock, is_active: true });
-      }
+      merged.push({ ...mock, is_active: true });
     });
   }
 
@@ -274,29 +272,32 @@ export async function updateDigitalArtwork(id: string, artworkData: Partial<Digi
   };
 
   if (isSupabaseConfigured()) {
-    try {
-      const { error } = await supabase
-        .from('digital_artworks')
-        .update({
-          title: updated.title,
-          description: updated.description,
-          price: updated.price,
-          preview_url: updated.preview_url,
-          file_key: updated.file_key,
-          category: updated.category,
-          tags: updated.tags,
-          file_format: updated.file_format,
-          file_size: updated.file_size,
-          resolution: updated.resolution,
-          is_active: updated.is_active
-        })
-        .eq('id', id);
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    if (isUUID) {
+      try {
+        const { error } = await supabase
+          .from('digital_artworks')
+          .update({
+            title: updated.title,
+            description: updated.description,
+            price: updated.price,
+            preview_url: updated.preview_url,
+            file_key: updated.file_key,
+            category: updated.category,
+            tags: updated.tags,
+            file_format: updated.file_format,
+            file_size: updated.file_size,
+            resolution: updated.resolution,
+            is_active: updated.is_active
+          })
+          .eq('id', id);
 
-      if (error) {
-        console.error('Supabase digital update failed:', error);
+        if (error) {
+          console.error('Supabase digital update failed:', error);
+        }
+      } catch (err) {
+        console.error('Supabase digital update failed:', err);
       }
-    } catch (err) {
-      console.error('Supabase digital update failed:', err);
     }
   }
 
@@ -317,13 +318,16 @@ export async function updateDigitalArtwork(id: string, artworkData: Partial<Digi
 
 export async function deleteDigitalArtwork(id: string): Promise<boolean> {
   if (isSupabaseConfigured()) {
-    try {
-      await supabase
-        .from('digital_artworks')
-        .update({ is_active: false })
-        .eq('id', id);
-    } catch (err) {
-      console.error('Supabase digital delete failed:', err);
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    if (isUUID) {
+      try {
+        await supabase
+          .from('digital_artworks')
+          .update({ is_active: false })
+          .eq('id', id);
+      } catch (err) {
+        console.error('Supabase digital delete failed:', err);
+      }
     }
   }
 

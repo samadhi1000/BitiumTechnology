@@ -297,23 +297,22 @@ export async function getProducts(): Promise<Product[]> {
     }
   }
 
-  if (dbProducts.length === 0) {
-    const merged = [...customProducts];
+  // Merge datasets: DB items take precedence and override custom catalog items with the same ID
+  const merged = [...dbProducts];
+  customProducts.forEach((customP) => {
+    if (!merged.some((p) => p.id === customP.id)) {
+      merged.push(customP);
+    }
+  });
+
+  // If both empty, fallback to MOCK_PRODUCTS static mock
+  if (merged.length === 0) {
     MOCK_PRODUCTS.forEach((mock) => {
-      if (!merged.some((p) => p.id === mock.id)) {
-        merged.push(mock);
-      }
+      merged.push(mock);
     });
-    return merged.filter((p) => p.is_active);
-  } else {
-    const merged = [...customProducts];
-    dbProducts.forEach((dbP) => {
-      if (!merged.some((p) => p.id === dbP.id)) {
-        merged.push(dbP);
-      }
-    });
-    return merged.filter((p) => p.is_active);
   }
+
+  return merged.filter((p) => p.is_active);
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
