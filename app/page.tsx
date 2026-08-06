@@ -152,9 +152,9 @@ function HomeContent() {
   const visibleGallery = activeGallery === 'All' ? galleryItems : galleryItems.filter(g => g.cat === activeGallery);
 
   const testimonials = [
-    { name: 'Jason M.', role: 'Streetwear Brand Owner', rating: 5, text: '"The 3D preview is a game changer. What you see is exactly what you get. My customers love the quality."', avatar: 'JM' },
-    { name: 'Rachel T.', role: 'Small Business Owner', rating: 5, text: '"Amazing quality and super fast turnaround. My go-to print shop — I will not use anyone else for my brand."', avatar: 'RT' },
-    { name: 'Alex K.', role: 'Apparel Designer', rating: 4, text: '"Bitium Technology never disappoints. Highly recommended for anyone serious about print quality."', avatar: 'AK' },
+    { name: 'Kavinda P.', role: 'Apparel Brand Owner', rating: 5, text: '"Bitium Technology provided the cleanest DTF prints I\'ve ever seen. The colors popped instantly."', avatar: 'KP' },
+    { name: 'Design Studio X', role: 'Interior Designers', rating: 5, text: '"The custom laser cut stencils for our mural project were flawless. Exceeded expectations!"', avatar: 'DS' },
+    { name: 'Sahan M.', role: 'Local Screen Printer', rating: 5, text: '"Fastest screen exposing service in the city. Really appreciate the quick turnarounds."', avatar: 'SM' },
   ];
   const avatarColors = ['#8DFF00', '#7c3aed', '#0284c7'];
   

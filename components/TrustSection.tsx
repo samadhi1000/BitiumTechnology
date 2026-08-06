@@ -81,65 +81,6 @@ export default function TrustSection() {
           </div>
         </div>
 
-        {/* Reviews Container */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-5">
-          
-          {/* Review 1 */}
-          <div className="bg-card border border-border p-6 rounded-xl flex flex-col space-y-4 shadow-lg hover:-translate-y-1 transition-transform">
-            <div className="flex text-amber-400">
-              <Star size={14} fill="currentColor" />
-              <Star size={14} fill="currentColor" />
-              <Star size={14} fill="currentColor" />
-              <Star size={14} fill="currentColor" />
-              <Star size={14} fill="currentColor" />
-            </div>
-            <p className="text-sm text-foreground font-medium italic">
-              "Bitium Technology provided the cleanest DTF prints I've ever seen. The colors popped instantly."
-            </p>
-            <div className="mt-auto pt-2">
-              <div className="text-xs font-bold text-foreground">Kavinda P.</div>
-              <div className="text-[10px] text-muted-foreground">Apparel Brand Owner</div>
-            </div>
-          </div>
-
-          {/* Review 2 */}
-          <div className="bg-card border border-border p-6 rounded-xl flex flex-col space-y-4 shadow-lg hover:-translate-y-1 transition-transform">
-            <div className="flex text-amber-400">
-              <Star size={14} fill="currentColor" />
-              <Star size={14} fill="currentColor" />
-              <Star size={14} fill="currentColor" />
-              <Star size={14} fill="currentColor" />
-              <Star size={14} fill="currentColor" />
-            </div>
-            <p className="text-sm text-foreground font-medium italic">
-              "The custom laser cut stencils for our mural project were flawless. Exceeded expectations!"
-            </p>
-            <div className="mt-auto pt-2">
-              <div className="text-xs font-bold text-foreground">Design Studio X</div>
-              <div className="text-[10px] text-muted-foreground">Interior Designers</div>
-            </div>
-          </div>
-
-          {/* Review 3 */}
-          <div className="bg-card border border-border p-6 rounded-xl flex flex-col space-y-4 shadow-lg hover:-translate-y-1 transition-transform">
-            <div className="flex text-amber-400">
-              <Star size={14} fill="currentColor" />
-              <Star size={14} fill="currentColor" />
-              <Star size={14} fill="currentColor" />
-              <Star size={14} fill="currentColor" />
-              <Star size={14} fill="currentColor" />
-            </div>
-            <p className="text-sm text-foreground font-medium italic">
-              "Fastest screen exposing service in the city. Really appreciate the quick turnarounds."
-            </p>
-            <div className="mt-auto pt-2">
-              <div className="text-xs font-bold text-foreground">Sahan M.</div>
-              <div className="text-[10px] text-muted-foreground">Local Screen Printer</div>
-            </div>
-          </div>
-
-        </div>
-
       </div>
     </section>
   );
