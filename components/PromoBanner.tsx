@@ -99,11 +99,11 @@ export default function PromoBanner() {
         </div>
       </div>
 
-      {/* 3. Bottom Accent Banner: WHY CHOOSE BITIUM TECHNOLOGY? */}
+      {/* 3. Bottom Accent Banner: INDUSTRIAL GRADE QUALITY • NO MINIMUMS • ON TIME */}
       <div className="promo-accent-bar w-full bg-[#8DFF00] py-6 relative z-10 border-t border-[#9eff1a] select-none">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h3 className="text-xl sm:text-3xl font-black text-black tracking-[0.2em] uppercase">
-            WHY CHOOSE BITIUM TECHNOLOGY?
+          <h3 className="text-xl sm:text-2xl font-black text-black tracking-[0.1em] uppercase">
+            INDUSTRIAL GRADE QUALITY • NO MINIMUM ORDERS • DELIVERED ON TIME
           </h3>
         </div>
       </div>

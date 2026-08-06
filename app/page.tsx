@@ -18,6 +18,7 @@ const PackageIcon = () => <Package size={28} color="#8DFF00" strokeWidth={1.8} /
 
 const ShieldIcon = () => <Shield size={22} color="#8DFF00" strokeWidth={1.8} />;
 const ZapIcon = () => <Zap size={22} color="#8DFF00" strokeWidth={1.8} />;
+const DropletIcon = () => <Droplet size={22} color="#8DFF00" strokeWidth={1.8} />;
 const LayersIcon = () => <Layers size={22} color="#8DFF00" strokeWidth={1.8} />;
 const HeadphonesIcon = () => <Phone size={22} color="#8DFF00" strokeWidth={1.8} />;
 const ThumbsUpIcon = () => <ThumbsUp size={22} color="#8DFF00" strokeWidth={1.8} />;
@@ -131,7 +132,7 @@ function HomeContent() {
   
   const benefits = [
     { icon: <ShieldIcon />, title: 'Premium Quality', desc: 'Top-grade materials and advanced printing technology for lasting results.' },
-    { icon: <ZapIcon />, title: 'Fast Turnaround', desc: '24-hour production with express shipping options available.' },
+    { icon: <DropletIcon />, title: 'Vibrant Colors', desc: 'High-opacity, ultra-vibrant inks that stand out on any fabric color.' },
     { icon: <LayersIcon />, title: 'No Minimum Order', desc: 'Order one sheet or thousands — no minimums, ever.' },
     { icon: <HeadphonesIcon />, title: 'Expert Support', desc: 'Our team is here to help at every step of your order.' },
     { icon: <ThumbsUpIcon />, title: 'Satisfaction Guarantee', desc: "If you're not happy, we make it right. No questions asked." },
@@ -413,7 +414,7 @@ function HomeContent() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <span className="font-heading font-bold text-[13px] text-[#8DFF00] uppercase tracking-widest">Benefits</span>
-            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">Why Choose Bitium Technology?</h2>
+            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">The Bitium Advantage</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 benefits-grid">
             {benefits.map(b => (

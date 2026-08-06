@@ -11,7 +11,7 @@ export default function TrustSection() {
         {/* Header */}
         <div className="mb-12 text-center lg:text-left">
           <p className="font-sans font-bold tracking-[0.14em] uppercase text-xs text-primary mb-3">
-            Why Choose Bitium
+            Our Quality Standards
           </p>
           <h2 className="font-black text-3xl sm:text-4xl lg:text-[44px] leading-[1.05] max-w-[720px] mx-auto lg:mx-0">
             INDUSTRIAL GRADE PRINTING. DELIVERED ON TIME.
