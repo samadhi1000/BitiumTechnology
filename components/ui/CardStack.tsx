@@ -68,10 +68,10 @@ export default function CardStack({ products }: CardStackProps) {
                 }
               }}
               whileHover={isTop ? { scale: 1.02, rotate: -1 } : {}}
-              className="absolute w-full h-[440px] rounded-3xl border border-zinc-800 bg-zinc-900 shadow-2xl overflow-hidden cursor-grab active:cursor-grabbing flex flex-col justify-between"
+              className="absolute w-full h-[440px] rounded-3xl border border-border bg-card shadow-2xl overflow-hidden cursor-grab active:cursor-grabbing flex flex-col justify-between"
             >
               {/* Product Image & Glow */}
-              <div className="relative w-full h-[260px] bg-zinc-950 overflow-hidden">
+              <div className="relative w-full h-[260px] bg-background overflow-hidden">
                 {isTop ? (
                   <HoverZoomImage
                     src={product.image_url}
@@ -92,12 +92,12 @@ export default function CardStack({ products }: CardStackProps) {
                 {/* Badges */}
                 <div className="absolute top-4 left-4 flex gap-2 pointer-events-none">
                   {product.original_price && (
-                    <span className="px-2.5 py-1 rounded-md bg-rose-600 text-[10px] font-extrabold uppercase tracking-wider text-white">
+                    <span className="px-2.5 py-1 rounded-md bg-rose-600 text-[10px] font-extrabold uppercase tracking-wider text-foreground">
                       Sale {Math.round(((product.original_price - product.price) / product.original_price) * 100)}% Off
                     </span>
                   )}
                   {product.category === 'dtf_sheet' && (
-                    <span className="px-2.5 py-1 rounded-md bg-violet-600 text-[10px] font-bold tracking-wider uppercase text-white flex items-center gap-1">
+                    <span className="px-2.5 py-1 rounded-md bg-[#8DFF00] text-[10px] font-bold tracking-wider uppercase text-[#0a0a0a] flex items-center gap-1">
                       <Layers size={10} />
                       DTF
                     </span>
@@ -106,8 +106,8 @@ export default function CardStack({ products }: CardStackProps) {
 
                 {isTop && (
                   <div className="absolute top-4 right-4 animate-bounce pointer-events-none">
-                    <span className="px-2.5 py-1 rounded-full bg-zinc-900/80 backdrop-blur border border-zinc-800 text-[9px] font-bold text-zinc-300 flex items-center gap-1">
-                      <Sparkles size={10} className="text-violet-400" />
+                    <span className="px-2.5 py-1 rounded-full bg-card/80 backdrop-blur border border-border text-[9px] font-bold text-foreground flex items-center gap-1">
+                      <Sparkles size={10} className="text-[#8DFF00]" />
                       Swipe Me!
                     </span>
                   </div>
@@ -115,34 +115,34 @@ export default function CardStack({ products }: CardStackProps) {
               </div>
 
               {/* Details & Action */}
-              <div className="p-6 bg-zinc-900 flex-grow flex flex-col justify-between">
+              <div className="p-6 bg-card flex-grow flex flex-col justify-between">
                 <div className="space-y-1">
-                  <span className="text-[10px] font-bold text-violet-400 uppercase tracking-widest">
+                  <span className="text-[10px] font-bold text-[#8DFF00] uppercase tracking-widest">
                     {product.sub_category === 'anime' ? 'Anime Apparel' : 'DTF Print Transfer'}
                   </span>
-                  <h3 className="font-extrabold text-base text-zinc-100 line-clamp-1 leading-snug">
+                  <h3 className="font-extrabold text-base text-foreground line-clamp-1 leading-snug">
                     {product.name.replace('TeeDesign ', '')}
                   </h3>
-                  <p className="text-zinc-500 text-xs line-clamp-2 leading-relaxed">
+                  <p className="text-muted-foreground text-xs line-clamp-2 leading-relaxed">
                     {product.description}
                   </p>
                 </div>
 
-                <div className="mt-4 flex items-center justify-between border-t border-zinc-850 pt-4">
+                <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
                   <div>
                     {product.original_price && (
-                      <span className="text-xs text-zinc-500 line-through font-semibold">
+                      <span className="text-xs text-muted-foreground line-through font-semibold">
                         Rs. {product.original_price.toLocaleString()}
                       </span>
                     )}
-                    <p className="font-black text-lg text-violet-400 leading-none">
+                    <p className="font-black text-lg text-[#8DFF00] leading-none">
                       Rs. {product.price.toLocaleString()}
                     </p>
                   </div>
 
                   <Link
                     href={product.category === 'dtf_sheet' && product.id.startsWith('b2a8') ? '/canvas' : `/products/${product.id}`}
-                    className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all glow-primary select-none"
+                    className="px-5 py-2.5 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] font-bold text-xs flex items-center gap-1.5 transition-all glow-primary select-none"
                   >
                     <span>Get Design</span>
                     <ArrowRight size={12} />

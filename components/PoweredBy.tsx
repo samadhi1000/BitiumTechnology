@@ -138,7 +138,7 @@ export default function PoweredBy({
         aria-label="Powered by Stack Unleash"
       >
         {/* Powered By Text Label */}
-        <span className="text-xs uppercase tracking-widest text-zinc-500 group-hover:text-zinc-400 transition-colors">
+        <span className="text-xs uppercase tracking-widest text-muted-foreground group-hover:text-muted-foreground transition-colors">
           Powered By
         </span>
 

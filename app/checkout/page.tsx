@@ -180,24 +180,24 @@ export default function CheckoutPage() {
         </div>
         <div className="space-y-2">
           <h2 className="text-2xl font-bold">Order Placed Successfully!</h2>
-          <p className="text-zinc-400 text-sm">
+          <p className="text-muted-foreground text-sm">
             Thank you for shopping with Bitium Technology. Your order has been placed.
           </p>
-          <div className="p-3 bg-zinc-900 border border-zinc-800 rounded-xl mt-4">
-            <span className="text-xs text-zinc-500 uppercase font-bold tracking-wider">Order ID</span>
-            <p className="text-xs font-mono font-bold text-zinc-200 mt-1 select-all">{orderSuccess}</p>
+          <div className="p-3 bg-card border border-border rounded-xl mt-4">
+            <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Order ID</span>
+            <p className="text-xs font-mono font-bold text-foreground mt-1 select-all">{orderSuccess}</p>
           </div>
         </div>
         <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/"
-            className="px-6 py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-sm font-semibold transition-all"
+            className="px-6 py-3 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-sm font-semibold transition-all"
           >
             Go to Catalog
           </Link>
           <Link
             href="/canvas"
-            className="px-6 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-sm font-semibold text-zinc-300 hover:text-white transition-all"
+            className="px-6 py-3 rounded-xl bg-card hover:bg-muted border border-border text-sm font-semibold text-foreground hover:text-foreground transition-all"
           >
             Design Another Sheet
           </Link>
@@ -211,7 +211,7 @@ export default function CheckoutPage() {
       <div className="max-w-md mx-auto px-4 py-20 text-center space-y-6">
         <ShoppingBag size={48} className="text-zinc-600 mx-auto" />
         <h2 className="text-xl font-bold">Your checkout is empty</h2>
-        <Link href="/" className="inline-flex items-center gap-2 text-violet-400 font-bold hover:text-violet-300 text-sm">
+        <Link href="/" className="inline-flex items-center gap-2 text-[#8DFF00] font-bold hover:text-[#9eff1a] text-sm">
           <ArrowLeft size={16} /> Back to Catalog
         </Link>
       </div>
@@ -227,54 +227,54 @@ export default function CheckoutPage() {
         <form onSubmit={handleSubmit} className="lg:col-span-2 space-y-8">
           {/* Shipping details */}
           <div className="space-y-4">
-            <h3 className="font-bold text-lg text-zinc-300">1. Shipping Details</h3>
+            <h3 className="font-bold text-lg text-foreground">1. Shipping Details</h3>
             
             <div className="grid grid-cols-1 gap-4">
               <div>
-                <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-2">Full Name</label>
+                <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wide mb-2">Full Name</label>
                 <input
                   type="text"
                   required
                   placeholder="John Doe"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full p-3.5 rounded-xl border border-zinc-800 bg-zinc-900/50 text-white placeholder-zinc-600 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 outline-none text-sm transition-all"
+                  className="w-full p-3.5 rounded-xl border border-border bg-card/50 text-foreground placeholder-zinc-600 focus:border-[#8DFF00] focus:ring-1 focus:ring-[#8DFF00] outline-none text-sm transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-2">Address Line 1</label>
+                <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wide mb-2">Address Line 1</label>
                 <input
                   type="text"
                   required
                   placeholder="123 Street Name, Suburb"
                   value={addressLine1}
                   onChange={(e) => setAddressLine1(e.target.value)}
-                  className="w-full p-3.5 rounded-xl border border-zinc-800 bg-zinc-900/50 text-white placeholder-zinc-600 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 outline-none text-sm transition-all"
+                  className="w-full p-3.5 rounded-xl border border-border bg-card/50 text-foreground placeholder-zinc-600 focus:border-[#8DFF00] focus:ring-1 focus:ring-[#8DFF00] outline-none text-sm transition-all"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-2">City</label>
+                  <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wide mb-2">City</label>
                   <input
                     type="text"
                     required
                     placeholder="Colombo"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    className="w-full p-3.5 rounded-xl border border-zinc-800 bg-zinc-900/50 text-white placeholder-zinc-600 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 outline-none text-sm transition-all"
+                    className="w-full p-3.5 rounded-xl border border-border bg-card/50 text-foreground placeholder-zinc-600 focus:border-[#8DFF00] focus:ring-1 focus:ring-[#8DFF00] outline-none text-sm transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-2">Phone Number</label>
+                  <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wide mb-2">Phone Number</label>
                   <input
                     type="tel"
                     required
                     placeholder="+94 77 123 4567"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full p-3.5 rounded-xl border border-zinc-800 bg-zinc-900/50 text-white placeholder-zinc-600 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 outline-none text-sm transition-all"
+                    className="w-full p-3.5 rounded-xl border border-border bg-card/50 text-foreground placeholder-zinc-600 focus:border-[#8DFF00] focus:ring-1 focus:ring-[#8DFF00] outline-none text-sm transition-all"
                   />
                 </div>
               </div>
@@ -283,35 +283,35 @@ export default function CheckoutPage() {
 
           {/* Payment Method */}
           <div className="space-y-4">
-            <h3 className="font-bold text-lg text-zinc-300">2. Payment Method</h3>
+            <h3 className="font-bold text-lg text-foreground">2. Payment Method</h3>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <label className={`p-4 rounded-xl border flex items-center gap-3 cursor-pointer transition-all ${
                 paymentMethod === 'cod'
-                  ? 'border-violet-500 bg-violet-600/10'
-                  : 'border-zinc-800 bg-zinc-900 hover:bg-zinc-800'
+                  ? 'border-[#8DFF00] bg-[#8DFF00]/10'
+                  : 'border-border bg-card hover:bg-muted'
               }`}>
                 <input
                   type="radio"
                   name="payment"
                   checked={paymentMethod === 'cod'}
                   onChange={() => setPaymentMethod('cod')}
-                  className="accent-violet-500 h-4 w-4"
+                  className="accent-[#8DFF00] h-4 w-4"
                 />
                 <div>
-                  <p className="text-sm font-bold text-zinc-200">Cash On Delivery</p>
-                  <p className="text-[10px] text-zinc-500 mt-0.5">Pay in cash upon physical arrival</p>
+                  <p className="text-sm font-bold text-foreground">Cash On Delivery</p>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">Pay in cash upon physical arrival</p>
                 </div>
               </label>
 
-              <label className="p-4 rounded-xl border border-zinc-900 bg-zinc-950/40 opacity-50 flex items-center gap-3 cursor-not-allowed">
+              <label className="p-4 rounded-xl border border-border bg-background/40 opacity-50 flex items-center gap-3 cursor-not-allowed">
                 <input
                   type="radio"
                   disabled
                   className="h-4 w-4"
                 />
                 <div>
-                  <p className="text-sm font-bold text-zinc-400">Card / iPay (Online)</p>
+                  <p className="text-sm font-bold text-muted-foreground">Card / iPay (Online)</p>
                   <p className="text-[10px] text-zinc-600 mt-0.5">Temporarily unavailable</p>
                 </div>
               </label>
@@ -322,7 +322,7 @@ export default function CheckoutPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-violet-600/10"
+            className="w-full py-4 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-[#8DFF00]/10"
           >
             {loading ? (
               <RefreshCw className="animate-spin" size={16} />
@@ -333,44 +333,44 @@ export default function CheckoutPage() {
         </form>
 
         {/* Right Column: Checkout Items Review */}
-        <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 h-fit space-y-6">
+        <div className="p-6 rounded-2xl border border-border bg-card/40 h-fit space-y-6">
           <h3 className="font-bold text-lg">Review Order</h3>
 
           <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2">
             {items.map((item) => (
-              <div key={item.id} className="flex justify-between items-center gap-4 border-b border-zinc-800/40 pb-3">
+              <div key={item.id} className="flex justify-between items-center gap-4 border-b border-border/40 pb-3">
                 <div className="text-xs">
-                  <p className="font-bold text-zinc-200">{item.product.name}</p>
+                  <p className="font-bold text-foreground">{item.product.name}</p>
                   {item.type === 'apparel' && item.variant && (
-                    <p className="text-zinc-500 mt-0.5">{item.variant.name}</p>
+                    <p className="text-muted-foreground mt-0.5">{item.variant.name}</p>
                   )}
                   {item.type === 'dtf_sheet' && item.customSheet && (
-                    <p className="text-zinc-500 mt-0.5">Custom Canvas {item.customSheet.width}"x{item.customSheet.height}"</p>
+                    <p className="text-muted-foreground mt-0.5">Custom Canvas {item.customSheet.width}"x{item.customSheet.height}"</p>
                   )}
-                  <p className="text-zinc-500 mt-1">Qty: {item.quantity}</p>
+                  <p className="text-muted-foreground mt-1">Qty: {item.quantity}</p>
                 </div>
-                <p className="text-xs font-bold text-violet-400">
+                <p className="text-xs font-bold text-[#8DFF00]">
                   Rs. {(item.price * item.quantity).toLocaleString()}
                 </p>
               </div>
             ))}
           </div>
 
-          <div className="space-y-2 text-xs text-zinc-400">
+          <div className="space-y-2 text-xs text-muted-foreground">
             <div className="flex justify-between">
               <span>Subtotal:</span>
-              <span className="font-bold text-zinc-200">Rs. {subtotal.toLocaleString()}</span>
+              <span className="font-bold text-foreground">Rs. {subtotal.toLocaleString()}</span>
             </div>
             <div className="flex justify-between">
               <span>Delivery flat rate:</span>
-              <span className="font-bold text-zinc-200">Rs. {shippingCost}</span>
+              <span className="font-bold text-foreground">Rs. {shippingCost}</span>
             </div>
           </div>
 
-          <div className="border-t border-zinc-800 pt-4 flex justify-between items-end">
+          <div className="border-t border-border pt-4 flex justify-between items-end">
             <div>
-              <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-semibold">Grand Total</span>
-              <p className="text-xl font-black text-violet-400">Rs. {total.toLocaleString()}</p>
+              <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">Grand Total</span>
+              <p className="text-xl font-black text-[#8DFF00]">Rs. {total.toLocaleString()}</p>
             </div>
           </div>
         </div>

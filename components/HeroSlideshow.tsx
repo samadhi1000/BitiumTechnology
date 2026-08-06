@@ -23,7 +23,7 @@ export const HeroSlideshow: React.FC = () => {
   }, []);
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0 bg-zinc-950">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0 bg-background">
       <AnimatePresence mode="popLayout">
         <motion.div
           key={index}

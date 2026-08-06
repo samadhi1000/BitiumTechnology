@@ -90,7 +90,7 @@ export default function Navbar() {
               onMouseEnter={() => setStencilHovered(true)}
               onMouseLeave={() => setStencilHovered(false)}
             >
-              <Link href="/stencil" className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-zinc-300">
+              <Link href="/stencil" className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-foreground">
                 <span>Stencil</span>
                 <ChevronDown size={12} className={`transition-transform duration-200 ${stencilHovered ? 'rotate-180' : ''}`} />
               </Link>
@@ -111,7 +111,7 @@ export default function Navbar() {
                     <Link 
                       key={item.sub} 
                       href={`/stencil?sub=${item.sub}`} 
-                      className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-zinc-300 hover:text-white"
+                      className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-foreground hover:text-foreground"
                     >
                       {item.label}
                     </Link>
@@ -126,7 +126,7 @@ export default function Navbar() {
               onMouseEnter={() => setScreenPrintingHovered(true)}
               onMouseLeave={() => setScreenPrintingHovered(false)}
             >
-              <Link href="/screen-printing" className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-zinc-300">
+              <Link href="/screen-printing" className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-foreground">
                 <span>Screen Printing</span>
                 <ChevronDown size={12} className={`transition-transform duration-200 ${screenPrintingHovered ? 'rotate-180' : ''}`} />
               </Link>
@@ -144,7 +144,7 @@ export default function Navbar() {
                     <Link 
                       key={item.sub} 
                       href={`/screen-printing?sub=${item.sub}`} 
-                      className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-zinc-300 hover:text-white"
+                      className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-foreground hover:text-foreground"
                     >
                       {item.label}
                     </Link>
@@ -159,7 +159,7 @@ export default function Navbar() {
               onMouseEnter={() => setDtfPrintingHovered(true)}
               onMouseLeave={() => setDtfPrintingHovered(false)}
             >
-              <Link href="/dtf-printing" className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-zinc-300">
+              <Link href="/dtf-printing" className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-foreground">
                 <span>DTF Printing</span>
                 <ChevronDown size={12} className={`transition-transform duration-200 ${dtfPrintingHovered ? 'rotate-180' : ''}`} />
               </Link>
@@ -177,7 +177,7 @@ export default function Navbar() {
                     <Link 
                       key={item.sub} 
                       href={`/dtf-printing?sub=${item.sub}`} 
-                      className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-zinc-300 hover:text-white"
+                      className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-foreground hover:text-foreground"
                     >
                       {item.label}
                     </Link>
@@ -192,7 +192,7 @@ export default function Navbar() {
               onMouseEnter={() => setBatikStampHovered(true)}
               onMouseLeave={() => setBatikStampHovered(false)}
             >
-              <Link href="/batik-stamp" className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-zinc-300">
+              <Link href="/batik-stamp" className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-foreground">
                 <span>Batik Stamp</span>
                 <ChevronDown size={12} className={`transition-transform duration-200 ${batikStampHovered ? 'rotate-180' : ''}`} />
               </Link>
@@ -200,7 +200,7 @@ export default function Navbar() {
                 <div className="absolute top-[60px] left-0 w-44 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
                   <Link 
                     href="/batik-stamp" 
-                    className="px-3 py-2 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-zinc-300 hover:text-white"
+                    className="px-3 py-2 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-foreground hover:text-foreground"
                   >
                     Cap Batik
                   </Link>
@@ -214,7 +214,7 @@ export default function Navbar() {
               onMouseEnter={() => setLaserCuttingHovered(true)}
               onMouseLeave={() => setLaserCuttingHovered(false)}
             >
-              <Link href="/laser-cutting" className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-zinc-300">
+              <Link href="/laser-cutting" className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-foreground">
                 <span>Laser Cutting</span>
                 <ChevronDown size={12} className={`transition-transform duration-200 ${laserCuttingHovered ? 'rotate-180' : ''}`} />
               </Link>
@@ -232,7 +232,7 @@ export default function Navbar() {
                     <Link 
                       key={item.sub} 
                       href={`/laser-cutting?sub=${item.sub}`} 
-                      className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-zinc-300 hover:text-white"
+                      className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-foreground hover:text-foreground"
                     >
                       {item.label}
                     </Link>
@@ -247,16 +247,16 @@ export default function Navbar() {
               onMouseEnter={() => setToolkitHovered(true)}
               onMouseLeave={() => setToolkitHovered(false)}
             >
-              <span className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-zinc-300">
+              <span className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-foreground">
                 <span>Toolkit</span>
                 <ChevronDown size={12} className={`transition-transform duration-200 ${toolkitHovered ? 'rotate-180' : ''}`} />
               </span>
               {toolkitHovered && (
                 <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
-                  <Link href="/3d-customizer" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-fuchsia-400 hover:bg-card transition-colors flex items-center gap-1">
+                  <Link href="/3d-customizer" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-[#8DFF00] hover:bg-card transition-colors flex items-center gap-1">
                     <Shirt size={11} /> Mockup Studio
                   </Link>
-                  <Link href="/canvas" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-violet-300 hover:bg-card transition-colors flex items-center gap-1">
+                  <Link href="/canvas" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-[#9eff1a] hover:bg-card transition-colors flex items-center gap-1">
                     <LayoutGrid size={11} /> Canvas Builder
                   </Link>
                   <Link href="/size-guide" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-emerald-400 hover:bg-card transition-colors flex items-center gap-1">
@@ -267,12 +267,12 @@ export default function Navbar() {
             </div>
 
             {/* 07. Digital downloads */}
-            <Link href="/downloads" className="text-xs font-semibold hover:text-primary transition-colors h-full flex items-center text-zinc-300">
+            <Link href="/downloads" className="text-xs font-semibold hover:text-primary transition-colors h-full flex items-center text-foreground">
               Digital downloads
             </Link>
 
             {/* 08. Materials / Consumables */}
-            <Link href="/materials" className="text-xs font-semibold hover:text-primary transition-colors h-full flex items-center text-zinc-300">
+            <Link href="/materials" className="text-xs font-semibold hover:text-primary transition-colors h-full flex items-center text-foreground">
               Materials / Consumables
             </Link>
           </div>
@@ -284,19 +284,19 @@ export default function Navbar() {
             <button
               onClick={toggle}
               aria-label="Toggle light/dark mode"
-              className="relative flex items-center justify-center w-12 h-6 sm:w-14 sm:h-7 rounded-full border border-zinc-700 bg-card hover:border-violet-500 transition-all duration-300 group overflow-hidden"
+              className="relative flex items-center justify-center w-12 h-6 sm:w-14 sm:h-7 rounded-full border border-zinc-700 bg-card hover:border-[#8DFF00] transition-all duration-300 group overflow-hidden"
             >
               <span className={`absolute inset-0 rounded-full transition-all duration-500 ${
-                theme === 'light' ? 'bg-violet-100' : 'bg-zinc-800'
+                theme === 'light' ? 'bg-[#8DFF00]/10' : 'bg-muted'
               }`} />
               <span className={`absolute w-4 h-4 sm:w-5 sm:h-5 rounded-full shadow-sm flex items-center justify-center transition-all duration-500 ${
                 theme === 'light'
-                  ? 'translate-x-2.5 sm:translate-x-3.5 bg-violet-500'
+                  ? 'translate-x-2.5 sm:translate-x-3.5 bg-[#9eff1a]'
                   : '-translate-x-2.5 sm:-translate-x-3.5 bg-zinc-600'
               }`}>
                 {theme === 'light'
-                  ? <Sun size={10} className="text-white" />
-                  : <Moon size={10} className="text-zinc-300" />}
+                  ? <Sun size={10} className="text-foreground" />
+                  : <Moon size={10} className="text-foreground" />}
               </span>
             </button>
 
@@ -306,11 +306,11 @@ export default function Navbar() {
                 closeMobileMenu();
                 openCart();
               }}
-              className="relative p-2 rounded-full hover:bg-zinc-800 text-zinc-300 hover:text-white transition-colors cursor-pointer"
+              className="relative p-2 rounded-full hover:bg-muted text-foreground hover:text-foreground transition-colors cursor-pointer"
             >
               <ShoppingBag size={20} />
               {cartItemsCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full bg-violet-600 text-[9px] sm:text-[10px] font-bold text-white ring-2 ring-zinc-950 animate-pulse">
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full bg-[#8DFF00] text-[9px] sm:text-[10px] font-bold text-[#0a0a0a] ring-2 ring-zinc-950 animate-pulse">
                   {cartItemsCount}
                 </span>
               )}
@@ -320,14 +320,14 @@ export default function Navbar() {
             {user && (
               <div className="hidden lg:flex items-center space-x-3">
                 <Link href="/profile" className="flex items-center space-x-2 text-sm font-medium hover:text-primary transition-colors">
-                  <User size={18} className="text-zinc-400" />
+                  <User size={18} className="text-muted-foreground" />
                   <span className="max-w-[100px] truncate">
                     {profile?.full_name || user.email}
                   </span>
                 </Link>
                 <button
                   onClick={() => signOut()}
-                  className="p-2 rounded-full hover:bg-red-950/30 text-zinc-400 hover:text-red-400 transition-colors"
+                  className="p-2 rounded-full hover:bg-red-950/30 text-muted-foreground hover:text-red-400 transition-colors"
                   title="Sign Out"
                 >
                   <LogOut size={18} />
@@ -338,7 +338,7 @@ export default function Navbar() {
             {/* Mobile Hamburger Toggle Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl bg-card border border-border text-zinc-200 hover:text-white hover:border-violet-500/50 transition-all"
+              className="lg:hidden p-2 rounded-xl bg-card border border-border text-foreground hover:text-foreground hover:border-[#8DFF00]/50 transition-all"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -357,7 +357,7 @@ export default function Navbar() {
               <Link
                 href="/3d-customizer"
                 onClick={closeMobileMenu}
-                className="w-full p-3 rounded-xl bg-fuchsia-600/20 border border-fuchsia-500/40 text-fuchsia-200 flex items-center justify-center gap-2 font-bold text-xs hover:bg-fuchsia-600/30 transition-all"
+                className="w-full p-3 rounded-xl bg-[#8DFF00]/20 border border-[#8DFF00]/40 text-[#8DFF00] flex items-center justify-center gap-2 font-bold text-xs hover:bg-[#8DFF00]/30 transition-all"
               >
                 <Shirt size={15} />
                 <span>3D Mockup</span>
@@ -366,10 +366,10 @@ export default function Navbar() {
 
             {/* Navigation Accordion Items */}
             {/* 2. Stencil */}
-            <div className="rounded-xl bg-card/50 border border-zinc-850 overflow-hidden">
+            <div className="rounded-xl bg-card/50 border border-border overflow-hidden">
               <div
                 onClick={() => toggleMobileSub('stencil')}
-                className="flex items-center justify-between px-4 py-3 cursor-pointer text-sm font-bold text-zinc-100"
+                className="flex items-center justify-between px-4 py-3 cursor-pointer text-sm font-bold text-foreground"
               >
                 <div className="flex items-center gap-2">
                   <Palette size={16} className="text-primary" />
@@ -377,18 +377,18 @@ export default function Navbar() {
                 </div>
                 <ChevronDown
                   size={16}
-                  className={`text-zinc-400 transition-transform duration-200 ${
+                  className={`text-muted-foreground transition-transform duration-200 ${
                     mobileSubOpen === 'stencil' ? 'rotate-180' : ''
                   }`}
                 />
               </div>
 
               {mobileSubOpen === 'stencil' && (
-                <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-zinc-850/50">
+                <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-border/50">
                   <Link
                     href="/stencil"
                     onClick={closeMobileMenu}
-                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-violet-500/10"
+                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#9eff1a]/10"
                   >
                     View All Stencils →
                   </Link>
@@ -404,7 +404,7 @@ export default function Navbar() {
                       key={item.sub}
                       href={`/stencil?sub=${item.sub}`}
                       onClick={closeMobileMenu}
-                      className="block px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-300 hover:bg-card hover:text-white"
+                      className="block px-3 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-card hover:text-foreground"
                     >
                       {item.label}
                     </Link>
@@ -414,10 +414,10 @@ export default function Navbar() {
             </div>
 
             {/* 3. Screen Printing */}
-            <div className="rounded-xl bg-card/50 border border-zinc-850 overflow-hidden">
+            <div className="rounded-xl bg-card/50 border border-border overflow-hidden">
               <div
                 onClick={() => toggleMobileSub('screen')}
-                className="flex items-center justify-between px-4 py-3 cursor-pointer text-sm font-bold text-zinc-100"
+                className="flex items-center justify-between px-4 py-3 cursor-pointer text-sm font-bold text-foreground"
               >
                 <div className="flex items-center gap-2">
                   <Printer size={16} className="text-primary" />
@@ -425,18 +425,18 @@ export default function Navbar() {
                 </div>
                 <ChevronDown
                   size={16}
-                  className={`text-zinc-400 transition-transform duration-200 ${
+                  className={`text-muted-foreground transition-transform duration-200 ${
                     mobileSubOpen === 'screen' ? 'rotate-180' : ''
                   }`}
                 />
               </div>
 
               {mobileSubOpen === 'screen' && (
-                <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-zinc-850/50">
+                <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-border/50">
                   <Link
                     href="/screen-printing"
                     onClick={closeMobileMenu}
-                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-violet-500/10"
+                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#9eff1a]/10"
                   >
                     View All Screen Printing →
                   </Link>
@@ -449,7 +449,7 @@ export default function Navbar() {
                       key={item.sub}
                       href={`/screen-printing?sub=${item.sub}`}
                       onClick={closeMobileMenu}
-                      className="block px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-300 hover:bg-card hover:text-white"
+                      className="block px-3 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-card hover:text-foreground"
                     >
                       {item.label}
                     </Link>
@@ -459,10 +459,10 @@ export default function Navbar() {
             </div>
 
             {/* 4. DTF Printing */}
-            <div className="rounded-xl bg-card/50 border border-zinc-850 overflow-hidden">
+            <div className="rounded-xl bg-card/50 border border-border overflow-hidden">
               <div
                 onClick={() => toggleMobileSub('dtf')}
-                className="flex items-center justify-between px-4 py-3 cursor-pointer text-sm font-bold text-zinc-100"
+                className="flex items-center justify-between px-4 py-3 cursor-pointer text-sm font-bold text-foreground"
               >
                 <div className="flex items-center gap-2">
                   <Layers size={16} className="text-primary" />
@@ -470,18 +470,18 @@ export default function Navbar() {
                 </div>
                 <ChevronDown
                   size={16}
-                  className={`text-zinc-400 transition-transform duration-200 ${
+                  className={`text-muted-foreground transition-transform duration-200 ${
                     mobileSubOpen === 'dtf' ? 'rotate-180' : ''
                   }`}
                 />
               </div>
 
               {mobileSubOpen === 'dtf' && (
-                <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-zinc-850/50">
+                <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-border/50">
                   <Link
                     href="/dtf-printing"
                     onClick={closeMobileMenu}
-                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-violet-500/10"
+                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#9eff1a]/10"
                   >
                     View All DTF Printing →
                   </Link>
@@ -494,7 +494,7 @@ export default function Navbar() {
                       key={item.sub}
                       href={`/dtf-printing?sub=${item.sub}`}
                       onClick={closeMobileMenu}
-                      className="block px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-300 hover:bg-card hover:text-white"
+                      className="block px-3 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-card hover:text-foreground"
                     >
                       {item.label}
                     </Link>
@@ -504,10 +504,10 @@ export default function Navbar() {
             </div>
 
             {/* 5. Batik Stamp */}
-            <div className="rounded-xl bg-card/50 border border-zinc-850 overflow-hidden">
+            <div className="rounded-xl bg-card/50 border border-border overflow-hidden">
               <div
                 onClick={() => toggleMobileSub('batik')}
-                className="flex items-center justify-between px-4 py-3 cursor-pointer text-sm font-bold text-zinc-100"
+                className="flex items-center justify-between px-4 py-3 cursor-pointer text-sm font-bold text-foreground"
               >
                 <div className="flex items-center gap-2">
                   <Stamp size={16} className="text-primary" />
@@ -515,18 +515,18 @@ export default function Navbar() {
                 </div>
                 <ChevronDown
                   size={16}
-                  className={`text-zinc-400 transition-transform duration-200 ${
+                  className={`text-muted-foreground transition-transform duration-200 ${
                     mobileSubOpen === 'batik' ? 'rotate-180' : ''
                   }`}
                 />
               </div>
 
               {mobileSubOpen === 'batik' && (
-                <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-zinc-850/50">
+                <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-border/50">
                   <Link
                     href="/batik-stamp"
                     onClick={closeMobileMenu}
-                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-violet-500/10"
+                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#9eff1a]/10"
                   >
                     View All Batik Stamps →
                   </Link>
@@ -535,10 +535,10 @@ export default function Navbar() {
             </div>
 
             {/* 6. Laser Cutting */}
-            <div className="rounded-xl bg-card/50 border border-zinc-850 overflow-hidden">
+            <div className="rounded-xl bg-card/50 border border-border overflow-hidden">
               <div
                 onClick={() => toggleMobileSub('laser')}
-                className="flex items-center justify-between px-4 py-3 cursor-pointer text-sm font-bold text-zinc-100"
+                className="flex items-center justify-between px-4 py-3 cursor-pointer text-sm font-bold text-foreground"
               >
                 <div className="flex items-center gap-2">
                   <Scissors size={16} className="text-primary" />
@@ -546,18 +546,18 @@ export default function Navbar() {
                 </div>
                 <ChevronDown
                   size={16}
-                  className={`text-zinc-400 transition-transform duration-200 ${
+                  className={`text-muted-foreground transition-transform duration-200 ${
                     mobileSubOpen === 'laser' ? 'rotate-180' : ''
                   }`}
                 />
               </div>
 
               {mobileSubOpen === 'laser' && (
-                <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-zinc-850/50">
+                <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-border/50">
                   <Link
                     href="/laser-cutting"
                     onClick={closeMobileMenu}
-                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-violet-500/10"
+                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#9eff1a]/10"
                   >
                     View All Laser Cutting →
                   </Link>
@@ -570,7 +570,7 @@ export default function Navbar() {
                       key={item.sub}
                       href={`/laser-cutting?sub=${item.sub}`}
                       onClick={closeMobileMenu}
-                      className="block px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-300 hover:bg-card hover:text-white"
+                      className="block px-3 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-card hover:text-foreground"
                     >
                       {item.label}
                     </Link>
@@ -580,10 +580,10 @@ export default function Navbar() {
             </div>
 
             {/* Toolkit Accordion */}
-            <div className="rounded-xl bg-card/50 border border-zinc-850 overflow-hidden">
+            <div className="rounded-xl bg-card/50 border border-border overflow-hidden">
               <div
                 onClick={() => toggleMobileSub('toolkit')}
-                className="flex items-center justify-between px-4 py-3 cursor-pointer text-sm font-bold text-zinc-100"
+                className="flex items-center justify-between px-4 py-3 cursor-pointer text-sm font-bold text-foreground"
               >
                 <div className="flex items-center gap-2">
                   <Sparkles size={16} className="text-primary" />
@@ -591,32 +591,32 @@ export default function Navbar() {
                 </div>
                 <ChevronDown
                   size={16}
-                  className={`text-zinc-400 transition-transform duration-200 ${
+                  className={`text-muted-foreground transition-transform duration-200 ${
                     mobileSubOpen === 'toolkit' ? 'rotate-180' : ''
                   }`}
                 />
               </div>
 
               {mobileSubOpen === 'toolkit' && (
-                <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-zinc-850/50">
+                <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-border/50">
                   <Link
                     href="/3d-customizer"
                     onClick={closeMobileMenu}
-                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-fuchsia-300 hover:bg-card hover:text-white"
+                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-[#9eff1a] hover:bg-card hover:text-foreground"
                   >
                     Mockup Studio
                   </Link>
                   <Link
                     href="/canvas"
                     onClick={closeMobileMenu}
-                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-violet-300 hover:bg-card hover:text-white"
+                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-[#9eff1a] hover:bg-card hover:text-foreground"
                   >
                     Canvas Builder
                   </Link>
                   <Link
                     href="/size-guide"
                     onClick={closeMobileMenu}
-                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-300 hover:bg-card hover:text-white"
+                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-300 hover:bg-card hover:text-foreground"
                   >
                     Size Guide
                   </Link>
@@ -628,33 +628,33 @@ export default function Navbar() {
             <Link
               href="/downloads"
               onClick={closeMobileMenu}
-              className="flex items-center justify-between px-4 py-3 rounded-xl bg-card/50 hover:bg-card border border-zinc-850 text-sm font-bold text-zinc-100"
+              className="flex items-center justify-between px-4 py-3 rounded-xl bg-card/50 hover:bg-card border border-border text-sm font-bold text-foreground"
             >
               <div className="flex items-center gap-2">
                 <Download size={16} className="text-primary" />
                 <span>Digital downloads</span>
               </div>
-              <ChevronRight size={16} className="text-zinc-500" />
+              <ChevronRight size={16} className="text-muted-foreground" />
             </Link>
 
             {/* 6. Materials / Consumables */}
             <Link
               href="/materials"
               onClick={closeMobileMenu}
-              className="flex items-center justify-between px-4 py-3 rounded-xl bg-card/50 hover:bg-card border border-zinc-850 text-sm font-bold text-zinc-100"
+              className="flex items-center justify-between px-4 py-3 rounded-xl bg-card/50 hover:bg-card border border-border text-sm font-bold text-foreground"
             >
               <div className="flex items-center gap-2">
                 <PackageCheck size={16} className="text-primary" />
                 <span>Materials / Consumables</span>
               </div>
-              <ChevronRight size={16} className="text-zinc-500" />
+              <ChevronRight size={16} className="text-muted-foreground" />
             </Link>
 
             {/* User Auth Footer in Mobile Menu */}
             {user && (
               <div className="pt-4 border-t border-border mt-4">
                 <div className="flex items-center justify-between bg-card p-3 rounded-xl border border-border">
-                  <Link href="/profile" onClick={closeMobileMenu} className="flex items-center space-x-2 text-sm font-medium text-zinc-200">
+                  <Link href="/profile" onClick={closeMobileMenu} className="flex items-center space-x-2 text-sm font-medium text-foreground">
                     <User size={18} className="text-primary" />
                     <span className="max-w-[150px] truncate">
                       {profile?.full_name || user.email}

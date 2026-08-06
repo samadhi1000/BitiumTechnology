@@ -126,18 +126,18 @@ export default function AdminDownloadsPage() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-zinc-950 text-white selection:bg-[#116466]/40 selection:text-[#D1E8E2] pb-24">
+    <div className="w-full min-h-screen bg-background text-[#0a0a0a] selection:bg-[#8DFF00]/40 selection:text-[#0a0a0a] pb-24">
       
       {/* Header */}
-      <section className="relative py-14 border-b border-zinc-900 overflow-hidden bg-zinc-950">
+      <section className="relative py-14 border-b border-border overflow-hidden bg-background">
         <div className="max-w-4xl mx-auto px-4 text-center space-y-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-violet-600/10 border border-violet-500/20 text-[#FFCB9A] text-[10px] font-bold uppercase tracking-wider">
+          <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#8DFF00]/10 border border-[#8DFF00]/20 text-[#FFCB9A] text-[10px] font-bold uppercase tracking-wider">
             Admin Console
           </span>
           <h1 className="text-2xl sm:text-4xl font-black uppercase">
             Upload & <span className="outline-text">Watermark</span> Artwork
           </h1>
-          <p className="text-xs text-zinc-400 max-w-xl mx-auto">
+          <p className="text-xs text-muted-foreground max-w-xl mx-auto">
             Configure new designs. Selected preview images automatically overlay client-side watermarks before uploading. Original raw ZIP files are stored in a locked private storage.
           </p>
         </div>
@@ -147,7 +147,7 @@ export default function AdminDownloadsPage() {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           
           {/* Left Form (3 Columns) */}
-          <form onSubmit={handleUploadSubmit} className="md:col-span-3 space-y-5 bg-zinc-900 border border-zinc-850 p-6 rounded-3xl glass">
+          <form onSubmit={handleUploadSubmit} className="md:col-span-3 space-y-5 bg-card border border-border p-6 rounded-3xl glass">
             
             {success && (
               <div className="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs font-bold flex items-center gap-2 animate-fade-in">
@@ -157,48 +157,48 @@ export default function AdminDownloadsPage() {
             )}
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Artwork Title</label>
+              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Artwork Title</label>
               <input
                 type="text"
                 required
                 placeholder="e.g. Royal Peacock Traditional Batik"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-xs text-white focus:outline-none focus:border-violet-500 transition-colors"
+                className="w-full px-4 py-3 rounded-xl border border-border bg-background text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Artwork Description</label>
+              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Artwork Description</label>
               <textarea
                 required
                 placeholder="Write a clear, detailed description explaining what elements are in this design..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
-                className="w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-xs text-white focus:outline-none focus:border-violet-500 transition-colors resize-none"
+                className="w-full px-4 py-3 rounded-xl border border-border bg-background text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors resize-none"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Price (LKR / Rs.)</label>
+                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Price (LKR / Rs.)</label>
                 <input
                   type="number"
                   required
                   placeholder="e.g. 1200"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-xs text-white focus:outline-none focus:border-violet-500 transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Category</label>
+                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Category</label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-xs text-white focus:outline-none focus:border-violet-500 transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
                 >
                   <option value="batik">Traditional Batik</option>
                   <option value="vector">Vector Art</option>
@@ -210,55 +210,55 @@ export default function AdminDownloadsPage() {
 
             <div className="grid grid-cols-3 gap-4">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">File Format</label>
+                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">File Format</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. ZIP (SVG/PNG)"
                   value={fileFormat}
                   onChange={(e) => setFileFormat(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-xs text-white focus:outline-none focus:border-violet-500 transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">File Size</label>
+                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">File Size</label>
                 <input
                   type="text"
                   placeholder="e.g. 24 MB"
                   value={fileSize}
                   onChange={(e) => setFileSize(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-xs text-white focus:outline-none focus:border-violet-500 transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Resolution</label>
+                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Resolution</label>
                 <input
                   type="text"
                   placeholder="e.g. 5000x3500px"
                   value={resolution}
                   onChange={(e) => setResolution(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-xs text-white focus:outline-none focus:border-violet-500 transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Tags (comma separated)</label>
+              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Tags (comma separated)</label>
               <input
                 type="text"
                 placeholder="peacock, traditional, vector, blue"
                 value={tags}
                 onChange={(e) => setTags(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-xs text-white focus:outline-none focus:border-violet-500 transition-colors"
+                className="w-full px-4 py-3 rounded-xl border border-border bg-background text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
               />
             </div>
 
             <button
               type="submit"
               disabled={uploading || generatingWatermark}
-              className="w-full py-4 rounded-xl bg-[#116466] hover:bg-[#157a7c] disabled:opacity-50 text-[#D1E8E2] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 border border-[#0d4e50] shadow-md shadow-[#116466]/10"
+              className="w-full py-4 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] disabled:opacity-50 text-[#0a0a0a] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 border border-[#7acc00] shadow-md shadow-[#8DFF00]/10"
             >
               {uploading ? (
                 <>
@@ -279,15 +279,15 @@ export default function AdminDownloadsPage() {
           <div className="md:col-span-2 space-y-6">
             
             {/* File Inputs Card */}
-            <div className="p-5 rounded-3xl border border-zinc-850 bg-zinc-900 glass space-y-4">
-              <h3 className="text-xs font-black uppercase tracking-wider border-b border-zinc-850 pb-2">File Attachments</h3>
+            <div className="p-5 rounded-3xl border border-border bg-card glass space-y-4">
+              <h3 className="text-xs font-black uppercase tracking-wider border-b border-border pb-2">File Attachments</h3>
               
               {/* Preview Image Selector */}
               <div className="space-y-2">
-                <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">1. Preview Thumbnail Image</label>
-                <label className="flex flex-col items-center justify-center p-4 border border-dashed border-zinc-800 hover:border-violet-500/50 rounded-xl cursor-pointer hover:bg-zinc-950/40 transition-colors">
-                  <ImageIcon className="text-zinc-500 mb-1" size={20} />
-                  <span className="text-[11px] font-semibold text-zinc-400">
+                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">1. Preview Thumbnail Image</label>
+                <label className="flex flex-col items-center justify-center p-4 border border-dashed border-border hover:border-[#8DFF00]/50 rounded-xl cursor-pointer hover:bg-background/40 transition-colors">
+                  <ImageIcon className="text-muted-foreground mb-1" size={20} />
+                  <span className="text-[11px] font-semibold text-muted-foreground">
                     {previewFile ? previewFile.name : 'Select JPG/PNG Preview'}
                   </span>
                   <input type="file" accept="image/*" className="hidden" onChange={handlePreviewFileChange} />
@@ -296,10 +296,10 @@ export default function AdminDownloadsPage() {
 
               {/* High-Res File Package Selector */}
               <div className="space-y-2">
-                <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">2. High-Resolution File (ZIP/Vector)</label>
-                <label className="flex flex-col items-center justify-center p-4 border border-dashed border-zinc-800 hover:border-violet-500/50 rounded-xl cursor-pointer hover:bg-zinc-950/40 transition-colors">
-                  <FileText className="text-zinc-500 mb-1" size={20} />
-                  <span className="text-[11px] font-semibold text-zinc-400">
+                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">2. High-Resolution File (ZIP/Vector)</label>
+                <label className="flex flex-col items-center justify-center p-4 border border-dashed border-border hover:border-[#8DFF00]/50 rounded-xl cursor-pointer hover:bg-background/40 transition-colors">
+                  <FileText className="text-muted-foreground mb-1" size={20} />
+                  <span className="text-[11px] font-semibold text-muted-foreground">
                     {highResFile ? highResFile.name : 'Select original ZIP package'}
                   </span>
                   <input type="file" className="hidden" onChange={(e) => setHighResFile(e.target.files?.[0] || null)} />
@@ -308,15 +308,15 @@ export default function AdminDownloadsPage() {
             </div>
 
             {/* Live Watermarked Preview render box */}
-            <div className="p-5 rounded-3xl border border-zinc-850 bg-zinc-900 glass space-y-4">
-              <h3 className="text-xs font-black uppercase tracking-wider border-b border-zinc-850 pb-2 flex items-center gap-1.5">
+            <div className="p-5 rounded-3xl border border-border bg-card glass space-y-4">
+              <h3 className="text-xs font-black uppercase tracking-wider border-b border-border pb-2 flex items-center gap-1.5">
                 <ShieldAlert size={14} className="text-[#FFCB9A]" />
                 Watermark Output
               </h3>
               
-              <div className="aspect-[4/3] rounded-2xl border border-zinc-850 bg-zinc-950 flex items-center justify-center relative overflow-hidden select-none">
+              <div className="aspect-[4/3] rounded-2xl border border-border bg-background flex items-center justify-center relative overflow-hidden select-none">
                 {generatingWatermark ? (
-                  <Loader2 className="animate-spin text-[#116466]" size={24} />
+                  <Loader2 className="animate-spin text-[#8DFF00]" size={24} />
                 ) : watermarkedPreviewUrl ? (
                   <img src={watermarkedPreviewUrl} alt="Watermark Render" className="object-cover w-full h-full" />
                 ) : (

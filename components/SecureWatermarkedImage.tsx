@@ -96,7 +96,7 @@ export default function SecureWatermarkedImage({
     };
 
     img.onerror = (e) => {
-      console.error('Failed to load secure preview image:', e);
+      console.warn('Failed to load secure preview image, fallback UI displayed.');
       if (active) {
         setError(true);
         setLoading(false);
@@ -122,7 +122,7 @@ export default function SecureWatermarkedImage({
     <div
       ref={containerRef}
       onContextMenu={preventTheft}
-      className={`relative w-full overflow-hidden bg-zinc-950 rounded-2xl select-none ${aspectClass} ${className}`}
+      className={`relative w-full overflow-hidden bg-background rounded-2xl select-none ${aspectClass} ${className}`}
     >
       {/* 1. Actual canvas executing watermarked draw */}
       <canvas
@@ -148,18 +148,18 @@ export default function SecureWatermarkedImage({
 
       {/* 3. Loader state */}
       {loading && (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-zinc-950 text-zinc-400">
-          <Loader2 className="animate-spin text-[#116466]" size={28} />
-          <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Securing Preview...</span>
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-background text-muted-foreground">
+          <Loader2 className="animate-spin text-[#8DFF00]" size={28} />
+          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Securing Preview...</span>
         </div>
       )}
 
       {/* 4. Error state */}
       {error && (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-zinc-950 p-4 text-center text-zinc-500">
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-background p-4 text-center text-muted-foreground">
           <ShieldAlert size={28} className="text-red-500/60 animate-pulse" />
-          <span className="text-xs font-bold text-zinc-400">Preview Security Locked</span>
-          <span className="text-[10px] leading-relaxed text-zinc-500 max-w-[200px]">
+          <span className="text-xs font-bold text-muted-foreground">Preview Security Locked</span>
+          <span className="text-[10px] leading-relaxed text-muted-foreground max-w-[200px]">
             Please check connection or refresh to view asset safely.
           </span>
         </div>

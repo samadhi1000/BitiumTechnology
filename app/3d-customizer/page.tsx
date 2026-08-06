@@ -463,7 +463,7 @@ export default function DynamicMockupCustomizer() {
     <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8">
       {/* LEFT COLUMN: Controls */}
       <div className="w-full lg:w-80 flex flex-col gap-6">
-        <Link href="/" className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-sm font-semibold mb-2">
+        <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-semibold mb-2">
           <ArrowLeft size={16} /> Back to Home
         </Link>
 
@@ -505,10 +505,10 @@ export default function DynamicMockupCustomizer() {
       <div className="flex-1 flex flex-col gap-6">
         {/* Title bar */}
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-bold text-zinc-300 uppercase tracking-widest flex items-center gap-2">
-            <Eye size={15} className="text-violet-400" /> Interactive Mockup Studio
+          <h2 className="text-sm font-bold text-foreground uppercase tracking-widest flex items-center gap-2">
+            <Eye size={15} className="text-[#8DFF00]" /> Interactive Mockup Studio
           </h2>
-          <span className="text-xs text-zinc-500 font-medium">Both canvases update color in sync</span>
+          <span className="text-xs text-muted-foreground font-medium">Both canvases update color in sync</span>
         </div>
 
         {/* Dual canvas grid */}
@@ -517,15 +517,15 @@ export default function DynamicMockupCustomizer() {
           {/* FRONT CANVAS */}
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-violet-500 animate-pulse" />
-              <span className="text-xs font-bold text-zinc-300 uppercase tracking-widest">Front View</span>
+              <span className="w-2 h-2 rounded-full bg-[#9eff1a] animate-pulse" />
+              <span className="text-xs font-bold text-foreground uppercase tracking-widest">Front View</span>
             </div>
-            <div className="relative rounded-3xl overflow-hidden border border-zinc-800 bg-gradient-to-br from-zinc-900 to-zinc-950 shadow-2xl flex items-center justify-center p-4 min-h-[500px]">
-              <div className="relative bg-transparent rounded-2xl overflow-hidden border border-zinc-800/20 shadow-lg">
+            <div className="relative rounded-3xl overflow-hidden border border-border bg-gradient-to-br from-zinc-900 to-zinc-950 shadow-2xl flex items-center justify-center p-4 min-h-[500px]">
+              <div className="relative bg-transparent rounded-2xl overflow-hidden border border-border/20 shadow-lg">
                 <canvas ref={canvasRef} id="apparel-canvas" className="z-10" />
               </div>
               <div className="absolute bottom-3 left-0 right-0 text-center pointer-events-none">
-                <p className="text-[10px] text-zinc-500 font-bold">
+                <p className="text-[10px] text-muted-foreground font-bold">
                   {logoImage ? 'Drag · Resize · Rotate the logo on the T-shirt' : 'Use Front View upload to add a chest graphic'}
                 </p>
               </div>
@@ -535,15 +535,15 @@ export default function DynamicMockupCustomizer() {
           {/* BACK CANVAS */}
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-fuchsia-500" />
-              <span className="text-xs font-bold text-zinc-300 uppercase tracking-widest">Back View</span>
+              <span className="w-2 h-2 rounded-full bg-[#9eff1a]" />
+              <span className="text-xs font-bold text-foreground uppercase tracking-widest">Back View</span>
             </div>
-            <div className="relative rounded-3xl overflow-hidden border border-zinc-800 bg-gradient-to-br from-zinc-900 to-zinc-950 shadow-2xl flex items-center justify-center p-4 min-h-[500px]">
-              <div className="relative bg-transparent rounded-2xl overflow-hidden border border-zinc-800/20 shadow-lg">
+            <div className="relative rounded-3xl overflow-hidden border border-border bg-gradient-to-br from-zinc-900 to-zinc-950 shadow-2xl flex items-center justify-center p-4 min-h-[500px]">
+              <div className="relative bg-transparent rounded-2xl overflow-hidden border border-border/20 shadow-lg">
                 <canvas ref={backCanvasRef} id="apparel-canvas-back" className="z-10" />
               </div>
               <div className="absolute bottom-3 left-0 right-0 text-center pointer-events-none">
-                <p className="text-[10px] text-zinc-500 font-bold">
+                <p className="text-[10px] text-muted-foreground font-bold">
                   {backLogoImage ? 'Drag · Resize · Rotate the back graphic' : 'Use Back View upload to add a back print'}
                 </p>
               </div>
@@ -556,7 +556,7 @@ export default function DynamicMockupCustomizer() {
           <button
             onClick={handleAddToCart}
             disabled={isUploading}
-            className="w-full py-4 rounded-xl bg-violet-600 hover:bg-violet-500 disabled:opacity-60 disabled:cursor-not-allowed font-bold text-sm text-white flex items-center justify-center gap-2 transition-all glow-primary shadow-lg shadow-violet-600/20"
+            className="w-full py-4 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] disabled:opacity-60 disabled:cursor-not-allowed font-bold text-sm text-[#0a0a0a] flex items-center justify-center gap-2 transition-all glow-primary shadow-lg shadow-[#8DFF00]/20"
           >
             {isUploading ? (
               <>

@@ -11,11 +11,11 @@ export default function CatalogPagination({ currentPage, totalPages, onPageChang
   if (totalPages <= 1) return null;
 
   return (
-    <div className="flex items-center justify-center gap-2 mt-12 pt-8 border-t border-zinc-900">
+    <div className="flex items-center justify-center gap-2 mt-12 pt-8 border-t border-border">
       <button
         onClick={() => onPageChange(Math.max(1, currentPage - 1))}
         disabled={currentPage === 1}
-        className="p-2 rounded-xl border border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:text-white hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        className="p-2 rounded-xl border border-border bg-card/50 text-muted-foreground hover:text-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-all"
         aria-label="Previous page"
       >
         <ChevronLeft size={18} />
@@ -28,8 +28,8 @@ export default function CatalogPagination({ currentPage, totalPages, onPageChang
             onClick={() => onPageChange(page)}
             className={`w-10 h-10 rounded-xl text-sm font-bold transition-all ${
               currentPage === page
-                ? 'bg-[#116466] text-[#D1E8E2] border border-[#116466] shadow-md shadow-[#116466]/20'
-                : 'bg-zinc-900/50 border border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-800'
+                ? 'bg-[#8DFF00] text-[#0a0a0a] border border-[#8DFF00] shadow-md shadow-[#8DFF00]/20'
+                : 'bg-card/50 border border-border text-muted-foreground hover:text-foreground hover:bg-muted'
             }`}
           >
             {page}
@@ -40,7 +40,7 @@ export default function CatalogPagination({ currentPage, totalPages, onPageChang
       <button
         onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
         disabled={currentPage === totalPages}
-        className="p-2 rounded-xl border border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:text-white hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        className="p-2 rounded-xl border border-border bg-card/50 text-muted-foreground hover:text-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-all"
         aria-label="Next page"
       >
         <ChevronRight size={18} />

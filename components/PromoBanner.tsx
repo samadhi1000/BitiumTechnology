@@ -35,14 +35,14 @@ export default function PromoBanner() {
   }, { scope: container });
 
   return (
-    <div ref={container} className="relative w-full bg-zinc-950 overflow-hidden border-b border-zinc-900 flex flex-col">
+    <div ref={container} className="relative w-full bg-background overflow-hidden border-b border-border flex flex-col">
       {/* 1. Announcement Bar at the Top */}
       {showPromo && (
-        <div className="w-full bg-zinc-900 border-b border-zinc-800 text-zinc-300 py-3 px-4 text-xs font-bold text-center flex items-center justify-center gap-2 relative z-20 transition-all duration-300">
+        <div className="w-full bg-card border-b border-border text-foreground py-3 px-4 text-xs font-bold text-center flex items-center justify-center gap-2 relative z-20 transition-all duration-300">
           <span>10% OFF YOUR FIRST GANG SHEET — TODAY ONLY</span>
           <button 
             onClick={() => setShowPromo(false)}
-            className="hover:text-white transition-colors flex items-center justify-center p-0.5 rounded-full hover:bg-zinc-800"
+            className="hover:text-foreground transition-colors flex items-center justify-center p-0.5 rounded-full hover:bg-muted"
             aria-label="Dismiss banner"
           >
             <X size={14} />
@@ -57,10 +57,10 @@ export default function PromoBanner() {
           {/* Left Column: Everyday Premium Text (6 cols) */}
           <div className="lg:col-span-7 space-y-8 flex flex-col items-center lg:items-start text-center lg:text-left">
             <div className="promo-title space-y-1">
-              <h2 className="text-6xl sm:text-[90px] font-black tracking-tighter text-blue-500 uppercase leading-none select-none drop-shadow-[0_4px_12px_rgba(59,130,246,0.35)]">
+              <h2 className="text-6xl sm:text-[90px] font-black tracking-tighter text-[#8DFF00] uppercase leading-none select-none drop-shadow-[0_4px_12px_rgba(141,255,0,0.35)]">
                 10% OFF
               </h2>
-              <h2 className="text-6xl sm:text-[90px] font-black tracking-tighter text-blue-500 uppercase leading-none select-none drop-shadow-[0_4px_12px_rgba(59,130,246,0.35)]">
+              <h2 className="text-6xl sm:text-[90px] font-black tracking-tighter text-[#8DFF00] uppercase leading-none select-none drop-shadow-[0_4px_12px_rgba(141,255,0,0.35)]">
                 TODAY
               </h2>
             </div>
@@ -72,7 +72,7 @@ export default function PromoBanner() {
             <div className="promo-btn">
               <a 
                 href="#catalog"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white font-black text-xs uppercase tracking-widest rounded-full shadow-lg shadow-blue-600/30 hover:shadow-blue-600/60 hover:scale-105 transition-all duration-300"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] font-black text-xs uppercase tracking-widest rounded-full shadow-lg shadow-[#8DFF00]/30 hover:shadow-[#8DFF00]/60 hover:scale-105 transition-all duration-300"
               >
                 <ShoppingCart size={14} />
                 <span>Shop Now</span>
@@ -82,7 +82,7 @@ export default function PromoBanner() {
 
           {/* Right Column: Model Graphic Card (5 cols) */}
           <div className="lg:col-span-5 flex justify-center items-center">
-            <div className="promo-model-img relative w-full max-w-[380px] aspect-[3/4] rounded-3xl overflow-hidden border border-zinc-800 shadow-[0_20px_50px_rgba(0,0,0,0.6)] group">
+            <div className="promo-model-img relative w-full max-w-[380px] aspect-[3/4] rounded-3xl overflow-hidden border border-border shadow-[0_20px_50px_rgba(0,0,0,0.6)] group">
               <Image 
                 src="/images/promo-model.jpg"
                 alt="Premium apparel model"
@@ -92,15 +92,15 @@ export default function PromoBanner() {
               />
               {/* Subtle grid lines matching inkwave style overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent pointer-events-none opacity-80"></div>
-              <div className="absolute inset-0 bg-[radial-gradient(rgba(59,130,246,0.15)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none"></div>
+              <div className="absolute inset-0 bg-[radial-gradient(rgba(141,255,0,0.15)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none"></div>
             </div>
           </div>
 
         </div>
       </div>
 
-      {/* 3. Bottom Accent Banner: WHY CHOOSE PRINTGRID? */}
-      <div className="promo-accent-bar w-full bg-blue-600 py-6 relative z-10 border-t border-blue-500 select-none">
+      {/* 3. Bottom Accent Banner: WHY CHOOSE BITIUM TECHNOLOGY? */}
+      <div className="promo-accent-bar w-full bg-[#8DFF00] py-6 relative z-10 border-t border-[#9eff1a] select-none">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h3 className="text-xl sm:text-3xl font-black text-black tracking-[0.2em] uppercase">
             WHY CHOOSE BITIUM TECHNOLOGY?

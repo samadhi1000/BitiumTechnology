@@ -41,8 +41,8 @@ export default function ProductPage({ params }: ProductPageProps) {
   if (loading) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-violet-500 mx-auto"></div>
-        <p className="text-zinc-500 mt-4 text-sm">Loading product details...</p>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8DFF00] mx-auto"></div>
+        <p className="text-muted-foreground mt-4 text-sm">Loading product details...</p>
       </div>
     );
   }
@@ -51,8 +51,8 @@ export default function ProductPage({ params }: ProductPageProps) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 text-center">
         <h2 className="text-2xl font-bold">Product Not Found</h2>
-        <p className="text-zinc-500 mt-2 text-sm">The product you are looking for does not exist.</p>
-        <Link href="/" className="inline-flex items-center gap-2 text-violet-400 hover:text-violet-300 mt-6 font-semibold">
+        <p className="text-muted-foreground mt-2 text-sm">The product you are looking for does not exist.</p>
+        <Link href="/" className="inline-flex items-center gap-2 text-[#8DFF00] hover:text-[#9eff1a] mt-6 font-semibold">
           <ArrowLeft size={16} /> Back to Home
         </Link>
       </div>
@@ -104,13 +104,13 @@ export default function ProductPage({ params }: ProductPageProps) {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
       {/* Back Button */}
-      <Link href="/" className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors mb-8 text-sm font-semibold">
+      <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8 text-sm font-semibold">
         <ArrowLeft size={16} /> Back to Catalog
       </Link>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         {/* Left Column: Image */}
-        <div className="relative aspect-square rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-900 shadow-2xl">
+        <div className="relative aspect-square rounded-3xl overflow-hidden border border-border bg-card shadow-2xl">
           <Image
             src={product.image_url}
             alt={product.name}
@@ -124,17 +124,17 @@ export default function ProductPage({ params }: ProductPageProps) {
         {/* Right Column: Order Panel */}
         <div className="flex flex-col justify-between">
           <div className="space-y-6">
-            <span className="text-xs text-violet-400 font-bold uppercase tracking-widest bg-violet-600/10 border border-violet-500/20 px-2.5 py-1 rounded-md w-fit">
+            <span className="text-xs text-[#8DFF00] font-bold uppercase tracking-widest bg-[#8DFF00]/10 border border-[#8DFF00]/20 px-2.5 py-1 rounded-md w-fit">
               Premium Blanks
             </span>
             <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">{product.name}</h1>
-            <p className="text-2xl font-bold text-violet-400">Rs. {currentPrice.toLocaleString()}</p>
-            <p className="text-zinc-400 text-sm leading-relaxed">{product.description}</p>
+            <p className="text-2xl font-bold text-[#8DFF00]">Rs. {currentPrice.toLocaleString()}</p>
+            <p className="text-muted-foreground text-sm leading-relaxed">{product.description}</p>
 
             {/* Sizes */}
             {sizes.length > 0 && (
               <div className="space-y-2">
-                <span className="text-sm font-semibold text-zinc-300">Select Size:</span>
+                <span className="text-sm font-semibold text-foreground">Select Size:</span>
                 <div className="flex gap-2">
                   {sizes.map((sz) => {
                     const isAvailable = product.variants?.some(
@@ -148,10 +148,10 @@ export default function ProductPage({ params }: ProductPageProps) {
                         onClick={() => handleSelectAttribute(sz as string, selectedVariant?.attributes.color || (colors[0] as string))}
                         className={`min-w-12 h-12 flex items-center justify-center rounded-xl border text-sm font-bold transition-all ${
                           isSelected
-                            ? 'bg-violet-600 border-violet-500 text-white'
+                            ? 'bg-[#8DFF00] border-[#8DFF00] text-[#0a0a0a]'
                             : isAvailable
-                            ? 'border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800 text-zinc-300 hover:text-white'
-                            : 'border-zinc-900 bg-zinc-950/20 text-zinc-600 cursor-not-allowed'
+                            ? 'border-border bg-card/50 hover:bg-muted text-[#0a0a0a] hover:text-[#0a0a0a]'
+                            : 'border-border bg-background/20 text-zinc-600 cursor-not-allowed'
                         }`}
                       >
                         {sz as string}
@@ -165,7 +165,7 @@ export default function ProductPage({ params }: ProductPageProps) {
             {/* Colors */}
             {colors.length > 0 && (
               <div className="space-y-2">
-                <span className="text-sm font-semibold text-zinc-300">Select Color:</span>
+                <span className="text-sm font-semibold text-foreground">Select Color:</span>
                 <div className="flex gap-2">
                   {colors.map((col) => {
                     const isAvailable = product.variants?.some(
@@ -179,10 +179,10 @@ export default function ProductPage({ params }: ProductPageProps) {
                         onClick={() => handleSelectAttribute(selectedVariant?.attributes.size || (sizes[0] as string), col as string)}
                         className={`px-4 h-12 flex items-center justify-center rounded-xl border text-xs sm:text-sm font-bold transition-all ${
                           isSelected
-                            ? 'bg-violet-600 border-violet-500 text-white'
+                            ? 'bg-[#8DFF00] border-[#8DFF00] text-[#0a0a0a]'
                             : isAvailable
-                            ? 'border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800 text-zinc-300 hover:text-white'
-                            : 'border-zinc-900 bg-zinc-950/20 text-zinc-600 cursor-not-allowed'
+                            ? 'border-border bg-card/50 hover:bg-muted text-[#0a0a0a] hover:text-[#0a0a0a]'
+                            : 'border-border bg-background/20 text-zinc-600 cursor-not-allowed'
                         }`}
                       >
                         {col as string}
@@ -195,18 +195,18 @@ export default function ProductPage({ params }: ProductPageProps) {
 
             {/* Quantity */}
             <div className="space-y-2">
-              <span className="text-sm font-semibold text-zinc-300">Quantity:</span>
-              <div className="flex items-center space-x-3 bg-zinc-900 border border-zinc-800 rounded-xl w-fit p-1">
+              <span className="text-sm font-semibold text-foreground">Quantity:</span>
+              <div className="flex items-center space-x-3 bg-card border border-border rounded-xl w-fit p-1">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-zinc-800 font-bold transition-colors"
+                  className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-muted font-bold transition-colors"
                 >
                   -
                 </button>
                 <span className="w-12 text-center font-bold text-sm">{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-zinc-800 font-bold transition-colors"
+                  className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-muted font-bold transition-colors"
                 >
                   +
                 </button>
@@ -214,13 +214,13 @@ export default function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
 
-          <div className="mt-8 pt-8 border-t border-zinc-900">
+          <div className="mt-8 pt-8 border-t border-border">
             <button
               onClick={handleAddToCart}
               className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all ${
                 added
-                  ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
-                  : 'bg-violet-600 hover:bg-violet-500 text-white glow-primary'
+                  ? 'bg-emerald-600 hover:bg-emerald-500 text-[#0a0a0a]'
+                  : 'bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] glow-primary'
               }`}
             >
               {added ? (

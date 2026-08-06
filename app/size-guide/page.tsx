@@ -78,10 +78,10 @@ export default function SizeGuidePage() {
   const currentSpec = SIZE_SPECS[selectedSize];
 
   return (
-    <div className="w-full min-h-screen bg-zinc-950 text-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="w-full min-h-screen bg-background text-foreground py-16 sm:py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Ambient background glows */}
-      <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-violet-600/10 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-1/4 left-1/4 w-[350px] h-[350px] bg-fuchsia-600/5 rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-[#8DFF00]/10 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute bottom-1/4 left-1/4 w-[350px] h-[350px] bg-[#8DFF00]/5 rounded-full blur-[100px] pointer-events-none"></div>
 
       {/* Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.005)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.005)_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none"></div>
@@ -90,14 +90,14 @@ export default function SizeGuidePage() {
         
         {/* Header Block */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-300 text-xs font-semibold">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#9eff1a]/10 border border-[#8DFF00]/30 text-[#9eff1a] text-xs font-semibold">
             <Ruler size={12} className="animate-pulse" />
             <span>Interactive Fit Assistant</span>
           </div>
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight">
-            T-Shirt <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-violet-400 bg-clip-text text-transparent">Size & Fit Guide</span>
+            T-Shirt <span className="text-[#8DFF00]">Size & Fit Guide</span>
           </h1>
-          <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">
+          <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
             Find your perfect fit. Toggle between units, view dimensions on our interactive model, or use the Fit Calculator for an instant recommendation.
           </p>
         </div>
@@ -106,24 +106,24 @@ export default function SizeGuidePage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* LEFT PANEL: Interactive Blueprint (5 cols) */}
-          <div className="lg:col-span-5 rounded-3xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-md p-6 sm:p-8 space-y-8 shadow-2xl">
+          <div className="lg:col-span-5 rounded-3xl border border-border bg-card/30 backdrop-blur-md p-6 sm:p-8 space-y-8 shadow-2xl">
             <div>
-              <h2 className="text-xl font-extrabold text-white flex items-center gap-2">
-                <Activity size={18} className="text-violet-400" />
+              <h2 className="text-xl font-extrabold text-foreground flex items-center gap-2">
+                <Activity size={18} className="text-[#8DFF00]" />
                 Interactive Blueprint
               </h2>
-              <p className="text-zinc-500 text-xs mt-1">Hover parts of the diagram or blueprint rows to inspect specs</p>
+              <p className="text-muted-foreground text-xs mt-1">Hover parts of the diagram or blueprint rows to inspect specs</p>
             </div>
 
             {/* SVG Interactive Blueprint Area */}
-            <div className="relative aspect-[4/3] w-full rounded-2xl bg-zinc-950/60 border border-zinc-850 p-6 flex justify-center items-center overflow-hidden">
+            <div className="relative aspect-[4/3] w-full rounded-2xl bg-background/60 border border-border p-6 flex justify-center items-center overflow-hidden">
               {/* Grid backdrop */}
               <div className="absolute inset-0 bg-[radial-gradient(rgba(139,92,246,0.05)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none"></div>
               
               <div className="flex justify-center items-center gap-8 w-full max-w-[380px]">
                 {/* FRONT VIEW */}
                 <div className="relative flex-1 flex flex-col items-center">
-                  <span className="text-[10px] font-extrabold text-zinc-500 tracking-wider mb-2">FRONT</span>
+                  <span className="text-[10px] font-extrabold text-muted-foreground tracking-wider mb-2">FRONT</span>
                   <svg viewBox="0 0 100 100" className="w-full h-auto fill-zinc-800/40 stroke-zinc-700 transition-all duration-300" strokeWidth="1">
                     {/* Shirt Front Path */}
                     <path d="M 30,12 C 40,20 60,20 70,12 L 88,26 L 80,38 L 74,35 L 74,88 L 26,88 L 26,35 L 20,38 L 12,26 Z" />
@@ -162,7 +162,7 @@ export default function SizeGuidePage() {
 
                 {/* BACK VIEW */}
                 <div className="relative flex-1 flex flex-col items-center">
-                  <span className="text-[10px] font-extrabold text-zinc-500 tracking-wider mb-2">BACK</span>
+                  <span className="text-[10px] font-extrabold text-muted-foreground tracking-wider mb-2">BACK</span>
                   <svg viewBox="0 0 100 100" className="w-full h-auto fill-zinc-800/40 stroke-zinc-700 transition-all duration-300" strokeWidth="1">
                     {/* Shirt Back Path */}
                     <path d="M 30,12 C 40,16 60,16 70,12 L 88,26 L 80,38 L 74,35 L 74,88 L 26,88 L 26,35 L 20,38 L 12,26 Z" />
@@ -187,8 +187,8 @@ export default function SizeGuidePage() {
             </div>
 
             {/* Spec readout card */}
-            <div className="rounded-2xl border border-zinc-850 bg-zinc-950/80 p-5 space-y-4">
-              <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block">Selected Dimension Spec</span>
+            <div className="rounded-2xl border border-border bg-background/80 p-5 space-y-4">
+              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block">Selected Dimension Spec</span>
               
               <div className="space-y-3">
                 {/* Chest readout */}
@@ -198,10 +198,10 @@ export default function SizeGuidePage() {
                   className={`flex justify-between items-center p-2.5 rounded-xl border transition-all duration-300 ${
                     hoveredDim === 'chest' 
                       ? 'border-rose-500/40 bg-rose-500/5' 
-                      : 'border-zinc-850 hover:border-zinc-800'
+                      : 'border-border hover:border-border'
                   }`}
                 >
-                  <span className="text-xs font-bold flex items-center gap-2 text-zinc-300">
+                  <span className="text-xs font-bold flex items-center gap-2 text-foreground">
                     <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]"></span>
                     Chest (Width)
                   </span>
@@ -215,10 +215,10 @@ export default function SizeGuidePage() {
                   className={`flex justify-between items-center p-2.5 rounded-xl border transition-all duration-300 ${
                     hoveredDim === 'length' 
                       ? 'border-emerald-500/40 bg-emerald-500/5' 
-                      : 'border-zinc-850 hover:border-zinc-800'
+                      : 'border-border hover:border-border'
                   }`}
                 >
-                  <span className="text-xs font-bold flex items-center gap-2 text-zinc-300">
+                  <span className="text-xs font-bold flex items-center gap-2 text-foreground">
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
                     Back Length
                   </span>
@@ -232,10 +232,10 @@ export default function SizeGuidePage() {
                   className={`flex justify-between items-center p-2.5 rounded-xl border transition-all duration-300 ${
                     hoveredDim === 'shoulder' 
                       ? 'border-sky-500/40 bg-sky-500/5' 
-                      : 'border-zinc-850 hover:border-zinc-800'
+                      : 'border-border hover:border-border'
                   }`}
                 >
-                  <span className="text-xs font-bold flex items-center gap-2 text-zinc-300">
+                  <span className="text-xs font-bold flex items-center gap-2 text-foreground">
                     <span className="w-2.5 h-2.5 rounded-full bg-sky-500 shadow-[0_0_8px_rgba(14,165,233,0.5)]"></span>
                     Shoulder Width
                   </span>
@@ -250,19 +250,19 @@ export default function SizeGuidePage() {
           <div className="lg:col-span-7 space-y-8">
             
             {/* INTERACTIVE SIZE MATRIX CARD */}
-            <div className="rounded-3xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-md p-6 sm:p-8 space-y-6 shadow-2xl">
+            <div className="rounded-3xl border border-border bg-card/30 backdrop-blur-md p-6 sm:p-8 space-y-6 shadow-2xl">
               <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                 <div>
-                  <h2 className="text-xl font-extrabold text-white">Interactive Size Matrix</h2>
-                  <p className="text-zinc-500 text-xs mt-1">Select a size column or toggle measurement units</p>
+                  <h2 className="text-xl font-extrabold text-foreground">Interactive Size Matrix</h2>
+                  <p className="text-muted-foreground text-xs mt-1">Select a size column or toggle measurement units</p>
                 </div>
 
                 {/* Unit Switcher */}
-                <div className="flex p-1 rounded-xl bg-zinc-950 border border-zinc-850 self-start">
+                <div className="flex p-1 rounded-xl bg-background border border-border self-start">
                   <button
                     onClick={() => setUnit('inches')}
                     className={`px-3 py-1.5 rounded-lg text-[10px] font-bold tracking-wider uppercase transition-all ${
-                      unit === 'inches' ? 'bg-violet-600 text-white' : 'text-zinc-400 hover:text-white'
+                      unit === 'inches' ? 'bg-[#8DFF00] text-[#0a0a0a]' : 'text-muted-foreground hover:text-[#0a0a0a]'
                     }`}
                   >
                     Inches
@@ -270,7 +270,7 @@ export default function SizeGuidePage() {
                   <button
                     onClick={() => setUnit('cms')}
                     className={`px-3 py-1.5 rounded-lg text-[10px] font-bold tracking-wider uppercase transition-all ${
-                      unit === 'cms' ? 'bg-violet-600 text-white' : 'text-zinc-400 hover:text-white'
+                      unit === 'cms' ? 'bg-[#8DFF00] text-[#0a0a0a]' : 'text-muted-foreground hover:text-[#0a0a0a]'
                     }`}
                   >
                     Centimeters
@@ -286,8 +286,8 @@ export default function SizeGuidePage() {
                     onClick={() => setSelectedSize(size)}
                     className={`w-12 h-12 rounded-xl text-sm font-black transition-all ${
                       selectedSize === size
-                        ? 'bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg shadow-violet-600/20 scale-105 border-0'
-                        : 'border border-zinc-800 hover:border-zinc-700 bg-zinc-900/20 text-zinc-400 hover:text-white'
+                        ? 'bg-gradient-to-r from-[#8DFF00] to-[#7acc00] text-foreground shadow-lg shadow-[#8DFF00]/20 scale-105 border-0'
+                        : 'border border-border hover:border-zinc-700 bg-card/20 text-muted-foreground hover:text-foreground'
                     }`}
                   >
                     {size}
@@ -296,17 +296,17 @@ export default function SizeGuidePage() {
               </div>
 
               {/* Matrix Table */}
-              <div className="overflow-hidden rounded-2xl border border-zinc-850 shadow-lg">
+              <div className="overflow-hidden rounded-2xl border border-border shadow-lg">
                 <table className="w-full border-collapse text-left">
                   <thead>
-                    <tr className="bg-gradient-to-r from-zinc-900 to-zinc-950 border-b border-zinc-850">
-                      <th className="p-4 text-xs font-black uppercase text-zinc-400 tracking-wider">Size Spec</th>
+                    <tr className="bg-gradient-to-r from-zinc-900 to-zinc-950 border-b border-border">
+                      <th className="p-4 text-xs font-black uppercase text-muted-foreground tracking-wider">Size Spec</th>
                       {Object.keys(SIZE_SPECS).map((size) => (
                         <th 
                           key={size}
                           onClick={() => setSelectedSize(size)}
                           className={`p-4 text-xs font-black uppercase tracking-wider text-center cursor-pointer transition-colors ${
-                            selectedSize === size ? 'text-violet-400 bg-violet-600/5' : 'text-zinc-400 hover:text-zinc-200'
+                            selectedSize === size ? 'text-[#8DFF00] bg-[#8DFF00]/5' : 'text-muted-foreground hover:text-[#0a0a0a]'
                           }`}
                         >
                           {size}
@@ -319,11 +319,11 @@ export default function SizeGuidePage() {
                     <tr 
                       onMouseEnter={() => setHoveredDim('chest')}
                       onMouseLeave={() => setHoveredDim(null)}
-                      className={`border-b border-zinc-850 transition-colors ${
-                        hoveredDim === 'chest' ? 'bg-rose-500/5' : 'hover:bg-zinc-900/10'
+                      className={`border-b border-border transition-colors ${
+                        hoveredDim === 'chest' ? 'bg-rose-500/5' : 'hover:bg-card/10'
                       }`}
                     >
-                      <td className="p-4 text-xs font-bold text-zinc-300">
+                      <td className="p-4 text-xs font-bold text-foreground">
                         <span className="inline-block w-2 h-2 rounded-full bg-rose-500 mr-2"></span>
                         Chest Width
                       </td>
@@ -331,7 +331,7 @@ export default function SizeGuidePage() {
                         <td 
                           key={size}
                           className={`p-4 text-xs text-center font-semibold transition-colors ${
-                            selectedSize === size ? 'text-rose-400 font-extrabold bg-violet-600/5' : 'text-zinc-400'
+                            selectedSize === size ? 'text-rose-400 font-extrabold bg-[#8DFF00]/5' : 'text-muted-foreground'
                           }`}
                         >
                           {convertValue(SIZE_SPECS[size].chest)}
@@ -343,11 +343,11 @@ export default function SizeGuidePage() {
                     <tr 
                       onMouseEnter={() => setHoveredDim('length')}
                       onMouseLeave={() => setHoveredDim(null)}
-                      className={`border-b border-zinc-850 transition-colors ${
-                        hoveredDim === 'length' ? 'bg-emerald-500/5' : 'hover:bg-zinc-900/10'
+                      className={`border-b border-border transition-colors ${
+                        hoveredDim === 'length' ? 'bg-emerald-500/5' : 'hover:bg-card/10'
                       }`}
                     >
-                      <td className="p-4 text-xs font-bold text-zinc-300">
+                      <td className="p-4 text-xs font-bold text-foreground">
                         <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>
                         Back Length
                       </td>
@@ -355,7 +355,7 @@ export default function SizeGuidePage() {
                         <td 
                           key={size}
                           className={`p-4 text-xs text-center font-semibold transition-colors ${
-                            selectedSize === size ? 'text-emerald-400 font-extrabold bg-violet-600/5' : 'text-zinc-400'
+                            selectedSize === size ? 'text-emerald-400 font-extrabold bg-[#8DFF00]/5' : 'text-muted-foreground'
                           }`}
                         >
                           {convertValue(SIZE_SPECS[size].length)}
@@ -368,10 +368,10 @@ export default function SizeGuidePage() {
                       onMouseEnter={() => setHoveredDim('shoulder')}
                       onMouseLeave={() => setHoveredDim(null)}
                       className={`transition-colors ${
-                        hoveredDim === 'shoulder' ? 'bg-sky-500/5' : 'hover:bg-zinc-900/10'
+                        hoveredDim === 'shoulder' ? 'bg-sky-500/5' : 'hover:bg-card/10'
                       }`}
                     >
-                      <td className="p-4 text-xs font-bold text-zinc-300">
+                      <td className="p-4 text-xs font-bold text-foreground">
                         <span className="inline-block w-2 h-2 rounded-full bg-sky-500 mr-2"></span>
                         Shoulder Width
                       </td>
@@ -379,7 +379,7 @@ export default function SizeGuidePage() {
                         <td 
                           key={size}
                           className={`p-4 text-xs text-center font-semibold transition-colors ${
-                            selectedSize === size ? 'text-sky-400 font-extrabold bg-violet-600/5' : 'text-zinc-400'
+                            selectedSize === size ? 'text-sky-400 font-extrabold bg-[#8DFF00]/5' : 'text-muted-foreground'
                           }`}
                         >
                           {convertValue(SIZE_SPECS[size].shoulder)}
@@ -392,36 +392,36 @@ export default function SizeGuidePage() {
             </div>
 
             {/* INTERACTIVE FIT FINDER (CALCULATOR) CARD */}
-            <div className="rounded-3xl border border-zinc-800 bg-zinc-900/30 backdrop-blur-md p-6 sm:p-8 space-y-6 shadow-2xl">
+            <div className="rounded-3xl border border-border bg-card/30 backdrop-blur-md p-6 sm:p-8 space-y-6 shadow-2xl">
               <div>
-                <h2 className="text-xl font-extrabold text-white flex items-center gap-2">
-                  <Calculator size={20} className="text-fuchsia-400" />
+                <h2 className="text-xl font-extrabold text-foreground flex items-center gap-2">
+                  <Calculator size={20} className="text-[#8DFF00]" />
                   Interactive Fit Finder
                 </h2>
-                <p className="text-zinc-500 text-xs mt-1">Input your chest measurements to determine the recommended size</p>
+                <p className="text-muted-foreground text-xs mt-1">Input your chest measurements to determine the recommended size</p>
               </div>
 
               <form onSubmit={handleCalculateFit} className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
                 {/* Chest input */}
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Your Chest Size (Inches)</label>
+                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Your Chest Size (Inches)</label>
                   <input
                     type="number"
                     value={chestInput}
                     onChange={(e) => setChestInput(e.target.value)}
                     placeholder="e.g. 38"
                     required
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+                    className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-[#8DFF00] focus:ring-1 focus:ring-[#8DFF00] transition-colors"
                   />
                 </div>
 
                 {/* Preference select */}
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Fit Preference</label>
+                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Fit Preference</label>
                   <select
                     value={preference}
                     onChange={(e: any) => setPreference(e.target.value)}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-300 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+                    className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-[#8DFF00] focus:ring-1 focus:ring-[#8DFF00] transition-colors"
                   >
                     <option value="slim">Slim Fit (Tight)</option>
                     <option value="standard">Standard Fit</option>
@@ -432,7 +432,7 @@ export default function SizeGuidePage() {
                 {/* Submit button */}
                 <button
                   type="submit"
-                  className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-violet-600/10 hover:shadow-violet-600/35 transition-all hover:scale-[1.02]"
+                  className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-[#8DFF00] to-[#7acc00] hover:from-[#9eff1a] hover:to-[#9eff1a] text-foreground font-black text-xs uppercase tracking-wider shadow-lg shadow-[#8DFF00]/10 hover:shadow-[#8DFF00]/35 transition-all hover:scale-[1.02]"
                 >
                   Find My Size
                 </button>
@@ -440,15 +440,15 @@ export default function SizeGuidePage() {
 
               {/* Recommendation Output Display */}
               {recommendedSize && (
-                <div className="p-5 rounded-2xl bg-violet-600/10 border border-violet-500/20 flex items-center justify-between gap-4 animate-fade-in">
+                <div className="p-5 rounded-2xl bg-[#8DFF00]/10 border border-[#8DFF00]/20 flex items-center justify-between gap-4 animate-fade-in">
                   <div className="space-y-1">
-                    <span className="text-[10px] font-bold text-violet-400 uppercase tracking-wider block">Our Recommendation</span>
-                    <p className="text-xs text-zinc-300 leading-relaxed">
-                      Based on your chest size and fit preferences, we recommend size <span className="text-white font-black text-sm">{recommendedSize}</span>.
+                    <span className="text-[10px] font-bold text-[#8DFF00] uppercase tracking-wider block">Our Recommendation</span>
+                    <p className="text-xs text-foreground leading-relaxed">
+                      Based on your chest size and fit preferences, we recommend size <span className="text-foreground font-black text-sm">{recommendedSize}</span>.
                     </p>
                   </div>
                   <div className="flex flex-col items-center shrink-0">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-tr from-violet-600 to-fuchsia-600 flex items-center justify-center text-white font-black text-xl shadow-lg">
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-tr from-[#8DFF00] to-[#7acc00] flex items-center justify-center text-foreground font-black text-xl shadow-lg">
                       {recommendedSize}
                     </div>
                   </div>
@@ -462,30 +462,30 @@ export default function SizeGuidePage() {
 
         {/* Fit Guide Tips */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-          <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-900/10 flex flex-col justify-between">
-            <h4 className="font-extrabold text-sm text-white mb-2 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-violet-400"></span>
+          <div className="p-6 rounded-2xl border border-border bg-card/10 flex flex-col justify-between">
+            <h4 className="font-extrabold text-sm text-foreground mb-2 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#aeff33]"></span>
               How to Measure Chest
             </h4>
-            <p className="text-zinc-500 text-xs leading-relaxed">
+            <p className="text-muted-foreground text-xs leading-relaxed">
               Measure around the fullest part of your chest, keeping the tape horizontal. Divide by 2 to compare with our flat-lay chest specifications.
             </p>
           </div>
-          <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-900/10 flex flex-col justify-between">
-            <h4 className="font-extrabold text-sm text-white mb-2 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-violet-400"></span>
+          <div className="p-6 rounded-2xl border border-border bg-card/10 flex flex-col justify-between">
+            <h4 className="font-extrabold text-sm text-foreground mb-2 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#aeff33]"></span>
               How to Measure Back Length
             </h4>
-            <p className="text-zinc-500 text-xs leading-relaxed">
+            <p className="text-muted-foreground text-xs leading-relaxed">
               Measure from the highest point of the shoulder (near the collar base) straight down to the bottom hem of the garment.
             </p>
           </div>
-          <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-900/10 flex flex-col justify-between">
-            <h4 className="font-extrabold text-sm text-white mb-2 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-violet-400"></span>
+          <div className="p-6 rounded-2xl border border-border bg-card/10 flex flex-col justify-between">
+            <h4 className="font-extrabold text-sm text-foreground mb-2 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#aeff33]"></span>
               Shrinkage & Tolerance
             </h4>
-            <p className="text-zinc-500 text-xs leading-relaxed">
+            <p className="text-muted-foreground text-xs leading-relaxed">
               Allow for a 0.5" flat-lay measurement tolerance. Cotton garments may experience up to 3% shrinkage after the first wash cycle.
             </p>
           </div>

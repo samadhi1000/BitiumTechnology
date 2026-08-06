@@ -64,6 +64,9 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  
+  --color-lime: #8DFF00;
+  --color-lime-dark: #72d400;
 
   --font-sans: var(--font-sans), system-ui, sans-serif;
   --font-heading: var(--font-heading), system-ui, sans-serif;
@@ -176,4 +179,122 @@ html.light-mode .to-zinc-900 { --tw-gradient-to: var(--card) !important; }
 /* Remove tactile grain override logic (we deleted tactile grain from body but in case it's in other places) */
 .tactile-grain::before {
   display: none !important;
+}
+
+/* ── UI Re-skin Component Styles ─────────────────────────────────── */
+.lime-btn {
+  background: #8DFF00;
+  color: #0a0a0a;
+  font-family: var(--font-heading), 'Outfit', sans-serif;
+  font-weight: 700;
+  transition: background 0.2s, transform 0.15s;
+}
+.lime-btn:hover {
+  background: #72d400;
+  transform: translateY(-1px);
+}
+
+.ghost-btn {
+  background: transparent;
+  border: 1.5px solid #d1d5db;
+  color: #0a0a0a;
+  font-family: var(--font-heading), 'Outfit', sans-serif;
+  font-weight: 600;
+  transition: border-color 0.2s, background 0.2s;
+}
+html.dark .ghost-btn {
+  border-color: #4b5563;
+  color: #F8FAFC;
+}
+.ghost-btn:hover {
+  border-color: #0a0a0a;
+  background: #f9fafb;
+}
+html.dark .ghost-btn:hover {
+  border-color: #F8FAFC;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.product-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+html.dark .product-card:hover {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.faq-item {
+  border-bottom: 1px solid #e5e7eb;
+}
+html.dark .faq-item {
+  border-bottom: 1px solid #334155;
+}
+
+.nav-link {
+  font-family: var(--font-heading), 'Outfit', sans-serif;
+  font-weight: 500;
+  color: #374151;
+  transition: color 0.15s;
+  font-size: 0.9rem;
+}
+.nav-link:hover {
+  color: #0a0a0a;
+}
+html.dark .nav-link {
+  color: #cbd5e1;
+}
+html.dark .nav-link:hover {
+  color: #F8FAFC;
+}
+
+.filter-btn {
+  font-family: var(--font-heading), 'Outfit', sans-serif;
+  font-weight: 500;
+  font-size: 0.85rem;
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 1.5px solid #e5e7eb;
+  background: white;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+html.dark .filter-btn {
+  background: transparent;
+  border-color: #334155;
+  color: #cbd5e1;
+}
+.filter-btn.active, .filter-btn:hover {
+  background: #8DFF00;
+  border-color: #8DFF00;
+  color: #0a0a0a;
+}
+html.dark .filter-btn.active, html.dark .filter-btn:hover {
+  background: #8DFF00;
+  border-color: #8DFF00;
+  color: #0a0a0a;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+.float-anim {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+  display: flex;
+  width: max-content;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
 }

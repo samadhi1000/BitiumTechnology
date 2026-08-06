@@ -97,24 +97,24 @@ function SuccessContent() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-3">
-        <RefreshCw className="animate-spin text-[#116466]" size={36} />
-        <span className="text-xs text-zinc-500 font-bold uppercase tracking-widest">Verifying Security Credentials...</span>
+        <RefreshCw className="animate-spin text-[#8DFF00]" size={36} />
+        <span className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Verifying Security Credentials...</span>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="max-w-md mx-auto mt-16 p-6 rounded-3xl border border-zinc-800 bg-zinc-900 glass text-center space-y-5">
+      <div className="max-w-md mx-auto mt-16 p-6 rounded-3xl border border-border bg-card glass text-center space-y-5">
         <span className="inline-flex p-3 rounded-full bg-red-950/10 border border-red-500/30 text-red-500">
           <AlertTriangle size={32} />
         </span>
         <div className="space-y-2">
-          <h2 className="text-lg font-black text-white">Access Verification Failed</h2>
-          <p className="text-xs text-zinc-400 leading-relaxed">{error}</p>
+          <h2 className="text-lg font-black text-foreground">Access Verification Failed</h2>
+          <p className="text-xs text-muted-foreground leading-relaxed">{error}</p>
         </div>
-        <div className="pt-4 border-t border-zinc-850 flex flex-col gap-2">
-          <Link href="/downloads" className="py-2.5 rounded-xl bg-zinc-950/60 hover:bg-zinc-850 border border-zinc-800 text-xs font-bold transition-all flex items-center justify-center gap-1.5">
+        <div className="pt-4 border-t border-border flex flex-col gap-2">
+          <Link href="/downloads" className="py-2.5 rounded-xl bg-background/60 hover:bg-muted border border-border text-xs font-bold transition-all flex items-center justify-center gap-1.5">
             <ArrowLeft size={13} />
             Back to Downloads Gallery
           </Link>
@@ -124,16 +124,16 @@ function SuccessContent() {
   }
 
   return (
-    <div className="max-w-xl mx-auto mt-16 p-6 rounded-3xl border border-zinc-800 bg-zinc-900 glass space-y-6">
+    <div className="max-w-xl mx-auto mt-16 p-6 rounded-3xl border border-border bg-card glass space-y-6">
       
       {/* Success Badge */}
-      <div className="text-center space-y-2 pb-4 border-b border-zinc-850">
+      <div className="text-center space-y-2 pb-4 border-b border-border">
         <span className="inline-flex p-3 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 mb-2">
           <ShieldCheck size={36} />
         </span>
-        <h2 className="text-xl font-black text-white">Payment Verified Successfully!</h2>
+        <h2 className="text-xl font-black text-foreground">Payment Verified Successfully!</h2>
         {email && (
-          <p className="text-xs text-zinc-400">
+          <p className="text-xs text-muted-foreground">
             A confirmation receipt and backup download link have been sent to **{email}**.
           </p>
         )}
@@ -141,14 +141,14 @@ function SuccessContent() {
 
       {/* Product Detail Card */}
       {artwork && purchase && (
-        <div className="p-4 rounded-2xl bg-zinc-950 border border-zinc-850 flex items-center gap-4">
-          <div className="p-3 rounded-xl bg-[#116466]/10 text-[#FFCB9A] shrink-0">
+        <div className="p-4 rounded-2xl bg-background border border-border flex items-center gap-4">
+          <div className="p-3 rounded-xl bg-[#8DFF00]/10 text-[#FFCB9A] shrink-0">
             <FileText size={28} />
           </div>
           <div className="flex-grow">
-            <span className="text-[9px] font-bold text-violet-400 uppercase tracking-wider block">Ready for Download</span>
-            <h3 className="text-md font-extrabold capitalize text-white mt-0.5">{artwork.title}</h3>
-            <div className="flex gap-4 mt-2 text-[10px] text-zinc-400">
+            <span className="text-[9px] font-bold text-[#8DFF00] uppercase tracking-wider block">Ready for Download</span>
+            <h3 className="text-md font-extrabold capitalize text-foreground mt-0.5">{artwork.title}</h3>
+            <div className="flex gap-4 mt-2 text-[10px] text-muted-foreground">
               <span>Format: <strong className="text-[#D9B08C]">{artwork.file_format}</strong></span>
               <span>•</span>
               <span>Expires in: <strong>7 Days</strong></span>
@@ -159,19 +159,19 @@ function SuccessContent() {
 
       {/* Download constraints progress */}
       {purchase && (
-        <div className="p-4 rounded-2xl border border-zinc-850 bg-zinc-900/40 space-y-3">
+        <div className="p-4 rounded-2xl border border-border bg-card/40 space-y-3">
           <div className="flex justify-between text-xs font-semibold">
-            <span className="text-zinc-400">Download Attempts:</span>
+            <span className="text-muted-foreground">Download Attempts:</span>
             <span className="text-[#FFCB9A]">{purchase.download_count} of {purchase.max_downloads} used</span>
           </div>
           {/* Progress bar */}
-          <div className="w-full h-1.5 rounded-full bg-zinc-950 overflow-hidden">
+          <div className="w-full h-1.5 rounded-full bg-background overflow-hidden">
             <div 
               className="h-full bg-gradient-to-r from-[#116466] to-[#FFCB9A] transition-all duration-500"
               style={{ width: `${(purchase.download_count / purchase.max_downloads) * 100}%` }}
             />
           </div>
-          <p className="text-[10px] text-zinc-500 leading-normal">
+          <p className="text-[10px] text-muted-foreground leading-normal">
             For security reasons, this download link will remain active for a maximum of 5 attempts. Do not share this URL.
           </p>
         </div>
@@ -181,14 +181,14 @@ function SuccessContent() {
       <button
         onClick={handleDownloadClick}
         disabled={downloading}
-        className="w-full py-4 rounded-xl bg-gradient-to-r from-[#116466] to-[#FFCB9A] text-zinc-950 font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all hover:scale-[1.01] shadow-lg shadow-[#116466]/10"
+        className="w-full py-4 rounded-xl bg-gradient-to-r from-[#116466] to-[#FFCB9A] text-zinc-950 font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all hover:scale-[1.01] shadow-lg shadow-[#8DFF00]/10"
       >
         <Download size={16} />
         {downloading ? 'Preparing secure file...' : 'Download Print Artwork'}
       </button>
 
       <div className="pt-2 flex justify-center">
-        <Link href="/downloads" className="text-xs text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5 font-bold">
+        <Link href="/downloads" className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5 font-bold">
           <ArrowLeft size={13} />
           Return to Downloads Gallery
         </Link>
@@ -200,11 +200,11 @@ function SuccessContent() {
 
 export default function DownloadSuccessPage() {
   return (
-    <div className="w-full min-h-screen bg-zinc-950 text-white selection:bg-[#116466]/40 selection:text-[#D1E8E2] pb-24 px-4 sm:px-6">
+    <div className="w-full min-h-screen bg-background text-[#0a0a0a] selection:bg-[#8DFF00]/40 selection:text-[#0a0a0a] pb-24 px-4 sm:px-6">
       <Suspense fallback={
         <div className="flex flex-col items-center justify-center min-h-[60vh] gap-3">
-          <RefreshCw className="animate-spin text-[#116466]" size={36} />
-          <span className="text-xs text-zinc-500 font-bold uppercase tracking-widest">Loading...</span>
+          <RefreshCw className="animate-spin text-[#8DFF00]" size={36} />
+          <span className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Loading...</span>
         </div>
       }>
         <SuccessContent />
