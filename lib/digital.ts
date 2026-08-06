@@ -34,68 +34,315 @@ const getLocalCatalog = (): DigitalArtwork[] => {
   return catalogData as DigitalArtwork[];
 };
 
+const LOCAL_STORAGE_KEY = 'bitium_custom_digital_artworks';
+
+function generateUUID(): string {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+function isSupabaseConfigured(): boolean {
+  if (typeof window === 'undefined') return false;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || url.includes('placeholder') || url.includes('your-project')) return false;
+  if (!anonKey || anonKey.includes('placeholder') || anonKey.includes('your-key')) return false;
+  return true;
+}
+
+function getLocalStorageArtworks(): DigitalArtwork[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const data = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch (err) {
+    console.error('Error reading local storage artworks:', err);
+    return [];
+  }
+}
+
+function setLocalStorageArtworks(artworks: DigitalArtwork[]) {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(artworks));
+  } catch (err) {
+    console.error('Error writing local storage artworks:', err);
+  }
+}
+
+function getFileCatalogArtworks(): DigitalArtwork[] {
+  if (typeof window === 'undefined') {
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      const catalogPath = path.join(process.cwd(), 'lib', 'digital-catalog.json');
+      if (fs.existsSync(catalogPath)) {
+        const data = fs.readFileSync(catalogPath, 'utf8');
+        return JSON.parse(data || '[]');
+      }
+    } catch (err) {
+      console.error('Failed to read digital catalog file on server:', err);
+    }
+  }
+  return [];
+}
+
+async function getApiCatalogArtworks(): Promise<DigitalArtwork[]> {
+  if (typeof window === 'undefined') return [];
+  try {
+    const res = await fetch('/api/downloads');
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch (err) {
+    console.error('Failed to fetch from digital API catalog:', err);
+  }
+  return [];
+}
+
+async function syncToApiCatalog(artworks: DigitalArtwork[]) {
+  if (typeof window === 'undefined') return;
+  try {
+    await fetch('/api/downloads', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(artworks)
+    });
+  } catch (err) {
+    console.error('Failed to sync digital catalog to API:', err);
+  }
+}
+
 // 1. Fetch all digital artworks (queries database, falls back to local JSON)
 export async function getDigitalArtworks(category?: string, search?: string): Promise<DigitalArtwork[]> {
-  try {
-    const { data, error } = await supabase
-      .from('digital_artworks')
-      .select('*')
-      .eq('is_active', true);
+  let dbArtworks: DigitalArtwork[] = [];
+  if (isSupabaseConfigured()) {
+    try {
+      const { data, error } = await supabase
+        .from('digital_artworks')
+        .select('*')
+        .eq('is_active', true);
 
-    if (error || !data || data.length === 0) {
-      // Fallback to local file catalog if database is empty/unconfigured
-      let catalog = getLocalCatalog();
-      if (category && category !== 'all') {
-        catalog = catalog.filter(item => item.category === category);
+      if (!error && data && data.length > 0) {
+        dbArtworks = data as DigitalArtwork[];
       }
-      if (search) {
-        const query = search.toLowerCase();
-        catalog = catalog.filter(item => 
-          item.title.toLowerCase().includes(query) || 
-          item.description.toLowerCase().includes(query) ||
-          item.tags.some(tag => tag.toLowerCase().includes(query))
-        );
-      }
-      return catalog;
+    } catch (err) {
+      console.error('Error fetching digital artworks from DB:', err);
     }
-
-    let results = data as DigitalArtwork[];
-    if (category && category !== 'all') {
-      results = results.filter(item => item.category === category);
-    }
-    if (search) {
-      const query = search.toLowerCase();
-      results = results.filter(item => 
-        item.title.toLowerCase().includes(query) || 
-        item.description.toLowerCase().includes(query) ||
-        item.tags.some(tag => tag.toLowerCase().includes(query))
-      );
-    }
-    return results;
-  } catch (err) {
-    console.error('Database connection error in getDigitalArtworks:', err);
-    return getLocalCatalog();
   }
+
+  let customArtworks: DigitalArtwork[] = [];
+  if (typeof window === 'undefined') {
+    customArtworks = getFileCatalogArtworks();
+  } else {
+    customArtworks = await getApiCatalogArtworks();
+    if (customArtworks.length === 0) {
+      customArtworks = getLocalStorageArtworks();
+    }
+  }
+
+  // Merge datasets
+  const merged = [...customArtworks];
+  dbArtworks.forEach((dbArt) => {
+    if (!merged.some((art) => art.id === dbArt.id)) {
+      merged.push(dbArt);
+    }
+  });
+
+  // If both empty, fallback to getLocalCatalog static mock
+  if (merged.length === 0) {
+    getLocalCatalog().forEach((mock) => {
+      if (!merged.some((art) => art.id === mock.id)) {
+        merged.push({ ...mock, is_active: true });
+      }
+    });
+  }
+
+  let results = merged.filter((art) => art.is_active !== false);
+
+  if (category && category !== 'all') {
+    results = results.filter(item => item.category === category);
+  }
+  if (search) {
+    const query = search.toLowerCase();
+    results = results.filter(item => 
+      item.title.toLowerCase().includes(query) || 
+      item.description.toLowerCase().includes(query) ||
+      item.tags.some(tag => tag.toLowerCase().includes(query))
+    );
+  }
+  return results;
 }
 
 // 2. Fetch single artwork details
 export async function getDigitalArtworkById(id: string): Promise<DigitalArtwork | null> {
-  try {
-    const { data, error } = await supabase
-      .from('digital_artworks')
-      .select('*')
-      .eq('id', id)
-      .single();
+  if (isSupabaseConfigured()) {
+    try {
+      const { data: artwork, error } = await supabase
+        .from('digital_artworks')
+        .select('*')
+        .eq('id', id)
+        .single();
 
-    if (error || !data) {
-      const catalog = getLocalCatalog();
-      return catalog.find(item => item.id === id) || null;
+      if (!error && artwork) {
+        return artwork as DigitalArtwork;
+      }
+    } catch (err) {
+      console.error('Error fetching artwork from DB:', err);
     }
-    return data as DigitalArtwork;
-  } catch (err) {
-    const catalog = getLocalCatalog();
-    return catalog.find(item => item.id === id) || null;
   }
+
+  let customArtworks: DigitalArtwork[] = [];
+  if (typeof window === 'undefined') {
+    customArtworks = getFileCatalogArtworks();
+  } else {
+    customArtworks = await getApiCatalogArtworks();
+    if (customArtworks.length === 0) {
+      customArtworks = getLocalStorageArtworks();
+    }
+  }
+
+  const foundCustom = customArtworks.find((art) => art.id === id);
+  if (foundCustom) return foundCustom;
+
+  const mockArtwork = getLocalCatalog().find((art) => art.id === id);
+  return mockArtwork || null;
+}
+
+// Write Operations for Digital Catalog
+export async function createDigitalArtwork(artworkData: Omit<DigitalArtwork, 'id' | 'is_active' | 'created_at'>): Promise<DigitalArtwork> {
+  const id = generateUUID();
+  const newArtwork: DigitalArtwork = {
+    ...artworkData,
+    id,
+    is_active: true,
+    created_at: new Date().toISOString()
+  };
+
+  if (isSupabaseConfigured()) {
+    try {
+      const { error } = await supabase
+        .from('digital_artworks')
+        .insert({
+          id,
+          title: artworkData.title,
+          description: artworkData.description,
+          price: artworkData.price,
+          preview_url: artworkData.preview_url,
+          file_key: artworkData.file_key,
+          category: artworkData.category,
+          tags: artworkData.tags,
+          file_format: artworkData.file_format,
+          file_size: artworkData.file_size,
+          resolution: artworkData.resolution,
+          is_active: true
+        });
+
+      if (error) {
+        console.error('Supabase digital artwork insert failed:', error);
+      }
+    } catch (err) {
+      console.error('Supabase digital insert failed:', err);
+    }
+  }
+
+  const localArtworks = getLocalStorageArtworks();
+  localArtworks.unshift(newArtwork);
+  setLocalStorageArtworks(localArtworks);
+
+  // Sync to API JSON file
+  await syncToApiCatalog(localArtworks);
+
+  return newArtwork;
+}
+
+export async function updateDigitalArtwork(id: string, artworkData: Partial<DigitalArtwork>): Promise<DigitalArtwork | null> {
+  const existing = await getDigitalArtworkById(id);
+  if (!existing) return null;
+
+  const updated: DigitalArtwork = {
+    ...existing,
+    ...artworkData
+  };
+
+  if (isSupabaseConfigured()) {
+    try {
+      const { error } = await supabase
+        .from('digital_artworks')
+        .update({
+          title: updated.title,
+          description: updated.description,
+          price: updated.price,
+          preview_url: updated.preview_url,
+          file_key: updated.file_key,
+          category: updated.category,
+          tags: updated.tags,
+          file_format: updated.file_format,
+          file_size: updated.file_size,
+          resolution: updated.resolution,
+          is_active: updated.is_active
+        })
+        .eq('id', id);
+
+      if (error) {
+        console.error('Supabase digital update failed:', error);
+      }
+    } catch (err) {
+      console.error('Supabase digital update failed:', err);
+    }
+  }
+
+  const localArtworks = getLocalStorageArtworks();
+  const index = localArtworks.findIndex((art) => art.id === id);
+  if (index !== -1) {
+    localArtworks[index] = updated;
+  } else {
+    localArtworks.push(updated);
+  }
+  setLocalStorageArtworks(localArtworks);
+
+  // Sync to API JSON file
+  await syncToApiCatalog(localArtworks);
+
+  return updated;
+}
+
+export async function deleteDigitalArtwork(id: string): Promise<boolean> {
+  if (isSupabaseConfigured()) {
+    try {
+      await supabase
+        .from('digital_artworks')
+        .update({ is_active: false })
+        .eq('id', id);
+    } catch (err) {
+      console.error('Supabase digital delete failed:', err);
+    }
+  }
+
+  const localArtworks = getLocalStorageArtworks();
+  const index = localArtworks.findIndex((art) => art.id === id);
+  if (index !== -1) {
+    localArtworks[index].is_active = false;
+  } else {
+    const mock = getLocalCatalog().find((art) => art.id === id);
+    if (mock) {
+      localArtworks.push({ ...mock, is_active: false });
+    }
+  }
+  setLocalStorageArtworks(localArtworks);
+
+  // Sync to API JSON file
+  await syncToApiCatalog(localArtworks);
+
+  return true;
 }
 
 // 3. Register purchase and generate access token (typically called post-payment)
