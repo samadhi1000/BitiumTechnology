@@ -272,26 +272,49 @@ function HomeContent() {
                   <div className="text-[11px] font-heading font-semibold text-muted-foreground uppercase tracking-wider">Preview</div>
                   
                   {/* Hoodie SVG representation */}
-                  <div className="relative w-[100px] h-[120px]">
-                    {/* SVG Black Hoodie outline and base */}
+                  <div className="w-[100px] h-[120px]">
                     <svg viewBox="0 0 100 120" className="w-[100px] h-[120px]">
-                      {/* Dark/black base path for the hoodie */}
-                      <path d="M25 15 L15 35 L5 40 L12 50 L22 45 L22 110 L78 110 L78 45 L88 50 L95 40 L85 35 L75 15 C70 12 65 10 50 10 C35 10 30 12 25 15Z" fill="#18181b" stroke="#3f3f46" strokeWidth="1.5"/>
-                      {/* Hood inner fold path */}
-                      <path d="M35 15 C35 20 40 25 50 25 C60 25 65 20 65 15" fill="none" stroke="#27272a" strokeWidth="1"/>
+                      {/* Body & Sleeves (Long sleeves for hoodie) */}
+                      <path 
+                        d="M32 30 L12 48 L4 43 L16 85 L22 83 L26 48 L26 110 L74 110 L74 48 L78 83 L84 85 L96 43 L88 48 L68 30 Z" 
+                        fill="#18181b" 
+                        stroke="#3f3f46" 
+                        strokeWidth="1.5"
+                      />
+                      {/* Hood */}
+                      <path 
+                        d="M32 30 C30 12, 38 8, 50 8 C62 8, 70 12, 68 30 C64 34, 36 34, 32 30 Z" 
+                        fill="#27272a" 
+                        stroke="#3f3f46" 
+                        strokeWidth="1.5"
+                      />
+                      {/* Hood Opening & Fold */}
+                      <path 
+                        d="M38 30 C42 22, 58 22, 62 30" 
+                        fill="none" 
+                        stroke="#52525b" 
+                        strokeWidth="1"
+                      />
+                      {/* Kangaroo Pouch pocket */}
+                      <path 
+                        d="M34 85 L66 85 L60 68 L40 68 Z" 
+                        fill="#18181b" 
+                        stroke="#3f3f46" 
+                        strokeWidth="1.2"
+                      />
+                      {/* Drawstrings */}
+                      <path d="M46 32 L46 45" stroke="#52525b" strokeWidth="1" />
+                      <path d="M54 32 L54 48" stroke="#52525b" strokeWidth="1" />
+                      
+                      {/* Selected motif printed in the middle of the black hoodie chest */}
+                      <image 
+                        href={selectedDesign.motifImage} 
+                        x="37" 
+                        y="42" 
+                        width="26" 
+                        height="26" 
+                      />
                     </svg>
-                    
-                    {/* Selected motif printed in the middle of the black hoodie */}
-                    <div className="absolute inset-0 flex items-center justify-center pt-3">
-                      <div className="relative w-[28px] h-[28px]">
-                        <Image 
-                          src={selectedDesign.motifImage} 
-                          alt="Printed motif" 
-                          fill 
-                          className="object-contain" 
-                        />
-                      </div>
-                    </div>
                   </div>
                   
                   <div className="text-[10px] text-muted-foreground text-center font-sans">Black Hoodie</div>
