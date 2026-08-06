@@ -274,28 +274,53 @@ export async function updateDigitalArtwork(id: string, artworkData: Partial<Digi
     const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
     if (isUUID) {
       try {
-        const { error } = await supabase
+        const { data } = await supabase
           .from('digital_artworks')
-          .update({
-            title: updated.title,
-            description: updated.description,
-            price: updated.price,
-            preview_url: updated.preview_url,
-            file_key: updated.file_key,
-            category: updated.category,
-            tags: updated.tags,
-            file_format: updated.file_format,
-            file_size: updated.file_size,
-            resolution: updated.resolution,
-            is_active: updated.is_active
-          })
-          .eq('id', id);
+          .select('id')
+          .eq('id', id)
+          .maybeSingle();
 
-        if (error) {
-          console.error('Supabase digital update failed:', error);
+        if (data) {
+          const { error } = await supabase
+            .from('digital_artworks')
+            .update({
+              title: updated.title,
+              description: updated.description,
+              price: updated.price,
+              preview_url: updated.preview_url,
+              file_key: updated.file_key,
+              category: updated.category,
+              tags: updated.tags,
+              file_format: updated.file_format,
+              file_size: updated.file_size,
+              resolution: updated.resolution,
+              is_active: updated.is_active
+            })
+            .eq('id', id);
+
+          if (error) console.error('Supabase digital update failed:', error);
+        } else {
+          const { error } = await supabase
+            .from('digital_artworks')
+            .insert({
+              id,
+              title: updated.title,
+              description: updated.description,
+              price: updated.price,
+              preview_url: updated.preview_url,
+              file_key: updated.file_key,
+              category: updated.category,
+              tags: updated.tags,
+              file_format: updated.file_format,
+              file_size: updated.file_size,
+              resolution: updated.resolution,
+              is_active: updated.is_active
+            });
+
+          if (error) console.error('Supabase digital mock insert failed:', error);
         }
       } catch (err) {
-        console.error('Supabase digital update failed:', err);
+        console.error('Supabase digital update exception:', err);
       }
     }
   }
@@ -320,10 +345,38 @@ export async function deleteDigitalArtwork(id: string): Promise<boolean> {
     const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
     if (isUUID) {
       try {
-        await supabase
+        const { data } = await supabase
           .from('digital_artworks')
-          .update({ is_active: false })
-          .eq('id', id);
+          .select('id')
+          .eq('id', id)
+          .maybeSingle();
+
+        if (data) {
+          await supabase
+            .from('digital_artworks')
+            .update({ is_active: false })
+            .eq('id', id);
+        } else {
+          const mock = getLocalCatalog().find((art) => art.id === id);
+          if (mock) {
+            await supabase
+              .from('digital_artworks')
+              .insert({
+                id,
+                title: mock.title,
+                description: mock.description,
+                price: mock.price,
+                preview_url: mock.preview_url,
+                file_key: mock.file_key,
+                category: mock.category,
+                tags: mock.tags,
+                file_format: mock.file_format,
+                file_size: mock.file_size,
+                resolution: mock.resolution,
+                is_active: false
+              });
+          }
+        }
       } catch (err) {
         console.error('Supabase digital delete failed:', err);
       }
