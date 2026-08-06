@@ -281,8 +281,8 @@ function HomeContent() {
                     />
                     
                     {/* Selected Motif Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center pt-2.5">
-                      <div className="relative w-[34px] h-[34px]">
+                    <div className="absolute top-[38.4%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40px] h-[40px]">
+                      <div className="relative w-full h-full">
                         <Image 
                           src={selectedDesign.motifImage} 
                           alt="Printed motif" 
