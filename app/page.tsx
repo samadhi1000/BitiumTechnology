@@ -11,10 +11,10 @@ import { HeroSearch } from '@/components/HeroSearch';
 import TrustSection from '@/components/TrustSection';
 
 // Icons for How It Works & Why Choose Us
-const UploadIcon = () => <Upload size={28} color="#8DFF00" strokeWidth={1.8} />;
-const GridIcon = () => <Grid size={28} color="#8DFF00" strokeWidth={1.8} />;
-const CubeIcon = () => <Cuboid size={28} color="#8DFF00" strokeWidth={1.8} />;
-const PackageIcon = () => <Package size={28} color="#8DFF00" strokeWidth={1.8} />;
+const UploadIcon = () => <Upload size={28} className="text-primary" strokeWidth={1.8} />;
+const GridIcon = () => <Grid size={28} className="text-primary" strokeWidth={1.8} />;
+const CubeIcon = () => <Cuboid size={28} className="text-primary" strokeWidth={1.8} />;
+const PackageIcon = () => <Package size={28} className="text-primary" strokeWidth={1.8} />;
 
 const ShieldIcon = () => <Shield size={22} className="text-primary" strokeWidth={1.8} />;
 const ZapIcon = () => <Zap size={22} className="text-primary" strokeWidth={1.8} />;
@@ -357,10 +357,10 @@ function HomeContent() {
                     <ArrowRight size={20} />
                   </div>
                 )}
-                <div className="w-7 h-7 rounded-full bg-[#8DFF00] flex items-center justify-center font-heading font-extrabold text-[12px] text-[#0a0a0a] mb-4">
+                <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center font-heading font-extrabold text-[12px] text-primary-foreground mb-4">
                   {step.num}
                 </div>
-                <div className="w-[68px] h-[68px] rounded-[18px] bg-[#f0ffd6] dark:bg-[#f0ffd6]/10 border border-[#8DFF00]/20 flex items-center justify-center mb-5">
+                <div className="w-[68px] h-[68px] rounded-[18px] bg-primary/10 border border-primary/20 flex items-center justify-center mb-5">
                   {step.icon}
                 </div>
                 <h3 className="font-heading font-extrabold text-[17px] text-foreground mb-2.5">{step.title}</h3>
