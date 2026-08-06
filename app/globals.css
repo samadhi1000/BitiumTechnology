@@ -15,8 +15,8 @@
     --popover: #0F172A;
     --popover-foreground: #F8FAFC;
     
-    --primary: #6366F1;
-    --primary-foreground: #F8FAFC;
+    --primary: #8DFF00;
+    --primary-foreground: #020617;
     
     --secondary: #1E293B;
     --secondary-foreground: #F8FAFC;
@@ -24,7 +24,7 @@
     --muted: #1E293B;
     --muted-foreground: #CBD5E1;
     
-    --accent: #22D3EE;
+    --accent: #8DFF00;
     --accent-foreground: #020617;
     
     --destructive: #BE185D;
@@ -32,7 +32,7 @@
     
     --border: #334155;
     --input: #334155;
-    --ring: #6366F1;
+    --ring: #8DFF00;
     
     --radius: 0.75rem;
 
@@ -78,10 +78,10 @@
   --color-zinc-800: var(--border);
   --color-zinc-500: #64748b;
   --color-zinc-400: var(--muted-foreground);
-  --color-zinc-300: var(--foreground);
-  --color-zinc-200: var(--foreground);
-  --color-zinc-100: var(--foreground);
-  --color-zinc-50: var(--foreground);
+  --color-zinc-300: var(--muted-foreground);
+  --color-zinc-200: var(--muted);
+  --color-zinc-100: var(--muted);
+  --color-zinc-50: var(--background);
   
   /* Legacy Primary overrides */
   --color-violet-500: var(--primary);
@@ -101,8 +101,8 @@ html.light-mode {
   --popover: #FFFFFF;
   --popover-foreground: #0F172A;
   
-  --primary: #4F46E5;
-  --primary-foreground: #FFFFFF;
+  --primary: #72D400;
+  --primary-foreground: #0F172A;
   
   --secondary: #F1F5F9;
   --secondary-foreground: #0F172A;
@@ -110,12 +110,12 @@ html.light-mode {
   --muted: #F1F5F9;
   --muted-foreground: #475569;
   
-  --accent: #06B6D4;
-  --accent-foreground: #FFFFFF;
+  --accent: #72D400;
+  --accent-foreground: #0F172A;
   
   --border: #E2E8F0;
   --input: #E2E8F0;
-  --ring: #4F46E5;
+  --ring: #72D400;
 }
 
 html.light-mode body {

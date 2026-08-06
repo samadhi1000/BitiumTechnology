@@ -16,6 +16,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const initial = saved ?? 'dark';
     setTheme(initial);
     document.documentElement.classList.toggle('light-mode', initial === 'light');
+    document.documentElement.classList.toggle('dark', initial === 'dark');
   }, []);
 
   const toggle = () => {
@@ -23,6 +24,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       const next: Theme = prev === 'dark' ? 'light' : 'dark';
       localStorage.setItem('bitium_theme', next);
       document.documentElement.classList.toggle('light-mode', next === 'light');
+      document.documentElement.classList.toggle('dark', next === 'dark');
       return next;
     });
   };

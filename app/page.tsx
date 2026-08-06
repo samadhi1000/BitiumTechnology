@@ -497,24 +497,65 @@ function HomeContent() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 px-6 bg-zinc-50 dark:bg-card/40 border-y border-border">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
-            <span className="font-heading font-bold text-[13px] text-[#8DFF00] uppercase tracking-widest">FAQ</span>
-            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">Frequently Asked Questions</h2>
-          </div>
-          <div className="flex flex-col gap-0">
-            {faqs.map((faq, i) => (
-              <div key={i} className={`faq-item ${i === 0 ? 'pt-0 border-t-0' : 'pt-5'} pb-5`}>
-                <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full bg-transparent border-none cursor-pointer flex items-center justify-between gap-4 text-left p-0 focus:outline-none group">
-                  <span className="font-heading font-bold text-[16px] text-foreground group-hover:text-[#8DFF00] transition-colors">{faq.q}</span>
-                  <span className="text-[#8DFF00] shrink-0">{openFaq === i ? <ChevronUp /> : <ChevronDown />}</span>
-                </button>
-                {openFaq === i && (
-                  <p className="mt-3 text-[14px] text-zinc-600 dark:text-muted-foreground leading-[1.7]">{faq.a}</p>
-                )}
+      <section className="py-24 px-6 bg-zinc-50 dark:bg-card/20 border-y border-border overflow-hidden relative">
+        {/* Decorative subtle gradient background glow */}
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[350px] h-[350px] bg-[#8DFF00] rounded-full opacity-[0.03] blur-[120px] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1.7fr] gap-16 items-start">
+            
+            {/* Left side: Heading & CTA */}
+            <div className="space-y-6 lg:sticky lg:top-24">
+              <div className="inline-flex items-center gap-2 bg-[#8DFF00]/10 border border-[#8DFF00]/25 rounded-full px-3.5 py-1.5">
+                <Sparkles size={12} className="text-[#8DFF00]" />
+                <span className="font-heading font-semibold text-[11px] text-[#8DFF00] tracking-wider uppercase">SUPPORT HUB</span>
               </div>
-            ))}
+              <h2 className="font-heading font-black text-[clamp(32px,4.5vw,48px)] text-foreground leading-[1.1]">
+                Frequently Asked <span className="text-[#8DFF00]">Questions</span>
+              </h2>
+              <p className="text-[15px] text-muted-foreground leading-[1.65] max-w-md">
+                Need help with your design, files, or custom sheets? Find answers to commonly asked questions here, or reach out directly to our printing experts.
+              </p>
+              <div className="pt-2">
+                <Link href="/contact" className="lime-btn inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-xs font-black uppercase tracking-wider shadow-lg shadow-[#8DFF00]/10 hover:shadow-[#8DFF00]/25 cursor-pointer">
+                  <MessageSquareHeart size={14} /> Contact Support
+                </Link>
+              </div>
+            </div>
+            
+            {/* Right side: Accordion list */}
+            <div className="flex flex-col gap-4">
+              {faqs.map((faq, i) => (
+                <div 
+                  key={i} 
+                  className={`border border-border rounded-[20px] bg-card/30 dark:bg-[#0f172a]/20 hover:border-[#8DFF00]/40 transition-all duration-300 p-5 cursor-pointer ${
+                    openFaq === i ? 'border-[#8DFF00]/40 bg-card/65 dark:bg-[#0f172a]/45 shadow-[0_8px_30px_rgba(141,255,0,0.04)]' : ''
+                  }`}
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                >
+                  <button 
+                    className="w-full bg-transparent border-none cursor-pointer flex items-center justify-between gap-4 text-left p-0 focus:outline-none group"
+                  >
+                    <span className="font-heading font-bold text-[16px] text-foreground group-hover:text-[#8DFF00] transition-colors">{faq.q}</span>
+                    <div className={`w-8 h-8 rounded-full border border-border flex items-center justify-center text-foreground group-hover:border-[#8DFF00]/40 group-hover:text-[#8DFF00] transition-all duration-300 shrink-0 ${
+                      openFaq === i ? 'bg-[#8DFF00] border-[#8DFF00] text-[#0a0a0a] rotate-180' : ''
+                    }`}>
+                      <ChevronDown />
+                    </div>
+                  </button>
+                  <div className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${
+                    openFaq === i ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none'
+                  }`}>
+                    <div className="overflow-hidden">
+                      <p className="pt-4 text-[14px] text-muted-foreground leading-[1.7] border-t border-border/40 mt-4">
+                        {faq.a}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
           </div>
         </div>
       </section>
