@@ -58,6 +58,22 @@ function DtfPrintingContent() {
 
   return (
     <div className="w-full min-h-screen bg-background text-foreground">
+      {/* Canonical Link */}
+      <link rel="canonical" href="https://www.bitiumtechnology.com/dtf-printing" />
+
+      {/* CollectionPage Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": "DTF Printing Collection | Bitium Technology",
+            "description": "High-definition DTF transfer films, custom t-shirt graphic sheets, sticker packs, and cloth transfer designs.",
+            "url": "https://www.bitiumtechnology.com/dtf-printing"
+          })
+        }}
+      />
       {/* Header Banner */}
       <div className="border-b border-border hero-gradient py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">

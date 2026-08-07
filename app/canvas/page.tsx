@@ -331,6 +331,22 @@ export default function CanvasBuilder() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8">
+      {/* Canonical Link */}
+      <link rel="canonical" href="https://www.bitiumtechnology.com/canvas" />
+
+      {/* WebPage Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "DTF Gang Sheet Builder Canvas | Bitium Technology",
+            "description": "Drag, drop, resize, and arrange your custom designs onto gang sheets online with our interactive builder.",
+            "url": "https://www.bitiumtechnology.com/canvas"
+          })
+        }}
+      />
       {/* LEFT COLUMN: Controls & Presets */}
       <div className="w-full lg:w-80 flex flex-col gap-6">
         {/* Preset Selector */}

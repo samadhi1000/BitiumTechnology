@@ -58,6 +58,22 @@ function LaserCuttingContent() {
 
   return (
     <div className="w-full min-h-screen bg-background text-foreground">
+      {/* Canonical Link */}
+      <link rel="canonical" href="https://www.bitiumtechnology.com/laser-cutting" />
+
+      {/* CollectionPage Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": "Laser Cutting Collection | Bitium Technology",
+            "description": "Custom laser-cut acrylics, engraved wood panels, and multi-layer precision cut profiles for signage, decor, and structural pieces.",
+            "url": "https://www.bitiumtechnology.com/laser-cutting"
+          })
+        }}
+      />
       {/* Header Banner */}
       <div className="border-b border-border hero-gradient py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">

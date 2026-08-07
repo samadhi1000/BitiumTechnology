@@ -197,6 +197,22 @@ export default function DownloadsPage() {
 
   return (
     <div className="w-full min-h-screen bg-background text-[#0a0a0a] selection:bg-[#8DFF00]/40 selection:text-[#0a0a0a] pb-24">
+      {/* Canonical Link */}
+      <link rel="canonical" href="https://www.bitiumtechnology.com/downloads" />
+
+      {/* CollectionPage Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": "Digital Artwork Downloads | Bitium Technology",
+            "description": "Download secure watermarked digital artwork vector files, stencils, and printing sheets.",
+            "url": "https://www.bitiumtechnology.com/downloads"
+          })
+        }}
+      />
       
       {/* Hero Header */}
       <section className="relative py-16 sm:py-20 border-b border-border overflow-hidden bg-background">

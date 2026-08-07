@@ -171,6 +171,56 @@ function HomeContent() {
 
   return (
     <div ref={container} className="w-full min-h-screen bg-background text-foreground">
+      {/* Canonical Link */}
+      <link rel="canonical" href="https://www.bitiumtechnology.com/" />
+
+      {/* LocalBusiness Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            "name": "Bitium Technology",
+            "image": "https://www.bitiumtechnology.com/images/bitium-logo.jpg",
+            "@id": "https://www.bitiumtechnology.com/#organization",
+            "url": "https://www.bitiumtechnology.com/",
+            "telephone": "+94772813232",
+            "email": "info@bitium.lk",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "102 Galle Road",
+              "addressLocality": "Colombo 03",
+              "addressCountry": "LK"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": 6.9189,
+              "longitude": 79.8484
+            },
+            "openingHoursSpecification": {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday"
+              ],
+              "opens": "08:30",
+              "closes": "18:00"
+            },
+            "sameAs": [
+              "https://www.facebook.com/bitiumtechnology",
+              "https://www.instagram.com/bitiumtechnology",
+              "https://www.youtube.com/@bitiumtechnology",
+              "https://www.linkedin.com/company/bitiumtechnology"
+            ]
+          })
+        }}
+      />
+
       {/* Hero Section */}
       <section className="bg-background py-[72px] px-6 pb-20 border-b border-border">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center hero-grid">

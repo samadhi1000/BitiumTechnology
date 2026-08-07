@@ -24,6 +24,34 @@ export default function ContactPage() {
 
   return (
     <div className="w-full min-h-screen bg-background text-foreground py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Canonical Link */}
+      <link rel="canonical" href="https://www.bitiumtechnology.com/contact" />
+
+      {/* ContactPage Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            "name": "Contact Bitium Technology",
+            "description": "Get in touch with Bitium Technology for custom DTF printing, stencils, and screen printing services in Colombo, Sri Lanka.",
+            "url": "https://www.bitiumtechnology.com/contact",
+            "mainEntity": {
+              "@type": "LocalBusiness",
+              "name": "Bitium Technology",
+              "telephone": "+94772813232",
+              "email": "info@bitium.lk",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "102 Galle Road",
+                "addressLocality": "Colombo 03",
+                "addressCountry": "LK"
+              }
+            }
+          })
+        }}
+      />
       {/* Background Gradients */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#8DFF00]/10 rounded-full filter blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#8DFF00]/10 rounded-full filter blur-[120px] pointer-events-none"></div>

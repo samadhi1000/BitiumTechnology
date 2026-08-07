@@ -41,6 +41,22 @@ function MaterialsContent() {
 
   return (
     <div className="w-full min-h-screen bg-background text-foreground">
+      {/* Canonical Link */}
+      <link rel="canonical" href="https://www.bitiumtechnology.com/materials" />
+
+      {/* CollectionPage Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": "DTF Materials & Consumables | Bitium Technology",
+            "description": "Inks, hot melt powder, film rolls, emulsions, and wash chemicals for professional printing setups.",
+            "url": "https://www.bitiumtechnology.com/materials"
+          })
+        }}
+      />
       {/* Header Banner */}
       <div className="border-b border-border hero-gradient py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">

@@ -79,6 +79,22 @@ export default function SizeGuidePage() {
 
   return (
     <div className="w-full min-h-screen bg-background text-foreground py-16 sm:py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Canonical Link */}
+      <link rel="canonical" href="https://www.bitiumtechnology.com/size-guide" />
+
+      {/* WebPage Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Apparel Size Guide & Measurement Assistant | Bitium Technology",
+            "description": "Find the perfect fit for custom hoodies, t-shirts, and street apparel using our size specification charts and interactive sizing calculator.",
+            "url": "https://www.bitiumtechnology.com/size-guide"
+          })
+        }}
+      />
       {/* Ambient background glows */}
       <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-[#8DFF00]/10 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-1/4 left-1/4 w-[350px] h-[350px] bg-[#8DFF00]/5 rounded-full blur-[100px] pointer-events-none"></div>

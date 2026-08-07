@@ -1,0 +1,23 @@
+# Bitium Technology - AI Directory
+
+Bitium Technology is a premium custom printing studio that provides professional DTF transfers, stencils, screen printing, batik Cap stamps, precision laser cutting, and printing consumables. It offers online tools for sheet building and 3D mockup previews.
+
+## Main Services & Products
+
+- **DTF Printing** ([/dtf-printing](https://www.bitiumtechnology.com/dtf-printing)): Custom gang sheet transfers, anime stickers, and cloth transfers with 24-hour turnaround and no minimum orders.
+- **Stencils** ([/stencil](https://www.bitiumtechnology.com/stencil)): Laser-cut Mylar stencils for saree work, hand painting, batik, and wall art.
+- **Screen Printing** ([/screen-printing](https://www.bitiumtechnology.com/screen-printing)): Professional-grade exposed screens, positive films, and vectorizations.
+- **Batik Cap Stamps** ([/batik-stamp](https://www.bitiumtechnology.com/batik-stamp)): Traditional copper and hand-carved Cap Batik stamps.
+- **Laser Cutting** ([/laser-cutting](https://www.bitiumtechnology.com/laser-cutting)): Precision CO2 laser cutting for acrylic, wood, and custom profiles.
+- **Consumables** ([/materials](https://www.bitiumtechnology.com/materials)): Professional-grade inks, films, powders, and emulsions.
+
+## Interactive Tools
+
+- **DTF Sheet Builder** ([/canvas](https://www.bitiumtechnology.com/canvas)): Fabric.js custom drag-and-drop editor to build and arrange gang sheets online.
+- **3D Mockup Studio** ([/3d-customizer](https://www.bitiumtechnology.com/3d-customizer)): Three.js/3D custom apparel customizer for instant product visualization.
+- **Apparel Size Guide** ([/size-guide](https://www.bitiumtechnology.com/size-guide)): Detailed size charts and measurements for hoodies, t-shirts, and custom apparel.
+
+## General Information
+
+- **About Us** ([/about](https://www.bitiumtechnology.com/about)): Company background, history, and printing quality work ethic.
+- **Contact Us** ([/contact](https://www.bitiumtechnology.com/contact)): Address, contact details, support forms, and WhatsApp connections.

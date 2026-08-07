@@ -61,6 +61,22 @@ function StencilContent() {
 
   return (
     <div className="w-full min-h-screen bg-background text-foreground">
+      {/* Canonical Link */}
+      <link rel="canonical" href="https://www.bitiumtechnology.com/stencil" />
+
+      {/* CollectionPage Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": "Stencil Collection | Bitium Technology",
+            "description": "Explore reusable precision laser-cut Mylar and titanium stencils for fabric hand-painting, saree borders, tote bags, and wall decorations.",
+            "url": "https://www.bitiumtechnology.com/stencil"
+          })
+        }}
+      />
       {/* Header Banner */}
       <div className="border-b border-border hero-gradient py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
