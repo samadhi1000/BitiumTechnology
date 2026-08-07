@@ -274,14 +274,14 @@ function HomeContent() {
                   {/* Realistic Hoodie Preview */}
                   <div className="relative w-full h-[180px] flex items-center justify-center overflow-hidden">
                     <Image 
-                      src="/images/products/black_hoodie_blank.png" 
+                      src="/images/products/black_hoodie_uploaded_fitted.png" 
                       alt="Black Hoodie Preview" 
                       fill 
-                      className="object-cover scale-110"
+                      className="object-contain"
                     />
                     
                    {selectedDesign && (
-                      <div className="absolute top-[38.4%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40px] h-[40px]">
+                      <div className="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40px] h-[40px]">
                         <div className="relative w-full h-full">
                           <Image
                             src={selectedDesign.motifImage}
