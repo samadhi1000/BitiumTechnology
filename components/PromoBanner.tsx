@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
-import { ShoppingCart, X } from 'lucide-react';
+import { Sparkles, ArrowRight, X } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -14,6 +14,15 @@ if (typeof window !== 'undefined') {
 export default function PromoBanner() {
   const container = useRef<HTMLDivElement>(null);
   const [showPromo, setShowPromo] = useState(true);
+  const [activeTab, setActiveTab] = useState('cotton');
+
+  const fabricTypes = [
+    { id: 'cotton', label: 'Cotton', result: "Rich, saturated color that won't crack or fade after washing." },
+    { id: 'polyester', label: 'Polyester', result: "No dye migration or scorching — a common problem with other print methods on poly." },
+    { id: 'blends', label: 'Blends', result: "Handles mixed fabrics without needing a different process for each one." },
+    { id: 'dark', label: 'Dark Fabrics', result: "Full opacity and true color, even on black — no dulled-down prints." },
+    { id: 'light', label: 'Light Fabrics', result: "Crisp, vibrant results with none of the stiffness some transfers leave behind." }
+  ];
 
   useGSAP(() => {
     const tl = gsap.timeline({
@@ -26,13 +35,27 @@ export default function PromoBanner() {
     });
 
     // Entrance animations
-    tl.from('.promo-title', { x: -50, opacity: 0, duration: 0.6, ease: 'power3.out' })
-      .from('.promo-subtitle', { x: -30, opacity: 0, duration: 0.5, ease: 'power3.out' }, '-=0.3')
-      .from('.promo-btn', { scale: 0.9, opacity: 0, duration: 0.5, ease: 'back.out(1.5)' }, '-=0.3')
-      .from('.promo-model-img', { scale: 0.95, opacity: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4')
-      .from('.promo-accent-bar', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.2');
+    tl.from('.promo-eyebrow', { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out' })
+      .from('.promo-heading', { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out' }, '-=0.3')
+      .from('.promo-intro', { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out' }, '-=0.3')
+      .from('.promo-tabs', { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out' }, '-=0.3')
+      .from('.promo-result', { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out' }, '-=0.3')
+      .from('.promo-closing', { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out' }, '-=0.3')
+      .from('.promo-model-img', { scale: 0.95, opacity: 0, duration: 0.7, ease: 'power3.out' }, '-=0.6')
+      .from('.promo-accent-bar', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3');
 
   }, { scope: container });
+
+  // Handle tab change with simple GSAP anim
+  const handleTabClick = (id: string) => {
+    setActiveTab(id);
+    gsap.fromTo('.promo-result-text', 
+      { opacity: 0, y: 10 }, 
+      { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' }
+    );
+  };
+
+  const currentResult = fabricTypes.find(f => f.id === activeTab)?.result || '';
 
   return (
     <div ref={container} className="relative w-full bg-background overflow-hidden border-b border-border flex flex-col">
@@ -54,29 +77,63 @@ export default function PromoBanner() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16 sm:py-24 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* Left Column: Everyday Premium Text (6 cols) */}
-          <div className="lg:col-span-7 space-y-8 flex flex-col items-center lg:items-start text-center lg:text-left">
-            <div className="promo-title space-y-1">
-              <h2 className="text-6xl sm:text-[90px] font-black tracking-tighter text-[#8DFF00] uppercase leading-none select-none drop-shadow-[0_4px_12px_rgba(141,255,0,0.35)]">
-                10% OFF
-              </h2>
-              <h2 className="text-6xl sm:text-[90px] font-black tracking-tighter text-[#8DFF00] uppercase leading-none select-none drop-shadow-[0_4px_12px_rgba(141,255,0,0.35)]">
-                TODAY
-              </h2>
+          {/* Left Column: Interactive Fabric Feature (7 cols) */}
+          <div className="lg:col-span-7 space-y-6 flex flex-col items-center lg:items-start text-center lg:text-left">
+            {/* Eyebrow */}
+            <div className="promo-eyebrow inline-flex items-center gap-2 bg-[#8DFF00]/10 border border-[#8DFF00]/25 rounded-full px-3.5 py-1.5">
+              <Sparkles size={12} className="text-[#8DFF00]" />
+              <span className="font-heading font-semibold text-[11px] text-[#8DFF00] tracking-wider uppercase">Why DTF</span>
             </div>
 
-            <p className="promo-subtitle text-zinc-450 text-xs sm:text-sm font-semibold max-w-xl leading-relaxed">
-              New here? Build your first DTF sheet and save 10% at checkout.
+            {/* Heading */}
+            <h2 className="promo-heading text-4xl sm:text-6xl font-black tracking-tight text-foreground leading-[1.1] font-heading">
+              One Print Method.<br />
+              <span className="text-[#8DFF00]">Every Fabric.</span>
+            </h2>
+
+            {/* Intro line */}
+            <p className="promo-intro text-sm text-muted-foreground leading-relaxed max-w-xl">
+              DTF doesn't care what you're printing on. Tap a fabric type below and see why it just works.
             </p>
 
-            <div className="promo-btn">
-              <a 
-                href="#catalog"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] font-black text-xs uppercase tracking-widest rounded-full shadow-lg shadow-[#8DFF00]/30 hover:shadow-[#8DFF00]/60 hover:scale-105 transition-all duration-300"
-              >
-                <ShoppingCart size={14} />
-                <span>Shop Now</span>
-              </a>
+            {/* Tabs */}
+            <div className="promo-tabs flex flex-wrap justify-center lg:justify-start gap-2.5 w-full pt-2">
+              {fabricTypes.map((type) => (
+                <button
+                  key={type.id}
+                  onClick={() => handleTabClick(type.id)}
+                  className={`px-4.5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 border cursor-pointer ${
+                    activeTab === type.id
+                      ? 'bg-[#8DFF00] border-[#8DFF00] text-[#0a0a0a] shadow-lg shadow-[#8DFF00]/20 scale-105'
+                      : 'bg-card border-border text-muted-foreground hover:text-foreground hover:border-[#8DFF00]/40'
+                  }`}
+                >
+                  {type.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Tab Result Content */}
+            <div className="promo-result w-full min-h-[90px] p-6 rounded-2xl border border-border bg-card/35 backdrop-blur flex items-center justify-center lg:justify-start">
+              <p className="promo-result-text text-sm text-foreground leading-relaxed font-semibold">
+                {currentResult}
+              </p>
+            </div>
+
+            {/* Closing & CTA */}
+            <div className="promo-closing space-y-4 w-full pt-2">
+              <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
+                Same process, same turnaround, every time — no matter what's on the rack.
+              </p>
+              <div className="flex justify-center lg:justify-start">
+                <a 
+                  href="/canvas"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] font-black text-xs uppercase tracking-widest rounded-full shadow-lg shadow-[#8DFF00]/25 hover:shadow-[#8DFF00]/45 hover:scale-105 transition-all duration-300"
+                >
+                  <span>Start Your Design</span>
+                  <ArrowRight size={14} />
+                </a>
+              </div>
             </div>
           </div>
 
@@ -90,7 +147,7 @@ export default function PromoBanner() {
                 priority
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
-              {/* Subtle grid lines matching inkwave style overlay */}
+              {/* Subtle grid lines matching overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent pointer-events-none opacity-80"></div>
               <div className="absolute inset-0 bg-[radial-gradient(rgba(141,255,0,0.15)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none"></div>
             </div>
