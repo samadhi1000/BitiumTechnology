@@ -23,7 +23,7 @@ export default function AboutPage() {
             "publisher": {
               "@type": "LocalBusiness",
               "name": "Bitium Technology",
-              "telephone": "+94772813232",
+              "telephone": "+94779731097",
               "email": "info@bitium.lk"
             }
           })

@@ -40,7 +40,7 @@ export default function ContactPage() {
             "mainEntity": {
               "@type": "LocalBusiness",
               "name": "Bitium Technology",
-              "telephone": "+94772813232",
+              "telephone": "+94779731097",
               "email": "info@bitium.lk",
               "address": {
                 "@type": "PostalAddress",
@@ -81,7 +81,7 @@ export default function ContactPage() {
                   <Phone size={18} className="text-[#8DFF00] mt-0.5" />
                   <div>
                     <p className="font-semibold text-foreground">Phone & WhatsApp</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">+94 77 281 3232</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">+94 77 973 1097</p>
                   </div>
                 </div>
 

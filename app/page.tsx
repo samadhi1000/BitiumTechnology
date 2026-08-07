@@ -185,7 +185,7 @@ function HomeContent() {
             "image": "https://www.bitiumtechnology.com/images/bitium-logo.jpg",
             "@id": "https://www.bitiumtechnology.com/#organization",
             "url": "https://www.bitiumtechnology.com/",
-            "telephone": "+94772813232",
+            "telephone": "+94779731097",
             "email": "info@bitium.lk",
             "address": {
               "@type": "PostalAddress",
