@@ -53,7 +53,7 @@ function HomeContent() {
     { id: 5, bg: '#d97706', cardImage: '/images/products/design_5_card.png', motifImage: '/images/products/design_5_motif.png', title: 'Majestic Lion Motif' },
     { id: 6, bg: '#0284c7', cardImage: '/images/products/design_6_card.png', motifImage: '/images/products/design_6_motif.png', title: 'Batik Symmetrical Border Pattern' }
   ];
-  const [selectedDesign, setSelectedDesign] = useState(traditionalDesigns[0]);
+  const [selectedDesign, setSelectedDesign] = useState<typeof traditionalDesigns[0] | null>(null);
 
   // Hero Entrance Animations
   useGSAP(() => {
@@ -255,13 +255,13 @@ function HomeContent() {
                     <div 
                       key={d.id} 
                       onClick={() => setSelectedDesign(d)}
-                      className={`relative rounded-[10px] aspect-square flex items-center justify-center overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.2)] cursor-pointer transition-all hover:scale-105 hover:shadow-[0_8px_20px_rgba(0,0,0,0.3)] ${selectedDesign.id === d.id ? 'ring-2 ring-primary scale-105 z-10' : ''}`}
+                      className={`relative aspect-square flex items-center justify-center cursor-pointer transition-all hover:scale-110 ${selectedDesign?.id === d.id ? 'scale-110 opacity-100 z-10' : 'opacity-65 hover:opacity-100'}`}
                     >
                       <Image 
-                        src={d.cardImage} 
+                        src={d.motifImage} 
                         alt={d.title} 
                         fill 
-                        className="object-cover" 
+                        className="object-contain p-2.5" 
                       />
                     </div>
                   ))}
@@ -274,23 +274,25 @@ function HomeContent() {
                   {/* Realistic Hoodie Preview */}
                   <div className="relative w-full h-[180px] flex items-center justify-center overflow-hidden">
                     <Image 
-                      src="/images/products/black_hoodie_blank.png" 
+                      src="/images/products/black_hoodie_raw.png" 
                       alt="Black Hoodie Preview" 
                       fill 
                       className="object-cover scale-110"
                     />
                     
                     {/* Selected Motif Overlay */}
-                    <div className="absolute top-[38.4%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40px] h-[40px]">
-                      <div className="relative w-full h-full">
-                        <Image 
-                          src={selectedDesign.motifImage} 
-                          alt="Printed motif" 
-                          fill 
-                          className="object-contain" 
-                        />
+                    {selectedDesign && (
+                      <div className="absolute top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40px] h-[40px]">
+                        <div className="relative w-full h-full">
+                          <Image 
+                            src={selectedDesign.motifImage} 
+                            alt="Printed motif" 
+                            fill 
+                            className="object-contain" 
+                          />
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                   
                   <div className="text-[10px] text-zinc-400 dark:text-zinc-500 text-center font-sans font-bold">Black Hoodie</div>
