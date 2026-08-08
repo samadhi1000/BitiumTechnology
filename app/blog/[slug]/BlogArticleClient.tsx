@@ -300,8 +300,8 @@ export default function BlogArticleClient({
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
         </div>
-        <p className="text-[11px] text-muted-foreground text-center mt-2 italic">
-          Image: {post.coverAlt}
+        <p className="text-[11px] text-muted-foreground text-center mt-2.5 italic">
+          Alt tag - {post.coverAlt}
         </p>
       </div>
 

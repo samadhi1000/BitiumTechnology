@@ -43,25 +43,8 @@ function TiktokIcon({ className }: { className?: string }) {
 
 export default function Footer() {
   return (
-    <footer className="relative border-t border-white/[0.08] bg-[#0F172A] text-white" role="contentinfo">
-      {/* 1. CTA Banner */}
-      <div className="bg-gradient-to-r from-cyan-500/[0.03] via-cyan-500/[0.08] to-cyan-500/[0.03] border-b border-white/[0.06] bg-[#1E293B]/25">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div>
-            <h3 className="text-xl font-bold text-white mb-1" style={{ fontFamily: "var(--font-heading)" }}>
-              Ready to print your custom designs?
-            </h3>
-            <p className="text-sm text-slate-400" style={{ fontFamily: "var(--font-body)" }}>
-              Design your custom DTF sheets online and get vibrant, durable transfers shipped in 24 hours.
-            </p>
-          </div>
-          <a href="/canvas" className="btn-primary text-sm whitespace-nowrap glow-orange">
-            Start Your Design
-          </a>
-        </div>
-      </div>
-
-      {/* 2. Main Columns */}
+    <footer className="relative border-t border-border bg-[#0F172A] text-white" role="contentinfo">
+      {/* Main Columns */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
           {/* Logo / Brand Column */}

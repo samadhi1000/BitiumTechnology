@@ -281,12 +281,7 @@ export default function Navbar() {
 
             {/* 08. Materials / Consumables */}
             <Link href="/materials" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
-              Materials
-            </Link>
-
-            {/* 09. Blog Knowledge Hub */}
-            <Link href="/blog" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
-              Blog
+              Materials / Consumables
             </Link>
           </div>
 
@@ -659,19 +654,6 @@ export default function Navbar() {
               <div className="flex items-center gap-2">
                 <PackageCheck size={16} className="text-primary" />
                 <span>Materials / Consumables</span>
-              </div>
-              <ChevronRight size={16} className="text-muted-foreground" />
-            </Link>
-
-            {/* 7. Blog Knowledge Hub */}
-            <Link
-              href="/blog"
-              onClick={closeMobileMenu}
-              className="flex items-center justify-between px-4 py-3 rounded-xl bg-card/50 hover:bg-card border border-border text-sm font-bold text-foreground"
-            >
-              <div className="flex items-center gap-2">
-                <Sparkles size={16} className="text-primary" />
-                <span>Blog & Guides</span>
               </div>
               <ChevronRight size={16} className="text-muted-foreground" />
             </Link>

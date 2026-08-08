@@ -57,7 +57,7 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     "publishedAt": "2026-08-01",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/custom-stencils-vs-letter-stencils.png",
+    "coverImage": "/images/blogs/an-illustration-depicting-custom-vs-letter-stencils.png",
     "coverAlt": "an illustration depicting custom stencils vs letter stencils",
     "featured": true,
     "tableOfContents": [
@@ -112,7 +112,7 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     "publishedAt": "2026-08-02",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/what-kind-of-laser-cutting-service-do-you-actually-need.jpeg",
+    "coverImage": "/images/blogs/a-laser-cutting-machine-on-duty.jpeg",
     "coverAlt": "a laser cutting machine on duty",
     "featured": false,
     "tableOfContents": [
@@ -155,7 +155,7 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     "publishedAt": "2026-08-03",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/how-to-pick-the-right-wall-stencil-for-your-space.jpeg",
+    "coverImage": "/images/blogs/a-man-is-applying-a-wall-stencil.jpeg",
     "coverAlt": "A man is applying a wall stencil",
     "featured": false,
     "tableOfContents": [
@@ -198,7 +198,7 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     "publishedAt": "2026-08-04",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/custom-screen-printing-for-small-batches.jpeg",
+    "coverImage": "/images/blogs/a-man-is-using-a-screen-printing-machine.jpeg",
     "coverAlt": "a man is using a screen printing machine",
     "featured": false,
     "tableOfContents": [
@@ -253,7 +253,7 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     "publishedAt": "2026-08-05",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/what-to-actually-look-for-before-you-order-a-dtf-printing-near-me.jpeg",
+    "coverImage": "/images/blogs/a-woman-is-wearing-a-dtf-printed-t-shirt.jpeg",
     "coverAlt": "a woman is wearing a DTF printed T-shirt",
     "featured": false,
     "tableOfContents": [
@@ -296,7 +296,7 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     "publishedAt": "2026-08-06",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/why-dtf-printing-is-taking-over-custom-apparel.jpeg",
+    "coverImage": "/images/blogs/a-dtf-print-and-a-set-of-printed-objrcts.jpeg",
     "coverAlt": "a DTF print and a set of printed objrcts",
     "featured": false,
     "tableOfContents": [
@@ -367,7 +367,7 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     "publishedAt": "2026-08-07",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/laser-cutting-service-guide.jpeg",
+    "coverImage": "/images/blogs/a-man-checking-the-laser-cutting-output.jpeg",
     "coverAlt": "A man checking the laser cutting output",
     "featured": false,
     "tableOfContents": [
@@ -434,7 +434,7 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     "publishedAt": "2026-08-08",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/traditional-tools-for-batik-stamps.jpeg",
+    "coverImage": "/images/blogs/a-person-is-designing-a-batik-stamp.jpeg",
     "coverAlt": "a person is designing a batik stamp",
     "featured": false,
     "tableOfContents": [
@@ -481,7 +481,7 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     "publishedAt": "2026-08-09",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/beginners-guide-to-batik-stamps.jpeg",
+    "coverImage": "/images/blogs/a-woman-is-using-a-batik-stamp.jpeg",
     "coverAlt": "a woman is using a batik stamp",
     "featured": false,
     "tableOfContents": [
@@ -540,7 +540,7 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     "publishedAt": "2026-08-10",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/how-to-choose-a-screen-printing-shop-near-me.jpeg",
+    "coverImage": "/images/blogs/a-man-is-operating-a-screen-printing-printer.jpeg",
     "coverAlt": "a man is operating a screen printing printer",
     "featured": false,
     "tableOfContents": [

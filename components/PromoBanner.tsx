@@ -62,7 +62,7 @@ export default function PromoBanner() {
       {/* 1. Announcement Bar at the Top */}
       {showPromo && (
         <div className="w-full bg-card border-b border-border text-foreground py-3 px-4 text-xs font-bold text-center flex items-center justify-center gap-2 relative z-20 transition-all duration-300">
-          <span>10% OFF YOUR FIRST GANG SHEET — TODAY ONLY</span>
+          <span className="tracking-wide">⚡ PREMIUM DTF TRANSFERS & CUSTOM APPAREL PRINTING — 24H ISLANDWIDE DISPATCH</span>
           <button 
             onClick={() => setShowPromo(false)}
             className="hover:text-foreground transition-colors flex items-center justify-center p-0.5 rounded-full hover:bg-muted"
@@ -157,7 +157,7 @@ export default function PromoBanner() {
       </div>
 
       {/* 3. Bottom Accent Banner: INDUSTRIAL GRADE QUALITY • NO MINIMUMS • ON TIME */}
-      <div className="promo-accent-bar w-full bg-[#8DFF00] py-6 relative z-10 border-t border-[#9eff1a] select-none">
+      <div className="promo-accent-bar w-full bg-[#8DFF00] py-6 relative z-10 border-t border-[#9eff1a] border-b border-border select-none">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h3 className="text-xl sm:text-2xl font-black text-black tracking-[0.1em] uppercase">
             INDUSTRIAL GRADE QUALITY • NO MINIMUM ORDERS • DELIVERED ON TIME

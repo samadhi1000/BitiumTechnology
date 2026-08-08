@@ -5,7 +5,7 @@ import { Star, ShieldCheck, Truck, Clock } from 'lucide-react';
 
 export default function TrustSection() {
   return (
-    <section className="w-full bg-background text-foreground py-20 sm:py-28 px-4 sm:px-6 lg:px-8 border-t border-border overflow-hidden">
+    <section className="w-full bg-background text-foreground py-20 sm:py-28 px-4 sm:px-6 lg:px-8 border-b border-border overflow-hidden">
       <div className="max-w-[1080px] mx-auto">
         
         {/* Header */}

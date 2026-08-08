@@ -139,18 +139,48 @@ function HomeContent() {
   ];
   
   const galleryItems = [
+    // DTF Printing
     { src: 'https://images.unsplash.com/photo-1601754664414-aa3e4f42e6d4?w=500&h=400&fit=crop&auto=format', alt: 'Custom black and white shirt', cat: 'DTF Printing' },
     { src: 'https://images.unsplash.com/photo-1564557287817-3785e38ec1f5?w=500&h=400&fit=crop&auto=format', alt: 'Custom gray hoodie', cat: 'DTF Printing' },
     { src: 'https://images.unsplash.com/photo-1680292783974-a9a336c10366?w=500&h=400&fit=crop&auto=format', alt: 'Black hoodie custom', cat: 'DTF Printing' },
+    { src: 'https://images.unsplash.com/photo-1615397587950-3cbb55f95b77?w=500&h=400&fit=crop&auto=format', alt: 'White hoodie apparel mockup', cat: 'DTF Printing' },
+
+    // Screen Printing
     { src: 'https://images.unsplash.com/photo-1663433567177-9f94be0bff4c?w=500&h=400&fit=crop&auto=format', alt: 'Screen printing process', cat: 'Screen Printing' },
     { src: 'https://images.unsplash.com/photo-1663433541063-ddab084d1126?w=500&h=400&fit=crop&auto=format', alt: 'Industrial screen printing', cat: 'Screen Printing' },
+    { src: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500&h=400&fit=crop&auto=format', alt: 'T-Shirt screen printing', cat: 'Screen Printing' },
+    { src: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=500&h=400&fit=crop&auto=format', alt: 'Mesh screen exposure', cat: 'Screen Printing' },
+
+    // Laser Cutting
     { src: 'https://images.unsplash.com/photo-1738162837451-2041c1418f54?w=500&h=400&fit=crop&auto=format', alt: 'Laser cutting machine', cat: 'Laser Cutting' },
     { src: 'https://images.unsplash.com/photo-1738162837438-92ff852619a1?w=500&h=400&fit=crop&auto=format', alt: 'Precision laser cut metal', cat: 'Laser Cutting' },
-    { src: 'https://images.unsplash.com/photo-1615397587950-3cbb55f95b77?w=500&h=400&fit=crop&auto=format', alt: 'White hoodie apparel mockup', cat: 'DTF Printing' },
+    { src: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=500&h=400&fit=crop&auto=format', alt: 'CNC acrylic cut', cat: 'Laser Cutting' },
+    { src: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&h=400&fit=crop&auto=format', alt: 'Laser cut wooden craft', cat: 'Laser Cutting' },
+
+    // Stencils
+    { src: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=500&h=400&fit=crop&auto=format', alt: 'Saree fabric stencil painting', cat: 'Stencils' },
+    { src: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=500&h=400&fit=crop&auto=format', alt: 'Laser-cut Mylar wall stencil', cat: 'Stencils' },
+    { src: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=500&h=400&fit=crop&auto=format', alt: 'Hand painting with stencils', cat: 'Stencils' },
+    { src: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=500&h=400&fit=crop&auto=format', alt: 'Tote bag stencil printing', cat: 'Stencils' },
+
+    // Batik Stamp
+    { src: 'https://images.unsplash.com/photo-1590736704728-f4730bb30770?w=500&h=400&fit=crop&auto=format', alt: 'Hand-carved wooden cap batik stamp', cat: 'Batik Stamp' },
+    { src: 'https://images.unsplash.com/photo-1508807526345-15e988543c28?w=500&h=400&fit=crop&auto=format', alt: 'Traditional copper batik stamp making', cat: 'Batik Stamp' },
+    { src: 'https://images.unsplash.com/photo-1606159068539-43f36b99d1b2?w=500&h=400&fit=crop&auto=format', alt: 'Wax resist textile stamping', cat: 'Batik Stamp' },
+    { src: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&h=400&fit=crop&auto=format', alt: 'Traditional Sri Lankan Batik pattern', cat: 'Batik Stamp' },
   ];
-  const filters = ['All', 'DTF Printing', 'Screen Printing', 'Laser Cutting', 'Stencils'];
-  const [activeGallery, setActiveGallery] = useState('All');
-  const visibleGallery = activeGallery === 'All' ? galleryItems : galleryItems.filter(g => g.cat === activeGallery);
+
+  const filters = ['DTF Printing', 'Screen Printing', 'Laser Cutting', 'Stencils', 'Batik Stamp'];
+  const [activeGallery, setActiveGallery] = useState('DTF Printing');
+  const visibleGallery = galleryItems.filter(g => g.cat === activeGallery);
+
+  const categoryUrlMap: Record<string, string> = {
+    'DTF Printing': '/dtf-printing',
+    'Screen Printing': '/screen-printing',
+    'Laser Cutting': '/laser-cutting',
+    'Stencils': '/stencil',
+    'Batik Stamp': '/batik-stamp',
+  };
 
   const testimonials = [
     { name: 'Kavinda P.', role: 'Apparel Brand Owner', rating: 5, text: '"Bitium Technology provided the cleanest DTF prints I\'ve ever seen. The colors popped instantly."', avatar: 'KP' },
@@ -413,7 +443,7 @@ function HomeContent() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-20 px-6 bg-background">
+      <section className="py-20 px-6 bg-background border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <span className="font-heading font-bold text-[13px] text-[#8DFF00] uppercase tracking-widest">Process</span>
@@ -444,7 +474,7 @@ function HomeContent() {
       <PromoBanner />
 
       {/* Products Section */}
-      <section className="py-20 px-6 bg-zinc-50 dark:bg-card/40 border-t border-border">
+      <section className="py-20 px-6 bg-zinc-50 dark:bg-card/40 border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <span className="font-heading font-bold text-[13px] text-[#8DFF00] uppercase tracking-widest">Catalog</span>
@@ -480,7 +510,7 @@ function HomeContent() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 px-6 bg-background">
+      <section className="py-20 px-6 bg-background border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <span className="font-heading font-bold text-[13px] text-[#8DFF00] uppercase tracking-widest">Benefits</span>
@@ -504,7 +534,7 @@ function HomeContent() {
       <TrustSection />
 
       {/* Portfolio Section */}
-      <section className="py-20 px-6 bg-zinc-50 dark:bg-card/40 border-t border-border">
+      <section className="py-20 px-6 bg-zinc-50 dark:bg-card/40 border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-9">
             <span className="font-heading font-bold text-[13px] text-[#8DFF00] uppercase tracking-widest">Gallery</span>
@@ -531,15 +561,18 @@ function HomeContent() {
           </div>
 
           <div className="text-center mt-10">
-            <button className="ghost-btn inline-flex items-center gap-2 px-8 py-3 rounded-full text-[14px] cursor-pointer">
-              View Full Portfolio <ArrowRight size={14} />
-            </button>
+            <Link 
+              href={categoryUrlMap[activeGallery] || '/dtf-printing'} 
+              className="ghost-btn inline-flex items-center gap-2 px-8 py-3 rounded-full text-[14px] cursor-pointer"
+            >
+              View full catalogue <ArrowRight size={14} />
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 px-6 bg-background">
+      <section className="py-20 px-6 bg-background border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <span className="font-heading font-bold text-[13px] text-[#8DFF00] uppercase tracking-widest">Reviews</span>
@@ -568,7 +601,7 @@ function HomeContent() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-24 px-6 bg-zinc-50 dark:bg-card/20 border-y border-border overflow-hidden relative">
+      <section className="py-24 px-6 bg-zinc-50 dark:bg-card/20 border-b border-border overflow-hidden relative">
         {/* Decorative subtle gradient background glow */}
         <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[350px] h-[350px] bg-[#8DFF00] rounded-full opacity-[0.03] blur-[120px] pointer-events-none" />
         
