@@ -12,6 +12,7 @@ const footerLinks = {
     { label: "Laser Cutting", href: "/laser-cutting" },
   ],
   toolkit: [
+    { label: "Online Order Form (A6)", href: "/order-form" },
     { label: "Digital downloads", href: "/downloads" },
     { label: "Materials / Consumables", href: "/materials" },
     { label: "About Us", href: "/about" },

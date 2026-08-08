@@ -116,6 +116,14 @@ export default function Navbar() {
                       {item.label}
                     </Link>
                   ))}
+                  <hr className="border-border my-0.5" />
+                  <Link
+                    href="/order-form"
+                    className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-lime-400 bg-lime-500/10 hover:bg-lime-500/20 transition-colors flex items-center justify-between"
+                  >
+                    <span>Order Form (A6/A4)</span>
+                    <span className="text-[9px] bg-lime-500 text-black font-extrabold px-1 rounded">NEW</span>
+                  </Link>
                 </div>
               )}
             </div>
