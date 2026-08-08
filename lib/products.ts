@@ -304,12 +304,12 @@ export async function getProducts(): Promise<Product[]> {
     }
   });
 
-  // If both empty, fallback to MOCK_PRODUCTS static mock
-  if (merged.length === 0) {
-    MOCK_PRODUCTS.forEach((mock) => {
+  // Include MOCK_PRODUCTS as default products unless overridden by custom items with the same ID
+  MOCK_PRODUCTS.forEach((mock) => {
+    if (!merged.some((p) => p.id === mock.id)) {
       merged.push(mock);
-    });
-  }
+    }
+  });
 
   return merged.filter((p) => p.is_active);
 }

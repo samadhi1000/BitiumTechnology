@@ -225,8 +225,8 @@ export default function DownloadsPage() {
             <Shield size={12} className="text-[#FFCB9A]" />
             Secure Asset Vault
           </span>
-          <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tight">
-            Digital Designs & <span className="outline-text">Downloads</span>
+          <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#8DFF00]">
+            Digital Designs & Downloads
           </h1>
           <p className="text-sm text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Browse and purchase from our catalog of print-ready, high-resolution original digital vector files, batik layouts, and stencils. Instantly access Google Drive download keys upon payment.
@@ -336,7 +336,7 @@ export default function DownloadsPage() {
                   <div className="grid grid-cols-2 gap-2 pt-1">
                     <button
                       onClick={() => setSelectedArt(art)}
-                      className="w-full py-2.5 rounded-xl border border-border hover:border-zinc-700 bg-background/60 hover:bg-muted font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                      className="w-full py-2.5 rounded-xl border border-border hover:border-zinc-700 bg-background/60 hover:bg-muted text-foreground hover:text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                     >
                       <Eye size={13} />
                       Details

@@ -1,95 +1,233 @@
-import React from 'react';
-import Link from 'next/link';
-import PoweredBy from './PoweredBy';
+"use client";
+
+import React from "react";
+import { Mail, MapPin, Phone } from "lucide-react";
+
+const footerLinks = {
+  services: [
+    { label: "Stencil", href: "/stencil" },
+    { label: "Screen Printing", href: "/screen-printing" },
+    { label: "DTF Printing", href: "/dtf-printing" },
+    { label: "Batik Stamp", href: "/batik-stamp" },
+    { label: "Laser Cutting", href: "/laser-cutting" },
+  ],
+  toolkit: [
+    { label: "Digital downloads", href: "/downloads" },
+    { label: "Materials / Consumables", href: "/materials" },
+    { label: "About Us", href: "/about" },
+    { label: "Contact Us", href: "/contact" },
+  ],
+  legal: [
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms of Service", href: "/terms" },
+  ],
+};
+
+function FacebookIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1V12h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z" />
+    </svg>
+  );
+}
+
+function TiktokIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.86-.74-3.94-1.74-.22-.2-.41-.43-.61-.65-.02 4.11.01 8.22-.02 12.33-.18 2.44-1.46 4.88-3.76 5.75-2.28.87-4.96.48-6.84-1.01-2.02-1.61-2.88-4.38-2.12-6.89.6-1.93 2.13-3.61 4.14-4.14 1.25-.33 2.59-.14 3.73.43V4.07c-1.95-.59-3.75-1.9-4.73-3.66C7.5.39 7.4.37 7.3.35v11.23c-1.3-.9-3.05-1.12-4.52-.53-1.61.64-2.8 2.21-3.05 3.93-.3 2.05.61 4.22 2.29 5.27 1.68 1.05 3.96.93 5.48-.3 1.25-1.02 1.83-2.65 1.78-4.24.03-5.23-.01-10.46.02-15.69z" />
+    </svg>
+  );
+}
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border bg-background mt-auto py-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center border-b border-border/50 pb-8">
-          {/* Brand */}
-          <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-1.5">
-            <span className="text-xl font-black tracking-wider text-[#8DFF00] font-heading">
-              Bitium Technology
-            </span>
-            <span className="text-xs text-muted-foreground">
-              Premium Custom Printing & Laser Studio
-            </span>
+    <footer className="relative border-t border-white/[0.08] bg-[#0F172A] text-white" role="contentinfo">
+      {/* 1. CTA Banner */}
+      <div className="bg-gradient-to-r from-cyan-500/[0.03] via-cyan-500/[0.08] to-cyan-500/[0.03] border-b border-white/[0.06] bg-[#1E293B]/25">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div>
+            <h3 className="text-xl font-bold text-white mb-1" style={{ fontFamily: "var(--font-heading)" }}>
+              Ready to print your custom designs?
+            </h3>
+            <p className="text-sm text-slate-400" style={{ fontFamily: "var(--font-body)" }}>
+              Design your custom DTF sheets online and get vibrant, durable transfers shipped in 24 hours.
+            </p>
           </div>
+          <a href="/canvas" className="btn-primary text-sm whitespace-nowrap glow-orange">
+            Start Your Design
+          </a>
+        </div>
+      </div>
 
-          {/* Links */}
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs font-semibold text-muted-foreground">
-            <Link href="/" className="hover:text-[#8DFF00] transition-colors">
-              Apparel Catalog
-            </Link>
-            <Link href="/canvas" className="hover:text-[#8DFF00] transition-colors">
-              DTF Sheet Builder
-            </Link>
-            <Link href="/about" className="hover:text-[#8DFF00] transition-colors">
-              About Us
-            </Link>
-            <Link href="/contact" className="hover:text-[#8DFF00] transition-colors">
-              Contact Us
-            </Link>
-          </div>
-
-          {/* Socials & Copyright */}
-          <div className="flex flex-col items-center md:items-end space-y-3">
-            <div className="flex space-x-4">
-              <a
-                href="https://www.facebook.com/bitiumtechnology"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-[#8DFF00] hover:scale-110 transition-all flex items-center justify-center"
-                aria-label="Facebook"
-              >
-                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/>
-                </svg>
-              </a>
-              <a
-                href="https://www.instagram.com/bitiumtechnology"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-[#8DFF00] hover:scale-110 transition-all flex items-center justify-center"
-                aria-label="Instagram"
-              >
-                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-                </svg>
-              </a>
-              <a
-                href="https://www.youtube.com/@bitiumtechnology"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-[#8DFF00] hover:scale-110 transition-all flex items-center justify-center"
-                aria-label="YouTube"
-              >
-                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M23.498 6.163a3.003 3.003 0 00-2.11-2.11C19.517 3.545 12 3.545 12 3.545s-7.517 0-9.388.507a3.003 3.003 0 00-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 002.11 2.11c1.871.507 9.388.507 9.388.507s7.517 0 9.388-.507a3.003 3.003 0 002.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
-              </a>
-              <a
-                href="https://www.linkedin.com/company/bitiumtechnology"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-[#8DFF00] hover:scale-110 transition-all flex items-center justify-center"
-                aria-label="LinkedIn"
-              >
-                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                </svg>
-              </a>
+      {/* 2. Main Columns */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+          {/* Logo / Brand Column */}
+          <div className="sm:col-span-2 lg:col-span-1 space-y-4">
+            <div className="flex flex-col items-start space-y-1">
+              <span className="text-2xl font-black tracking-wider text-[#8DFF00] font-heading">
+                Bitium Technology
+              </span>
+              <span className="text-xs text-slate-400 font-semibold tracking-wide uppercase">
+                Premium Custom Printing & Laser Studio
+              </span>
             </div>
-            <span className="text-[10px] text-muted-foreground">
-              &copy; {new Date().getFullYear()} Bitium Technology. All rights reserved.
-            </span>
+            
+            <p className="text-sm text-slate-400 leading-relaxed max-w-xs" style={{ fontFamily: "var(--font-body)" }}>
+              Sri Lanka's leading custom printing partner. Saturated DTF transfers, stencils, and custom apparel prints delivered in 24 hours.
+            </p>
+          </div>
+
+          {/* Links: Services */}
+          <div>
+            <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-widest mb-4" style={{ fontFamily: "var(--font-heading)" }}>
+              Services
+            </h4>
+            <ul className="space-y-3">
+              {footerLinks.services.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className="text-sm text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Links: Toolkit */}
+          <div>
+            <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-widest mb-4" style={{ fontFamily: "var(--font-heading)" }}>
+              Toolkit
+            </h4>
+            <ul className="space-y-3">
+              {footerLinks.toolkit.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className="text-sm text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Links: Contact & Socials */}
+          <div>
+            <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-widest mb-4" style={{ fontFamily: "var(--font-heading)" }}>
+              Contact info
+            </h4>
+            <ul className="space-y-3">
+              <li>
+                <a href="mailto:indrajith105@gmail.com" className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
+                  <Mail className="w-4 h-4" />
+                  indrajith105@gmail.com
+                </a>
+              </li>
+              <li>
+                <a href="tel:+94715520897" className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
+                  <Phone className="w-4 h-4" />
+                  +94 71 552 0897 (Mobile)
+                </a>
+              </li>
+              <li>
+                <a href="https://wa.me/94779731097" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
+                  <Phone className="w-4 h-4" />
+                  +94 77 973 1097 (WhatsApp)
+                </a>
+              </li>
+              <li className="flex items-start gap-2 text-sm text-slate-400">
+                <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <span className="leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
+                  1391/1 New Town Digana Rajawella, <br />
+                  Digana, Sri Lanka, 20180
+                </span>
+              </li>
+            </ul>
+
+            {/* Social Buttons */}
+            <div className="flex items-center gap-3 mt-6">
+              {[
+                { icon: TiktokIcon, label: "Tiktok", href: "https://www.tiktok.com/@Raid07072" },
+                { icon: FacebookIcon, label: "Facebook", href: "https://web.facebook.com/bitiumtechnology" },
+              ].map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/[0.08] hover:border-white/20 transition-all duration-300"
+                    aria-label={social.label}
+                  >
+                    <Icon className="w-4 h-4" />
+                  </a>
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        {/* Animated Agency Logo */}
-        <div className="mt-8 flex justify-center">
-          <PoweredBy theme="brand" />
+        {/* 3. Bottom Credits */}
+        <div className="mt-14 pt-8 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-6">
+          <p className="text-xs text-slate-400" style={{ fontFamily: "var(--font-body)" }}>
+            © {new Date().getFullYear()} Bitium Technology. All rights reserved.
+          </p>
+          
+          {/* Animated Agency Logo - Powered By Stack Unleash */}
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] uppercase tracking-widest text-slate-500 font-semibold" style={{ fontFamily: "var(--font-heading)" }}>
+                Powered By -
+              </span>
+              <a href="https://stackunleash.com" target="_blank" rel="noopener noreferrer" className="flex items-center group">
+                {/* Metallic Shine Masked Container */}
+                <div className="transition-transform duration-300 group-hover:scale-105 flex-shrink-0 logo-shine-container mr-1.5">
+                  <img
+                    src="/images/stack-unleash-logo.png"
+                    alt="StackUnleash Icon"
+                    className="h-[28px] w-auto object-contain logo-fire-glow"
+                  />
+                </div>
+                
+                {/* Text Logo with gradients & sweeps */}
+                <div className="flex flex-col items-start justify-center">
+                  <div className="flex items-center leading-none">
+                    <span
+                      className="font-black text-[12px] tracking-wider leading-none orange-gradient-text mr-0.5"
+                      style={{ fontFamily: "var(--font-heading)" }}
+                    >
+                      STACK
+                    </span>
+                    <span
+                      className="font-black text-[12px] tracking-wider leading-none gradient-text"
+                      style={{ fontFamily: "var(--font-heading)" }}
+                    >
+                      UNLEASH
+                    </span>
+                  </div>
+                  {/* Tagline */}
+                  <div
+                    className="w-full flex justify-between text-[4px] font-black uppercase mt-0.5 shine-text"
+                    style={{ fontFamily: "var(--font-heading)" }}
+                  >
+                    <span>BUILD</span>
+                    <span>&bull;</span>
+                    <span>AUTOMATE</span>
+                    <span>&bull;</span>
+                    <span>SCALE</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            <div className="flex items-center gap-6 border-l border-white/[0.08] pl-6">
+              {footerLinks.legal.map((link) => (
+                <a key={link.label} href={link.href} className="text-xs text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </footer>

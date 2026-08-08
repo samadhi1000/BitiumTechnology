@@ -57,9 +57,9 @@ export default function RootLayout({
               <main className="flex-grow flex flex-col">{children}</main>
               <Footer />
               <CartDrawer />
-              <WhatsAppButton />
             </AuthProvider>
           </PreloaderWrapper>
+          <WhatsAppButton />
         </ThemeProvider>
       </body>
     </html>
