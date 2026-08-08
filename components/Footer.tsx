@@ -13,6 +13,7 @@ const footerLinks = {
   ],
   toolkit: [
     { label: "Online Order Form (A6)", href: "/order-form" },
+    { label: "Blog & Master Guides", href: "/blog" },
     { label: "Digital downloads", href: "/downloads" },
     { label: "Materials / Consumables", href: "/materials" },
     { label: "About Us", href: "/about" },
