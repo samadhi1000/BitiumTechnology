@@ -37,7 +37,7 @@ export interface BlogPost {
 export const BLOG_POSTS: BlogPost[] = [
   {
     "id": "blog-1",
-    "slug": "an-illustration-depicting-custom-vs-letter-stencils",
+    "slug": "custom-stencils-vs-letter-stencils",
     "title": "Custom stencils vs letter stencils: which one do you actually need",
     "metaTitle": "Custom stencils vs letter stencils | Bitium Technology",
     "metaDescription": "Discover the differences between custom stencils and letter stencils. Find out which option best suits your creative projects and needs.",
@@ -92,7 +92,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     "id": "blog-2",
-    "slug": "a-laser-cutting-machine-on-duty",
+    "slug": "what-kind-of-laser-cutting-service-do-you-actually-need",
     "title": "Laser cutting near me: what kind of service do you actually need",
     "metaTitle": "What kind of laser cutting service do you actually need | Bitium Technology",
     "metaDescription": "Discover the essential services of laser cutting near you. Learn how to",
@@ -135,7 +135,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     "id": "blog-3",
-    "slug": "a-man-is-applying-a-wall-stencil",
+    "slug": "how-to-pick-the-right-wall-stencil-for-your-space",
     "title": "Wall stencils 101: How to pick the right pattern for your space",
     "metaTitle": "How to pick the right wall stencil for your space | Bitium Technology",
     "metaDescription": "Learn how to choose the right wall stencil pattern for your home. Our",
@@ -178,7 +178,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     "id": "blog-4",
-    "slug": "a-man-is-using-a-screen-printing-machine",
+    "slug": "custom-screen-printing-for-small-batches",
     "title": "Custom screen printing for small batches: is it worth it",
     "metaTitle": "Custom screen printing for small batches | Bitium Technology",
     "metaDescription": "Discover the benefits of custom screen printing for small batches. Learn",
@@ -233,7 +233,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     "id": "blog-5",
-    "slug": "a-woman-is-wearing-a-dtf-printed-t-shirt",
+    "slug": "what-to-actually-look-for-before-you-order-a-dtf-printing-near-me",
     "title": "DTF printing near me: what to actually look for before you order",
     "metaTitle": "What to actually look for before you order a DTF printing near me | Bitium Technology",
     "metaDescription": "Learn what to consider before ordering DTF printing services nearby.",
@@ -276,7 +276,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     "id": "blog-6",
-    "slug": "a-dtf-print-and-a-set-of-printed-objrcts",
+    "slug": "why-dtf-printing-is-taking-over-custom-apparel",
     "title": "Why DTF printing is taking over custom apparel?",
     "metaTitle": "Why DTF Printing Is Changing Custom Apparel | Bitium Technology",
     "metaDescription": "Discover why DTF printing is revolutionizing custom apparel with its",
@@ -347,7 +347,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     "id": "blog-7",
-    "slug": "a-man-checking-the-laser-cutting-output",
+    "slug": "laser-cutting-service-guide",
     "title": "Laser cutting service guide: from file to finished product",
     "metaTitle": "Laser cutting service guide | Bitium Technology",
     "metaDescription": "Explore the various laser cutting services available in your area. Find out",
@@ -414,7 +414,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     "id": "blog-8",
-    "slug": "a-person-is-designing-a-batik-stamp",
+    "slug": "traditional-tools-for-batik-stamps",
     "title": "Batik stamps 101: traditional tools for a timeless craft",
     "metaTitle": "Traditional tools for batik stamps | Bitium Technology",
     "metaDescription": "Dive into the world of batik stamps! Our guide covers traditional tools",
@@ -461,7 +461,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     "id": "blog-9",
-    "slug": "a-woman-is-using-a-batik-stamp",
+    "slug": "beginners-guide-to-batik-stamps",
     "title": "Wooden batik stamps: a beginner's guide to buying your first cap",
     "metaTitle": "Beginner's guide to batik stamps | Bitium Technology",
     "metaDescription": "Discover the art of wooden batik stamps with our beginner's guide.",
@@ -520,7 +520,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     "id": "blog-10",
-    "slug": "a-man-is-operating-a-screen-printing-printer",
+    "slug": "how-to-choose-a-screen-printing-shop-near-me",
     "title": "Screen printing near me: how to choose a shop that won't waste your order",
     "metaTitle": "How to choose a screen printing shop near me | Bitium Technology",
     "metaDescription": "Discover essential tips for selecting a reliable screen printing shop near",
