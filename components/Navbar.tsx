@@ -82,17 +82,17 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop Navigation Links */}
-          <div className="hidden lg:flex space-x-5 xl:space-x-6 h-full items-center">
+          {/* Desktop Navigation Links (Tidy & Cleanly Spaced) */}
+          <div className="hidden lg:flex items-center gap-1 xl:gap-2 2xl:gap-3 h-full">
             {/* 02. Stencil Page Dropdown */}
             <div 
               className="relative h-full flex items-center"
               onMouseEnter={() => setStencilHovered(true)}
               onMouseLeave={() => setStencilHovered(false)}
             >
-              <Link href="/stencil" className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-foreground">
+              <Link href="/stencil" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>Stencil</span>
-                <ChevronDown size={12} className={`transition-transform duration-200 ${stencilHovered ? 'rotate-180' : ''}`} />
+                <ChevronDown size={11} className={`transition-transform duration-200 ${stencilHovered ? 'rotate-180' : ''}`} />
               </Link>
               {stencilHovered && (
                 <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
@@ -134,9 +134,9 @@ export default function Navbar() {
               onMouseEnter={() => setScreenPrintingHovered(true)}
               onMouseLeave={() => setScreenPrintingHovered(false)}
             >
-              <Link href="/screen-printing" className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-foreground">
+              <Link href="/screen-printing" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>Screen Printing</span>
-                <ChevronDown size={12} className={`transition-transform duration-200 ${screenPrintingHovered ? 'rotate-180' : ''}`} />
+                <ChevronDown size={11} className={`transition-transform duration-200 ${screenPrintingHovered ? 'rotate-180' : ''}`} />
               </Link>
               {screenPrintingHovered && (
                 <div className="absolute top-[60px] left-0 w-52 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
@@ -167,9 +167,9 @@ export default function Navbar() {
               onMouseEnter={() => setDtfPrintingHovered(true)}
               onMouseLeave={() => setDtfPrintingHovered(false)}
             >
-              <Link href="/dtf-printing" className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-foreground">
+              <Link href="/dtf-printing" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>DTF Printing</span>
-                <ChevronDown size={12} className={`transition-transform duration-200 ${dtfPrintingHovered ? 'rotate-180' : ''}`} />
+                <ChevronDown size={11} className={`transition-transform duration-200 ${dtfPrintingHovered ? 'rotate-180' : ''}`} />
               </Link>
               {dtfPrintingHovered && (
                 <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
@@ -200,9 +200,9 @@ export default function Navbar() {
               onMouseEnter={() => setBatikStampHovered(true)}
               onMouseLeave={() => setBatikStampHovered(false)}
             >
-              <Link href="/batik-stamp" className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-foreground">
+              <Link href="/batik-stamp" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>Batik Stamp</span>
-                <ChevronDown size={12} className={`transition-transform duration-200 ${batikStampHovered ? 'rotate-180' : ''}`} />
+                <ChevronDown size={11} className={`transition-transform duration-200 ${batikStampHovered ? 'rotate-180' : ''}`} />
               </Link>
               {batikStampHovered && (
                 <div className="absolute top-[60px] left-0 w-44 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
@@ -222,9 +222,9 @@ export default function Navbar() {
               onMouseEnter={() => setLaserCuttingHovered(true)}
               onMouseLeave={() => setLaserCuttingHovered(false)}
             >
-              <Link href="/laser-cutting" className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-foreground">
+              <Link href="/laser-cutting" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>Laser Cutting</span>
-                <ChevronDown size={12} className={`transition-transform duration-200 ${laserCuttingHovered ? 'rotate-180' : ''}`} />
+                <ChevronDown size={11} className={`transition-transform duration-200 ${laserCuttingHovered ? 'rotate-180' : ''}`} />
               </Link>
               {laserCuttingHovered && (
                 <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
@@ -255,9 +255,9 @@ export default function Navbar() {
               onMouseEnter={() => setToolkitHovered(true)}
               onMouseLeave={() => setToolkitHovered(false)}
             >
-              <span className="text-xs font-semibold hover:text-primary transition-colors flex items-center gap-1 cursor-pointer text-foreground">
+              <span className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>Toolkit</span>
-                <ChevronDown size={12} className={`transition-transform duration-200 ${toolkitHovered ? 'rotate-180' : ''}`} />
+                <ChevronDown size={11} className={`transition-transform duration-200 ${toolkitHovered ? 'rotate-180' : ''}`} />
               </span>
               {toolkitHovered && (
                 <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
@@ -275,17 +275,17 @@ export default function Navbar() {
             </div>
 
             {/* 07. Digital downloads */}
-            <Link href="/downloads" className="text-xs font-semibold hover:text-primary transition-colors h-full flex items-center text-foreground">
-              Digital downloads
+            <Link href="/downloads" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
+              Downloads
             </Link>
 
             {/* 08. Materials / Consumables */}
-            <Link href="/materials" className="text-xs font-semibold hover:text-primary transition-colors h-full flex items-center text-foreground">
-              Materials / Consumables
+            <Link href="/materials" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
+              Materials
             </Link>
 
             {/* 09. Blog Knowledge Hub */}
-            <Link href="/blog" className="text-xs font-semibold hover:text-primary transition-colors h-full flex items-center text-foreground">
+            <Link href="/blog" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
               Blog
             </Link>
           </div>
