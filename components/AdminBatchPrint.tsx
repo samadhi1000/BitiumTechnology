@@ -203,31 +203,31 @@ export const sampleOrders: OrderItem[] = [
 
 export function QuarterOrderCard({ order }: { order: OrderItem }) {
   return (
-    <div className="w-full h-full bg-white text-black font-sans border border-black flex flex-col justify-between select-none box-border p-1.5 text-[8px] leading-tight overflow-hidden">
+    <div className="w-full h-full bg-white text-black font-sans border border-black flex flex-col justify-between select-none box-border p-1 text-[7.5px] leading-tight overflow-hidden">
       <div>
         {/* Top Header Section */}
         <div className="border border-black flex">
           {/* Top Left: WhatsApp & Details */}
           <div className="w-[56%] border-r border-black p-1 flex flex-col justify-between">
-            <div className="flex items-center gap-1 font-bold text-[8.5px]">
+            <div className="flex items-center gap-1 font-bold text-[8px]">
               <span className="shrink-0">WATSAPP No.</span>
-              <span className="font-semibold text-[8.5px] truncate border-b border-dotted border-black flex-1">
+              <span className="font-semibold text-[8px] truncate border-b border-dotted border-black flex-1">
                 {order.whatsappNo || ''}
               </span>
             </div>
-            <div className="mt-0.5 space-y-1">
+            <div className="mt-0.5 space-y-0.5">
               <div className="border-b border-dotted border-gray-600 h-3 flex items-center overflow-hidden">
-                <span className="text-[7.5px] font-medium truncate">
+                <span className="text-[7px] font-medium truncate">
                   {order.customerName ? `Name: ${order.customerName}` : ''}
                 </span>
               </div>
               <div className="border-b border-dotted border-gray-600 h-3 flex items-center overflow-hidden">
-                <span className="text-[7px] truncate text-gray-800">
+                <span className="text-[6.5px] truncate text-gray-800">
                   {order.address ? `Addr: ${order.address}` : ''}
                 </span>
               </div>
-              <div className="border-b border-dotted border-gray-600 h-3 flex items-center overflow-hidden">
-                <span className="text-[7px] text-gray-600 truncate">
+              <div className="border-b border-dotted border-gray-600 h-2.5 flex items-center overflow-hidden">
+                <span className="text-[6.5px] text-gray-600 truncate">
                   {order.id ? `Ref: ${order.id}` : ''}
                 </span>
               </div>
@@ -235,7 +235,7 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
           </div>
 
           {/* Top Right: Delivery Options */}
-          <div className="w-[44%] p-1 text-[6.5px] font-medium flex flex-col justify-between gap-0.5 bg-gray-50/50 leading-tight">
+          <div className="w-[44%] p-1 text-[6.2px] font-medium flex flex-col justify-between gap-0.5 bg-gray-50/50 leading-tight">
             {defaultDeliveryOptions.map((item) => {
               const isSelected = order.deliveryMethod === item.id;
               return (
@@ -243,7 +243,7 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
                   <span className={`truncate pr-0.5 ${isSelected ? 'font-bold text-black' : 'text-gray-700'}`}>
                     {item.label}
                   </span>
-                  <span className="w-2.5 h-2.5 border border-black shrink-0 inline-flex items-center justify-center font-bold text-[7px] leading-none">
+                  <span className="w-2.5 h-2.5 border border-black shrink-0 inline-flex items-center justify-center font-bold text-[6.5px] leading-none">
                     {isSelected ? '✓' : ''}
                   </span>
                 </div>
@@ -253,7 +253,7 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
         </div>
 
         {/* Date & Total Amount */}
-        <div className="border-x border-b border-black flex items-center justify-between px-1.5 py-0.5 text-[8px] font-semibold bg-gray-50/70">
+        <div className="border-x border-b border-black flex items-center justify-between px-1 py-0.5 text-[7.5px] font-semibold bg-gray-50/70">
           <div className="flex items-center gap-1 w-1/2 overflow-hidden">
             <span className="shrink-0">Date :</span>
             <span className="font-normal truncate border-b border-dotted border-black flex-1">
@@ -269,7 +269,7 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
         </div>
 
         {/* Note */}
-        <div className="border-x border-b border-black px-1.5 py-0.5 text-[7.5px] flex items-center gap-1 overflow-hidden">
+        <div className="border-x border-b border-black px-1 py-0.5 text-[7px] flex items-center gap-1 overflow-hidden">
           <span className="font-semibold whitespace-nowrap shrink-0">* Note :</span>
           <span className="font-normal text-gray-700 truncate border-b border-dotted border-gray-500 flex-1">
             {order.note || ''}
@@ -277,7 +277,7 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
         </div>
 
         {/* Stencils Table Header */}
-        <div className="border-x border-b border-black grid grid-cols-5 text-center font-bold text-[7.5px] bg-gray-100">
+        <div className="border-x border-b border-black grid grid-cols-5 text-center font-bold text-[7px] bg-gray-100">
           <div className="col-span-3 border-r border-black py-0.5">
             A3 - STENCILS
           </div>
@@ -292,7 +292,7 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
         {/* Stencils 7 Rows */}
         <div className="border-x border-b border-black divide-y divide-gray-300">
           {order.stencils.map((row, rIdx) => (
-            <div key={`st-${rIdx}`} className="grid grid-cols-5 h-[13.5px]">
+            <div key={`st-${rIdx}`} className="grid grid-cols-5 h-[12px]">
               {row.map((cell, cIdx) => (
                 <div
                   key={`st-${rIdx}-${cIdx}`}
@@ -300,10 +300,10 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
                     cIdx < 4 ? 'border-r border-black' : ''
                   }`}
                 >
-                  <span className="text-[7px] font-mono font-medium truncate pr-0.5">
+                  <span className="text-[6.5px] font-mono font-medium truncate pr-0.5">
                     {cell.code}
                   </span>
-                  <span className="w-2.5 h-2.5 border border-black shrink-0 inline-flex items-center justify-center font-bold text-[7px] leading-none">
+                  <span className="w-2.5 h-2.5 border border-black shrink-0 inline-flex items-center justify-center font-bold text-[6.5px] leading-none">
                     {cell.checked ? '✓' : ''}
                   </span>
                 </div>
@@ -313,14 +313,14 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
         </div>
 
         {/* Fabric Painting Header */}
-        <div className="border-x border-b border-black text-center font-bold text-[8px] py-0.5 bg-gray-100">
+        <div className="border-x border-b border-black text-center font-bold text-[7.5px] py-0.5 bg-gray-100">
           Fabric Painting
         </div>
 
         {/* Fabric Painting 4 Rows */}
         <div className="border-x border-b border-black divide-y divide-gray-300">
           {order.fabricPainting.map((row, rIdx) => (
-            <div key={`fab-${rIdx}`} className="grid grid-cols-5 h-[13.5px]">
+            <div key={`fab-${rIdx}`} className="grid grid-cols-5 h-[12px]">
               {row.map((cell, cIdx) => (
                 <div
                   key={`fab-${rIdx}-${cIdx}`}
@@ -328,10 +328,10 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
                     cIdx < 4 ? 'border-r border-black' : ''
                   }`}
                 >
-                  <span className="text-[7px] font-mono font-medium truncate pr-0.5">
+                  <span className="text-[6.5px] font-mono font-medium truncate pr-0.5">
                     {cell.code}
                   </span>
-                  <span className="w-2.5 h-2.5 border border-black shrink-0 inline-flex items-center justify-center font-bold text-[7px] leading-none">
+                  <span className="w-2.5 h-2.5 border border-black shrink-0 inline-flex items-center justify-center font-bold text-[6.5px] leading-none">
                     {cell.checked ? '✓' : ''}
                   </span>
                 </div>
@@ -341,34 +341,34 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
         </div>
 
         {/* Accessories Bottom Row */}
-        <div className="border-x border-b border-black grid grid-cols-5 text-[6.8px] font-semibold bg-gray-50/50">
+        <div className="border-x border-b border-black grid grid-cols-5 text-[6.5px] font-semibold bg-gray-50/50">
           <div className="border-r border-black p-0.5 flex items-center justify-between">
             <span className="leading-tight truncate pr-0.5">Roller Brush</span>
-            <span className="w-2.5 h-2.5 border border-black inline-flex items-center justify-center shrink-0 font-bold text-[7px]">
+            <span className="w-2.5 h-2.5 border border-black inline-flex items-center justify-center shrink-0 font-bold text-[6.5px]">
               {order.accessories.rollerBrush ? '✓' : ''}
             </span>
           </div>
           <div className="border-r border-black p-0.5 flex items-center justify-between">
             <span className="leading-tight truncate pr-0.5">Paint Brush</span>
-            <span className="w-2.5 h-2.5 border border-black inline-flex items-center justify-center shrink-0 font-bold text-[7px]">
+            <span className="w-2.5 h-2.5 border border-black inline-flex items-center justify-center shrink-0 font-bold text-[6.5px]">
               {order.accessories.paintBrush ? '✓' : ''}
             </span>
           </div>
           <div className="border-r border-black p-0.5 flex items-center justify-between">
             <span className="leading-tight truncate pr-0.5">Fabric Paint</span>
-            <span className="w-2.5 h-2.5 border border-black inline-flex items-center justify-center shrink-0 font-bold text-[7px]">
+            <span className="w-2.5 h-2.5 border border-black inline-flex items-center justify-center shrink-0 font-bold text-[6.5px]">
               {order.accessories.fabricPaint ? '✓' : ''}
             </span>
           </div>
           <div className="border-r border-black p-0.5 flex items-center justify-between">
             <span className="leading-tight truncate pr-0.5">Tracing</span>
-            <span className="w-2.5 h-2.5 border border-black inline-flex items-center justify-center shrink-0 font-bold text-[7px]">
+            <span className="w-2.5 h-2.5 border border-black inline-flex items-center justify-center shrink-0 font-bold text-[6.5px]">
               {order.accessories.tracing ? '✓' : ''}
             </span>
           </div>
           <div className="p-0.5 flex items-center justify-between">
             <span className="leading-tight truncate pr-0.5">Fabric</span>
-            <span className="w-2.5 h-2.5 border border-black inline-flex items-center justify-center shrink-0 font-bold text-[7px]">
+            <span className="w-2.5 h-2.5 border border-black inline-flex items-center justify-center shrink-0 font-bold text-[6.5px]">
               {order.accessories.fabric ? '✓' : ''}
             </span>
           </div>
@@ -376,7 +376,7 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
       </div>
 
       {/* Footer / Office Use */}
-      <div className="pt-1 text-[7.5px] font-bold flex items-center justify-between">
+      <div className="pt-0.5 text-[7px] font-bold flex items-center justify-between">
         <div className="flex items-center gap-0.5 w-[32%]">
           <span className="shrink-0">Check</span>
           <span className="flex-1 border-b border-dotted border-black h-2"></span>
@@ -441,6 +441,66 @@ export default function AdminBatchPrint() {
   return (
     <div className="space-y-6">
       
+      {/* Embedded High-Precision Print CSS */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @media print {
+            @page {
+              size: A4 portrait;
+              margin: 0mm !important;
+            }
+            
+            html, body {
+              margin: 0 !important;
+              padding: 0 !important;
+              background: #ffffff !important;
+              color: #000000 !important;
+              height: 297mm !important;
+              max-height: 297mm !important;
+              overflow: hidden !important;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
+
+            /* Hide everything outside the batch print sheet */
+            body * {
+              visibility: hidden !important;
+            }
+
+            /* Make ONLY the exact A4 print sheet visible */
+            .a4-print-sheet, .a4-print-sheet * {
+              visibility: visible !important;
+            }
+
+            .a4-print-sheet {
+              position: fixed !important;
+              top: 0 !important;
+              left: 0 !important;
+              width: 210mm !important;
+              height: 297mm !important;
+              max-width: 210mm !important;
+              max-height: 297mm !important;
+              margin: 0 !important;
+              padding: 2.5mm !important;
+              box-sizing: border-box !important;
+              background: #ffffff !important;
+              border: none !important;
+              box-shadow: none !important;
+              border-radius: 0 !important;
+              z-index: 9999999 !important;
+              page-break-after: avoid !important;
+              page-break-inside: avoid !important;
+              break-inside: avoid !important;
+            }
+
+            /* Explicitly hide non-printable elements */
+            nav, header, footer, aside, .no-print, [id*="chat"], [class*="Chat"], [class*="chatbot"], [class*="floating"] {
+              display: none !important;
+            }
+          }
+        `
+      }} />
+
       {/* Control Strip (Hidden in Print) */}
       <div className="bg-card/40 border border-border rounded-2xl p-5 shadow-sm no-print space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
@@ -507,7 +567,7 @@ export default function AdminBatchPrint() {
       </div>
 
       {/* THE EXACT A4 PRINT CONTAINER (2x2 Grid) */}
-      <div className="a4-print-sheet w-full max-w-[210mm] min-h-[297mm] mx-auto bg-white p-3 sm:p-4 rounded-xl shadow-2xl border border-slate-300 grid grid-cols-2 grid-rows-2 gap-3 relative box-border">
+      <div className="a4-print-sheet w-full max-w-[210mm] min-h-[294mm] mx-auto bg-white p-2.5 sm:p-3 rounded-xl shadow-2xl border border-slate-300 grid grid-cols-2 grid-rows-2 gap-2 relative box-border">
         
         {/* Dashed Horizontal Cutting Line */}
         <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 border-t border-dashed border-gray-400 pointer-events-none z-10 flex items-center justify-between px-2">
@@ -522,16 +582,16 @@ export default function AdminBatchPrint() {
         </div>
 
         {/* 4 Quadrants with 4 Customer Orders */}
-        <div className="w-full h-full p-1">
+        <div className="w-full h-full p-0.5">
           <QuarterOrderCard order={selectedSlots[0] || createEmptyOrder('ORD-1')} />
         </div>
-        <div className="w-full h-full p-1">
+        <div className="w-full h-full p-0.5">
           <QuarterOrderCard order={selectedSlots[1] || createEmptyOrder('ORD-2')} />
         </div>
-        <div className="w-full h-full p-1">
+        <div className="w-full h-full p-0.5">
           <QuarterOrderCard order={selectedSlots[2] || createEmptyOrder('ORD-3')} />
         </div>
-        <div className="w-full h-full p-1">
+        <div className="w-full h-full p-0.5">
           <QuarterOrderCard order={selectedSlots[3] || createEmptyOrder('ORD-4')} />
         </div>
 

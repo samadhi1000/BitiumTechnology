@@ -543,3 +543,26 @@ html.dark .filter-btn.active, html.dark .filter-btn:hover {
   transform: translateY(-2px) scale(1.02);
   box-shadow: 0 0 30px rgba(255, 107, 0, 0.3), 0 8px 25px rgba(255, 107, 0, 0.2);
 }
+
+/* Global Print Styles */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .no-print,
+  header,
+  footer,
+  nav,
+  aside,
+  [class*="Chat"],
+  [class*="chatbot"],
+  [id*="chat"],
+  [class*="floating"] {
+    display: none !important;
+  }
+}
+

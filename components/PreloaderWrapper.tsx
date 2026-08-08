@@ -29,10 +29,10 @@ export default function PreloaderWrapper({ children }: { children: React.ReactNo
     <>
       {show && <Preloader onDone={handleDone} />}
       <div 
-        className={`transition-all duration-1000 ease-out transform ${
+        className={`w-full min-h-full flex flex-col ${
           heroVisible || !show 
-            ? 'opacity-100 translate-y-0 scale-100' 
-            : 'opacity-0 translate-y-2 scale-[0.99] pointer-events-none'
+            ? 'opacity-100 transition-opacity duration-700' 
+            : 'opacity-0 pointer-events-none'
         }`}
       >
         {children}
