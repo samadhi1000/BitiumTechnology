@@ -39,12 +39,13 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { sanitizeText } from '@/lib/security/sanitize';
+import AdminBatchPrint from '@/components/AdminBatchPrint';
 
 export default function AdminPanelPage() {
   const { user, profile, loading: authLoading, signOut } = useAuth();
   
-  // Tab states: 'products' | 'digital'
-  const [activeTab, setActiveTab] = useState<'products' | 'digital'>('products');
+  // Tab states: 'products' | 'digital' | 'batch-print'
+  const [activeTab, setActiveTab] = useState<'products' | 'digital' | 'batch-print'>('products');
   
   const [products, setProducts] = useState<Product[]>([]);
   const [digitalArtworks, setDigitalArtworks] = useState<DigitalArtwork[]>([]);
@@ -620,10 +621,10 @@ export default function AdminPanelPage() {
           {/* Unified Tabs & Search Row */}
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between p-4 rounded-2xl border border-border bg-card/20 backdrop-blur-sm">
             {/* TABS Toggles */}
-            <div className="flex items-center gap-2 border border-border p-1 rounded-xl bg-background/50">
+            <div className="flex flex-wrap items-center gap-2 border border-border p-1 rounded-xl bg-background/50">
               <button
                 onClick={() => { setActiveTab('products'); setCategoryFilter('all'); }}
-                className={`flex items-center gap-1.5 px-5 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
                   activeTab === 'products' 
                     ? 'bg-[#8DFF00] text-[#0a0a0a]' 
                     : 'text-muted-foreground hover:text-foreground'
@@ -634,7 +635,7 @@ export default function AdminPanelPage() {
               </button>
               <button
                 onClick={() => { setActiveTab('digital'); setCategoryFilter('all'); }}
-                className={`flex items-center gap-1.5 px-5 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
                   activeTab === 'digital' 
                     ? 'bg-[#8DFF00] text-[#0a0a0a]' 
                     : 'text-muted-foreground hover:text-foreground'
@@ -643,20 +644,32 @@ export default function AdminPanelPage() {
                 <Folder size={14} />
                 <span>Digital Artworks</span>
               </button>
+              <button
+                onClick={() => { setActiveTab('batch-print'); }}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                  activeTab === 'batch-print' 
+                    ? 'bg-[#8DFF00] text-[#0a0a0a]' 
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <Sparkles size={14} />
+                <span>Batch Print (4-in-1 A4)</span>
+              </button>
             </div>
 
-            {/* Category selection */}
-            <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
-              <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mr-2 flex items-center gap-1.5"><Filter size={12} /> Category:</span>
-              
-              {activeTab === 'products' ? (
-                // Store categories
-                [
-                  { id: 'all', label: 'All' },
-                  { id: 'stencil', label: 'Stencils' },
-                  { id: 'screen-printing', label: 'Screen Print' },
-                  { id: 'dtf_sheet', label: 'DTF Printing' },
-                  { id: 'batik-stamp', label: 'Batik Stamps' },
+            {/* Category selection - Only for Products & Digital */}
+            {activeTab !== 'batch-print' && (
+              <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mr-2 flex items-center gap-1.5"><Filter size={12} /> Category:</span>
+                
+                {activeTab === 'products' ? (
+                  // Store categories
+                  [
+                    { id: 'all', label: 'All' },
+                    { id: 'stencil', label: 'Stencils' },
+                    { id: 'screen-printing', label: 'Screen Print' },
+                    { id: 'dtf_sheet', label: 'DTF Printing' },
+                    { id: 'batik-stamp', label: 'Batik Stamps' },
                   { id: 'materials', label: 'Consumables' },
                   { id: 'laser-cutting', label: 'Laser Cut' }
                 ].map((cat) => (
@@ -695,6 +708,7 @@ export default function AdminPanelPage() {
                 ))
               )}
             </div>
+            )}
 
             {/* Search Input */}
             <div className="relative w-full md:w-72">
@@ -709,101 +723,178 @@ export default function AdminPanelPage() {
             </div>
           </div>
 
-          {/* MAIN TABLES CONTAINER */}
-          <div className="rounded-2xl border border-border bg-card/10 backdrop-blur-sm overflow-hidden">
-            {loading ? (
-              <div className="p-16 text-center text-muted-foreground flex flex-col items-center justify-center gap-2">
-                <RefreshCw size={24} className="animate-spin text-[#8DFF00]" />
-                <p className="text-xs">Fetching storefront catalog databases...</p>
-              </div>
-            ) : activeTab === 'products' ? (
-              // 1. STORE PRODUCTS TABLE
-              filteredProducts.length === 0 ? (
-                <div className="p-16 text-center text-muted-foreground space-y-2">
-                  <Package size={36} className="mx-auto text-muted-foreground mb-1" />
-                  <p className="text-sm font-semibold">No store products found</p>
-                  <p className="text-xs text-muted-foreground">Adjust filters or create a new catalog item.</p>
+          {/* MAIN CONTENT CONTAINER */}
+          {activeTab === 'batch-print' ? (
+            <AdminBatchPrint />
+          ) : (
+            <div className="rounded-2xl border border-border bg-card/10 backdrop-blur-sm overflow-hidden">
+              {loading ? (
+                <div className="p-16 text-center text-muted-foreground flex flex-col items-center justify-center gap-2">
+                  <RefreshCw size={24} className="animate-spin text-[#8DFF00]" />
+                  <p className="text-xs">Fetching storefront catalog databases...</p>
                 </div>
+              ) : activeTab === 'products' ? (
+                // 1. STORE PRODUCTS TABLE
+                filteredProducts.length === 0 ? (
+                  <div className="p-16 text-center text-muted-foreground space-y-2">
+                    <Package size={36} className="mx-auto text-muted-foreground mb-1" />
+                    <p className="text-sm font-semibold">No store products found</p>
+                    <p className="text-xs text-muted-foreground">Adjust filters or create a new catalog item.</p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse text-left text-xs">
+                      <thead>
+                        <tr className="bg-background/80 border-b border-border text-muted-foreground font-bold uppercase tracking-wider text-[10px]">
+                          <th className="p-4 w-16">Image</th>
+                          <th className="p-4 w-60">Product Details</th>
+                          <th className="p-4">Category</th>
+                          <th className="p-4">Price</th>
+                          <th className="p-4">Discount</th>
+                          <th className="p-4 text-center">Stock</th>
+                          <th className="p-4 text-center">Status</th>
+                          <th className="p-4 text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-zinc-900/50">
+                        {filteredProducts.map((p) => {
+                          const primaryStock = p.variants?.[0]?.stock_quantity ?? 0;
+                          const discount = p.original_price ? Math.round(((p.original_price - p.price) / p.original_price) * 100) : 0;
+                          
+                          return (
+                            <tr key={p.id} className="hover:bg-card/25 transition-colors">
+                              <td className="p-4">
+                                <div className="relative w-12 h-12 rounded-xl bg-background overflow-hidden border border-border">
+                                  <Image src={p.image_url} alt={p.name} fill className="object-cover" />
+                                </div>
+                              </td>
+                              <td className="p-4">
+                                <div className="space-y-0.5">
+                                  <span className="font-extrabold text-foreground block text-xs line-clamp-1">{p.name}</span>
+                                  <span className="text-[10px] text-muted-foreground block truncate max-w-[200px]">{p.description}</span>
+                                  <span className="text-[9px] font-mono text-zinc-550 block select-all">UUID: {p.id}</span>
+                                </div>
+                              </td>
+                              <td className="p-4">
+                                <span className="px-2 py-0.5 rounded bg-card border border-border text-muted-foreground text-[10px] font-bold uppercase">
+                                  {p.category.replace('_', ' ')}
+                                </span>
+                              </td>
+                              <td className="p-4 font-bold text-foreground">
+                                Rs. {p.price.toLocaleString()}
+                              </td>
+                              <td className="p-4">
+                                {p.original_price ? (
+                                  <div className="space-y-0.5">
+                                    <span className="text-[10px] text-muted-foreground line-through block">Rs. {p.original_price.toLocaleString()}</span>
+                                    <span className="px-1.5 py-0.5 rounded bg-rose-600/10 text-rose-450 text-[9px] font-bold uppercase inline-block">
+                                      -{discount}%
+                                    </span>
+                                  </div>
+                                ) : (
+                                  <span className="text-zinc-650">—</span>
+                                )}
+                              </td>
+                              <td className="p-4 text-center">
+                                <span className={`font-black text-xs ${
+                                  primaryStock === 0 ? 'text-rose-500' : primaryStock < 20 ? 'text-amber-500' : 'text-foreground'
+                                }`}>
+                                  {primaryStock}
+                                </span>
+                              </td>
+                              <td className="p-4 text-center">
+                                <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase ${
+                                  p.is_active 
+                                    ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
+                                    : 'bg-muted text-muted-foreground border border-border'
+                                }`}>
+                                  {p.is_active ? 'Active' : 'Hidden'}
+                                </span>
+                              </td>
+                              <td className="p-4 text-right">
+                                <div className="flex justify-end gap-2">
+                                  <button
+                                    onClick={() => openEditProductModal(p)}
+                                    className="p-2 rounded-lg bg-card border border-border hover:border-[#8DFF00]/40 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                                  >
+                                    <Edit size={13} />
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteProduct(p.id)}
+                                    className="p-2 rounded-lg bg-card border border-border hover:border-rose-500/40 text-muted-foreground hover:text-rose-400 transition-colors cursor-pointer"
+                                  >
+                                    <Trash2 size={13} />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                )
               ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full border-collapse text-left text-xs">
-                    <thead>
-                      <tr className="bg-background/80 border-b border-border text-muted-foreground font-bold uppercase tracking-wider text-[10px]">
-                        <th className="p-4 w-16">Image</th>
-                        <th className="p-4 w-60">Product Details</th>
-                        <th className="p-4">Category</th>
-                        <th className="p-4">Price</th>
-                        <th className="p-4">Discount</th>
-                        <th className="p-4 text-center">Stock</th>
-                        <th className="p-4 text-center">Status</th>
-                        <th className="p-4 text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-zinc-900/50">
-                      {filteredProducts.map((p) => {
-                        const primaryStock = p.variants?.[0]?.stock_quantity ?? 0;
-                        const discount = p.original_price ? Math.round(((p.original_price - p.price) / p.original_price) * 100) : 0;
-                        
-                        return (
-                          <tr key={p.id} className="hover:bg-card/25 transition-colors">
+                // 2. DIGITAL ARTWORKS TABLE
+                filteredDigital.length === 0 ? (
+                  <div className="p-16 text-center text-muted-foreground space-y-2">
+                    <Folder size={36} className="mx-auto text-muted-foreground mb-1" />
+                    <p className="text-sm font-semibold">No digital designs found</p>
+                    <p className="text-xs text-muted-foreground">Adjust filters or create a new digital item.</p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse text-left text-xs">
+                      <thead>
+                        <tr className="bg-background/80 border-b border-border text-muted-foreground font-bold uppercase tracking-wider text-[10px]">
+                          <th className="p-4 w-16">Preview</th>
+                          <th className="p-4 w-60">Design Details</th>
+                          <th className="p-4">Category</th>
+                          <th className="p-4">Price</th>
+                          <th className="p-4">Format</th>
+                          <th className="p-4">Resolution</th>
+                          <th className="p-4 text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-zinc-900/50">
+                        {filteredDigital.map((d) => (
+                          <tr key={d.id} className="hover:bg-card/25 transition-colors">
                             <td className="p-4">
                               <div className="relative w-12 h-12 rounded-xl bg-background overflow-hidden border border-border">
-                                <Image src={p.image_url} alt={p.name} fill className="object-cover" />
+                                <Image src={d.preview_url} alt={d.title} fill className="object-cover" />
                               </div>
                             </td>
                             <td className="p-4">
                               <div className="space-y-0.5">
-                                <span className="font-extrabold text-foreground block text-xs line-clamp-1">{p.name}</span>
-                                <span className="text-[10px] text-muted-foreground block truncate max-w-[200px]">{p.description}</span>
-                                <span className="text-[9px] font-mono text-zinc-550 block select-all">UUID: {p.id}</span>
+                                <span className="font-extrabold text-foreground block text-xs line-clamp-1">{d.title}</span>
+                                <span className="text-[10px] text-muted-foreground block truncate max-w-[200px]">{d.description}</span>
+                                <span className="text-[9px] font-mono text-zinc-550 block select-all">File Ref: {d.file_key}</span>
                               </div>
                             </td>
                             <td className="p-4">
                               <span className="px-2 py-0.5 rounded bg-card border border-border text-muted-foreground text-[10px] font-bold uppercase">
-                                {p.category.replace('_', ' ')}
+                                {d.category}
                               </span>
                             </td>
                             <td className="p-4 font-bold text-foreground">
-                              Rs. {p.price.toLocaleString()}
+                              Rs. {d.price.toLocaleString()}
                             </td>
-                            <td className="p-4">
-                              {p.original_price ? (
-                                <div className="space-y-0.5">
-                                  <span className="text-[10px] text-muted-foreground line-through block">Rs. {p.original_price.toLocaleString()}</span>
-                                  <span className="px-1.5 py-0.5 rounded bg-rose-600/10 text-rose-450 text-[9px] font-bold uppercase inline-block">
-                                    -{discount}%
-                                  </span>
-                                </div>
-                              ) : (
-                                <span className="text-zinc-650">—</span>
-                              )}
+                            <td className="p-4 font-semibold text-muted-foreground">
+                              {d.file_format} ({d.file_size || 'N/A'})
                             </td>
-                            <td className="p-4 text-center">
-                              <span className={`font-black text-xs ${
-                                primaryStock === 0 ? 'text-rose-500' : primaryStock < 20 ? 'text-amber-500' : 'text-foreground'
-                              }`}>
-                                {primaryStock}
-                              </span>
-                            </td>
-                            <td className="p-4 text-center">
-                              <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase ${
-                                p.is_active 
-                                  ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
-                                  : 'bg-muted text-muted-foreground border border-border'
-                              }`}>
-                                {p.is_active ? 'Active' : 'Hidden'}
-                              </span>
+                            <td className="p-4 text-muted-foreground">
+                              {d.resolution || 'Standard'}
                             </td>
                             <td className="p-4 text-right">
                               <div className="flex justify-end gap-2">
                                 <button
-                                  onClick={() => openEditProductModal(p)}
+                                  onClick={() => openEditDigitalModal(d)}
                                   className="p-2 rounded-lg bg-card border border-border hover:border-[#8DFF00]/40 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                                 >
                                   <Edit size={13} />
                                 </button>
                                 <button
-                                  onClick={() => handleDeleteProduct(p.id)}
+                                  onClick={() => handleDeleteDigital(d.id)}
                                   className="p-2 rounded-lg bg-card border border-border hover:border-rose-500/40 text-muted-foreground hover:text-rose-400 transition-colors cursor-pointer"
                                 >
                                   <Trash2 size={13} />
@@ -811,87 +902,14 @@ export default function AdminPanelPage() {
                               </div>
                             </td>
                           </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              )
-            ) : (
-              // 2. DIGITAL ARTWORKS TABLE
-              filteredDigital.length === 0 ? (
-                <div className="p-16 text-center text-muted-foreground space-y-2">
-                  <Folder size={36} className="mx-auto text-muted-foreground mb-1" />
-                  <p className="text-sm font-semibold">No digital designs found</p>
-                  <p className="text-xs text-muted-foreground">Adjust filters or create a new digital item.</p>
-                </div>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full border-collapse text-left text-xs">
-                    <thead>
-                      <tr className="bg-background/80 border-b border-border text-muted-foreground font-bold uppercase tracking-wider text-[10px]">
-                        <th className="p-4 w-16">Preview</th>
-                        <th className="p-4 w-60">Design Details</th>
-                        <th className="p-4">Category</th>
-                        <th className="p-4">Price</th>
-                        <th className="p-4">Format</th>
-                        <th className="p-4">Resolution</th>
-                        <th className="p-4 text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-zinc-900/50">
-                      {filteredDigital.map((d) => (
-                        <tr key={d.id} className="hover:bg-card/25 transition-colors">
-                          <td className="p-4">
-                            <div className="relative w-12 h-12 rounded-xl bg-background overflow-hidden border border-border">
-                              <Image src={d.preview_url} alt={d.title} fill className="object-cover" />
-                            </div>
-                          </td>
-                          <td className="p-4">
-                            <div className="space-y-0.5">
-                              <span className="font-extrabold text-foreground block text-xs line-clamp-1">{d.title}</span>
-                              <span className="text-[10px] text-muted-foreground block truncate max-w-[200px]">{d.description}</span>
-                              <span className="text-[9px] font-mono text-zinc-550 block select-all">File Ref: {d.file_key}</span>
-                            </div>
-                          </td>
-                          <td className="p-4">
-                            <span className="px-2 py-0.5 rounded bg-card border border-border text-muted-foreground text-[10px] font-bold uppercase">
-                              {d.category}
-                            </span>
-                          </td>
-                          <td className="p-4 font-bold text-foreground">
-                            Rs. {d.price.toLocaleString()}
-                          </td>
-                          <td className="p-4 font-semibold text-muted-foreground">
-                            {d.file_format} ({d.file_size || 'N/A'})
-                          </td>
-                          <td className="p-4 text-muted-foreground">
-                            {d.resolution || 'Standard'}
-                          </td>
-                          <td className="p-4 text-right">
-                            <div className="flex justify-end gap-2">
-                              <button
-                                onClick={() => openEditDigitalModal(d)}
-                                className="p-2 rounded-lg bg-card border border-border hover:border-[#8DFF00]/40 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                              >
-                                <Edit size={13} />
-                              </button>
-                              <button
-                                onClick={() => handleDeleteDigital(d.id)}
-                                className="p-2 rounded-lg bg-card border border-border hover:border-rose-500/40 text-muted-foreground hover:text-rose-400 transition-colors cursor-pointer"
-                              >
-                                <Trash2 size={13} />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )
-            )}
-          </div>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )
+              )}
+            </div>
+          )}
           
         </div>
       </div>
