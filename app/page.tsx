@@ -348,8 +348,8 @@ function HomeContent() {
                 </div>
 
                 {/* Hoodie preview */}
-                <div className="w-[140px] bg-[#111827] dark:bg-[#0c101b] border-l border-border flex flex-col items-center justify-between py-4 select-none">
-                  <div className="text-[11px] font-heading font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Preview</div>
+                <div className="w-[140px] bg-zinc-100 dark:bg-[#0c101b] border-l border-border flex flex-col items-center justify-between py-4 select-none">
+                  <div className="text-[11px] font-heading font-semibold text-muted-foreground uppercase tracking-wider">Preview</div>
                   
                   {/* Realistic Hoodie Preview */}
                   <div className="relative w-full h-[180px] flex items-center justify-center overflow-hidden">
@@ -374,7 +374,7 @@ function HomeContent() {
                     )}
                   </div>
                   
-                  <div className="text-[10px] text-zinc-400 dark:text-zinc-500 text-center font-sans font-bold">Black Hoodie</div>
+                  <div className="text-[10px] text-muted-foreground text-center font-sans font-bold">Black Hoodie</div>
                 </div>
               </div>
             </div>
