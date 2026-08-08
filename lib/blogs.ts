@@ -40,8 +40,8 @@ export const BLOG_POSTS: BlogPost[] = [
     "slug": "custom-stencils-vs-letter-stencils",
     "title": "Custom stencils vs letter stencils: which one do you actually need",
     "metaTitle": "Custom stencils vs letter stencils | Bitium Technology",
-    "metaDescription": "Discover the differences between custom stencils and letter stencils.",
-    "excerpt": "Find out which option best suits your creative projects and needs.",
+    "metaDescription": "Discover the differences between custom stencils and letter stencils. Find out which option best suits your creative projects and needs.",
+    "excerpt": "Walk into any craft store and you'll find shelves of pre-made stencils sitting next to alphabet sets. They look similar enough that it's easy to assume they solve the same problem. They don't.",
     "category": "Stencils & Fabric",
     "tags": [
       "Custom Stencils",
@@ -57,8 +57,8 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     "publishedAt": "2026-08-01",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/custom-stencils-vs-letter-stencils.jpeg",
-    "coverAlt": "An illustration depicting custom vs letter stencils",
+    "coverImage": "/images/blogs/custom-stencils-vs-letter-stencils.png",
+    "coverAlt": "an illustration depicting custom stencils vs letter stencils",
     "featured": true,
     "tableOfContents": [
       {
