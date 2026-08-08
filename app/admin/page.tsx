@@ -35,7 +35,8 @@ import {
   Folder,
   Sparkles,
   Upload,
-  Mail
+  Mail,
+  Printer
 } from 'lucide-react';
 import Image from 'next/image';
 import { sanitizeText } from '@/lib/security/sanitize';
@@ -546,19 +547,29 @@ export default function AdminPanelPage() {
                 <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
               </button>
               
-              <button
-                onClick={() => {
-                  if (activeTab === 'products') {
-                    openAddProductModal();
-                  } else {
-                    openAddDigitalModal();
-                  }
-                }}
-                className="flex items-center gap-2 px-5 py-3 rounded-xl bg-[#8DFF00] hover:bg-[#7acc00] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#8DFF00]/20 transition-all hover:scale-105 cursor-pointer"
-              >
-                <Plus size={16} />
-                <span>{activeTab === 'products' ? 'Add Product' : 'Add Design'}</span>
-              </button>
+              {activeTab === 'batch-print' ? (
+                <button
+                  onClick={() => window.print()}
+                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-[#8DFF00] hover:bg-[#7acc00] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#8DFF00]/20 transition-all hover:scale-105 cursor-pointer"
+                >
+                  <Printer size={16} />
+                  <span>Print 4-in-1 A4</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    if (activeTab === 'products') {
+                      openAddProductModal();
+                    } else {
+                      openAddDigitalModal();
+                    }
+                  }}
+                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-[#8DFF00] hover:bg-[#7acc00] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#8DFF00]/20 transition-all hover:scale-105 cursor-pointer"
+                >
+                  <Plus size={16} />
+                  <span>{activeTab === 'products' ? 'Add Product' : 'Add Design'}</span>
+                </button>
+              )}
               
               <button
                 onClick={signOut}
@@ -618,47 +629,57 @@ export default function AdminPanelPage() {
             </div>
           </div>
 
-          {/* Unified Tabs & Search Row */}
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between p-4 rounded-2xl border border-border bg-card/20 backdrop-blur-sm">
-            {/* TABS Toggles */}
-            <div className="flex flex-wrap items-center gap-2 border border-border p-1 rounded-xl bg-background/50">
-              <button
-                onClick={() => { setActiveTab('products'); setCategoryFilter('all'); }}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  activeTab === 'products' 
-                    ? 'bg-[#8DFF00] text-[#0a0a0a]' 
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                <Package size={14} />
-                <span>Store Catalog</span>
-              </button>
-              <button
-                onClick={() => { setActiveTab('digital'); setCategoryFilter('all'); }}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  activeTab === 'digital' 
-                    ? 'bg-[#8DFF00] text-[#0a0a0a]' 
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                <Folder size={14} />
-                <span>Digital Artworks</span>
-              </button>
-              <button
-                onClick={() => { setActiveTab('batch-print'); }}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  activeTab === 'batch-print' 
-                    ? 'bg-[#8DFF00] text-[#0a0a0a]' 
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                <Sparkles size={14} />
-                <span>Batch Print (4-in-1 A4)</span>
-              </button>
-            </div>
+          {/* Top Level Segmented Navigation Tabs */}
+          <div className="flex flex-wrap items-center gap-3 border-b border-border/60 pb-3">
+            <button
+              onClick={() => { setActiveTab('products'); setCategoryFilter('all'); }}
+              className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                activeTab === 'products'
+                  ? 'bg-[#8DFF00] text-[#0a0a0a] shadow-xl shadow-[#8DFF00]/20 scale-105'
+                  : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
+              }`}
+            >
+              <Package size={16} />
+              <span>Store Catalog</span>
+              <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${activeTab === 'products' ? 'bg-black text-[#8DFF00]' : 'bg-muted text-muted-foreground'}`}>
+                {totalProductsCount}
+              </span>
+            </button>
 
-            {/* Category selection - Only for Products & Digital */}
-            {activeTab !== 'batch-print' && (
+            <button
+              onClick={() => { setActiveTab('digital'); setCategoryFilter('all'); }}
+              className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                activeTab === 'digital'
+                  ? 'bg-[#8DFF00] text-[#0a0a0a] shadow-xl shadow-[#8DFF00]/20 scale-105'
+                  : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
+              }`}
+            >
+              <Folder size={16} />
+              <span>Digital Artworks</span>
+              <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${activeTab === 'digital' ? 'bg-black text-[#8DFF00]' : 'bg-muted text-muted-foreground'}`}>
+                {totalDigitalCount}
+              </span>
+            </button>
+
+            <button
+              onClick={() => { setActiveTab('batch-print'); }}
+              className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                activeTab === 'batch-print'
+                  ? 'bg-[#8DFF00] text-[#0a0a0a] shadow-xl shadow-[#8DFF00]/20 scale-105'
+                  : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
+              }`}
+            >
+              <Printer size={16} />
+              <span>Batch Print (4-in-1 A4)</span>
+              <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'batch-print' ? 'bg-black text-[#8DFF00]' : 'bg-indigo-600/30 text-indigo-300'}`}>
+                PRINT A4
+              </span>
+            </button>
+          </div>
+
+          {/* Secondary Filter & Search Row - Shown only for Store & Digital Catalogs */}
+          {activeTab !== 'batch-print' && (
+            <div className="flex flex-col md:flex-row gap-4 items-center justify-between p-4 rounded-2xl border border-border bg-card/20 backdrop-blur-sm">
               <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
                 <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mr-2 flex items-center gap-1.5"><Filter size={12} /> Category:</span>
                 
@@ -670,58 +691,58 @@ export default function AdminPanelPage() {
                     { id: 'screen-printing', label: 'Screen Print' },
                     { id: 'dtf_sheet', label: 'DTF Printing' },
                     { id: 'batik-stamp', label: 'Batik Stamps' },
-                  { id: 'materials', label: 'Consumables' },
-                  { id: 'laser-cutting', label: 'Laser Cut' }
-                ].map((cat) => (
-                  <button
-                    key={cat.id}
-                    onClick={() => setCategoryFilter(cat.id)}
-                    className={`px-3 py-1.5 rounded-lg text-[9px] font-bold transition-all cursor-pointer ${
-                      categoryFilter === cat.id 
-                        ? 'bg-[#8DFF00]/25 border border-[#8DFF00]/40 text-[#8DFF00]' 
-                        : 'bg-card border border-border text-muted-foreground hover:text-[#0a0a0a]'
-                    }`}
-                  >
-                    {cat.label}
-                  </button>
-                ))
-              ) : (
-                // Digital Artwork categories
-                [
-                  { id: 'all', label: 'All' },
-                  { id: 'batik', label: 'Batik Designs' },
-                  { id: 'vector', label: 'Vector Artwork' },
-                  { id: 'dtf', label: 'DTF Layouts' },
-                  { id: 'wall-art', label: 'Wall Art' }
-                ].map((cat) => (
-                  <button
-                    key={cat.id}
-                    onClick={() => setCategoryFilter(cat.id)}
-                    className={`px-3 py-1.5 rounded-lg text-[9px] font-bold transition-all cursor-pointer ${
-                      categoryFilter === cat.id 
-                        ? 'bg-[#8DFF00]/25 border border-[#8DFF00]/40 text-[#8DFF00]' 
-                        : 'bg-card border border-border text-muted-foreground hover:text-[#0a0a0a]'
-                    }`}
-                  >
-                    {cat.label}
-                  </button>
-                ))
-              )}
-            </div>
-            )}
+                    { id: 'materials', label: 'Consumables' },
+                    { id: 'laser-cutting', label: 'Laser Cut' }
+                  ].map((cat) => (
+                    <button
+                      key={cat.id}
+                      onClick={() => setCategoryFilter(cat.id)}
+                      className={`px-3 py-1.5 rounded-lg text-[9px] font-bold transition-all cursor-pointer ${
+                        categoryFilter === cat.id 
+                          ? 'bg-[#8DFF00]/25 border border-[#8DFF00]/40 text-[#8DFF00]' 
+                          : 'bg-card border border-border text-muted-foreground hover:text-[#0a0a0a]'
+                      }`}
+                    >
+                      {cat.label}
+                    </button>
+                  ))
+                ) : (
+                  // Digital Artwork categories
+                  [
+                    { id: 'all', label: 'All' },
+                    { id: 'batik', label: 'Batik Designs' },
+                    { id: 'vector', label: 'Vector Artwork' },
+                    { id: 'dtf', label: 'DTF Layouts' },
+                    { id: 'wall-art', label: 'Wall Art' }
+                  ].map((cat) => (
+                    <button
+                      key={cat.id}
+                      onClick={() => setCategoryFilter(cat.id)}
+                      className={`px-3 py-1.5 rounded-lg text-[9px] font-bold transition-all cursor-pointer ${
+                        categoryFilter === cat.id 
+                          ? 'bg-[#8DFF00]/25 border border-[#8DFF00]/40 text-[#8DFF00]' 
+                          : 'bg-card border border-border text-muted-foreground hover:text-[#0a0a0a]'
+                      }`}
+                    >
+                      {cat.label}
+                    </button>
+                  ))
+                )}
+              </div>
 
-            {/* Search Input */}
-            <div className="relative w-full md:w-72">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" size={15} />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search catalog titles, details..."
-                className="w-full pl-10 pr-4 py-2 rounded-xl border border-border bg-background text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
-              />
+              {/* Search Input */}
+              <div className="relative w-full md:w-72">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" size={15} />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search catalog titles, details..."
+                  className="w-full pl-10 pr-4 py-2 rounded-xl border border-border bg-background text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           {/* MAIN CONTENT CONTAINER */}
           {activeTab === 'batch-print' ? (
