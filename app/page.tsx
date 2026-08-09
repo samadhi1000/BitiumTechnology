@@ -273,7 +273,7 @@ function HomeContent() {
           {/* Left Column: Headline, Search, Actions */}
           <div className="lg:col-span-7 xl:col-span-7 space-y-6 flex flex-col items-start text-left">
             <div 
-              className="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#f0ffd6] dark:bg-[#2CFF05]/10 border border-[#2CFF05]/30 text-[#3a6600] dark:text-[#2CFF05] text-xs font-semibold backdrop-blur-sm shadow-sm"
+              className="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#2CFF05]/15 dark:bg-[#2CFF05]/10 border border-[#2CFF05]/30 text-[#2CFF05] text-xs font-semibold backdrop-blur-sm shadow-sm"
             >
               <Sparkles size={14} className="text-[#2CFF05]" />
               <span>Bitium Technology Print Store</span>
@@ -286,7 +286,7 @@ function HomeContent() {
             </h1>
             
             <p 
-              className="hero-text text-base sm:text-lg text-muted-foreground dark:text-zinc-200 max-w-xl leading-relaxed"
+              className="hero-text text-base sm:text-lg text-muted-foreground dark:text-white max-w-xl leading-relaxed font-normal"
             >
               From custom precision stencils to industrial DTF film rolls, exposed screen printing, and traditional batik stamps — explore our specialized print technology store.
             </p>
@@ -611,9 +611,9 @@ function HomeContent() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center hero-grid">
           {/* Left */}
           <div>
-            <div className="inline-flex items-center gap-2 bg-[#f0ffd6] dark:bg-[#f0ffd6]/10 rounded-full px-[14px] py-[6px] mb-6 border border-[#2CFF05]/20">
+            <div className="inline-flex items-center gap-2 bg-[#2CFF05]/15 dark:bg-[#2CFF05]/10 rounded-full px-[14px] py-[6px] mb-6 border border-[#2CFF05]/30">
               <div className="w-[6px] h-[6px] rounded-full bg-[#2CFF05]" />
-              <span className="font-heading font-semibold text-[13px] text-[#3a6600] dark:text-[#2CFF05]">Professional DTF Printing</span>
+              <span className="font-heading font-semibold text-[13px] text-[#2CFF05]">Professional DTF Printing</span>
             </div>
 
             <h2 className="hero-title font-heading font-black text-[clamp(32px,4.5vw,52px)] leading-[1.05] text-foreground mb-5">

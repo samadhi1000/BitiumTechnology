@@ -161,19 +161,20 @@ html.light-mode .focus-within\:border-\[\#2CFF05\]:focus-within {
 html.light-mode .focus\:border-\[\#2CFF05\]:focus {
   border-color: #2CFF05 !important;
 }
-html.light-mode .hover\:text-\[\#2CFF05\]:hover {
+html.light-mode .text-primary {
   color: #2CFF05 !important;
 }
-html.light-mode .hover\:bg-\[\#2CFF05\]:hover {
-  background-color: #2CFF05 !important;
-  color: #0a0a0a !important;
-}
-html.light-mode .group-hover\:text-\[\#2CFF05\]:hover {
+html.light-mode .hover\:text-primary:hover {
   color: #2CFF05 !important;
 }
-html.light-mode .group-hover\:bg-\[\#2CFF05\]:hover {
-  background-color: #2CFF05 !important;
-  color: #0a0a0a !important;
+html.light-mode .group-hover\:text-primary:hover {
+  color: #2CFF05 !important;
+}
+html.light-mode .hero-title span,
+html.light-mode h1 span,
+html.light-mode h2 span,
+html.light-mode h3 span {
+  color: #2CFF05;
 }
 
 html.light-mode body {
