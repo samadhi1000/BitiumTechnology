@@ -62,13 +62,10 @@ export const HeroShowcaseCarousel: React.FC = () => {
   const displayItems = [...HERO_ITEMS, ...HERO_ITEMS, ...HERO_ITEMS];
 
   return (
-    <div className="w-full max-w-[540px] rounded-2xl border border-[#8DFF00]/30 bg-black/45 backdrop-blur-md p-4 sm:p-5 shadow-2xl shadow-black/80 group relative overflow-hidden transition-all duration-300 hover:border-[#8DFF00]/50">
-      {/* Subtle top glow line */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#8DFF00]/50 to-transparent" />
-
+    <div className="w-full max-w-[540px] group relative select-none">
       {/* Header */}
       <div className="mb-3.5 flex items-center justify-between">
-        <h3 className="font-heading font-extrabold text-sm sm:text-[15px] tracking-tight text-white">
+        <h3 className="font-heading font-extrabold text-sm sm:text-[15px] tracking-tight text-white drop-shadow-md">
           Everything You Need to <span className="text-[#8DFF00]">Create, Print &amp; Deliver</span>
         </h3>
       </div>
@@ -76,8 +73,8 @@ export const HeroShowcaseCarousel: React.FC = () => {
       {/* Marquee Viewport: shows 3 cards at a time with infinite right-to-left scroll */}
       <div className="relative overflow-hidden w-full select-none py-1">
         {/* Soft edge gradient masks */}
-        <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-black/60 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-black/60 to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-black/40 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-black/40 to-transparent z-10 pointer-events-none" />
 
         <div className="animate-hero-marquee flex items-stretch gap-3">
           {displayItems.map((item, index) => {
