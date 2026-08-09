@@ -68,7 +68,7 @@
   --color-ring: var(--ring);
   
   --color-lime: #2CFF05;
-  --color-lime-dark: #72d400;
+  --color-lime-dark: #24d603;
 
   --font-sans: var(--font-sans), system-ui, sans-serif;
   --font-heading: var(--font-heading), system-ui, sans-serif;
@@ -249,7 +249,7 @@ html.light-mode .to-zinc-900 { --tw-gradient-to: var(--card) !important; }
   transition: background 0.2s, transform 0.15s;
 }
 .lime-btn:hover {
-  background: #72d400;
+  background: #24d603;
   transform: translateY(-1px);
 }
 
