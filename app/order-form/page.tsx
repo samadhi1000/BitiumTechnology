@@ -21,11 +21,17 @@ export interface OrderItem {
   mobile1?: string;
   mobile2?: string;
   category?: string;
+  columnHeaders?: {
+    col0: string; // default "A1"
+    col1: string; // default "A2"
+    col23: string; // default "A3"
+    col4: string; // default "A4"
+  };
   note: string;
   date: string;
   totalAmount: string;
   deliveryMethod: string;
-  // Chart items: 7 rows x 5 columns (cols 0,1,2 = A3, col 3 = A2, col 4 = A4)
+  // Chart items: 7 rows x 5 columns (col 0 = A1, col 1 = A2, cols 2 & 3 = A3, col 4 = A4)
   stencils: { code: string; qty?: string; checked: boolean }[][];
   // Fabric Painting: 4 rows x 5 columns
   fabricPainting: { code: string; qty?: string; checked: boolean }[][];
@@ -57,6 +63,12 @@ const createEmptyOrder = (): OrderItem => ({
   mobile1: "",
   mobile2: "",
   category: "Stencils",
+  columnHeaders: {
+    col0: "A1",
+    col1: "A2",
+    col23: "A3",
+    col4: "A4",
+  },
   note: "",
   date: new Date().toISOString().split("T")[0],
   totalAmount: "",
@@ -125,10 +137,16 @@ export default function OrderFormPage() {
 
     const catTitle = (clientOrder.category || "Stencils").toUpperCase();
     text += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n🎨 *${catTitle} ORDER:*\n`;
+
+    const h0 = clientOrder.columnHeaders?.col0 || "A1";
+    const h1 = clientOrder.columnHeaders?.col1 || "A2";
+    const h23 = clientOrder.columnHeaders?.col23 || "A3";
+    const h4 = clientOrder.columnHeaders?.col4 || "A4";
+
     clientOrder.stencils.forEach((row, rIdx) => {
       row.forEach((cell, cIdx) => {
         if (cell.code.trim() || cell.qty?.trim() || cell.checked) {
-          const type = cIdx < 3 ? "A3" : cIdx === 3 ? "A2" : "A4";
+          const type = cIdx === 0 ? h0 : cIdx === 1 ? h1 : (cIdx === 2 || cIdx === 3) ? h23 : h4;
           const qtyText = cell.qty?.trim() ? ` [Qty: ${cell.qty.trim()}]` : "";
           text += `  • [${type}] ${cell.code || `Item ${rIdx + 1}`}${qtyText}\n`;
         }
@@ -418,12 +436,96 @@ export default function OrderFormPage() {
             </select>
           </div>
 
-          {/* CHART SECTION (A3, A2, A4) */}
+          {/* CHART SECTION (A1, A2, A3 span 2, A4 - Editable Headers) */}
           <div className="border-b-2 border-black">
             <div className="grid grid-cols-5 text-center font-bold text-xs bg-gray-200 border-b border-black">
-              <div className="col-span-3 border-r border-black py-1.5 uppercase">A3</div>
-              <div className="col-span-1 border-r border-black py-1.5 uppercase text-[10px] sm:text-xs">A2</div>
-              <div className="col-span-1 py-1.5 uppercase text-[10px] sm:text-xs">A4</div>
+              {/* 1st column: A1 (span 1) */}
+              <div className="col-span-1 border-r border-black p-1 flex items-center justify-center">
+                <input
+                  type="text"
+                  value={clientOrder.columnHeaders?.col0 ?? "A1"}
+                  onChange={(e) =>
+                    setClientOrder({
+                      ...clientOrder,
+                      columnHeaders: {
+                        col0: e.target.value,
+                        col1: clientOrder.columnHeaders?.col1 ?? "A2",
+                        col23: clientOrder.columnHeaders?.col23 ?? "A3",
+                        col4: clientOrder.columnHeaders?.col4 ?? "A4",
+                      },
+                    })
+                  }
+                  placeholder="A1"
+                  className="w-full text-center font-black text-xs uppercase bg-white/70 hover:bg-white focus:bg-white border border-gray-400 focus:border-black rounded px-1 py-0.5 outline-none transition-all cursor-text shadow-inner"
+                  title="Click to edit column title"
+                />
+              </div>
+
+              {/* 2nd column: A2 (span 1) */}
+              <div className="col-span-1 border-r border-black p-1 flex items-center justify-center">
+                <input
+                  type="text"
+                  value={clientOrder.columnHeaders?.col1 ?? "A2"}
+                  onChange={(e) =>
+                    setClientOrder({
+                      ...clientOrder,
+                      columnHeaders: {
+                        col0: clientOrder.columnHeaders?.col0 ?? "A1",
+                        col1: e.target.value,
+                        col23: clientOrder.columnHeaders?.col23 ?? "A3",
+                        col4: clientOrder.columnHeaders?.col4 ?? "A4",
+                      },
+                    })
+                  }
+                  placeholder="A2"
+                  className="w-full text-center font-black text-xs uppercase bg-white/70 hover:bg-white focus:bg-white border border-gray-400 focus:border-black rounded px-1 py-0.5 outline-none transition-all cursor-text shadow-inner"
+                  title="Click to edit column title"
+                />
+              </div>
+
+              {/* 3rd & 4th columns together: A3 (span 2) */}
+              <div className="col-span-2 border-r border-black p-1 flex items-center justify-center">
+                <input
+                  type="text"
+                  value={clientOrder.columnHeaders?.col23 ?? "A3"}
+                  onChange={(e) =>
+                    setClientOrder({
+                      ...clientOrder,
+                      columnHeaders: {
+                        col0: clientOrder.columnHeaders?.col0 ?? "A1",
+                        col1: clientOrder.columnHeaders?.col1 ?? "A2",
+                        col23: e.target.value,
+                        col4: clientOrder.columnHeaders?.col4 ?? "A4",
+                      },
+                    })
+                  }
+                  placeholder="A3"
+                  className="w-full text-center font-black text-xs uppercase bg-white/70 hover:bg-white focus:bg-white border border-gray-400 focus:border-black rounded px-1 py-0.5 outline-none transition-all cursor-text shadow-inner"
+                  title="Click to edit column title"
+                />
+              </div>
+
+              {/* 5th column: A4 (span 1) */}
+              <div className="col-span-1 p-1 flex items-center justify-center">
+                <input
+                  type="text"
+                  value={clientOrder.columnHeaders?.col4 ?? "A4"}
+                  onChange={(e) =>
+                    setClientOrder({
+                      ...clientOrder,
+                      columnHeaders: {
+                        col0: clientOrder.columnHeaders?.col0 ?? "A1",
+                        col1: clientOrder.columnHeaders?.col1 ?? "A2",
+                        col23: clientOrder.columnHeaders?.col23 ?? "A3",
+                        col4: e.target.value,
+                      },
+                    })
+                  }
+                  placeholder="A4"
+                  className="w-full text-center font-black text-xs uppercase bg-white/70 hover:bg-white focus:bg-white border border-gray-400 focus:border-black rounded px-1 py-0.5 outline-none transition-all cursor-text shadow-inner"
+                  title="Click to edit column title"
+                />
+              </div>
             </div>
 
             <div className="divide-y divide-gray-300">

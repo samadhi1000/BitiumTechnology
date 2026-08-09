@@ -36,9 +36,11 @@ import {
   Sparkles,
   Upload,
   Mail,
-  Printer
+  Printer,
+  FileText
 } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { sanitizeText } from '@/lib/security/sanitize';
 import AdminBatchPrint from '@/components/AdminBatchPrint';
 
@@ -675,6 +677,18 @@ export default function AdminPanelPage() {
                 PRINT A4
               </span>
             </button>
+
+            <Link
+              href="/order-form"
+              target="_blank"
+              className="flex items-center gap-2 px-4 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer bg-lime-500/10 border border-lime-500/30 text-lime-400 hover:bg-lime-500/20 hover:border-lime-500/50 ml-auto"
+            >
+              <FileText size={15} />
+              <span>Order Form</span>
+              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded uppercase bg-lime-500 text-black">
+                OPEN ↗
+              </span>
+            </Link>
           </div>
 
           {/* Secondary Filter & Search Row - Shown only for Store & Digital Catalogs */}

@@ -20,6 +20,12 @@ export interface OrderItem {
   mobile1?: string;
   mobile2?: string;
   category?: string;
+  columnHeaders?: {
+    col0: string;
+    col1: string;
+    col23: string;
+    col4: string;
+  };
   note: string;
   date: string;
   totalAmount: string;
@@ -56,6 +62,12 @@ export const createEmptyOrder = (id?: string): OrderItem => ({
   mobile1: '',
   mobile2: '',
   category: 'Stencils',
+  columnHeaders: {
+    col0: 'A1',
+    col1: 'A2',
+    col23: 'A3',
+    col4: 'A4',
+  },
   note: '',
   date: new Date().toISOString().split('T')[0],
   totalAmount: '',
@@ -303,16 +315,19 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
           </span>
         </div>
 
-        {/* Chart Table Header (A3, A2, A4) */}
+        {/* Chart Table Header (A1, A2, A3 span 2, A4) */}
         <div className="border-x border-b border-black grid grid-cols-5 text-center font-bold text-[7px] bg-gray-100">
-          <div className="col-span-3 border-r border-black py-0.5">
-            A3
+          <div className="col-span-1 border-r border-black py-0.5 truncate px-0.5">
+            {order.columnHeaders?.col0 || 'A1'}
           </div>
-          <div className="col-span-1 border-r border-black py-0.5">
-            A2
+          <div className="col-span-1 border-r border-black py-0.5 truncate px-0.5">
+            {order.columnHeaders?.col1 || 'A2'}
           </div>
-          <div className="col-span-1 py-0.5">
-            A4
+          <div className="col-span-2 border-r border-black py-0.5 truncate px-0.5">
+            {order.columnHeaders?.col23 || 'A3'}
+          </div>
+          <div className="col-span-1 py-0.5 truncate px-0.5">
+            {order.columnHeaders?.col4 || 'A4'}
           </div>
         </div>
 
