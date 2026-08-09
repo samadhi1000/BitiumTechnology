@@ -8,8 +8,7 @@ import { useGSAP } from '@gsap/react';
 import PromoBanner from '@/components/PromoBanner';
 import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, Flame, CheckCircle2, Scissors, FlaskConical, PlayCircle, MessageSquareHeart, Upload, Grid, Cuboid, Package, Shield, Zap, Phone, ThumbsUp, Activity, Shirt, Feather, Clock, Droplet, PenTool, Crown } from 'lucide-react';
 import { HeroSearch } from '@/components/HeroSearch';
-import { HeroSlideshow } from '@/components/HeroSlideshow';
-import TrustSection from '@/components/TrustSection';
+import { HeroShowcaseCarousel } from '@/components/HeroShowcaseCarousel';
 
 // Icons for How It Works & Why Choose Us
 const UploadIcon = () => <Upload size={28} className="text-primary" strokeWidth={1.8} />;
@@ -252,188 +251,87 @@ function HomeContent() {
         }}
       />
 
-      {/* 01. Hero Banner Section with Right-to-Left Background Slider */}
-      <section className="relative overflow-hidden py-16 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 border-b border-border bg-background">
-        <HeroSlideshow />
+      {/* 01. Hero Banner Section with Static Industrial Printer Background & Right Showcase */}
+      <section className="relative overflow-hidden py-14 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 border-b border-border bg-background min-h-[600px] lg:min-h-[660px] flex items-center">
+        {/* Static Background Image (1st Screenshot) */}
+        <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
+          <Image
+            src="/images/hero-bg-1.jpg"
+            alt="Bitium Technology Industrial Printing Machinery"
+            fill
+            priority
+            quality={90}
+            className="object-cover object-center lg:object-right scale-105"
+          />
+          {/* Subtle Radial & Linear gradient overlays for readable text on the left while preserving printer visuals */}
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 via-45% to-background/30 lg:to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
+          <div className="absolute inset-0 bg-radial-[at_left,_var(--tw-gradient-stops)] from-background/95 via-background/60 to-transparent" />
+        </div>
         
-        <div className="max-w-4xl mx-auto relative z-10 text-center flex flex-col items-center justify-center gap-8">
-          <div className="w-full space-y-6 flex flex-col items-center justify-center">
+        <div className="max-w-7xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+          {/* Left Column: Headline, Search, Actions */}
+          <div className="lg:col-span-7 xl:col-span-7 space-y-6 flex flex-col items-start text-left">
             <div 
-              className="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#f0ffd6] dark:bg-[#8DFF00]/10 border border-[#8DFF00]/30 text-[#3a6600] dark:text-[#8DFF00] text-xs font-semibold backdrop-blur-sm"
+              className="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#f0ffd6] dark:bg-[#8DFF00]/10 border border-[#8DFF00]/30 text-[#3a6600] dark:text-[#8DFF00] text-xs font-semibold backdrop-blur-sm shadow-sm"
             >
               <Sparkles size={14} className="text-[#8DFF00]" />
               <span>Bitium Technology Print Store</span>
             </div>
             
             <h1 
-              className="hero-title font-heading font-black text-[clamp(32px,5vw,58px)] tracking-tight leading-[1.08] text-foreground drop-shadow-sm"
+              className="hero-title font-heading font-black text-[clamp(30px,4.5vw,54px)] tracking-tight leading-[1.08] text-foreground drop-shadow-md"
             >
               High-Definition <span className="text-[#8DFF00]">Print Solutions</span> &amp; Equipment
             </h1>
             
             <p 
-              className="hero-text text-base sm:text-lg text-muted-foreground dark:text-zinc-300 max-w-2xl mx-auto leading-relaxed"
+              className="hero-text text-base sm:text-lg text-muted-foreground dark:text-zinc-200 max-w-xl leading-relaxed"
             >
               From custom precision stencils to industrial DTF film rolls, exposed screen printing, and traditional batik stamps — explore our specialized print technology store.
             </p>
 
-            <div className="hero-search pt-2 w-full max-w-[520px] flex justify-center">
+            <div className="hero-search pt-1 w-full max-w-[500px]">
               <HeroSearch />
             </div>
             
             <div 
-              className="hero-buttons flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2"
+              className="hero-buttons flex flex-col sm:flex-row items-center gap-3 sm:gap-4 pt-1 w-full sm:w-auto"
             >
               <Link 
                 href="/canvas" 
-                className="lime-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] border-none cursor-pointer w-full sm:w-auto"
+                className="lime-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] border-none cursor-pointer w-full sm:w-auto shadow-lg shadow-[#8DFF00]/20 hover:scale-105 transition-all"
               >
                 <span>Launch DTF Canvas</span>
                 <ArrowRight size={16} />
               </Link>
               <Link 
                 href="/stencil" 
-                className="ghost-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] cursor-pointer w-full sm:w-auto"
+                className="ghost-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] cursor-pointer w-full sm:w-auto hover:border-[#8DFF00]/40 transition-all"
               >
                 Browse Catalog
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* 02. Interactive DTF Gang Sheet Builder Showcase Section (Shifted) */}
-      <section className="bg-background py-[72px] px-6 pb-20 border-b border-border">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center hero-grid">
-          {/* Left */}
-          <div>
-            <div className="inline-flex items-center gap-2 bg-[#f0ffd6] dark:bg-[#f0ffd6]/10 rounded-full px-[14px] py-[6px] mb-6 border border-[#8DFF00]/20">
-              <div className="w-[6px] h-[6px] rounded-full bg-[#8DFF00]" />
-              <span className="font-heading font-semibold text-[13px] text-[#3a6600] dark:text-[#8DFF00]">Professional DTF Printing</span>
-            </div>
-
-            <h1 className="hero-title font-heading font-black text-[clamp(38px,5vw,58px)] leading-[1.05] text-foreground mb-5">
-              Custom <span className="text-[#8DFF00]">DTF</span> Transfers<br />Made Simple.
-            </h1>
-
-            <p className="hero-text text-[17px] text-muted-foreground dark:text-muted-foreground leading-[1.65] mb-9 max-w-[460px]">
-              Upload your artwork, arrange your gang sheet, preview your final print in 3D, and order professional-quality transfers in minutes.
-            </p>
-
-            <div className="hero-buttons flex gap-3 flex-wrap mb-10">
-              <Link href="/canvas" className="lime-btn flex items-center gap-[10px] px-7 py-3.5 rounded-full text-[15px] border-none cursor-pointer">
-                Create Your DTF Sheet
-                <ArrowRight size={16} />
-              </Link>
-              <Link href="/stencil" className="ghost-btn flex items-center gap-[10px] px-7 py-3.5 rounded-full text-[15px] cursor-pointer">
-                Browse Products
-              </Link>
-            </div>
-
-            <div className="flex gap-6 flex-wrap mb-10">
-              {[
-                { icon: '🎯', label: '99% Print Accuracy', sub: 'Vibrant & Durable' },
-                { icon: '⚡', label: '24h Turnaround', sub: 'Fast Production' },
-                { icon: '📦', label: '10,000+ Orders', sub: 'Happy Customers' },
-                { icon: '⭐', label: '5★ Satisfaction', sub: 'Top Rated Support' },
-              ].map(item => (
-                <div key={item.label} className="flex items-center gap-2">
-                  <span className="text-[18px]">{item.icon}</span>
-                  <div>
-                    <div className="font-heading font-bold text-[13px] text-foreground">{item.label}</div>
-                    <div className="text-[11px] text-muted-foreground dark:text-muted-foreground">{item.sub}</div>
-                  </div>
-                </div>
-              ))}
+            {/* Quality Bullets (From 1st Screenshot) */}
+            <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-medium text-muted-foreground dark:text-zinc-300">
+              <span className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full border border-[#8DFF00] inline-block" /> Premium Quality
+              </span>
+              <span className="text-zinc-600 dark:text-zinc-500">•</span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full border border-[#8DFF00] inline-block" /> Expert Support
+              </span>
+              <span className="text-zinc-600 dark:text-zinc-500">•</span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full border border-[#8DFF00] inline-block" /> Fast Nationwide Delivery
+              </span>
             </div>
           </div>
 
-          {/* Right – Product Mockup */}
-          <div className="relative flex justify-center mt-10 lg:mt-0">
-            {/* Main browser card */}
-            <div className="bg-card rounded-[20px] shadow-[0_24px_80px_rgba(0,0,0,0.12)] border border-border overflow-hidden w-full max-w-[520px] flex flex-col">
-              {/* Browser bar */}
-              <div className="bg-muted border-b border-border py-2.5 px-4 flex items-center gap-3">
-                <div className="flex gap-1.5">
-                  {['#ff5f57','#ffbd2e','#28c840'].map(c => <div key={c} className="w-2.5 h-2.5 rounded-full" style={{ background: c }} />)}
-                </div>
-                <div className="flex-1 bg-background rounded-md py-1 px-3 border border-border flex items-center gap-2">
-                  <span className="text-[10px] text-muted-foreground">🔒</span>
-                  <span className="font-sans text-[11px] text-muted-foreground dark:text-muted-foreground">app.bitiumtechnology.com/builder</span>
-                </div>
-                <Link href="/3d-customizer" className="bg-[#8DFF00] hover:bg-[#7ce000] border-none rounded-md py-1.5 px-3 font-heading font-bold text-[10px] cursor-pointer text-[#0a0a0a] transition-colors decoration-none flex items-center justify-center">Preview in 3D</Link>
-              </div>
-
-              {/* App content */}
-              <div className="flex min-h-[280px]">
-                {/* Sidebar toolbar */}
-                <div className="w-[42px] bg-muted border-r border-border flex flex-col items-center pt-3 gap-3.5">
-                  {['✏️','🔲','📐','🔡','🖼️','⚙️'].map((emoji, i) => (
-                    <div key={i} className={`w-7 h-7 rounded-md flex items-center justify-center text-[13px] cursor-pointer ${i === 0 ? 'bg-[#8DFF00] text-black' : 'bg-transparent text-[#0a0a0a] dark:text-[#f8fafc]'}`}>
-                      {emoji}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Canvas area */}
-                <div className="flex-1 bg-zinc-50 dark:bg-background/50 relative p-3 grid grid-cols-3 gap-2 content-start">
-                  {/* Design cards */}
-                  {traditionalDesigns.map((d, i) => (
-                    <div 
-                      key={d.id} 
-                      onClick={() => setSelectedDesign(d)}
-                      className={`relative aspect-square flex items-center justify-center cursor-pointer transition-all hover:scale-110 rounded-[10px] shadow-[0_4px_12px_rgba(0,0,0,0.2)] ${selectedDesign?.id === d.id ? 'scale-110 opacity-100 z-10 ring-2 ring-[#8DFF00]/50' : 'opacity-65 hover:opacity-100'}`}
-                    >
-                      <Image 
-                        src={d.motifImage} 
-                        alt={d.title} 
-                        fill 
-                        className="object-contain p-2.5" 
-                      />
-                    </div>
-                  ))}
-                </div>
-
-                {/* Hoodie preview */}
-                <div className="w-[140px] bg-zinc-100 dark:bg-[#0c101b] border-l border-border flex flex-col items-center justify-between py-4 select-none">
-                  <div className="text-[11px] font-heading font-semibold text-muted-foreground uppercase tracking-wider">Preview</div>
-                  
-                  {/* Realistic Hoodie Preview */}
-                  <div className="relative w-full h-[180px] flex items-center justify-center overflow-hidden">
-                    <Image 
-                      src="/images/products/black_hoodie_uploaded_fitted.png" 
-                      alt="Black Hoodie Preview" 
-                      fill 
-                      className="object-contain"
-                    />
-                    
-                   {selectedDesign && (
-                      <div className="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40px] h-[40px]">
-                        <div className="relative w-full h-full">
-                          <Image
-                            src={selectedDesign.motifImage}
-                            alt="Printed motif"
-                            fill
-                            className="object-contain"
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="text-[10px] text-muted-foreground text-center font-sans font-bold">Black Hoodie</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Floating 3D Preview card */}
-            <div className="float-anim absolute -bottom-4 -right-2 bg-card rounded-[14px] shadow-[0_12px_40px_rgba(0,0,0,0.15)] border border-border py-3 px-4 flex items-center gap-3 z-20">
-              <div className="w-9 h-9 bg-primary rounded-[10px] flex items-center justify-center text-[18px]">🎨</div>
-              <div>
-                <div className="font-heading font-bold text-[12px] text-foreground">3D Preview Ready</div>
-                <div className="text-[11px] text-muted-foreground">6 designs on sheet</div>
-              </div>
-            </div>
+          {/* Right Column: Hero Showcase Infinite Carousel Box (1st & 2nd Screenshot) */}
+          <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end w-full">
+            <HeroShowcaseCarousel />
           </div>
         </div>
       </section>
@@ -576,9 +474,6 @@ function HomeContent() {
           </div>
         </div>
       </section>
-      
-      {/* Trust Section */}
-      <TrustSection />
 
       {/* Portfolio Section */}
       <section className="py-20 px-6 bg-zinc-50 dark:bg-card/40 border-b border-border">
@@ -707,6 +602,142 @@ function HomeContent() {
               ))}
             </div>
             
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive DTF Gang Sheet Builder Showcase Section */}
+      <section className="bg-background py-[72px] px-6 pb-20 border-b border-border">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center hero-grid">
+          {/* Left */}
+          <div>
+            <div className="inline-flex items-center gap-2 bg-[#f0ffd6] dark:bg-[#f0ffd6]/10 rounded-full px-[14px] py-[6px] mb-6 border border-[#8DFF00]/20">
+              <div className="w-[6px] h-[6px] rounded-full bg-[#8DFF00]" />
+              <span className="font-heading font-semibold text-[13px] text-[#3a6600] dark:text-[#8DFF00]">Professional DTF Printing</span>
+            </div>
+
+            <h2 className="hero-title font-heading font-black text-[clamp(32px,4.5vw,52px)] leading-[1.05] text-foreground mb-5">
+              Custom <span className="text-[#8DFF00]">DTF</span> Transfers<br />Made Simple.
+            </h2>
+
+            <p className="hero-text text-[16px] text-muted-foreground dark:text-muted-foreground leading-[1.65] mb-9 max-w-[460px]">
+              Upload your artwork, arrange your gang sheet, preview your final print in 3D, and order professional-quality transfers in minutes.
+            </p>
+
+            <div className="hero-buttons flex gap-3 flex-wrap mb-10">
+              <Link href="/canvas" className="lime-btn flex items-center gap-[10px] px-7 py-3.5 rounded-full text-[15px] border-none cursor-pointer">
+                Create Your DTF Sheet
+                <ArrowRight size={16} />
+              </Link>
+              <Link href="/stencil" className="ghost-btn flex items-center gap-[10px] px-7 py-3.5 rounded-full text-[15px] cursor-pointer">
+                Browse Products
+              </Link>
+            </div>
+
+            <div className="flex gap-6 flex-wrap mb-10">
+              {[
+                { icon: '🎯', label: '99% Print Accuracy', sub: 'Vibrant & Durable' },
+                { icon: '⚡', label: '24h Turnaround', sub: 'Fast Production' },
+                { icon: '📦', label: '10,000+ Orders', sub: 'Happy Customers' },
+                { icon: '⭐', label: '5★ Satisfaction', sub: 'Top Rated Support' },
+              ].map(item => (
+                <div key={item.label} className="flex items-center gap-2">
+                  <span className="text-[18px]">{item.icon}</span>
+                  <div>
+                    <div className="font-heading font-bold text-[13px] text-foreground">{item.label}</div>
+                    <div className="text-[11px] text-muted-foreground dark:text-muted-foreground">{item.sub}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right – Product Mockup */}
+          <div className="relative flex justify-center mt-10 lg:mt-0">
+            {/* Main browser card */}
+            <div className="bg-card rounded-[20px] shadow-[0_24px_80px_rgba(0,0,0,0.12)] border border-border overflow-hidden w-full max-w-[520px] flex flex-col">
+              {/* Browser bar */}
+              <div className="bg-muted border-b border-border py-2.5 px-4 flex items-center gap-3">
+                <div className="flex gap-1.5">
+                  {['#ff5f57','#ffbd2e','#28c840'].map(c => <div key={c} className="w-2.5 h-2.5 rounded-full" style={{ background: c }} />)}
+                </div>
+                <div className="flex-1 bg-background rounded-md py-1 px-3 border border-border flex items-center gap-2">
+                  <span className="text-[10px] text-muted-foreground">🔒</span>
+                  <span className="font-sans text-[11px] text-muted-foreground dark:text-muted-foreground">app.bitiumtechnology.com/builder</span>
+                </div>
+                <Link href="/3d-customizer" className="bg-[#8DFF00] hover:bg-[#7ce000] border-none rounded-md py-1.5 px-3 font-heading font-bold text-[10px] cursor-pointer text-[#0a0a0a] transition-colors decoration-none flex items-center justify-center">Preview in 3D</Link>
+              </div>
+
+              {/* App content */}
+              <div className="flex min-h-[280px]">
+                {/* Sidebar toolbar */}
+                <div className="w-[42px] bg-muted border-r border-border flex flex-col items-center pt-3 gap-3.5">
+                  {['✏️','🔲','📐','🔡','🖼️','⚙️'].map((emoji, i) => (
+                    <div key={i} className={`w-7 h-7 rounded-md flex items-center justify-center text-[13px] cursor-pointer ${i === 0 ? 'bg-[#8DFF00] text-black' : 'bg-transparent text-[#0a0a0a] dark:text-[#f8fafc]'}`}>
+                      {emoji}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Canvas area */}
+                <div className="flex-1 bg-zinc-50 dark:bg-background/50 relative p-3 grid grid-cols-3 gap-2 content-start">
+                  {/* Design cards */}
+                  {traditionalDesigns.map((d, i) => (
+                    <div 
+                      key={d.id} 
+                      onClick={() => setSelectedDesign(d)}
+                      className={`relative aspect-square flex items-center justify-center cursor-pointer transition-all hover:scale-110 rounded-[10px] shadow-[0_4px_12px_rgba(0,0,0,0.2)] ${selectedDesign?.id === d.id ? 'scale-110 opacity-100 z-10 ring-2 ring-[#8DFF00]/50' : 'opacity-65 hover:opacity-100'}`}
+                    >
+                      <Image 
+                        src={d.motifImage} 
+                        alt={d.title} 
+                        fill 
+                        className="object-contain p-2.5" 
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Hoodie preview */}
+                <div className="w-[140px] bg-zinc-100 dark:bg-[#0c101b] border-l border-border flex flex-col items-center justify-between py-4 select-none">
+                  <div className="text-[11px] font-heading font-semibold text-muted-foreground uppercase tracking-wider">Preview</div>
+                  
+                  {/* Realistic Hoodie Preview */}
+                  <div className="relative w-full h-[180px] flex items-center justify-center overflow-hidden">
+                    <Image 
+                      src="/images/products/black_hoodie_uploaded_fitted.png" 
+                      alt="Black Hoodie Preview" 
+                      fill 
+                      className="object-contain"
+                    />
+                    
+                   {selectedDesign && (
+                      <div className="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40px] h-[40px]">
+                        <div className="relative w-full h-full">
+                          <Image
+                            src={selectedDesign.motifImage}
+                            alt="Printed motif"
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="text-[10px] text-muted-foreground text-center font-sans font-bold">Black Hoodie</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Floating 3D Preview card */}
+            <div className="float-anim absolute -bottom-4 -right-2 bg-card rounded-[14px] shadow-[0_12px_40px_rgba(0,0,0,0.15)] border border-border py-3 px-4 flex items-center gap-3 z-20">
+              <div className="w-9 h-9 bg-primary rounded-[10px] flex items-center justify-center text-[18px]">🎨</div>
+              <div>
+                <div className="font-heading font-bold text-[12px] text-foreground">3D Preview Ready</div>
+                <div className="text-[11px] text-muted-foreground">6 designs on sheet</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

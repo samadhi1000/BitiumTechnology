@@ -41,8 +41,7 @@ export default function PromoBanner() {
       .from('.promo-tabs', { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out' }, '-=0.3')
       .from('.promo-result', { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out' }, '-=0.3')
       .from('.promo-closing', { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out' }, '-=0.3')
-      .from('.promo-model-img', { scale: 0.95, opacity: 0, duration: 0.7, ease: 'power3.out' }, '-=0.6')
-      .from('.promo-accent-bar', { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3');
+      .from('.promo-model-img', { scale: 0.95, opacity: 0, duration: 0.7, ease: 'power3.out' }, '-=0.6');
 
   }, { scope: container });
 
@@ -156,14 +155,8 @@ export default function PromoBanner() {
         </div>
       </div>
 
-      {/* 3. Bottom Accent Banner: INDUSTRIAL GRADE QUALITY • NO MINIMUMS • ON TIME */}
-      <div className="promo-accent-bar w-full bg-[#8DFF00] py-6 relative z-10 border-t border-[#9eff1a] border-b border-border select-none">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h3 className="text-xl sm:text-2xl font-black text-black tracking-[0.1em] uppercase">
-            INDUSTRIAL GRADE QUALITY • NO MINIMUM ORDERS • DELIVERED ON TIME
-          </h3>
-        </div>
-      </div>
+      {/* Section Break White Line */}
+      <div className="w-full border-t border-white/20 relative z-10" />
 
     </div>
   );

@@ -544,6 +544,28 @@ html.dark .filter-btn.active, html.dark .filter-btn:hover {
   box-shadow: 0 0 30px rgba(255, 107, 0, 0.3), 0 8px 25px rgba(255, 107, 0, 0.2);
 }
 
+/* Hero Showcase Infinite Scrolling Marquee */
+@keyframes hero-marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-hero-marquee {
+  display: flex;
+  width: max-content;
+  animation: hero-marquee 22s linear infinite;
+  will-change: transform;
+}
+
+.group:hover .animate-hero-marquee,
+.animate-hero-marquee:hover {
+  animation-play-state: paused;
+}
+
 /* Global Print Styles */
 @media print {
   body {

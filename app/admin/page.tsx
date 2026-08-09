@@ -40,15 +40,15 @@ import {
   FileText
 } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { sanitizeText } from '@/lib/security/sanitize';
 import AdminBatchPrint from '@/components/AdminBatchPrint';
+import OrderFormComponent from '@/components/OrderFormComponent';
 
 export default function AdminPanelPage() {
   const { user, profile, loading: authLoading, signOut } = useAuth();
   
-  // Tab states: 'products' | 'digital' | 'batch-print'
-  const [activeTab, setActiveTab] = useState<'products' | 'digital' | 'batch-print'>('products');
+  // Tab states: 'products' | 'digital' | 'batch-print' | 'order-form'
+  const [activeTab, setActiveTab] = useState<'products' | 'digital' | 'batch-print' | 'order-form'>('products');
   
   const [products, setProducts] = useState<Product[]>([]);
   const [digitalArtworks, setDigitalArtworks] = useState<DigitalArtwork[]>([]);
@@ -557,7 +557,7 @@ export default function AdminPanelPage() {
                   <Printer size={16} />
                   <span>Print 4-in-1 A4</span>
                 </button>
-              ) : (
+              ) : activeTab === 'order-form' ? null : (
                 <button
                   onClick={() => {
                     if (activeTab === 'products') {
@@ -678,21 +678,24 @@ export default function AdminPanelPage() {
               </span>
             </button>
 
-            <Link
-              href="/order-form"
-              target="_blank"
-              className="flex items-center gap-2 px-4 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer bg-lime-500/10 border border-lime-500/30 text-lime-400 hover:bg-lime-500/20 hover:border-lime-500/50 ml-auto"
+            <button
+              onClick={() => { setActiveTab('order-form'); }}
+              className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                activeTab === 'order-form'
+                  ? 'bg-[#8DFF00] text-[#0a0a0a] shadow-xl shadow-[#8DFF00]/20 scale-105'
+                  : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
+              }`}
             >
-              <FileText size={15} />
+              <FileText size={16} />
               <span>Order Form</span>
-              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded uppercase bg-lime-500 text-black">
-                OPEN ↗
+              <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'order-form' ? 'bg-black text-[#8DFF00]' : 'bg-lime-500/20 text-lime-400'}`}>
+                FORM
               </span>
-            </Link>
+            </button>
           </div>
 
           {/* Secondary Filter & Search Row - Shown only for Store & Digital Catalogs */}
-          {activeTab !== 'batch-print' && (
+          {activeTab !== 'batch-print' && activeTab !== 'order-form' && (
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between p-4 rounded-2xl border border-border bg-card/20 backdrop-blur-sm">
               <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
                 <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mr-2 flex items-center gap-1.5"><Filter size={12} /> Category:</span>
@@ -761,6 +764,10 @@ export default function AdminPanelPage() {
           {/* MAIN CONTENT CONTAINER */}
           {activeTab === 'batch-print' ? (
             <AdminBatchPrint />
+          ) : activeTab === 'order-form' ? (
+            <div className="p-4 sm:p-6 rounded-2xl border border-border bg-card/10 backdrop-blur-sm">
+              <OrderFormComponent hideNavbar={true} />
+            </div>
           ) : (
             <div className="rounded-2xl border border-border bg-card/10 backdrop-blur-sm overflow-hidden">
               {loading ? (
