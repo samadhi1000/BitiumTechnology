@@ -41,7 +41,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   if (loading) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8DFF00] mx-auto"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2CFF05] mx-auto"></div>
         <p className="text-muted-foreground mt-4 text-sm">Loading product details...</p>
       </div>
     );
@@ -52,7 +52,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 text-center">
         <h2 className="text-2xl font-bold">Product Not Found</h2>
         <p className="text-muted-foreground mt-2 text-sm">The product you are looking for does not exist.</p>
-        <Link href="/" className="inline-flex items-center gap-2 text-[#8DFF00] hover:text-[#9eff1a] mt-6 font-semibold">
+        <Link href="/" className="inline-flex items-center gap-2 text-[#2CFF05] hover:text-[#45ff24] mt-6 font-semibold">
           <ArrowLeft size={16} /> Back to Home
         </Link>
       </div>
@@ -124,11 +124,11 @@ export default function ProductPage({ params }: ProductPageProps) {
         {/* Right Column: Order Panel */}
         <div className="flex flex-col justify-between">
           <div className="space-y-6">
-            <span className="text-xs text-[#8DFF00] font-bold uppercase tracking-widest bg-[#8DFF00]/10 border border-[#8DFF00]/20 px-2.5 py-1 rounded-md w-fit">
+            <span className="text-xs text-[#2CFF05] font-bold uppercase tracking-widest bg-[#2CFF05]/10 border border-[#2CFF05]/20 px-2.5 py-1 rounded-md w-fit">
               Premium Blanks
             </span>
             <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">{product.name}</h1>
-            <p className="text-2xl font-bold text-[#8DFF00]">Rs. {currentPrice.toLocaleString()}</p>
+            <p className="text-2xl font-bold text-[#2CFF05]">Rs. {currentPrice.toLocaleString()}</p>
             <p className="text-muted-foreground text-sm leading-relaxed">{product.description}</p>
 
             {/* Sizes */}
@@ -148,7 +148,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                         onClick={() => handleSelectAttribute(sz as string, selectedVariant?.attributes.color || (colors[0] as string))}
                         className={`min-w-12 h-12 flex items-center justify-center rounded-xl border text-sm font-bold transition-all ${
                           isSelected
-                            ? 'bg-[#8DFF00] border-[#8DFF00] text-[#0a0a0a]'
+                            ? 'bg-[#2CFF05] border-[#2CFF05] text-[#0a0a0a]'
                             : isAvailable
                             ? 'border-border bg-card/50 hover:bg-muted text-[#0a0a0a] hover:text-[#0a0a0a]'
                             : 'border-border bg-background/20 text-zinc-600 cursor-not-allowed'
@@ -179,7 +179,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                         onClick={() => handleSelectAttribute(selectedVariant?.attributes.size || (sizes[0] as string), col as string)}
                         className={`px-4 h-12 flex items-center justify-center rounded-xl border text-xs sm:text-sm font-bold transition-all ${
                           isSelected
-                            ? 'bg-[#8DFF00] border-[#8DFF00] text-[#0a0a0a]'
+                            ? 'bg-[#2CFF05] border-[#2CFF05] text-[#0a0a0a]'
                             : isAvailable
                             ? 'border-border bg-card/50 hover:bg-muted text-[#0a0a0a] hover:text-[#0a0a0a]'
                             : 'border-border bg-background/20 text-zinc-600 cursor-not-allowed'
@@ -220,7 +220,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all ${
                 added
                   ? 'bg-emerald-600 hover:bg-emerald-500 text-[#0a0a0a]'
-                  : 'bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] glow-primary'
+                  : 'bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] glow-primary'
               }`}
             >
               {added ? (

@@ -97,7 +97,7 @@ function SuccessContent() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-3">
-        <RefreshCw className="animate-spin text-[#8DFF00]" size={36} />
+        <RefreshCw className="animate-spin text-[#2CFF05]" size={36} />
         <span className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Verifying Security Credentials...</span>
       </div>
     );
@@ -142,11 +142,11 @@ function SuccessContent() {
       {/* Product Detail Card */}
       {artwork && purchase && (
         <div className="p-4 rounded-2xl bg-background border border-border flex items-center gap-4">
-          <div className="p-3 rounded-xl bg-[#8DFF00]/10 text-[#FFCB9A] shrink-0">
+          <div className="p-3 rounded-xl bg-[#2CFF05]/10 text-[#FFCB9A] shrink-0">
             <FileText size={28} />
           </div>
           <div className="flex-grow">
-            <span className="text-[9px] font-bold text-[#8DFF00] uppercase tracking-wider block">Ready for Download</span>
+            <span className="text-[9px] font-bold text-[#2CFF05] uppercase tracking-wider block">Ready for Download</span>
             <h3 className="text-md font-extrabold capitalize text-foreground mt-0.5">{artwork.title}</h3>
             <div className="flex gap-4 mt-2 text-[10px] text-muted-foreground">
               <span>Format: <strong className="text-[#D9B08C]">{artwork.file_format}</strong></span>
@@ -181,7 +181,7 @@ function SuccessContent() {
       <button
         onClick={handleDownloadClick}
         disabled={downloading}
-        className="w-full py-4 rounded-xl bg-gradient-to-r from-[#116466] to-[#FFCB9A] text-zinc-950 font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all hover:scale-[1.01] shadow-lg shadow-[#8DFF00]/10"
+        className="w-full py-4 rounded-xl bg-gradient-to-r from-[#116466] to-[#FFCB9A] text-zinc-950 font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all hover:scale-[1.01] shadow-lg shadow-[#2CFF05]/10"
       >
         <Download size={16} />
         {downloading ? 'Preparing secure file...' : 'Download Print Artwork'}
@@ -200,10 +200,10 @@ function SuccessContent() {
 
 export default function DownloadSuccessPage() {
   return (
-    <div className="w-full min-h-screen bg-background text-[#0a0a0a] selection:bg-[#8DFF00]/40 selection:text-[#0a0a0a] pb-24 px-4 sm:px-6">
+    <div className="w-full min-h-screen bg-background text-[#0a0a0a] selection:bg-[#2CFF05]/40 selection:text-[#0a0a0a] pb-24 px-4 sm:px-6">
       <Suspense fallback={
         <div className="flex flex-col items-center justify-center min-h-[60vh] gap-3">
-          <RefreshCw className="animate-spin text-[#8DFF00]" size={36} />
+          <RefreshCw className="animate-spin text-[#2CFF05]" size={36} />
           <span className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Loading...</span>
         </div>
       }>

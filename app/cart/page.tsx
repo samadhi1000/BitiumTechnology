@@ -25,7 +25,7 @@ export default function CartPage() {
         </div>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] text-sm font-semibold transition-all"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] text-sm font-semibold transition-all"
         >
           <ArrowLeft size={16} /> Continue Shopping
         </Link>
@@ -69,11 +69,11 @@ export default function CartPage() {
                     </p>
                   )}
                   {item.type === 'dtf_sheet' && item.customSheet && (
-                    <p className="text-xs text-[#8DFF00] mt-1 font-semibold">
+                    <p className="text-xs text-[#2CFF05] mt-1 font-semibold">
                       Custom Canvas {item.customSheet.width}" x {item.customSheet.height}" Sheet
                     </p>
                   )}
-                  <p className="text-sm font-semibold text-[#8DFF00] mt-1">
+                  <p className="text-sm font-semibold text-[#2CFF05] mt-1">
                     Rs. {item.price.toLocaleString()}
                   </p>
                 </div>
@@ -131,13 +131,13 @@ export default function CartPage() {
           <div className="border-t border-border pt-4 flex justify-between items-end">
             <div>
               <span className="text-xs text-muted-foreground">Order Total</span>
-              <p className="text-2xl font-black text-[#8DFF00]">Rs. {(subtotal + 350).toLocaleString()}</p>
+              <p className="text-2xl font-black text-[#2CFF05]">Rs. {(subtotal + 350).toLocaleString()}</p>
             </div>
           </div>
 
           <Link
             href="/checkout"
-            className="w-full py-4 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-[#8DFF00]/10"
+            className="w-full py-4 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-[#2CFF05]/10"
           >
             Proceed to Checkout
             <ArrowRight size={16} />

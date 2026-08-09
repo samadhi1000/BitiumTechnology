@@ -562,7 +562,7 @@ export default function AdminBatchPrint() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h2 className="text-base font-bold flex items-center gap-2 text-foreground">
-              <PackageCheck className="w-5 h-5 text-[#8DFF00]" />
+              <PackageCheck className="w-5 h-5 text-[#2CFF05]" />
               Bitium A4 Batch Print Controller (4 Customer Orders per Sheet)
             </h2>
             <p className="text-xs text-muted-foreground mt-0.5">
@@ -583,7 +583,7 @@ export default function AdminBatchPrint() {
             <button
               type="button"
               onClick={handlePrintA4}
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-black shadow-lg shadow-[#8DFF00]/10 cursor-pointer transition-all"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] text-black shadow-lg shadow-[#2CFF05]/10 cursor-pointer transition-all"
             >
               <Printer className="w-4 h-4" />
               Print 4-in-1 A4 Sheet

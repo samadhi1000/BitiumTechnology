@@ -72,7 +72,7 @@ export default function CheckoutButton({ cartItems, customerEmail, customerName 
     <button
       onClick={handleCheckout}
       disabled={loading || cartItems.length === 0}
-      className="w-full flex items-center justify-center gap-2.5 px-6 py-4 text-sm font-extrabold uppercase tracking-wider text-[#0a0a0a] bg-[#8DFF00] rounded-2xl hover:bg-[#9eff1a] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-xl shadow-[#8DFF00]/35 active:scale-[0.98] cursor-pointer"
+      className="w-full flex items-center justify-center gap-2.5 px-6 py-4 text-sm font-extrabold uppercase tracking-wider text-[#0a0a0a] bg-[#2CFF05] rounded-2xl hover:bg-[#45ff24] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-xl shadow-[#2CFF05]/35 active:scale-[0.98] cursor-pointer"
     >
       {loading ? (
         <>

@@ -242,10 +242,10 @@ ${itemsString}
             {/* Drawer Header */}
             <div className="p-5 sm:p-6 border-b border-border flex items-center justify-between bg-background">
               <div className="flex items-center gap-3">
-                <div className="relative p-2 rounded-xl bg-[#8DFF00]/10 border border-[#8DFF00]/20 text-[#8DFF00]">
+                <div className="relative p-2 rounded-xl bg-[#2CFF05]/10 border border-[#2CFF05]/20 text-[#2CFF05]">
                   <ShoppingBag size={20} />
                   {items.length > 0 && (
-                    <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#8DFF00] text-[9px] font-bold text-[#0a0a0a] ring-2 ring-zinc-950">
+                    <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#2CFF05] text-[9px] font-bold text-[#0a0a0a] ring-2 ring-zinc-950">
                       {items.reduce((acc, item) => acc + item.quantity, 0)}
                     </span>
                   )}
@@ -281,7 +281,7 @@ ${itemsString}
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <span className="text-[10px] font-black text-[#8DFF00] uppercase tracking-widest block mb-2">Selected Items</span>
+                  <span className="text-[10px] font-black text-[#2CFF05] uppercase tracking-widest block mb-2">Selected Items</span>
                   {items.map((item) => (
                     <div 
                       key={item.id}
@@ -316,7 +316,7 @@ ${itemsString}
 
                         {/* Customization Details */}
                         {item.customization?.printStyle && (
-                          <span className="inline-flex mt-1 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-[#9eff1a]/10 border border-[#8DFF00]/20 text-[#9eff1a]">
+                          <span className="inline-flex mt-1 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-[#45ff24]/10 border border-[#2CFF05]/20 text-[#45ff24]">
                             {item.customization.printStyle} Finish
                           </span>
                         )}
@@ -327,7 +327,7 @@ ${itemsString}
                         )}
 
                         {item.type === 'dtf_sheet' && item.customSheet && (
-                          <p className="text-[10px] text-[#8DFF00] font-bold mt-0.5">
+                          <p className="text-[10px] text-[#2CFF05] font-bold mt-0.5">
                             Canvas {item.customSheet.width}" x {item.customSheet.height}" Layout
                           </p>
                         )}
@@ -375,7 +375,7 @@ ${itemsString}
               {/* CHECKOUT DETAILS FORM */}
               {items.length > 0 && (
                 <div className="space-y-4 pt-6 border-t border-border">
-                  <span className="text-[10px] font-black text-[#8DFF00] uppercase tracking-widest block">Customer Details</span>
+                  <span className="text-[10px] font-black text-[#2CFF05] uppercase tracking-widest block">Customer Details</span>
                   
                   <form onSubmit={handleCheckout} className="space-y-4">
                     {/* Full name */}
@@ -394,7 +394,7 @@ ${itemsString}
                         className={`w-full p-3 rounded-xl border bg-card/40 text-sm text-foreground placeholder-zinc-600 outline-none transition-all ${
                           errors.name 
                             ? 'border-red-500/60 focus:border-red-500' 
-                            : 'border-border focus:border-[#8DFF00] focus:ring-1 focus:ring-[#8DFF00]/30'
+                            : 'border-border focus:border-[#2CFF05] focus:ring-1 focus:ring-[#2CFF05]/30'
                         }`}
                       />
                       {errors.name && <p className="text-[10px] font-medium text-red-400 mt-1">{errors.name}</p>}
@@ -416,7 +416,7 @@ ${itemsString}
                         className={`w-full p-3 rounded-xl border bg-card/40 text-sm text-foreground placeholder-zinc-600 outline-none transition-all ${
                           errors.phone 
                             ? 'border-red-500/60 focus:border-red-500' 
-                            : 'border-border focus:border-[#8DFF00] focus:ring-1 focus:ring-[#8DFF00]/30'
+                            : 'border-border focus:border-[#2CFF05] focus:ring-1 focus:ring-[#2CFF05]/30'
                         }`}
                       />
                       {errors.phone && <p className="text-[10px] font-medium text-red-400 mt-1">{errors.phone}</p>}
@@ -438,7 +438,7 @@ ${itemsString}
                         className={`w-full p-3 rounded-xl border bg-card/40 text-sm text-foreground placeholder-zinc-600 outline-none transition-all ${
                           errors.address 
                             ? 'border-red-500/60 focus:border-red-500' 
-                            : 'border-border focus:border-[#8DFF00] focus:ring-1 focus:ring-[#8DFF00]/30'
+                            : 'border-border focus:border-[#2CFF05] focus:ring-1 focus:ring-[#2CFF05]/30'
                         }`}
                       />
                       {errors.address && <p className="text-[10px] font-medium text-red-400 mt-1">{errors.address}</p>}
@@ -460,7 +460,7 @@ ${itemsString}
                         className={`w-full p-3 rounded-xl border bg-card/40 text-sm text-foreground placeholder-zinc-600 outline-none transition-all ${
                           errors.city 
                             ? 'border-red-500/60 focus:border-red-500' 
-                            : 'border-border focus:border-[#8DFF00] focus:ring-1 focus:ring-[#8DFF00]/30'
+                            : 'border-border focus:border-[#2CFF05] focus:ring-1 focus:ring-[#2CFF05]/30'
                         }`}
                       />
                       {errors.city && <p className="text-[10px] font-medium text-red-400 mt-1">{errors.city}</p>}
@@ -476,7 +476,7 @@ ${itemsString}
                         value={notes}
                         onChange={(e) => setCheckoutDetails({ notes: e.target.value })}
                         rows={3}
-                        className="w-full p-3 rounded-xl border border-border bg-card/40 text-sm text-foreground placeholder-zinc-600 focus:border-[#8DFF00] focus:ring-1 focus:ring-[#8DFF00]/30 outline-none transition-all resize-none"
+                        className="w-full p-3 rounded-xl border border-border bg-card/40 text-sm text-foreground placeholder-zinc-600 focus:border-[#2CFF05] focus:ring-1 focus:ring-[#2CFF05]/30 outline-none transition-all resize-none"
                       />
                     </div>
 
@@ -487,13 +487,13 @@ ${itemsString}
                       </label>
                       
                       {/* Preselected Cash on Delivery block */}
-                      <div className="p-3.5 rounded-xl border border-[#8DFF00]/50 bg-[#8DFF00]/5 flex items-center justify-between relative overflow-hidden group">
+                      <div className="p-3.5 rounded-xl border border-[#2CFF05]/50 bg-[#2CFF05]/5 flex items-center justify-between relative overflow-hidden group">
                         <div className="flex items-center gap-3">
-                          <div className="w-2.5 h-2.5 rounded-full bg-[#9eff1a] border border-white/20" />
+                          <div className="w-2.5 h-2.5 rounded-full bg-[#45ff24] border border-white/20" />
                           <div>
                             <p className="text-xs font-bold text-foreground flex items-center gap-2">
                               Cash on Delivery (COD)
-                              <span className="text-[8px] bg-[#8DFF00]/30 text-[#9eff1a] border border-[#8DFF00]/30 font-black px-1.5 py-0.5 rounded uppercase tracking-wider">
+                              <span className="text-[8px] bg-[#2CFF05]/30 text-[#45ff24] border border-[#2CFF05]/30 font-black px-1.5 py-0.5 rounded uppercase tracking-wider">
                                 Pay when you receive
                               </span>
                             </p>
@@ -527,7 +527,7 @@ ${itemsString}
                   {/* Glowing Total */}
                   <div className="flex justify-between items-baseline pt-2 border-t border-border">
                     <span className="text-xs font-bold text-foreground uppercase tracking-wider">Estimated Total</span>
-                    <span className="text-xl font-black text-[#8DFF00] drop-shadow-[0_0_15px_rgba(139,92,246,0.35)]">
+                    <span className="text-xl font-black text-[#2CFF05] drop-shadow-[0_0_15px_rgba(139,92,246,0.35)]">
                       Rs. {total.toLocaleString()}
                     </span>
                   </div>
@@ -538,7 +538,7 @@ ${itemsString}
                   type="button"
                   disabled={isSubmitting || isLimited}
                   onClick={handleCheckoutGuarded}
-                  className="w-full py-4 rounded-xl bg-[#8DFF00] disabled:from-zinc-700 disabled:to-zinc-800 disabled:opacity-60 disabled:cursor-not-allowed hover:opacity-95 text-[#0a0a0a] font-extrabold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all shadow-[0_4px_20px_rgba(167,139,250,0.2)] hover:shadow-[0_4px_25px_rgba(167,139,250,0.35)]"
+                  className="w-full py-4 rounded-xl bg-[#2CFF05] disabled:from-zinc-700 disabled:to-zinc-800 disabled:opacity-60 disabled:cursor-not-allowed hover:opacity-95 text-[#0a0a0a] font-extrabold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all shadow-[0_4px_20px_rgba(167,139,250,0.2)] hover:shadow-[0_4px_25px_rgba(167,139,250,0.35)]"
                 >
                   {isSubmitting ? (
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

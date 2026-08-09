@@ -90,7 +90,7 @@ export default function Navbar() {
               onMouseEnter={() => setStencilHovered(true)}
               onMouseLeave={() => setStencilHovered(false)}
             >
-              <Link href="/stencil" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
+              <Link href="/stencil" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>Stencil</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${stencilHovered ? 'rotate-180' : ''}`} />
               </Link>
@@ -126,7 +126,7 @@ export default function Navbar() {
               onMouseEnter={() => setScreenPrintingHovered(true)}
               onMouseLeave={() => setScreenPrintingHovered(false)}
             >
-              <Link href="/screen-printing" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
+              <Link href="/screen-printing" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>Screen Printing</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${screenPrintingHovered ? 'rotate-180' : ''}`} />
               </Link>
@@ -159,7 +159,7 @@ export default function Navbar() {
               onMouseEnter={() => setDtfPrintingHovered(true)}
               onMouseLeave={() => setDtfPrintingHovered(false)}
             >
-              <Link href="/dtf-printing" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
+              <Link href="/dtf-printing" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>DTF Printing</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${dtfPrintingHovered ? 'rotate-180' : ''}`} />
               </Link>
@@ -192,7 +192,7 @@ export default function Navbar() {
               onMouseEnter={() => setBatikStampHovered(true)}
               onMouseLeave={() => setBatikStampHovered(false)}
             >
-              <Link href="/batik-stamp" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
+              <Link href="/batik-stamp" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>Batik Stamp</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${batikStampHovered ? 'rotate-180' : ''}`} />
               </Link>
@@ -214,7 +214,7 @@ export default function Navbar() {
               onMouseEnter={() => setLaserCuttingHovered(true)}
               onMouseLeave={() => setLaserCuttingHovered(false)}
             >
-              <Link href="/laser-cutting" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
+              <Link href="/laser-cutting" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>Laser Cutting</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${laserCuttingHovered ? 'rotate-180' : ''}`} />
               </Link>
@@ -247,16 +247,16 @@ export default function Navbar() {
               onMouseEnter={() => setToolkitHovered(true)}
               onMouseLeave={() => setToolkitHovered(false)}
             >
-              <span className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
+              <span className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>Toolkit</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${toolkitHovered ? 'rotate-180' : ''}`} />
               </span>
               {toolkitHovered && (
                 <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
-                  <Link href="/3d-customizer" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-[#8DFF00] hover:bg-card transition-colors flex items-center gap-1">
+                  <Link href="/3d-customizer" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-[#2CFF05] hover:bg-card transition-colors flex items-center gap-1">
                     <Shirt size={11} /> Mockup Studio
                   </Link>
-                  <Link href="/canvas" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-[#9eff1a] hover:bg-card transition-colors flex items-center gap-1">
+                  <Link href="/canvas" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-[#45ff24] hover:bg-card transition-colors flex items-center gap-1">
                     <LayoutGrid size={11} /> Canvas Builder
                   </Link>
                   <Link href="/size-guide" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-emerald-400 hover:bg-card transition-colors flex items-center gap-1">
@@ -267,12 +267,12 @@ export default function Navbar() {
             </div>
 
             {/* 07. Digital downloads */}
-            <Link href="/downloads" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
+            <Link href="/downloads" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
               Downloads
             </Link>
 
             {/* 08. Materials / Consumables */}
-            <Link href="/materials" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#8DFF00] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
+            <Link href="/materials" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
               Materials / Consumables
             </Link>
           </div>
@@ -284,14 +284,14 @@ export default function Navbar() {
             <button
               onClick={toggle}
               aria-label="Toggle light/dark mode"
-              className="relative flex items-center justify-center w-12 h-6 sm:w-14 sm:h-7 rounded-full border border-zinc-700 bg-card hover:border-[#8DFF00] transition-all duration-300 group overflow-hidden"
+              className="relative flex items-center justify-center w-12 h-6 sm:w-14 sm:h-7 rounded-full border border-zinc-700 bg-card hover:border-[#2CFF05] transition-all duration-300 group overflow-hidden"
             >
               <span className={`absolute inset-0 rounded-full transition-all duration-500 ${
-                theme === 'light' ? 'bg-[#8DFF00]/10' : 'bg-muted'
+                theme === 'light' ? 'bg-[#2CFF05]/10' : 'bg-muted'
               }`} />
               <span className={`absolute w-4 h-4 sm:w-5 sm:h-5 rounded-full shadow-sm flex items-center justify-center transition-all duration-500 ${
                 theme === 'light'
-                  ? 'translate-x-2.5 sm:translate-x-3.5 bg-[#9eff1a]'
+                  ? 'translate-x-2.5 sm:translate-x-3.5 bg-[#45ff24]'
                   : '-translate-x-2.5 sm:-translate-x-3.5 bg-zinc-600'
               }`}>
                 {theme === 'light'
@@ -310,7 +310,7 @@ export default function Navbar() {
             >
               <ShoppingBag size={20} />
               {cartItemsCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full bg-[#8DFF00] text-[9px] sm:text-[10px] font-bold text-[#0a0a0a] ring-2 ring-zinc-950 animate-pulse">
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full bg-[#2CFF05] text-[9px] sm:text-[10px] font-bold text-[#0a0a0a] ring-2 ring-zinc-950 animate-pulse">
                   {cartItemsCount}
                 </span>
               )}
@@ -338,7 +338,7 @@ export default function Navbar() {
             {/* Mobile Hamburger Toggle Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl bg-card border border-border text-foreground hover:text-foreground hover:border-[#8DFF00]/50 transition-all"
+              className="lg:hidden p-2 rounded-xl bg-card border border-border text-foreground hover:text-foreground hover:border-[#2CFF05]/50 transition-all"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -357,7 +357,7 @@ export default function Navbar() {
               <Link
                 href="/3d-customizer"
                 onClick={closeMobileMenu}
-                className="w-full p-3 rounded-xl bg-[#8DFF00]/20 border border-[#8DFF00]/40 text-[#8DFF00] flex items-center justify-center gap-2 font-bold text-xs hover:bg-[#8DFF00]/30 transition-all"
+                className="w-full p-3 rounded-xl bg-[#2CFF05]/20 border border-[#2CFF05]/40 text-[#2CFF05] flex items-center justify-center gap-2 font-bold text-xs hover:bg-[#2CFF05]/30 transition-all"
               >
                 <Shirt size={15} />
                 <span>3D Mockup</span>
@@ -388,7 +388,7 @@ export default function Navbar() {
                   <Link
                     href="/stencil"
                     onClick={closeMobileMenu}
-                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#9eff1a]/10"
+                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#45ff24]/10"
                   >
                     View All Stencils →
                   </Link>
@@ -436,7 +436,7 @@ export default function Navbar() {
                   <Link
                     href="/screen-printing"
                     onClick={closeMobileMenu}
-                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#9eff1a]/10"
+                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#45ff24]/10"
                   >
                     View All Screen Printing →
                   </Link>
@@ -481,7 +481,7 @@ export default function Navbar() {
                   <Link
                     href="/dtf-printing"
                     onClick={closeMobileMenu}
-                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#9eff1a]/10"
+                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#45ff24]/10"
                   >
                     View All DTF Printing →
                   </Link>
@@ -526,7 +526,7 @@ export default function Navbar() {
                   <Link
                     href="/batik-stamp"
                     onClick={closeMobileMenu}
-                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#9eff1a]/10"
+                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#45ff24]/10"
                   >
                     View All Batik Stamps →
                   </Link>
@@ -557,7 +557,7 @@ export default function Navbar() {
                   <Link
                     href="/laser-cutting"
                     onClick={closeMobileMenu}
-                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#9eff1a]/10"
+                    className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#45ff24]/10"
                   >
                     View All Laser Cutting →
                   </Link>
@@ -602,14 +602,14 @@ export default function Navbar() {
                   <Link
                     href="/3d-customizer"
                     onClick={closeMobileMenu}
-                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-[#9eff1a] hover:bg-card hover:text-foreground"
+                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-[#45ff24] hover:bg-card hover:text-foreground"
                   >
                     Mockup Studio
                   </Link>
                   <Link
                     href="/canvas"
                     onClick={closeMobileMenu}
-                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-[#9eff1a] hover:bg-card hover:text-foreground"
+                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-[#45ff24] hover:bg-card hover:text-foreground"
                   >
                     Canvas Builder
                   </Link>

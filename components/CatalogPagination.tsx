@@ -28,7 +28,7 @@ export default function CatalogPagination({ currentPage, totalPages, onPageChang
             onClick={() => onPageChange(page)}
             className={`w-10 h-10 rounded-xl text-sm font-bold transition-all ${
               currentPage === page
-                ? 'bg-[#8DFF00] text-[#0a0a0a] border border-[#8DFF00] shadow-md shadow-[#8DFF00]/20'
+                ? 'bg-[#2CFF05] text-[#0a0a0a] border border-[#2CFF05] shadow-md shadow-[#2CFF05]/20'
                 : 'bg-card/50 border border-border text-muted-foreground hover:text-foreground hover:bg-muted'
             }`}
           >

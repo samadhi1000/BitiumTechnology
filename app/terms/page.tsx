@@ -24,18 +24,18 @@ export default function TermsPage() {
       />
 
       {/* Background Gradients */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#8DFF00]/10 rounded-full filter blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#8DFF00]/10 rounded-full filter blur-[120px] pointer-events-none"></div>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#2CFF05]/10 rounded-full filter blur-[120px] pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#2CFF05]/10 rounded-full filter blur-[120px] pointer-events-none"></div>
 
       <div className="max-w-4xl mx-auto relative z-10 space-y-10">
         {/* Header */}
         <div className="text-center space-y-4">
-          <div className="inline-flex items-center gap-2 bg-[#8DFF00]/10 border border-[#8DFF00]/25 rounded-full px-3.5 py-1.5 mb-2">
-            <Scale size={12} className="text-[#8DFF00]" />
-            <span className="font-heading font-semibold text-[11px] text-[#8DFF00] tracking-wider uppercase">LEGAL FRAMEWORK</span>
+          <div className="inline-flex items-center gap-2 bg-[#2CFF05]/10 border border-[#2CFF05]/25 rounded-full px-3.5 py-1.5 mb-2">
+            <Scale size={12} className="text-[#2CFF05]" />
+            <span className="font-heading font-semibold text-[11px] text-[#2CFF05] tracking-wider uppercase">LEGAL FRAMEWORK</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-foreground">
-            Terms of <span className="text-[#8DFF00]">Service</span>
+            Terms of <span className="text-[#2CFF05]">Service</span>
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl mx-auto">
             Last updated: 2026/8/8
@@ -45,14 +45,14 @@ export default function TermsPage() {
         {/* Content Box */}
         <div className="p-8 sm:p-12 rounded-3xl border border-border bg-card/40 backdrop-blur space-y-8 text-sm text-muted-foreground leading-relaxed">
           <p>
-            Welcome to <a href="https://www.bitiumtechnology.com" className="text-[#8DFF00] hover:underline">bitiumtechnology.com</a>. These terms govern your use of our website and any orders you place with Bitium Technology (&ldquo;we,&rdquo; &ldquo;us,&rdquo; &ldquo;our&rdquo;) for DTF and screen printing services. By using the site or placing an order, you agree to these terms.
+            Welcome to <a href="https://www.bitiumtechnology.com" className="text-[#2CFF05] hover:underline">bitiumtechnology.com</a>. These terms govern your use of our website and any orders you place with Bitium Technology (&ldquo;we,&rdquo; &ldquo;us,&rdquo; &ldquo;our&rdquo;) for DTF and screen printing services. By using the site or placing an order, you agree to these terms.
           </p>
 
           <hr className="border-border" />
 
           {/* Section 1 */}
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-[#8DFF00] font-heading">Our Services</h2>
+            <h2 className="text-xl font-bold text-[#2CFF05] font-heading">Our Services</h2>
             <p>
               We offer custom DTF (Direct-to-Film) and screen printing on garments and other items, based on the designs, quantities, and specifications you provide when ordering.
             </p>
@@ -62,7 +62,7 @@ export default function TermsPage() {
 
           {/* Section 2 */}
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-[#8DFF00] font-heading">Orders</h2>
+            <h2 className="text-xl font-bold text-[#2CFF05] font-heading">Orders</h2>
             <ul className="list-disc pl-5 space-y-2">
               <li>
                 All orders are subject to acceptance by us. We may decline or cancel an order at our discretion - for example, if a design infringes someone else&apos;s rights, or if we&apos;re unable to fulfil it for any reason.
@@ -78,7 +78,7 @@ export default function TermsPage() {
 
           {/* Section 3 */}
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-[#8DFF00] font-heading">Pricing and Payment</h2>
+            <h2 className="text-xl font-bold text-[#2CFF05] font-heading">Pricing and Payment</h2>
             <ul className="list-disc pl-5 space-y-2">
               <li>
                 All prices are listed in LKR and are subject to change without notice, though confirmed orders will keep the price agreed at the time of order.
@@ -94,7 +94,7 @@ export default function TermsPage() {
 
           {/* Section 4 */}
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-[#8DFF00] font-heading">Your Content and Designs</h2>
+            <h2 className="text-xl font-bold text-[#2CFF05] font-heading">Your Content and Designs</h2>
             <ul className="list-disc pl-5 space-y-2">
               <li>You retain ownership of any designs, logos, or artwork you submit to us.</li>
               <li>
@@ -111,7 +111,7 @@ export default function TermsPage() {
 
           {/* Section 5 */}
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-[#8DFF00] font-heading">Delivery</h2>
+            <h2 className="text-xl font-bold text-[#2CFF05] font-heading">Delivery</h2>
             <ul className="list-disc pl-5 space-y-2">
               <li>Delivery timeframes and areas depend on the courier or delivery method selected at checkout.</li>
               <li>Risk in the goods passes to you once they&apos;ve been handed over to the courier or collected by you.</li>
@@ -123,7 +123,7 @@ export default function TermsPage() {
 
           {/* Section 6 */}
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-[#8DFF00] font-heading">Returns, Refunds, and Reprints</h2>
+            <h2 className="text-xl font-bold text-[#2CFF05] font-heading">Returns, Refunds, and Reprints</h2>
             <p>
               Because our products are custom-made to your specifications, we generally don&apos;t accept returns for change of mind. However:
             </p>
@@ -141,7 +141,7 @@ export default function TermsPage() {
 
           {/* Section 7 */}
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-[#8DFF00] font-heading">Intellectual Property</h2>
+            <h2 className="text-xl font-bold text-[#2CFF05] font-heading">Intellectual Property</h2>
             <p>
               All content on this website - text, images, logos, and branding - belongs to Bitium Technology unless stated otherwise, and may not be copied or reused without our permission.
             </p>
@@ -151,7 +151,7 @@ export default function TermsPage() {
 
           {/* Section 8 */}
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-[#8DFF00] font-heading">Limitation of Liability</h2>
+            <h2 className="text-xl font-bold text-[#2CFF05] font-heading">Limitation of Liability</h2>
             <p>
               To the extent permitted by law, Bitium Technology is not liable for indirect, incidental, or consequential losses arising from the use of our website or services. Our total liability for any claim is limited to the amount you paid for the order in question.
             </p>
@@ -161,7 +161,7 @@ export default function TermsPage() {
 
           {/* Section 9 */}
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-[#8DFF00] font-heading">Governing Law</h2>
+            <h2 className="text-xl font-bold text-[#2CFF05] font-heading">Governing Law</h2>
             <p>
               These terms are governed by the laws of Sri Lanka. Any disputes will be subject to the exclusive jurisdiction of the courts of Sri Lanka.
             </p>
@@ -171,7 +171,7 @@ export default function TermsPage() {
 
           {/* Section 10 */}
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-[#8DFF00] font-heading">Changes to These Terms</h2>
+            <h2 className="text-xl font-bold text-[#2CFF05] font-heading">Changes to These Terms</h2>
             <p>
               We may update these terms from time to time. Continued use of the site after changes are posted means you accept the updated terms.
             </p>
@@ -181,10 +181,10 @@ export default function TermsPage() {
 
           {/* Contact details */}
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-[#8DFF00] font-heading">Contact Us</h2>
+            <h2 className="text-xl font-bold text-[#2CFF05] font-heading">Contact Us</h2>
             <div className="p-4 rounded-2xl bg-background/50 border border-border/60 space-y-1 text-xs">
               <p className="font-extrabold text-foreground text-sm mb-1">Bitium Technology</p>
-              <p>Email: <a href="mailto:indrajith105@gmail.com" className="text-[#8DFF00] hover:underline">indrajith105@gmail.com</a></p>
+              <p>Email: <a href="mailto:indrajith105@gmail.com" className="text-[#2CFF05] hover:underline">indrajith105@gmail.com</a></p>
               <p>Phone: +94 71 552 0897 (Mobile)</p>
               <p>WhatsApp: +94 77 973 1097</p>
               <p>Address: 1391/1 New Town Digana, Rajawella, Digana, Sri Lanka, 20180</p>

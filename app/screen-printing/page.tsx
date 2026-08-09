@@ -84,12 +84,12 @@ function ScreenPrintingContent() {
               <span>Home</span>
             </Link>
             <ChevronRight size={12} />
-            <span className="text-[#8DFF00] font-semibold">Screen Printing</span>
+            <span className="text-[#2CFF05] font-semibold">Screen Printing</span>
           </div>
 
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#9eff1a]/10 border border-[#8DFF00]/30 text-[#9eff1a] text-xs font-semibold mb-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#45ff24]/10 border border-[#2CFF05]/30 text-[#45ff24] text-xs font-semibold mb-3">
                 <Printer size={13} />
                 <span>Trade Screen Printing Supplies</span>
               </div>
@@ -97,7 +97,7 @@ function ScreenPrintingContent() {
               <p className="text-muted-foreground text-sm mt-2 max-w-xl">
                 Ready-to-print custom exposed mesh screens, vector artwork graphics, tracing sheets, and high-density positive film outputs.
               </p>
-              <p className="text-[#9eff1a] text-sm mt-4 font-medium max-w-2xl leading-relaxed border-l-2 border-[#8DFF00] pl-4">
+              <p className="text-[#45ff24] text-sm mt-4 font-medium max-w-2xl leading-relaxed border-l-2 border-[#2CFF05] pl-4">
                 Custom exposed screens, vectorized artwork, and positive tracing films - made to your exact design, ready to print with.
               </p>
             </div>
@@ -110,7 +110,7 @@ function ScreenPrintingContent() {
                 placeholder="Search screen printing..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-card border border-border text-xs text-foreground placeholder-zinc-500 focus:outline-none focus:border-[#8DFF00] transition-colors"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-card border border-border text-xs text-foreground placeholder-zinc-500 focus:outline-none focus:border-[#2CFF05] transition-colors"
               />
             </div>
           </div>
@@ -120,7 +120,7 @@ function ScreenPrintingContent() {
             <button
               onClick={() => setActiveSub(null)}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                activeSub === null ? 'bg-[#8DFF00] text-[#0a0a0a] shadow-lg shadow-[#8DFF00]/20' : 'bg-card border border-border text-muted-foreground hover:text-[#0a0a0a]'
+                activeSub === null ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-lg shadow-[#2CFF05]/20' : 'bg-card border border-border text-muted-foreground hover:text-[#0a0a0a]'
               }`}
             >
               All Items ({products.length})
@@ -133,7 +133,7 @@ function ScreenPrintingContent() {
                   onClick={() => setActiveSub(sub.id)}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                     activeSub === sub.id
-                      ? 'bg-[#8DFF00] text-[#0a0a0a] shadow-lg shadow-[#8DFF00]/20'
+                      ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-lg shadow-[#2CFF05]/20'
                       : 'bg-card border border-border text-muted-foreground hover:text-[#0a0a0a]'
                   }`}
                 >
@@ -163,7 +163,7 @@ function ScreenPrintingContent() {
                 setActiveSub(null);
                 setSearchQuery('');
               }}
-              className="mt-4 px-4 py-2 rounded-xl bg-[#8DFF00] text-xs font-bold text-[#0a0a0a] hover:bg-[#9eff1a] transition-all"
+              className="mt-4 px-4 py-2 rounded-xl bg-[#2CFF05] text-xs font-bold text-[#0a0a0a] hover:bg-[#45ff24] transition-all"
             >
               Reset Filters
             </button>
@@ -174,7 +174,7 @@ function ScreenPrintingContent() {
               {paginatedProducts.map((product) => (
               <div
                 key={product.id}
-                className="group relative rounded-2xl border border-border bg-card/40 hover:border-[#8DFF00]/40 hover:bg-card/80 transition-all duration-300 flex flex-col h-full overflow-hidden shadow-sm hover:shadow-xl"
+                className="group relative rounded-2xl border border-border bg-card/40 hover:border-[#2CFF05]/40 hover:bg-card/80 transition-all duration-300 flex flex-col h-full overflow-hidden shadow-sm hover:shadow-xl"
               >
                 {/* Product Image */}
                 <div className="relative w-full aspect-square bg-background overflow-hidden">
@@ -184,14 +184,14 @@ function ScreenPrintingContent() {
                       Sale
                     </div>
                   )}
-                  <div className="absolute top-4 right-4 px-2.5 py-1 rounded-md bg-card/80 backdrop-blur-md border border-border text-[10px] font-extrabold text-[#9eff1a] uppercase tracking-wider">
+                  <div className="absolute top-4 right-4 px-2.5 py-1 rounded-md bg-card/80 backdrop-blur-md border border-border text-[10px] font-extrabold text-[#45ff24] uppercase tracking-wider">
                     {product.sub_category?.replace('-', ' ')}
                   </div>
                 </div>
 
                 {/* Content */}
                 <div className="p-6 flex flex-col flex-grow">
-                  <span className="text-[10px] font-bold text-[#8DFF00] uppercase tracking-widest">
+                  <span className="text-[10px] font-bold text-[#2CFF05] uppercase tracking-widest">
                     Screen Printing
                   </span>
                   <h3 className="font-extrabold text-foreground text-base leading-snug line-clamp-1 mt-1">
@@ -208,14 +208,14 @@ function ScreenPrintingContent() {
                           Rs. {product.original_price.toLocaleString()}
                         </span>
                       )}
-                      <p className="font-black text-[#8DFF00] text-lg">
+                      <p className="font-black text-[#2CFF05] text-lg">
                         Rs. {product.price.toLocaleString()}
                       </p>
                     </div>
 
                     <Link
                       href={`/products/${product.id}`}
-                      className="px-4 py-2.5 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] font-bold text-xs transition-all shadow-md hover:shadow-[#8DFF00]/20"
+                      className="px-4 py-2.5 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] font-bold text-xs transition-all shadow-md hover:shadow-[#2CFF05]/20"
                     >
                       Get Item
                     </Link>
@@ -254,18 +254,18 @@ function ScreenPrintingContent() {
           </div>
 
           <div className="space-y-4 rounded-2xl bg-card/50 border border-border p-6 sm:p-8">
-            <h2 className="text-xl font-black text-[#9eff1a]">Good to know before you order</h2>
+            <h2 className="text-xl font-black text-[#45ff24]">Good to know before you order</h2>
             <ul className="space-y-3 text-sm text-muted-foreground">
               <li className="flex items-start gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#9eff1a] mt-1.5 shrink-0" />
+                <div className="w-1.5 h-1.5 rounded-full bg-[#45ff24] mt-1.5 shrink-0" />
                 <p>Fine detail and small text need a finer mesh - we'll tell you if your design needs adjusting to print cleanly.</p>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#9eff1a] mt-1.5 shrink-0" />
+                <div className="w-1.5 h-1.5 rounded-full bg-[#45ff24] mt-1.5 shrink-0" />
                 <p>Multi-color designs need a separate screen per color; we can help you figure out the breakdown if you're not sure.</p>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#9eff1a] mt-1.5 shrink-0" />
+                <div className="w-1.5 h-1.5 rounded-full bg-[#45ff24] mt-1.5 shrink-0" />
                 <p>Screens are reusable - with basic care, one screen can print hundreds of shirts.</p>
               </li>
             </ul>
@@ -281,7 +281,7 @@ export default function ScreenPrintingPage() {
   return (
     <Suspense fallback={
       <div className="w-full min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8DFF00]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2CFF05]"></div>
       </div>
     }>
       <ScreenPrintingContent />

@@ -84,12 +84,12 @@ function DtfPrintingContent() {
               <span>Home</span>
             </Link>
             <ChevronRight size={12} />
-            <span className="text-[#8DFF00] font-semibold">DTF Printing</span>
+            <span className="text-[#2CFF05] font-semibold">DTF Printing</span>
           </div>
 
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#9eff1a]/10 border border-[#8DFF00]/30 text-[#9eff1a] text-xs font-semibold mb-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#45ff24]/10 border border-[#2CFF05]/30 text-[#45ff24] text-xs font-semibold mb-3">
                 <Sparkles size={13} />
                 <span>Next-Gen Direct-To-Film Transfers</span>
               </div>
@@ -97,7 +97,7 @@ function DtfPrintingContent() {
               <p className="text-muted-foreground text-sm mt-2 max-w-xl">
                 High-definition DTF transfer films, custom t-shirt graphic sheets, sticker packs, and cloth transfer designs for industrial & custom print runs.
               </p>
-              <p className="text-[#9eff1a] text-sm mt-4 font-medium max-w-2xl leading-relaxed border-l-2 border-[#8DFF00] pl-4">
+              <p className="text-[#45ff24] text-sm mt-4 font-medium max-w-2xl leading-relaxed border-l-2 border-[#2CFF05] pl-4">
                 Custom gang sheet layouts, anime sticker packs, and cloth transfers - build your sheet online, preview it, and we print and ship it.
               </p>
             </div>
@@ -106,14 +106,14 @@ function DtfPrintingContent() {
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
               <Link
                 href="/canvas"
-                className="px-5 py-2.5 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] font-bold text-xs transition-all shadow-lg shadow-[#8DFF00]/25 flex items-center justify-center gap-2"
+                className="px-5 py-2.5 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] font-bold text-xs transition-all shadow-lg shadow-[#2CFF05]/25 flex items-center justify-center gap-2"
               >
                 <LayoutGrid size={15} />
                 <span>Launch DTF Canvas Builder</span>
               </Link>
               <Link
                 href="/3d-customizer"
-                className="px-5 py-2.5 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] font-bold text-xs transition-all shadow-lg shadow-[#8DFF00]/25 flex items-center justify-center gap-2"
+                className="px-5 py-2.5 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] font-bold text-xs transition-all shadow-lg shadow-[#2CFF05]/25 flex items-center justify-center gap-2"
               >
                 <Shirt size={15} />
                 <span>3D Mockup Studio</span>
@@ -127,7 +127,7 @@ function DtfPrintingContent() {
               <button
                 onClick={() => setActiveSub(null)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                  activeSub === null ? 'bg-[#8DFF00] text-[#0a0a0a] shadow-lg shadow-[#8DFF00]/20' : 'bg-card border border-border text-muted-foreground hover:text-[#0a0a0a]'
+                  activeSub === null ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-lg shadow-[#2CFF05]/20' : 'bg-card border border-border text-muted-foreground hover:text-[#0a0a0a]'
                 }`}
               >
                 All DTF Transfers ({products.length})
@@ -140,7 +140,7 @@ function DtfPrintingContent() {
                     onClick={() => setActiveSub(sub.id)}
                     className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                       activeSub === sub.id
-                        ? 'bg-[#8DFF00] text-[#0a0a0a] shadow-lg shadow-[#8DFF00]/20'
+                        ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-lg shadow-[#2CFF05]/20'
                         : 'bg-card border border-border text-muted-foreground hover:text-[#0a0a0a]'
                     }`}
                   >
@@ -157,7 +157,7 @@ function DtfPrintingContent() {
                 placeholder="Search DTF sheets..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 rounded-xl bg-card border border-border text-xs text-foreground placeholder-zinc-500 focus:outline-none focus:border-[#8DFF00] transition-colors"
+                className="w-full pl-10 pr-4 py-2 rounded-xl bg-card border border-border text-xs text-foreground placeholder-zinc-500 focus:outline-none focus:border-[#2CFF05] transition-colors"
               />
             </div>
           </div>
@@ -182,7 +182,7 @@ function DtfPrintingContent() {
                 setActiveSub(null);
                 setSearchQuery('');
               }}
-              className="mt-4 px-4 py-2 rounded-xl bg-[#8DFF00] text-xs font-bold text-[#0a0a0a] hover:bg-[#9eff1a] transition-all"
+              className="mt-4 px-4 py-2 rounded-xl bg-[#2CFF05] text-xs font-bold text-[#0a0a0a] hover:bg-[#45ff24] transition-all"
             >
               Reset Filters
             </button>
@@ -193,7 +193,7 @@ function DtfPrintingContent() {
               {paginatedProducts.map((product) => (
               <div
                 key={product.id}
-                className="group relative rounded-2xl border border-border bg-card/40 hover:border-[#8DFF00]/40 hover:bg-card/80 transition-all duration-300 flex flex-col h-full overflow-hidden shadow-sm hover:shadow-xl"
+                className="group relative rounded-2xl border border-border bg-card/40 hover:border-[#2CFF05]/40 hover:bg-card/80 transition-all duration-300 flex flex-col h-full overflow-hidden shadow-sm hover:shadow-xl"
               >
                 {/* Product Image */}
                 <div className="relative w-full aspect-square bg-background overflow-hidden">
@@ -203,14 +203,14 @@ function DtfPrintingContent() {
                       Sale
                     </div>
                   )}
-                  <div className="absolute top-4 right-4 px-2.5 py-1 rounded-md bg-card/80 backdrop-blur-md border border-border text-[10px] font-extrabold text-[#9eff1a] uppercase tracking-wider">
+                  <div className="absolute top-4 right-4 px-2.5 py-1 rounded-md bg-card/80 backdrop-blur-md border border-border text-[10px] font-extrabold text-[#45ff24] uppercase tracking-wider">
                     {product.sub_category?.replace('-', ' ')}
                   </div>
                 </div>
 
                 {/* Content */}
                 <div className="p-6 flex flex-col flex-grow">
-                  <span className="text-[10px] font-bold text-[#8DFF00] uppercase tracking-widest">
+                  <span className="text-[10px] font-bold text-[#2CFF05] uppercase tracking-widest">
                     DTF Transfer Film
                   </span>
                   <h3 className="font-extrabold text-foreground text-base leading-snug line-clamp-1 mt-1">
@@ -227,14 +227,14 @@ function DtfPrintingContent() {
                           Rs. {product.original_price.toLocaleString()}
                         </span>
                       )}
-                      <p className="font-black text-[#8DFF00] text-lg">
+                      <p className="font-black text-[#2CFF05] text-lg">
                         Rs. {product.price.toLocaleString()}
                       </p>
                     </div>
 
                     <Link
                       href={product.id.startsWith('b2a8') ? '/canvas' : `/products/${product.id}`}
-                      className="px-4 py-2.5 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] font-bold text-xs transition-all shadow-md hover:shadow-[#8DFF00]/20"
+                      className="px-4 py-2.5 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] font-bold text-xs transition-all shadow-md hover:shadow-[#2CFF05]/20"
                     >
                       {product.id.startsWith('b2a8') ? 'Start Custom Canvas' : 'Get Item'}
                     </Link>
@@ -267,23 +267,23 @@ function DtfPrintingContent() {
           <div className="space-y-4">
             <h2 className="text-2xl font-black text-foreground">Why people choose DTF over screen printing</h2>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#9eff1a]" /> Works on cotton, polyester, and blends without changing your process</li>
-              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#9eff1a]" /> No cost jump for full-color or photo-style designs</li>
-              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#9eff1a]" /> Makes sense for a single shirt or a full gang sheet of small designs</li>
-              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#9eff1a]" /> Transfers store flat until you're ready to press them</li>
+              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#45ff24]" /> Works on cotton, polyester, and blends without changing your process</li>
+              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#45ff24]" /> No cost jump for full-color or photo-style designs</li>
+              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#45ff24]" /> Makes sense for a single shirt or a full gang sheet of small designs</li>
+              <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#45ff24]" /> Transfers store flat until you're ready to press them</li>
             </ul>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-3 p-6 rounded-2xl bg-card/50 border border-border">
-              <h3 className="text-lg font-bold text-[#9eff1a]">Build your own sheet</h3>
+              <h3 className="text-lg font-bold text-[#45ff24]">Build your own sheet</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
                 Use the DTF Sheet Builder to lay out your designs, see exact spacing, and check the finished size before you pay - what you see in the builder is what gets printed.
               </p>
             </div>
             
             <div className="space-y-3 p-6 rounded-2xl bg-card/50 border border-border">
-              <h3 className="text-lg font-bold text-[#9eff1a]">Turnaround</h3>
+              <h3 className="text-lg font-bold text-[#45ff24]">Turnaround</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
                 Standard sheets ship within 24–48 hours of approval. Contact us for bulk orders.
               </p>
@@ -300,7 +300,7 @@ export default function DtfPrintingPage() {
   return (
     <Suspense fallback={
       <div className="w-full min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8DFF00]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2CFF05]"></div>
       </div>
     }>
       <DtfPrintingContent />

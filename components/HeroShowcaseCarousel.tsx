@@ -66,7 +66,7 @@ export const HeroShowcaseCarousel: React.FC = () => {
       {/* Header */}
       <div className="mb-3.5 flex items-center justify-between">
         <h3 className="font-heading font-extrabold text-sm sm:text-[15px] tracking-tight text-white drop-shadow-md">
-          Everything You Need to <span className="text-[#8DFF00]">Create, Print &amp; Deliver</span>
+          Everything You Need to <span className="text-[#2CFF05]">Create, Print &amp; Deliver</span>
         </h3>
       </div>
 
@@ -83,7 +83,7 @@ export const HeroShowcaseCarousel: React.FC = () => {
               <Link
                 key={`${item.id}-${index}`}
                 href={item.href}
-                className="w-[145px] sm:w-[155px] shrink-0 p-2.5 rounded-xl bg-black/50 hover:bg-black/80 border border-white/10 hover:border-[#8DFF00]/50 transition-all duration-200 flex flex-col group/card cursor-pointer shadow-md"
+                className="w-[145px] sm:w-[155px] shrink-0 p-2.5 rounded-xl bg-black/50 hover:bg-black/80 border border-white/10 hover:border-[#2CFF05]/50 transition-all duration-200 flex flex-col group/card cursor-pointer shadow-md"
               >
                 {/* Image */}
                 <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-zinc-900 border border-white/10 mb-2">
@@ -98,10 +98,10 @@ export const HeroShowcaseCarousel: React.FC = () => {
 
                 {/* Category Icon & Title */}
                 <div className="flex items-center gap-1.5 mb-1">
-                  <div className="w-5 h-5 rounded-full bg-[#8DFF00]/15 border border-[#8DFF00]/30 flex items-center justify-center text-[#8DFF00] shrink-0">
+                  <div className="w-5 h-5 rounded-full bg-[#2CFF05]/15 border border-[#2CFF05]/30 flex items-center justify-center text-[#2CFF05] shrink-0">
                     <Icon size={11} strokeWidth={2.2} />
                   </div>
-                  <h4 className="font-heading font-bold text-[12px] text-white group-hover/card:text-[#8DFF00] transition-colors truncate">
+                  <h4 className="font-heading font-bold text-[12px] text-white group-hover/card:text-[#2CFF05] transition-colors truncate">
                     {item.title}
                   </h4>
                 </div>

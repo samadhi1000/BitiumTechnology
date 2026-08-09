@@ -18,7 +18,7 @@ export const PrintStyleSelector: React.FC<PrintStyleSelectorProps> = ({ selected
   return (
     <div className="p-6 rounded-2xl border border-border bg-card/40 space-y-4">
       <h3 className="font-bold text-sm text-foreground flex items-center gap-2">
-        <Sparkles size={16} className="text-[#8DFF00]" />
+        <Sparkles size={16} className="text-[#2CFF05]" />
         4. Print Style & Emboss
       </h3>
       <div className="flex flex-col gap-2">
@@ -29,11 +29,11 @@ export const PrintStyleSelector: React.FC<PrintStyleSelectorProps> = ({ selected
             onClick={() => onChange(style.id as PrintFinish)}
             className={`w-full p-3 rounded-xl border text-left flex flex-col gap-1 transition-all ${
               selectedStyle === style.id
-                ? 'bg-[#8DFF00]/10 border-[#8DFF00]/60 shadow-lg'
+                ? 'bg-[#2CFF05]/10 border-[#2CFF05]/60 shadow-lg'
                 : 'bg-background border-border hover:bg-background/60 hover:border-border'
             }`}
           >
-            <span className={`text-xs font-bold ${selectedStyle === style.id ? 'text-[#8DFF00]' : 'text-foreground'}`}>
+            <span className={`text-xs font-bold ${selectedStyle === style.id ? 'text-[#2CFF05]' : 'text-foreground'}`}>
               {style.label}
             </span>
             <span className="text-[10px] text-muted-foreground font-medium">

@@ -96,8 +96,8 @@ export default function SizeGuidePage() {
         }}
       />
       {/* Ambient background glows */}
-      <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-[#8DFF00]/10 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-1/4 left-1/4 w-[350px] h-[350px] bg-[#8DFF00]/5 rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-[#2CFF05]/10 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute bottom-1/4 left-1/4 w-[350px] h-[350px] bg-[#2CFF05]/5 rounded-full blur-[100px] pointer-events-none"></div>
 
       {/* Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.005)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.005)_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none"></div>
@@ -106,12 +106,12 @@ export default function SizeGuidePage() {
         
         {/* Header Block */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#9eff1a]/10 border border-[#8DFF00]/30 text-[#9eff1a] text-xs font-semibold">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#45ff24]/10 border border-[#2CFF05]/30 text-[#45ff24] text-xs font-semibold">
             <Ruler size={12} className="animate-pulse" />
             <span>Interactive Fit Assistant</span>
           </div>
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight">
-            T-Shirt <span className="text-[#8DFF00]">Size & Fit Guide</span>
+            T-Shirt <span className="text-[#2CFF05]">Size & Fit Guide</span>
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
             Find your perfect fit. Toggle between units, view dimensions on our interactive model, or use the Fit Calculator for an instant recommendation.
@@ -125,7 +125,7 @@ export default function SizeGuidePage() {
           <div className="lg:col-span-5 rounded-3xl border border-border bg-card/30 backdrop-blur-md p-6 sm:p-8 space-y-8 shadow-2xl">
             <div>
               <h2 className="text-xl font-extrabold text-foreground flex items-center gap-2">
-                <Activity size={18} className="text-[#8DFF00]" />
+                <Activity size={18} className="text-[#2CFF05]" />
                 Interactive Blueprint
               </h2>
               <p className="text-muted-foreground text-xs mt-1">Hover parts of the diagram or blueprint rows to inspect specs</p>
@@ -278,7 +278,7 @@ export default function SizeGuidePage() {
                   <button
                     onClick={() => setUnit('inches')}
                     className={`px-3 py-1.5 rounded-lg text-[10px] font-bold tracking-wider uppercase transition-all ${
-                      unit === 'inches' ? 'bg-[#8DFF00] text-[#0a0a0a]' : 'text-muted-foreground hover:text-[#0a0a0a]'
+                      unit === 'inches' ? 'bg-[#2CFF05] text-[#0a0a0a]' : 'text-muted-foreground hover:text-[#0a0a0a]'
                     }`}
                   >
                     Inches
@@ -286,7 +286,7 @@ export default function SizeGuidePage() {
                   <button
                     onClick={() => setUnit('cms')}
                     className={`px-3 py-1.5 rounded-lg text-[10px] font-bold tracking-wider uppercase transition-all ${
-                      unit === 'cms' ? 'bg-[#8DFF00] text-[#0a0a0a]' : 'text-muted-foreground hover:text-[#0a0a0a]'
+                      unit === 'cms' ? 'bg-[#2CFF05] text-[#0a0a0a]' : 'text-muted-foreground hover:text-[#0a0a0a]'
                     }`}
                   >
                     Centimeters
@@ -302,7 +302,7 @@ export default function SizeGuidePage() {
                     onClick={() => setSelectedSize(size)}
                     className={`w-12 h-12 rounded-xl text-sm font-black transition-all ${
                       selectedSize === size
-                        ? 'bg-gradient-to-r from-[#8DFF00] to-[#7acc00] text-foreground shadow-lg shadow-[#8DFF00]/20 scale-105 border-0'
+                        ? 'bg-gradient-to-r from-[#2CFF05] to-[#7acc00] text-foreground shadow-lg shadow-[#2CFF05]/20 scale-105 border-0'
                         : 'border border-border hover:border-zinc-700 bg-card/20 text-muted-foreground hover:text-foreground'
                     }`}
                   >
@@ -322,7 +322,7 @@ export default function SizeGuidePage() {
                           key={size}
                           onClick={() => setSelectedSize(size)}
                           className={`p-4 text-xs font-black uppercase tracking-wider text-center cursor-pointer transition-colors ${
-                            selectedSize === size ? 'text-[#8DFF00] bg-[#8DFF00]/5' : 'text-muted-foreground hover:text-[#0a0a0a]'
+                            selectedSize === size ? 'text-[#2CFF05] bg-[#2CFF05]/5' : 'text-muted-foreground hover:text-[#0a0a0a]'
                           }`}
                         >
                           {size}
@@ -347,7 +347,7 @@ export default function SizeGuidePage() {
                         <td 
                           key={size}
                           className={`p-4 text-xs text-center font-semibold transition-colors ${
-                            selectedSize === size ? 'text-rose-400 font-extrabold bg-[#8DFF00]/5' : 'text-muted-foreground'
+                            selectedSize === size ? 'text-rose-400 font-extrabold bg-[#2CFF05]/5' : 'text-muted-foreground'
                           }`}
                         >
                           {convertValue(SIZE_SPECS[size].chest)}
@@ -371,7 +371,7 @@ export default function SizeGuidePage() {
                         <td 
                           key={size}
                           className={`p-4 text-xs text-center font-semibold transition-colors ${
-                            selectedSize === size ? 'text-emerald-400 font-extrabold bg-[#8DFF00]/5' : 'text-muted-foreground'
+                            selectedSize === size ? 'text-emerald-400 font-extrabold bg-[#2CFF05]/5' : 'text-muted-foreground'
                           }`}
                         >
                           {convertValue(SIZE_SPECS[size].length)}
@@ -395,7 +395,7 @@ export default function SizeGuidePage() {
                         <td 
                           key={size}
                           className={`p-4 text-xs text-center font-semibold transition-colors ${
-                            selectedSize === size ? 'text-sky-400 font-extrabold bg-[#8DFF00]/5' : 'text-muted-foreground'
+                            selectedSize === size ? 'text-sky-400 font-extrabold bg-[#2CFF05]/5' : 'text-muted-foreground'
                           }`}
                         >
                           {convertValue(SIZE_SPECS[size].shoulder)}
@@ -411,7 +411,7 @@ export default function SizeGuidePage() {
             <div className="rounded-3xl border border-border bg-card/30 backdrop-blur-md p-6 sm:p-8 space-y-6 shadow-2xl">
               <div>
                 <h2 className="text-xl font-extrabold text-foreground flex items-center gap-2">
-                  <Calculator size={20} className="text-[#8DFF00]" />
+                  <Calculator size={20} className="text-[#2CFF05]" />
                   Interactive Fit Finder
                 </h2>
                 <p className="text-muted-foreground text-xs mt-1">Input your chest measurements to determine the recommended size</p>
@@ -427,7 +427,7 @@ export default function SizeGuidePage() {
                     onChange={(e) => setChestInput(e.target.value)}
                     placeholder="e.g. 38"
                     required
-                    className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-[#8DFF00] focus:ring-1 focus:ring-[#8DFF00] transition-colors"
+                    className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-[#2CFF05] focus:ring-1 focus:ring-[#2CFF05] transition-colors"
                   />
                 </div>
 
@@ -437,7 +437,7 @@ export default function SizeGuidePage() {
                   <select
                     value={preference}
                     onChange={(e: any) => setPreference(e.target.value)}
-                    className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-[#8DFF00] focus:ring-1 focus:ring-[#8DFF00] transition-colors"
+                    className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-[#2CFF05] focus:ring-1 focus:ring-[#2CFF05] transition-colors"
                   >
                     <option value="slim">Slim Fit (Tight)</option>
                     <option value="standard">Standard Fit</option>
@@ -448,7 +448,7 @@ export default function SizeGuidePage() {
                 {/* Submit button */}
                 <button
                   type="submit"
-                  className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-[#8DFF00] to-[#7acc00] hover:from-[#9eff1a] hover:to-[#9eff1a] text-foreground font-black text-xs uppercase tracking-wider shadow-lg shadow-[#8DFF00]/10 hover:shadow-[#8DFF00]/35 transition-all hover:scale-[1.02]"
+                  className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-[#2CFF05] to-[#7acc00] hover:from-[#45ff24] hover:to-[#45ff24] text-foreground font-black text-xs uppercase tracking-wider shadow-lg shadow-[#2CFF05]/10 hover:shadow-[#2CFF05]/35 transition-all hover:scale-[1.02]"
                 >
                   Find My Size
                 </button>
@@ -456,15 +456,15 @@ export default function SizeGuidePage() {
 
               {/* Recommendation Output Display */}
               {recommendedSize && (
-                <div className="p-5 rounded-2xl bg-[#8DFF00]/10 border border-[#8DFF00]/20 flex items-center justify-between gap-4 animate-fade-in">
+                <div className="p-5 rounded-2xl bg-[#2CFF05]/10 border border-[#2CFF05]/20 flex items-center justify-between gap-4 animate-fade-in">
                   <div className="space-y-1">
-                    <span className="text-[10px] font-bold text-[#8DFF00] uppercase tracking-wider block">Our Recommendation</span>
+                    <span className="text-[10px] font-bold text-[#2CFF05] uppercase tracking-wider block">Our Recommendation</span>
                     <p className="text-xs text-foreground leading-relaxed">
                       Based on your chest size and fit preferences, we recommend size <span className="text-foreground font-black text-sm">{recommendedSize}</span>.
                     </p>
                   </div>
                   <div className="flex flex-col items-center shrink-0">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-tr from-[#8DFF00] to-[#7acc00] flex items-center justify-center text-foreground font-black text-xl shadow-lg">
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-tr from-[#2CFF05] to-[#7acc00] flex items-center justify-center text-foreground font-black text-xl shadow-lg">
                       {recommendedSize}
                     </div>
                   </div>

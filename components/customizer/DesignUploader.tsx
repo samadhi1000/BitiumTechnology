@@ -27,7 +27,7 @@ export const DesignUploader: React.FC<DesignUploaderProps> = ({
   return (
     <div className="p-6 rounded-2xl border border-border bg-card/40 space-y-4">
       <h3 className="font-bold text-sm text-foreground flex items-center gap-2">
-        <Layers size={16} className="text-[#8DFF00]" />
+        <Layers size={16} className="text-[#2CFF05]" />
         3. Print Graphic
       </h3>
 
@@ -40,7 +40,7 @@ export const DesignUploader: React.FC<DesignUploaderProps> = ({
             onClick={() => onViewChange(v)}
             className={`flex-1 py-1.5 rounded-lg text-xs font-bold capitalize transition-all ${
               activeView === v
-                ? 'bg-[#8DFF00] text-[#0a0a0a] shadow'
+                ? 'bg-[#2CFF05] text-[#0a0a0a] shadow'
                 : 'text-muted-foreground hover:text-[#0a0a0a]'
             }`}
           >
@@ -53,7 +53,7 @@ export const DesignUploader: React.FC<DesignUploaderProps> = ({
         {/* Front upload */}
         {activeView === 'front' && (
           <>
-            <label className="w-full h-24 rounded-xl border border-dashed border-border hover:border-[#8DFF00]/50 bg-background hover:bg-background/60 cursor-pointer flex flex-col items-center justify-center gap-2 transition-all">
+            <label className="w-full h-24 rounded-xl border border-dashed border-border hover:border-[#2CFF05]/50 bg-background hover:bg-background/60 cursor-pointer flex flex-col items-center justify-center gap-2 transition-all">
               {loading ? (
                 <RefreshCw className="animate-spin text-muted-foreground" size={20} />
               ) : (
@@ -79,7 +79,7 @@ export const DesignUploader: React.FC<DesignUploaderProps> = ({
         {/* Back upload */}
         {activeView === 'back' && (
           <>
-            <label className="w-full h-24 rounded-xl border border-dashed border-border hover:border-[#8DFF00]/50 bg-background hover:bg-background/60 cursor-pointer flex flex-col items-center justify-center gap-2 transition-all">
+            <label className="w-full h-24 rounded-xl border border-dashed border-border hover:border-[#2CFF05]/50 bg-background hover:bg-background/60 cursor-pointer flex flex-col items-center justify-center gap-2 transition-all">
               {loading ? (
                 <RefreshCw className="animate-spin text-muted-foreground" size={20} />
               ) : (

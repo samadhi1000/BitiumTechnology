@@ -231,7 +231,7 @@ export const HeroSearch: React.FC<HeroSearchProps> = ({ className = '' }) => {
         {/* Search icon */}
         <div className="flex-shrink-0 pl-4 pr-2">
           <motion.div
-            animate={{ color: isFocused ? '#8DFF00' : '#71717a' }}
+            animate={{ color: isFocused ? '#2CFF05' : '#71717a' }}
             transition={{ duration: 0.2 }}
           >
             <Search className="w-5 h-5" aria-hidden="true" />
@@ -287,7 +287,7 @@ export const HeroSearch: React.FC<HeroSearchProps> = ({ className = '' }) => {
           whileTap={{ scale: 0.97 }}
           onClick={() => handleSubmit()}
           aria-label="Submit search"
-          className="flex-shrink-0 m-1.5 px-4.5 py-2.5 rounded-xl text-[#0a0a0a] font-bold text-xs tracking-wider uppercase transition-all bg-[#8DFF00] hover:opacity-95 shadow-[0_2px_12px_rgba(139,92,246,0.25)]"
+          className="flex-shrink-0 m-1.5 px-4.5 py-2.5 rounded-xl text-[#0a0a0a] font-bold text-xs tracking-wider uppercase transition-all bg-[#2CFF05] hover:opacity-95 shadow-[0_2px_12px_rgba(139,92,246,0.25)]"
         >
           <span className="hidden sm:inline">Search</span>
           <Search className="w-3.5 h-3.5 sm:hidden" aria-hidden="true" />
@@ -401,7 +401,7 @@ export const HeroSearch: React.FC<HeroSearchProps> = ({ className = '' }) => {
                       />
                     ))}
                     {/* Glowing Accent Line Divider */}
-                    <div className="my-2 mx-3 h-[1px] bg-gradient-to-r from-transparent via-[#8DFF00]/20 to-transparent" />
+                    <div className="my-2 mx-3 h-[1px] bg-gradient-to-r from-transparent via-[#2CFF05]/20 to-transparent" />
                   </>
                 )}
 
@@ -492,8 +492,8 @@ const SearchDropdownItem: React.FC<DropdownItemProps> = ({
       onClick={onClick}
     >
       <div className="flex items-center gap-3 min-w-0 flex-1">
-        <span className="flex-shrink-0 p-1.5 rounded-lg bg-muted/50 group-hover:bg-[#9eff1a]/10 transition-colors">
-          <IconComponent className="w-3.5 h-3.5 text-muted-foreground group-hover:text-[#8DFF00] transition-colors" />
+        <span className="flex-shrink-0 p-1.5 rounded-lg bg-muted/50 group-hover:bg-[#45ff24]/10 transition-colors">
+          <IconComponent className="w-3.5 h-3.5 text-muted-foreground group-hover:text-[#2CFF05] transition-colors" />
         </span>
 
         <span className="text-sm text-foreground group-hover:text-foreground transition-colors truncate font-sans">
@@ -510,7 +510,7 @@ const SearchDropdownItem: React.FC<DropdownItemProps> = ({
                   e.stopPropagation();
                   onCustomize?.();
                 }}
-                className="px-2.5 py-1 text-[10px] font-bold rounded-lg bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] flex items-center gap-1 transition-colors cursor-pointer"
+                className="px-2.5 py-1 text-[10px] font-bold rounded-lg bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] flex items-center gap-1 transition-colors cursor-pointer"
               >
                 <Eye size={10} /> Customize
               </button>

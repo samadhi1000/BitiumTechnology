@@ -241,7 +241,7 @@ export default function OrderFormComponent({ hideNavbar = false }: { hideNavbar?
           <div className="mb-4 flex items-center justify-between gap-3">
             <div>
               <h3 className="font-extrabold text-base text-foreground flex items-center gap-2">
-                <FileText className="w-4 h-4 text-[#8DFF00]" />
+                <FileText className="w-4 h-4 text-[#2CFF05]" />
                 Customer Order Form
               </h3>
               <p className="text-xs text-muted-foreground">Fill in order details, edit headers, or submit to local storage & WhatsApp.</p>

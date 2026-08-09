@@ -187,7 +187,7 @@ function HomeContent() {
     { name: 'Design Studio X', role: 'Interior Designers', rating: 5, text: '"The custom laser cut stencils for our mural project were flawless. Exceeded expectations!"', avatar: 'DS' },
     { name: 'Sahan M.', role: 'Local Screen Printer', rating: 5, text: '"Fastest screen exposing service in the city. Really appreciate the quick turnarounds."', avatar: 'SM' },
   ];
-  const avatarColors = ['#8DFF00', '#7c3aed', '#0284c7'];
+  const avatarColors = ['#2CFF05', '#7c3aed', '#0284c7'];
   
   const faqs = [
     { q: 'What is DTF printing?', a: 'DTF (Direct-to-Film) printing is a modern transfer method where designs are printed onto a special film and then heat-pressed onto garments. It produces vibrant, full-color prints on virtually any fabric.' },
@@ -273,16 +273,16 @@ function HomeContent() {
           {/* Left Column: Headline, Search, Actions */}
           <div className="lg:col-span-7 xl:col-span-7 space-y-6 flex flex-col items-start text-left">
             <div 
-              className="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#f0ffd6] dark:bg-[#8DFF00]/10 border border-[#8DFF00]/30 text-[#3a6600] dark:text-[#8DFF00] text-xs font-semibold backdrop-blur-sm shadow-sm"
+              className="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#f0ffd6] dark:bg-[#2CFF05]/10 border border-[#2CFF05]/30 text-[#3a6600] dark:text-[#2CFF05] text-xs font-semibold backdrop-blur-sm shadow-sm"
             >
-              <Sparkles size={14} className="text-[#8DFF00]" />
+              <Sparkles size={14} className="text-[#2CFF05]" />
               <span>Bitium Technology Print Store</span>
             </div>
             
             <h1 
               className="hero-title font-heading font-black text-[clamp(30px,4.5vw,54px)] tracking-tight leading-[1.08] text-foreground drop-shadow-md"
             >
-              High-Definition <span className="text-[#8DFF00]">Print Solutions</span> &amp; Equipment
+              High-Definition <span className="text-[#2CFF05]">Print Solutions</span> &amp; Equipment
             </h1>
             
             <p 
@@ -300,14 +300,14 @@ function HomeContent() {
             >
               <Link 
                 href="/canvas" 
-                className="lime-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] border-none cursor-pointer w-full sm:w-auto shadow-lg shadow-[#8DFF00]/20 hover:scale-105 transition-all"
+                className="lime-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] border-none cursor-pointer w-full sm:w-auto shadow-lg shadow-[#2CFF05]/20 hover:scale-105 transition-all"
               >
                 <span>Launch DTF Canvas</span>
                 <ArrowRight size={16} />
               </Link>
               <Link 
                 href="/stencil" 
-                className="ghost-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] cursor-pointer w-full sm:w-auto hover:border-[#8DFF00]/40 transition-all"
+                className="ghost-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] cursor-pointer w-full sm:w-auto hover:border-[#2CFF05]/40 transition-all"
               >
                 Browse Catalog
               </Link>
@@ -316,15 +316,15 @@ function HomeContent() {
             {/* Quality Bullets (From 1st Screenshot) */}
             <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-medium text-muted-foreground dark:text-zinc-300">
               <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full border border-[#8DFF00] inline-block" /> Premium Quality
+                <span className="w-2 h-2 rounded-full border border-[#2CFF05] inline-block" /> Premium Quality
               </span>
               <span className="text-zinc-600 dark:text-zinc-500">•</span>
               <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full border border-[#8DFF00] inline-block" /> Expert Support
+                <span className="w-2 h-2 rounded-full border border-[#2CFF05] inline-block" /> Expert Support
               </span>
               <span className="text-zinc-600 dark:text-zinc-500">•</span>
               <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full border border-[#8DFF00] inline-block" /> Fast Nationwide Delivery
+                <span className="w-2 h-2 rounded-full border border-[#2CFF05] inline-block" /> Fast Nationwide Delivery
               </span>
             </div>
           </div>
@@ -377,8 +377,8 @@ function HomeContent() {
             ].map((brand, i) => {
               const Icon = brand.icon;
               return (
-                <div key={i} className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border bg-card whitespace-nowrap group hover:border-[#8DFF00] hover:shadow-[0_4px_12px_rgba(141,255,0,0.1)] transition-all cursor-pointer">
-                  <Icon size={16} className="text-[#8DFF00]" />
+                <div key={i} className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border bg-card whitespace-nowrap group hover:border-[#2CFF05] hover:shadow-[0_4px_12px_rgba(141,255,0,0.1)] transition-all cursor-pointer">
+                  <Icon size={16} className="text-[#2CFF05]" />
                   <span className="font-heading font-bold text-[14px] text-muted-foreground group-hover:text-foreground tracking-wide transition-colors">{brand.name}</span>
                 </div>
               );
@@ -391,7 +391,7 @@ function HomeContent() {
       <section className="py-20 px-6 bg-background border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
-            <span className="font-heading font-bold text-[13px] text-[#8DFF00] uppercase tracking-widest">Process</span>
+            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">Process</span>
             <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">How It Works</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 relative hiw-grid">
@@ -422,7 +422,7 @@ function HomeContent() {
       <section className="py-20 px-6 bg-zinc-50 dark:bg-card/40 border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <span className="font-heading font-bold text-[13px] text-[#8DFF00] uppercase tracking-widest">Catalog</span>
+            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">Catalog</span>
             <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">Shop Our Printing Solutions</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 products-grid">
@@ -431,19 +431,19 @@ function HomeContent() {
                 return (
                   <Link key={c.title} href={c.href} className="product-card block bg-card rounded-[16px] overflow-hidden border border-border group">
                     <div className="relative overflow-hidden bg-muted dark:bg-background p-6 flex justify-center items-center h-[160px]">
-                        <div className="p-4 rounded-2xl bg-background border border-border text-[#8DFF00] group-hover:scale-110 transition-transform">
+                        <div className="p-4 rounded-2xl bg-background border border-border text-[#2CFF05] group-hover:scale-110 transition-transform">
                             <Icon size={48} strokeWidth={1.5} />
                         </div>
                         {c.badge && (
-                            <div className="absolute top-3 left-3 bg-[#8DFF00] rounded-full px-2.5 py-[3px] font-heading font-bold text-[10px] text-[#0a0a0a]">
+                            <div className="absolute top-3 left-3 bg-[#2CFF05] rounded-full px-2.5 py-[3px] font-heading font-bold text-[10px] text-[#0a0a0a]">
                                 {c.badge}
                             </div>
                         )}
                     </div>
                     <div className="p-5 bg-card">
-                        <h3 className="font-heading font-extrabold text-[16px] text-foreground mb-2 group-hover:text-[#8DFF00] transition-colors">{c.title}</h3>
+                        <h3 className="font-heading font-extrabold text-[16px] text-foreground mb-2 group-hover:text-[#2CFF05] transition-colors">{c.title}</h3>
                         <p className="text-[13px] text-muted-foreground dark:text-muted-foreground leading-[1.55] mb-4 h-[60px] overflow-hidden">{c.description}</p>
-                        <div className="inline-flex items-center gap-1.5 font-heading font-bold text-[13px] text-foreground border-b-[1.5px] border-[#8DFF00] pb-[1px]">
+                        <div className="inline-flex items-center gap-1.5 font-heading font-bold text-[13px] text-foreground border-b-[1.5px] border-[#2CFF05] pb-[1px]">
                             Browse Products <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
                         </div>
                     </div>
@@ -458,12 +458,12 @@ function HomeContent() {
       <section className="py-20 px-6 bg-background border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <span className="font-heading font-bold text-[13px] text-[#8DFF00] uppercase tracking-widest">Benefits</span>
+            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">Benefits</span>
             <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">The Bitium Advantage</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 benefits-grid">
             {benefits.map(b => (
-              <div key={b.title} className="text-center py-8 px-5 rounded-[16px] border-[1.5px] border-border bg-card transition-all duration-200 hover:border-[#8DFF00] hover:shadow-[0_8px_32px_rgba(141,255,0,0.12)]">
+              <div key={b.title} className="text-center py-8 px-5 rounded-[16px] border-[1.5px] border-border bg-card transition-all duration-200 hover:border-[#2CFF05] hover:shadow-[0_8px_32px_rgba(141,255,0,0.12)]">
                 <div className="w-[52px] h-[52px] bg-primary/10 border border-primary/20 rounded-[14px] flex items-center justify-center mx-auto mb-4">
                   {b.icon}
                 </div>
@@ -479,7 +479,7 @@ function HomeContent() {
       <section className="py-20 px-6 bg-zinc-50 dark:bg-card/40 border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-9">
-            <span className="font-heading font-bold text-[13px] text-[#8DFF00] uppercase tracking-widest">Gallery</span>
+            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">Gallery</span>
             <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">See Our Work</h2>
           </div>
 
@@ -517,7 +517,7 @@ function HomeContent() {
       <section className="py-20 px-6 bg-background border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <span className="font-heading font-bold text-[13px] text-[#8DFF00] uppercase tracking-widest">Reviews</span>
+            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">Reviews</span>
             <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">What Our Customers Say</h2>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 testi-grid">
@@ -545,25 +545,25 @@ function HomeContent() {
       {/* FAQ Section */}
       <section className="py-24 px-6 bg-zinc-50 dark:bg-card/20 border-b border-border overflow-hidden relative">
         {/* Decorative subtle gradient background glow */}
-        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[350px] h-[350px] bg-[#8DFF00] rounded-full opacity-[0.03] blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[350px] h-[350px] bg-[#2CFF05] rounded-full opacity-[0.03] blur-[120px] pointer-events-none" />
         
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1.7fr] gap-16 items-start">
             
             {/* Left side: Heading & CTA */}
             <div className="space-y-6 lg:sticky lg:top-24">
-              <div className="inline-flex items-center gap-2 bg-[#8DFF00]/10 border border-[#8DFF00]/25 rounded-full px-3.5 py-1.5">
-                <Sparkles size={12} className="text-[#8DFF00]" />
-                <span className="font-heading font-semibold text-[11px] text-[#8DFF00] tracking-wider uppercase">SUPPORT HUB</span>
+              <div className="inline-flex items-center gap-2 bg-[#2CFF05]/10 border border-[#2CFF05]/25 rounded-full px-3.5 py-1.5">
+                <Sparkles size={12} className="text-[#2CFF05]" />
+                <span className="font-heading font-semibold text-[11px] text-[#2CFF05] tracking-wider uppercase">SUPPORT HUB</span>
               </div>
               <h2 className="font-heading font-black text-[clamp(32px,4.5vw,48px)] text-foreground leading-[1.1]">
-                Frequently Asked <span className="text-[#8DFF00]">Questions</span>
+                Frequently Asked <span className="text-[#2CFF05]">Questions</span>
               </h2>
               <p className="text-[15px] text-muted-foreground leading-[1.65] max-w-md">
                 Need help with your design, files, or custom sheets? Find answers to commonly asked questions here, or reach out directly to our printing experts.
               </p>
               <div className="pt-2">
-                <Link href="/contact" className="lime-btn inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-xs font-black uppercase tracking-wider shadow-lg shadow-[#8DFF00]/10 hover:shadow-[#8DFF00]/25 cursor-pointer">
+                <Link href="/contact" className="lime-btn inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-xs font-black uppercase tracking-wider shadow-lg shadow-[#2CFF05]/10 hover:shadow-[#2CFF05]/25 cursor-pointer">
                   <MessageSquareHeart size={14} /> Contact Support
                 </Link>
               </div>
@@ -574,17 +574,17 @@ function HomeContent() {
               {faqs.map((faq, i) => (
                 <div 
                   key={i} 
-                  className={`border border-border rounded-[20px] bg-card/30 dark:bg-[#0f172a]/20 hover:border-[#8DFF00]/40 transition-all duration-300 p-5 cursor-pointer ${
-                    openFaq === i ? 'border-[#8DFF00]/40 bg-card/65 dark:bg-[#0f172a]/45 shadow-[0_8px_30px_rgba(141,255,0,0.04)]' : ''
+                  className={`border border-border rounded-[20px] bg-card/30 dark:bg-[#0f172a]/20 hover:border-[#2CFF05]/40 transition-all duration-300 p-5 cursor-pointer ${
+                    openFaq === i ? 'border-[#2CFF05]/40 bg-card/65 dark:bg-[#0f172a]/45 shadow-[0_8px_30px_rgba(141,255,0,0.04)]' : ''
                   }`}
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                 >
                   <button 
                     className="w-full bg-transparent border-none cursor-pointer flex items-center justify-between gap-4 text-left p-0 focus:outline-none group"
                   >
-                    <span className="font-heading font-bold text-[16px] text-foreground group-hover:text-[#8DFF00] transition-colors">{faq.q}</span>
-                    <div className={`w-8 h-8 rounded-full border border-border flex items-center justify-center text-foreground group-hover:border-[#8DFF00]/40 group-hover:text-[#8DFF00] transition-all duration-300 shrink-0 ${
-                      openFaq === i ? 'bg-[#8DFF00] border-[#8DFF00] text-[#0a0a0a] rotate-180' : ''
+                    <span className="font-heading font-bold text-[16px] text-foreground group-hover:text-[#2CFF05] transition-colors">{faq.q}</span>
+                    <div className={`w-8 h-8 rounded-full border border-border flex items-center justify-center text-foreground group-hover:border-[#2CFF05]/40 group-hover:text-[#2CFF05] transition-all duration-300 shrink-0 ${
+                      openFaq === i ? 'bg-[#2CFF05] border-[#2CFF05] text-[#0a0a0a] rotate-180' : ''
                     }`}>
                       <ChevronDown />
                     </div>
@@ -611,13 +611,13 @@ function HomeContent() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center hero-grid">
           {/* Left */}
           <div>
-            <div className="inline-flex items-center gap-2 bg-[#f0ffd6] dark:bg-[#f0ffd6]/10 rounded-full px-[14px] py-[6px] mb-6 border border-[#8DFF00]/20">
-              <div className="w-[6px] h-[6px] rounded-full bg-[#8DFF00]" />
-              <span className="font-heading font-semibold text-[13px] text-[#3a6600] dark:text-[#8DFF00]">Professional DTF Printing</span>
+            <div className="inline-flex items-center gap-2 bg-[#f0ffd6] dark:bg-[#f0ffd6]/10 rounded-full px-[14px] py-[6px] mb-6 border border-[#2CFF05]/20">
+              <div className="w-[6px] h-[6px] rounded-full bg-[#2CFF05]" />
+              <span className="font-heading font-semibold text-[13px] text-[#3a6600] dark:text-[#2CFF05]">Professional DTF Printing</span>
             </div>
 
             <h2 className="hero-title font-heading font-black text-[clamp(32px,4.5vw,52px)] leading-[1.05] text-foreground mb-5">
-              Custom <span className="text-[#8DFF00]">DTF</span> Transfers<br />Made Simple.
+              Custom <span className="text-[#2CFF05]">DTF</span> Transfers<br />Made Simple.
             </h2>
 
             <p className="hero-text text-[16px] text-muted-foreground dark:text-muted-foreground leading-[1.65] mb-9 max-w-[460px]">
@@ -665,7 +665,7 @@ function HomeContent() {
                   <span className="text-[10px] text-muted-foreground">🔒</span>
                   <span className="font-sans text-[11px] text-muted-foreground dark:text-muted-foreground">app.bitiumtechnology.com/builder</span>
                 </div>
-                <Link href="/3d-customizer" className="bg-[#8DFF00] hover:bg-[#7ce000] border-none rounded-md py-1.5 px-3 font-heading font-bold text-[10px] cursor-pointer text-[#0a0a0a] transition-colors decoration-none flex items-center justify-center">Preview in 3D</Link>
+                <Link href="/3d-customizer" className="bg-[#2CFF05] hover:bg-[#7ce000] border-none rounded-md py-1.5 px-3 font-heading font-bold text-[10px] cursor-pointer text-[#0a0a0a] transition-colors decoration-none flex items-center justify-center">Preview in 3D</Link>
               </div>
 
               {/* App content */}
@@ -673,7 +673,7 @@ function HomeContent() {
                 {/* Sidebar toolbar */}
                 <div className="w-[42px] bg-muted border-r border-border flex flex-col items-center pt-3 gap-3.5">
                   {['✏️','🔲','📐','🔡','🖼️','⚙️'].map((emoji, i) => (
-                    <div key={i} className={`w-7 h-7 rounded-md flex items-center justify-center text-[13px] cursor-pointer ${i === 0 ? 'bg-[#8DFF00] text-black' : 'bg-transparent text-[#0a0a0a] dark:text-[#f8fafc]'}`}>
+                    <div key={i} className={`w-7 h-7 rounded-md flex items-center justify-center text-[13px] cursor-pointer ${i === 0 ? 'bg-[#2CFF05] text-black' : 'bg-transparent text-[#0a0a0a] dark:text-[#f8fafc]'}`}>
                       {emoji}
                     </div>
                   ))}
@@ -686,7 +686,7 @@ function HomeContent() {
                     <div 
                       key={d.id} 
                       onClick={() => setSelectedDesign(d)}
-                      className={`relative aspect-square flex items-center justify-center cursor-pointer transition-all hover:scale-110 rounded-[10px] shadow-[0_4px_12px_rgba(0,0,0,0.2)] ${selectedDesign?.id === d.id ? 'scale-110 opacity-100 z-10 ring-2 ring-[#8DFF00]/50' : 'opacity-65 hover:opacity-100'}`}
+                      className={`relative aspect-square flex items-center justify-center cursor-pointer transition-all hover:scale-110 rounded-[10px] shadow-[0_4px_12px_rgba(0,0,0,0.2)] ${selectedDesign?.id === d.id ? 'scale-110 opacity-100 z-10 ring-2 ring-[#2CFF05]/50' : 'opacity-65 hover:opacity-100'}`}
                     >
                       <Image 
                         src={d.motifImage} 
@@ -747,11 +747,11 @@ function HomeContent() {
         <div className="max-w-7xl mx-auto">
           <div className="bg-card dark:bg-[#0a0a0a] rounded-[24px] p-6 sm:p-16 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 lg:gap-12 items-center overflow-hidden relative border border-border shadow-xl cta-grid">
             {/* Background accent */}
-            <div className="absolute -top-[60px] right-[300px] w-[200px] h-[200px] bg-[#8DFF00] rounded-full opacity-[0.08] blur-[40px]" />
+            <div className="absolute -top-[60px] right-[300px] w-[200px] h-[200px] bg-[#2CFF05] rounded-full opacity-[0.08] blur-[40px]" />
             <div className="relative z-10 flex flex-col items-center lg:items-start text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 bg-[#8DFF00]/15 rounded-full px-3.5 py-1.5 mb-5">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#8DFF00]" />
-                <span className="font-heading font-semibold text-[12px] text-[#8DFF00]">Ready to get started?</span>
+              <div className="inline-flex items-center gap-2 bg-[#2CFF05]/15 rounded-full px-3.5 py-1.5 mb-5">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#2CFF05]" />
+                <span className="font-heading font-semibold text-[12px] text-[#2CFF05]">Ready to get started?</span>
               </div>
               <h2 className="font-heading font-black text-[clamp(28px,4vw,48px)] text-foreground dark:text-foreground leading-[1.1] mb-4">
                 Ready to Print<br />Your Design?
@@ -781,7 +781,7 @@ export default function Home() {
   return (
     <Suspense fallback={
       <div className="w-full min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8DFF00]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2CFF05]"></div>
       </div>
     }>
       <HomeContent />

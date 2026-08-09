@@ -82,12 +82,12 @@ export default function TrendingHeroShowcase({ products = [] }: TrendingHeroShow
             onClick={() => setActiveTab(idx)}
             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 flex items-center gap-1.5 ${
               activeTab === idx
-                ? 'bg-gradient-to-r from-[#8DFF00] to-[#7acc00] text-foreground shadow-lg shadow-[#8DFF00]/30'
+                ? 'bg-gradient-to-r from-[#2CFF05] to-[#7acc00] text-foreground shadow-lg shadow-[#2CFF05]/30'
                 : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
             }`}
           >
             {idx === 0 && <Flame size={12} className={activeTab === 0 ? 'text-amber-300 animate-pulse' : ''} />}
-            {idx === 1 && <Sparkles size={12} className={activeTab === 1 ? 'text-[#9eff1a]' : ''} />}
+            {idx === 1 && <Sparkles size={12} className={activeTab === 1 ? 'text-[#45ff24]' : ''} />}
             {idx === 2 && <Zap size={12} className={activeTab === 2 ? 'text-cyan-300' : ''} />}
             <span>{idx === 0 ? 'DTF Sheet' : idx === 1 ? 'Stencil' : 'Batik'}</span>
           </button>
@@ -95,11 +95,11 @@ export default function TrendingHeroShowcase({ products = [] }: TrendingHeroShow
       </div>
 
       {/* Main Glass Showcase Card */}
-      <div className="group relative w-full rounded-3xl border border-[#8DFF00]/20 bg-card/80 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] overflow-hidden transition-all duration-300 hover:border-[#8DFF00]/40 hover:shadow-[#8DFF00]/20">
+      <div className="group relative w-full rounded-3xl border border-[#2CFF05]/20 bg-card/80 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] overflow-hidden transition-all duration-300 hover:border-[#2CFF05]/40 hover:shadow-[#2CFF05]/20">
         
         {/* Ambient Top Glow */}
-        <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#8DFF00]/20 rounded-full blur-3xl pointer-events-none group-hover:bg-[#8DFF00]/30 transition-all duration-500"></div>
-        <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-[#8DFF00]/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#2CFF05]/20 rounded-full blur-3xl pointer-events-none group-hover:bg-[#2CFF05]/30 transition-all duration-500"></div>
+        <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-[#2CFF05]/15 rounded-full blur-3xl pointer-events-none"></div>
 
         {/* Product Image Stage */}
         <div className="relative w-full h-[250px] bg-background overflow-hidden">
@@ -115,7 +115,7 @@ export default function TrendingHeroShowcase({ products = [] }: TrendingHeroShow
 
           {/* Floating Badges */}
           <div className="absolute top-4 left-4 flex flex-wrap gap-2 z-10">
-            <span className="px-3 py-1 rounded-full bg-[#8DFF00]/90 text-[#0a0a0a] text-[11px] font-black uppercase tracking-wider backdrop-blur shadow-md flex items-center gap-1">
+            <span className="px-3 py-1 rounded-full bg-[#2CFF05]/90 text-[#0a0a0a] text-[11px] font-black uppercase tracking-wider backdrop-blur shadow-md flex items-center gap-1">
               <Sparkles size={11} />
               {current.badge}
             </span>
@@ -137,7 +137,7 @@ export default function TrendingHeroShowcase({ products = [] }: TrendingHeroShow
         {/* Card Info & CTA */}
         <div className="p-6 space-y-4">
           <div>
-            <span className="text-[11px] font-black uppercase tracking-widest text-[#8DFF00]">
+            <span className="text-[11px] font-black uppercase tracking-widest text-[#2CFF05]">
               {current.category.replace('_', ' ')}
             </span>
             <h3 className="text-lg font-black text-foreground mt-0.5 leading-snug line-clamp-1">
@@ -162,7 +162,7 @@ export default function TrendingHeroShowcase({ products = [] }: TrendingHeroShow
 
             <Link
               href={current.link}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#8DFF00] to-[#7acc00] hover:from-[#9eff1a] hover:to-[#9eff1a] text-foreground font-black text-xs flex items-center gap-2 shadow-lg shadow-[#8DFF00]/25 hover:shadow-[#8DFF00]/40 transition-all hover:scale-105"
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#2CFF05] to-[#7acc00] hover:from-[#45ff24] hover:to-[#45ff24] text-foreground font-black text-xs flex items-center gap-2 shadow-lg shadow-[#2CFF05]/25 hover:shadow-[#2CFF05]/40 transition-all hover:scale-105"
             >
               <span>{current.btnText}</span>
               <ArrowRight size={14} />

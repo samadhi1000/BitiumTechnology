@@ -424,7 +424,7 @@ export default function AdminPanelPage() {
   if (authLoading) {
     return (
       <div className="w-full min-h-screen bg-background flex flex-col items-center justify-center gap-3">
-        <RefreshCw size={28} className="animate-spin text-[#8DFF00]" />
+        <RefreshCw size={28} className="animate-spin text-[#2CFF05]" />
         <span className="text-xs text-muted-foreground font-semibold">Verifying secure administrator session...</span>
       </div>
     );
@@ -435,13 +435,13 @@ export default function AdminPanelPage() {
     return (
       <div className="w-full min-h-screen bg-background text-foreground flex items-center justify-center py-24 px-4 relative overflow-hidden">
         {/* Ambient background glows */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-[#8DFF00]/10 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-[#2CFF05]/10 rounded-full blur-[100px] pointer-events-none"></div>
         <div className="absolute inset-0 bg-[radial-gradient(rgba(141,255,0,0.01)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
 
         <div className="w-full max-w-md rounded-3xl border border-border bg-card/25 backdrop-blur-md p-8 space-y-6 shadow-2xl relative z-10">
           
           <div className="text-center space-y-2">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#8DFF00] to-[#7acc00] flex items-center justify-center text-foreground mx-auto shadow-lg shadow-[#8DFF00]/25 mb-4">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#2CFF05] to-[#7acc00] flex items-center justify-center text-foreground mx-auto shadow-lg shadow-[#2CFF05]/25 mb-4">
               <Lock size={26} className="text-[#0a0a0a]" />
             </div>
             <h1 className="text-2xl font-black tracking-tight uppercase">Admin Console</h1>
@@ -479,7 +479,7 @@ export default function AdminPanelPage() {
                     value={emailInput}
                     onChange={(e) => setEmailInput(e.target.value)}
                     placeholder="admin@bitiumtechnology.com"
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-sm text-foreground focus:outline-none focus:border-[#8DFF00] focus:ring-1 focus:ring-[#8DFF00] transition-colors"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-sm text-foreground focus:outline-none focus:border-[#2CFF05] focus:ring-1 focus:ring-[#2CFF05] transition-colors"
                   />
                 </div>
               </div>
@@ -495,7 +495,7 @@ export default function AdminPanelPage() {
                     value={passwordInput}
                     onChange={(e) => setPasswordInput(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-sm text-foreground focus:outline-none focus:border-[#8DFF00] focus:ring-1 focus:ring-[#8DFF00] transition-colors"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-sm text-foreground focus:outline-none focus:border-[#2CFF05] focus:ring-1 focus:ring-[#2CFF05] transition-colors"
                   />
                 </div>
               </div>
@@ -504,7 +504,7 @@ export default function AdminPanelPage() {
               <button
                 type="submit"
                 disabled={loginSubmitting}
-                className="w-full py-3.5 px-6 rounded-xl bg-[#8DFF00] hover:bg-[#7acc00] disabled:bg-zinc-700 disabled:opacity-50 text-[#0a0a0a] font-black text-xs uppercase tracking-wider shadow-lg shadow-[#8DFF00]/15 hover:shadow-[#8DFF00]/30 transition-all hover:scale-[1.01] flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3.5 px-6 rounded-xl bg-[#2CFF05] hover:bg-[#7acc00] disabled:bg-zinc-700 disabled:opacity-50 text-[#0a0a0a] font-black text-xs uppercase tracking-wider shadow-lg shadow-[#2CFF05]/15 hover:shadow-[#2CFF05]/30 transition-all hover:scale-[1.01] flex items-center justify-center gap-2 cursor-pointer"
               >
                 {loginSubmitting && <RefreshCw size={14} className="animate-spin" />}
                 <span>{loginSubmitting ? 'Verifying...' : 'Unlock Admin Panel'}</span>
@@ -522,20 +522,20 @@ export default function AdminPanelPage() {
     <>
       <div className="w-full min-h-screen bg-background text-foreground py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         {/* Background glows */}
-        <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-[#8DFF00]/5 rounded-full blur-[120px] pointer-events-none"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-[350px] h-[350px] bg-[#8DFF00]/5 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-[#2CFF05]/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-[350px] h-[350px] bg-[#2CFF05]/5 rounded-full blur-[100px] pointer-events-none"></div>
 
         <div className="max-w-7xl mx-auto relative z-10 space-y-8">
           
           {/* Top row heading */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-border/60 pb-6">
             <div>
-              <div className="inline-flex items-center gap-2 bg-[#8DFF00]/10 border border-[#8DFF00]/25 rounded-full px-3.5 py-1 mb-2">
-                <Sparkles size={11} className="text-[#8DFF00]" />
-                <span className="font-heading font-semibold text-[10px] text-[#8DFF00] tracking-wider uppercase">System Authenticated</span>
+              <div className="inline-flex items-center gap-2 bg-[#2CFF05]/10 border border-[#2CFF05]/25 rounded-full px-3.5 py-1 mb-2">
+                <Sparkles size={11} className="text-[#2CFF05]" />
+                <span className="font-heading font-semibold text-[10px] text-[#2CFF05] tracking-wider uppercase">System Authenticated</span>
               </div>
               <h1 className="text-3xl sm:text-4xl font-black tracking-tight flex items-center gap-2 uppercase">
-                Unified <span className="text-[#8DFF00]">Admin Panel</span>
+                Unified <span className="text-[#2CFF05]">Admin Panel</span>
               </h1>
               <p className="text-muted-foreground text-xs sm:text-sm mt-0.5">Control both storefront inventory items and secure design artworks vault files.</p>
             </div>
@@ -552,7 +552,7 @@ export default function AdminPanelPage() {
               {activeTab === 'batch-print' ? (
                 <button
                   onClick={() => window.print()}
-                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-[#8DFF00] hover:bg-[#7acc00] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#8DFF00]/20 transition-all hover:scale-105 cursor-pointer"
+                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-[#2CFF05] hover:bg-[#7acc00] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#2CFF05]/20 transition-all hover:scale-105 cursor-pointer"
                 >
                   <Printer size={16} />
                   <span>Print 4-in-1 A4</span>
@@ -566,7 +566,7 @@ export default function AdminPanelPage() {
                       openAddDigitalModal();
                     }
                   }}
-                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-[#8DFF00] hover:bg-[#7acc00] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#8DFF00]/20 transition-all hover:scale-105 cursor-pointer"
+                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-[#2CFF05] hover:bg-[#7acc00] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#2CFF05]/20 transition-all hover:scale-105 cursor-pointer"
                 >
                   <Plus size={16} />
                   <span>{activeTab === 'products' ? 'Add Product' : 'Add Design'}</span>
@@ -594,7 +594,7 @@ export default function AdminPanelPage() {
           {/* Dashboard Stats */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="p-5 rounded-2xl border border-border bg-card/10 backdrop-blur-md flex items-center gap-4">
-              <div className="w-10 h-10 rounded-xl bg-[#8DFF00]/10 border border-[#8DFF00]/20 flex items-center justify-center text-[#8DFF00] shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-[#2CFF05]/10 border border-[#2CFF05]/20 flex items-center justify-center text-[#2CFF05] shrink-0">
                 <Package size={20} />
               </div>
               <div>
@@ -637,13 +637,13 @@ export default function AdminPanelPage() {
               onClick={() => { setActiveTab('products'); setCategoryFilter('all'); }}
               className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
                 activeTab === 'products'
-                  ? 'bg-[#8DFF00] text-[#0a0a0a] shadow-xl shadow-[#8DFF00]/20 scale-105'
+                  ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
                   : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
               }`}
             >
               <Package size={16} />
               <span>Store Catalog</span>
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${activeTab === 'products' ? 'bg-black text-[#8DFF00]' : 'bg-muted text-muted-foreground'}`}>
+              <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${activeTab === 'products' ? 'bg-black text-[#2CFF05]' : 'bg-muted text-muted-foreground'}`}>
                 {totalProductsCount}
               </span>
             </button>
@@ -652,13 +652,13 @@ export default function AdminPanelPage() {
               onClick={() => { setActiveTab('digital'); setCategoryFilter('all'); }}
               className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
                 activeTab === 'digital'
-                  ? 'bg-[#8DFF00] text-[#0a0a0a] shadow-xl shadow-[#8DFF00]/20 scale-105'
+                  ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
                   : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
               }`}
             >
               <Folder size={16} />
               <span>Digital Artworks</span>
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${activeTab === 'digital' ? 'bg-black text-[#8DFF00]' : 'bg-muted text-muted-foreground'}`}>
+              <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${activeTab === 'digital' ? 'bg-black text-[#2CFF05]' : 'bg-muted text-muted-foreground'}`}>
                 {totalDigitalCount}
               </span>
             </button>
@@ -667,13 +667,13 @@ export default function AdminPanelPage() {
               onClick={() => { setActiveTab('batch-print'); }}
               className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
                 activeTab === 'batch-print'
-                  ? 'bg-[#8DFF00] text-[#0a0a0a] shadow-xl shadow-[#8DFF00]/20 scale-105'
+                  ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
                   : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
               }`}
             >
               <Printer size={16} />
               <span>Batch Print (4-in-1 A4)</span>
-              <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'batch-print' ? 'bg-black text-[#8DFF00]' : 'bg-indigo-600/30 text-indigo-300'}`}>
+              <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'batch-print' ? 'bg-black text-[#2CFF05]' : 'bg-indigo-600/30 text-indigo-300'}`}>
                 PRINT A4
               </span>
             </button>
@@ -682,13 +682,13 @@ export default function AdminPanelPage() {
               onClick={() => { setActiveTab('order-form'); }}
               className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
                 activeTab === 'order-form'
-                  ? 'bg-[#8DFF00] text-[#0a0a0a] shadow-xl shadow-[#8DFF00]/20 scale-105'
+                  ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
                   : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
               }`}
             >
               <FileText size={16} />
               <span>Order Form</span>
-              <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'order-form' ? 'bg-black text-[#8DFF00]' : 'bg-lime-500/20 text-lime-400'}`}>
+              <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'order-form' ? 'bg-black text-[#2CFF05]' : 'bg-lime-500/20 text-lime-400'}`}>
                 FORM
               </span>
             </button>
@@ -716,7 +716,7 @@ export default function AdminPanelPage() {
                       onClick={() => setCategoryFilter(cat.id)}
                       className={`px-3 py-1.5 rounded-lg text-[9px] font-bold transition-all cursor-pointer ${
                         categoryFilter === cat.id 
-                          ? 'bg-[#8DFF00]/25 border border-[#8DFF00]/40 text-[#8DFF00]' 
+                          ? 'bg-[#2CFF05]/25 border border-[#2CFF05]/40 text-[#2CFF05]' 
                           : 'bg-card border border-border text-muted-foreground hover:text-[#0a0a0a]'
                       }`}
                     >
@@ -737,7 +737,7 @@ export default function AdminPanelPage() {
                       onClick={() => setCategoryFilter(cat.id)}
                       className={`px-3 py-1.5 rounded-lg text-[9px] font-bold transition-all cursor-pointer ${
                         categoryFilter === cat.id 
-                          ? 'bg-[#8DFF00]/25 border border-[#8DFF00]/40 text-[#8DFF00]' 
+                          ? 'bg-[#2CFF05]/25 border border-[#2CFF05]/40 text-[#2CFF05]' 
                           : 'bg-card border border-border text-muted-foreground hover:text-[#0a0a0a]'
                       }`}
                     >
@@ -755,7 +755,7 @@ export default function AdminPanelPage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search catalog titles, details..."
-                  className="w-full pl-10 pr-4 py-2 rounded-xl border border-border bg-background text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                  className="w-full pl-10 pr-4 py-2 rounded-xl border border-border bg-background text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                 />
               </div>
             </div>
@@ -772,7 +772,7 @@ export default function AdminPanelPage() {
             <div className="rounded-2xl border border-border bg-card/10 backdrop-blur-sm overflow-hidden">
               {loading ? (
                 <div className="p-16 text-center text-muted-foreground flex flex-col items-center justify-center gap-2">
-                  <RefreshCw size={24} className="animate-spin text-[#8DFF00]" />
+                  <RefreshCw size={24} className="animate-spin text-[#2CFF05]" />
                   <p className="text-xs">Fetching storefront catalog databases...</p>
                 </div>
               ) : activeTab === 'products' ? (
@@ -857,7 +857,7 @@ export default function AdminPanelPage() {
                                 <div className="flex justify-end gap-2">
                                   <button
                                     onClick={() => openEditProductModal(p)}
-                                    className="p-2 rounded-lg bg-card border border-border hover:border-[#8DFF00]/40 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                                    className="p-2 rounded-lg bg-card border border-border hover:border-[#2CFF05]/40 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                                   >
                                     <Edit size={13} />
                                   </button>
@@ -931,7 +931,7 @@ export default function AdminPanelPage() {
                               <div className="flex justify-end gap-2">
                                 <button
                                   onClick={() => openEditDigitalModal(d)}
-                                  className="p-2 rounded-lg bg-card border border-border hover:border-[#8DFF00]/40 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                                  className="p-2 rounded-lg bg-card border border-border hover:border-[#2CFF05]/40 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                                 >
                                   <Edit size={13} />
                                 </button>
@@ -963,7 +963,7 @@ export default function AdminPanelPage() {
             
             <div className="flex justify-between items-center border-b border-border pb-4">
               <h2 className="text-lg font-black text-foreground uppercase tracking-tight flex items-center gap-2">
-                {editingProduct ? <Edit size={18} className="text-[#8DFF00]" /> : <Plus size={18} className="text-[#8DFF00]" />}
+                {editingProduct ? <Edit size={18} className="text-[#2CFF05]" /> : <Plus size={18} className="text-[#2CFF05]" />}
                 <span>{editingProduct ? 'Edit Catalog Product' : 'Add Storefront Item'}</span>
               </h2>
               <button onClick={() => setIsProductModalOpen(false)} className="p-1 rounded-full bg-card border border-border text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
@@ -987,7 +987,7 @@ export default function AdminPanelPage() {
                   value={prodName}
                   onChange={(e) => setProdName(e.target.value)}
                   placeholder="e.g. Premium White Screen Ink 1L"
-                  className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                  className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                 />
               </div>
 
@@ -997,7 +997,7 @@ export default function AdminPanelPage() {
                   <select
                     value={prodCategory}
                     onChange={(e: any) => setProdCategory(e.target.value)}
-                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                   >
                     <option value="stencil">Stencils</option>
                     <option value="screen-printing">Screen Printing</option>
@@ -1014,7 +1014,7 @@ export default function AdminPanelPage() {
                     value={prodSubCategory}
                     onChange={(e) => setProdSubCategory(e.target.value)}
                     placeholder="e.g. printing-materials, saree, acrylic"
-                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                   />
                 </div>
               </div>
@@ -1026,7 +1026,7 @@ export default function AdminPanelPage() {
                   onChange={(e) => setProdDescription(e.target.value)}
                   placeholder="Provide details about materials, sizes, compatibility..."
                   rows={3}
-                  className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors resize-none"
+                  className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors resize-none"
                 />
               </div>
 
@@ -1039,7 +1039,7 @@ export default function AdminPanelPage() {
                     value={prodPrice || ''}
                     onChange={(e) => setProdPrice(Number(e.target.value))}
                     placeholder="2500"
-                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                   />
                 </div>
                 <div className="space-y-1">
@@ -1049,7 +1049,7 @@ export default function AdminPanelPage() {
                     value={prodOriginalPrice || ''}
                     onChange={(e) => setProdOriginalPrice(e.target.value ? Number(e.target.value) : undefined)}
                     placeholder="3000"
-                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                   />
                 </div>
                 <div className="space-y-1">
@@ -1060,7 +1060,7 @@ export default function AdminPanelPage() {
                     value={prodStock}
                     onChange={(e) => setProdStock(Number(e.target.value))}
                     placeholder="100"
-                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                   />
                 </div>
               </div>
@@ -1069,7 +1069,7 @@ export default function AdminPanelPage() {
               <div className="p-4 rounded-xl border border-border bg-background/50 space-y-3">
                 <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Product Image Upload</label>
                 <div className="flex flex-col sm:flex-row gap-4 items-center">
-                  <label className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-dashed border-border hover:border-[#8DFF00]/40 hover:bg-card cursor-pointer transition-colors text-xs font-semibold text-muted-foreground">
+                  <label className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-dashed border-border hover:border-[#2CFF05]/40 hover:bg-card cursor-pointer transition-colors text-xs font-semibold text-muted-foreground">
                     <Upload size={14} />
                     <span>Choose File</span>
                     <input 
@@ -1093,7 +1093,7 @@ export default function AdminPanelPage() {
                     value={prodImageUrl}
                     onChange={(e) => setProdImageUrl(e.target.value)}
                     placeholder="https://images.unsplash.com/photo-..."
-                    className="w-full bg-card border border-border rounded-xl px-4 py-2 text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                    className="w-full bg-card border border-border rounded-xl px-4 py-2 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                   />
                 </div>
               </div>
@@ -1104,7 +1104,7 @@ export default function AdminPanelPage() {
                     type="checkbox"
                     checked={prodIsActive}
                     onChange={(e) => setProdIsActive(e.target.checked)}
-                    className="w-4 h-4 rounded border-border bg-card text-[#8DFF00] focus:ring-[#8DFF00]"
+                    className="w-4 h-4 rounded border-border bg-card text-[#2CFF05] focus:ring-[#2CFF05]"
                   />
                   <span>Show product in live catalog</span>
                 </label>
@@ -1121,7 +1121,7 @@ export default function AdminPanelPage() {
                 <button type="button" onClick={() => setIsProductModalOpen(false)} className="px-5 py-2.5 rounded-xl border border-border hover:bg-card text-muted-foreground text-xs font-bold transition-all cursor-pointer">
                   Cancel
                 </button>
-                <button type="submit" disabled={saving} className="px-6 py-2.5 rounded-xl bg-[#8DFF00] hover:bg-[#7acc00] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#8DFF00]/10 transition-all flex items-center gap-2 cursor-pointer">
+                <button type="submit" disabled={saving} className="px-6 py-2.5 rounded-xl bg-[#2CFF05] hover:bg-[#7acc00] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#2CFF05]/10 transition-all flex items-center gap-2 cursor-pointer">
                   {saving && <RefreshCw size={12} className="animate-spin" />}
                   <span>{editingProduct ? 'Save Changes' : 'Publish Product'}</span>
                 </button>
@@ -1138,7 +1138,7 @@ export default function AdminPanelPage() {
             
             <div className="flex justify-between items-center border-b border-border pb-4">
               <h2 className="text-lg font-black text-foreground uppercase tracking-tight flex items-center gap-2">
-                {editingDigital ? <Edit size={18} className="text-[#8DFF00]" /> : <Plus size={18} className="text-[#8DFF00]" />}
+                {editingDigital ? <Edit size={18} className="text-[#2CFF05]" /> : <Plus size={18} className="text-[#2CFF05]" />}
                 <span>{editingDigital ? 'Edit Digital Design' : 'Add Secure Artwork Vault File'}</span>
               </h2>
               <button onClick={() => setIsDigitalModalOpen(false)} className="p-1 rounded-full bg-card border border-border text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
@@ -1162,7 +1162,7 @@ export default function AdminPanelPage() {
                   value={digTitle}
                   onChange={(e) => setDigTitle(e.target.value)}
                   placeholder="e.g. Royal Peacock Traditional Pattern"
-                  className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                  className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                 />
               </div>
 
@@ -1173,7 +1173,7 @@ export default function AdminPanelPage() {
                   onChange={(e) => setDigDescription(e.target.value)}
                   placeholder="Write details explaining design styles, dimensions, format layers..."
                   rows={2}
-                  className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors resize-none"
+                  className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors resize-none"
                 />
               </div>
 
@@ -1183,7 +1183,7 @@ export default function AdminPanelPage() {
                   <select
                     value={digCategory}
                     onChange={(e: any) => setDigCategory(e.target.value)}
-                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                   >
                     <option value="batik">Batik stamp designs</option>
                     <option value="vector">Vector artwork</option>
@@ -1199,7 +1199,7 @@ export default function AdminPanelPage() {
                     value={digPrice || ''}
                     onChange={(e) => setDigPrice(Number(e.target.value))}
                     placeholder="1200"
-                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                   />
                 </div>
                 <div className="space-y-1">
@@ -1209,7 +1209,7 @@ export default function AdminPanelPage() {
                     value={digResolution}
                     onChange={(e) => setDigResolution(e.target.value)}
                     placeholder="e.g. 300 DPI, Vector format"
-                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                   />
                 </div>
               </div>
@@ -1222,7 +1222,7 @@ export default function AdminPanelPage() {
                     value={digFileFormat}
                     onChange={(e) => setDigFileFormat(e.target.value)}
                     placeholder="e.g. ZIP, PNG, SVG"
-                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                   />
                 </div>
                 <div className="space-y-1">
@@ -1232,7 +1232,7 @@ export default function AdminPanelPage() {
                     value={digTags}
                     onChange={(e) => setDigTags(e.target.value)}
                     placeholder="e.g. traditional, blue, pattern"
-                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                   />
                 </div>
               </div>
@@ -1243,7 +1243,7 @@ export default function AdminPanelPage() {
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Preview Image File (Watermarked) *</label>
                   <div className="flex flex-col sm:flex-row gap-4 items-center">
-                    <label className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-dashed border-border hover:border-[#8DFF00]/40 hover:bg-card cursor-pointer transition-colors text-xs font-semibold text-muted-foreground">
+                    <label className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-dashed border-border hover:border-[#2CFF05]/40 hover:bg-card cursor-pointer transition-colors text-xs font-semibold text-muted-foreground">
                       <Upload size={14} />
                       <span>Choose Preview</span>
                       <input 
@@ -1266,7 +1266,7 @@ export default function AdminPanelPage() {
                       value={digPreviewUrl}
                       onChange={(e) => setDigPreviewUrl(e.target.value)}
                       placeholder="https://res.cloudinary.com/..."
-                      className="w-full bg-card border border-border rounded-xl px-4 py-2 text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                      className="w-full bg-card border border-border rounded-xl px-4 py-2 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                     />
                   </div>
                 </div>
@@ -1300,7 +1300,7 @@ export default function AdminPanelPage() {
                       value={digFileKey}
                       onChange={(e) => setDigFileKey(e.target.value)}
                       placeholder="uploads/1723-custom-design.zip"
-                      className="w-full bg-card border border-border rounded-xl px-4 py-2 text-xs text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                      className="w-full bg-card border border-border rounded-xl px-4 py-2 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                     />
                   </div>
                 </div>
@@ -1317,7 +1317,7 @@ export default function AdminPanelPage() {
                 <button type="button" onClick={() => setIsDigitalModalOpen(false)} className="px-5 py-2.5 rounded-xl border border-border hover:bg-card text-muted-foreground text-xs font-bold transition-all cursor-pointer">
                   Cancel
                 </button>
-                <button type="submit" disabled={saving} className="px-6 py-2.5 rounded-xl bg-[#8DFF00] hover:bg-[#7acc00] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#8DFF00]/10 transition-all flex items-center gap-2 cursor-pointer">
+                <button type="submit" disabled={saving} className="px-6 py-2.5 rounded-xl bg-[#2CFF05] hover:bg-[#7acc00] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#2CFF05]/10 transition-all flex items-center gap-2 cursor-pointer">
                   {saving && <RefreshCw size={12} className="animate-spin" />}
                   <span>{editingDigital ? 'Save Changes' : 'Upload Design'}</span>
                 </button>

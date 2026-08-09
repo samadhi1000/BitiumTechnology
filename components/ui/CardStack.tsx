@@ -97,7 +97,7 @@ export default function CardStack({ products }: CardStackProps) {
                     </span>
                   )}
                   {product.category === 'dtf_sheet' && (
-                    <span className="px-2.5 py-1 rounded-md bg-[#8DFF00] text-[10px] font-bold tracking-wider uppercase text-[#0a0a0a] flex items-center gap-1">
+                    <span className="px-2.5 py-1 rounded-md bg-[#2CFF05] text-[10px] font-bold tracking-wider uppercase text-[#0a0a0a] flex items-center gap-1">
                       <Layers size={10} />
                       DTF
                     </span>
@@ -107,7 +107,7 @@ export default function CardStack({ products }: CardStackProps) {
                 {isTop && (
                   <div className="absolute top-4 right-4 animate-bounce pointer-events-none">
                     <span className="px-2.5 py-1 rounded-full bg-card/80 backdrop-blur border border-border text-[9px] font-bold text-foreground flex items-center gap-1">
-                      <Sparkles size={10} className="text-[#8DFF00]" />
+                      <Sparkles size={10} className="text-[#2CFF05]" />
                       Swipe Me!
                     </span>
                   </div>
@@ -117,7 +117,7 @@ export default function CardStack({ products }: CardStackProps) {
               {/* Details & Action */}
               <div className="p-6 bg-card flex-grow flex flex-col justify-between">
                 <div className="space-y-1">
-                  <span className="text-[10px] font-bold text-[#8DFF00] uppercase tracking-widest">
+                  <span className="text-[10px] font-bold text-[#2CFF05] uppercase tracking-widest">
                     {product.sub_category === 'anime' ? 'Anime Apparel' : 'DTF Print Transfer'}
                   </span>
                   <h3 className="font-extrabold text-base text-foreground line-clamp-1 leading-snug">
@@ -135,14 +135,14 @@ export default function CardStack({ products }: CardStackProps) {
                         Rs. {product.original_price.toLocaleString()}
                       </span>
                     )}
-                    <p className="font-black text-lg text-[#8DFF00] leading-none">
+                    <p className="font-black text-lg text-[#2CFF05] leading-none">
                       Rs. {product.price.toLocaleString()}
                     </p>
                   </div>
 
                   <Link
                     href={product.category === 'dtf_sheet' && product.id.startsWith('b2a8') ? '/canvas' : `/products/${product.id}`}
-                    className="px-5 py-2.5 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] font-bold text-xs flex items-center gap-1.5 transition-all glow-primary select-none"
+                    className="px-5 py-2.5 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] font-bold text-xs flex items-center gap-1.5 transition-all glow-primary select-none"
                   >
                     <span>Get Design</span>
                     <ArrowRight size={12} />

@@ -100,7 +100,7 @@ export default function BlogArticleClient({
           <ul key={key} className="space-y-2.5 my-5 pl-2 list-none">
             {currentList.map((item, idx) => (
               <li key={idx} className="flex items-start gap-2.5 text-sm sm:text-base text-muted-foreground leading-relaxed">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#8DFF00] shrink-0 mt-2.5" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2CFF05] shrink-0 mt-2.5" />
                 <span dangerouslySetInnerHTML={{ __html: item }} />
               </li>
             ))}
@@ -135,7 +135,7 @@ export default function BlogArticleClient({
             id={headingId}
             className="text-xl sm:text-2xl font-black text-foreground tracking-tight pt-8 pb-2 border-b border-border/40 scroll-mt-28 flex items-center gap-2"
           >
-            <span className="w-2 h-2 rounded-full bg-[#8DFF00]" />
+            <span className="w-2 h-2 rounded-full bg-[#2CFF05]" />
             {headingText}
           </h3>
         );
@@ -177,12 +177,12 @@ export default function BlogArticleClient({
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-[#8DFF00]/30 selection:text-[#0a0a0a] pb-24">
+    <div className="min-h-screen bg-background text-foreground selection:bg-[#2CFF05]/30 selection:text-[#0a0a0a] pb-24">
       
       {/* ── Viewport Reading Progress Bar ───────────────────────────────── */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-border/40 z-50">
         <div 
-          className="h-full bg-gradient-to-r from-lime-500 via-[#8DFF00] to-emerald-400 transition-all duration-150 shadow-[0_0_10px_rgba(141,255,0,0.8)]"
+          className="h-full bg-gradient-to-r from-lime-500 via-[#2CFF05] to-emerald-400 transition-all duration-150 shadow-[0_0_10px_rgba(141,255,0,0.8)]"
           style={{ width: `${readingProgress}%` }}
         />
       </div>
@@ -213,16 +213,16 @@ export default function BlogArticleClient({
       <header className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-8 space-y-6">
         
         <div className="flex flex-wrap items-center gap-3">
-          <span className="px-3 py-1 rounded-full bg-[#8DFF00]/15 border border-[#8DFF00]/30 text-lime-400 text-xs font-extrabold uppercase tracking-wider">
+          <span className="px-3 py-1 rounded-full bg-[#2CFF05]/15 border border-[#2CFF05]/30 text-lime-400 text-xs font-extrabold uppercase tracking-wider">
             {post.category}
           </span>
           <span className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium">
-            <Calendar size={13} className="text-[#8DFF00]" />
+            <Calendar size={13} className="text-[#2CFF05]" />
             Published on {post.publishedAt}
           </span>
           <span className="text-muted-foreground">•</span>
           <span className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium">
-            <Clock size={13} className="text-[#8DFF00]" />
+            <Clock size={13} className="text-[#2CFF05]" />
             {post.readTime}
           </span>
         </div>
@@ -276,7 +276,7 @@ export default function BlogArticleClient({
             </button>
             <button
               onClick={copyArticleLink}
-              className="p-2 rounded-xl bg-card border border-border hover:border-[#8DFF00]/50 text-foreground hover:bg-muted transition-all cursor-pointer flex items-center gap-1 text-xs font-bold px-3"
+              className="p-2 rounded-xl bg-card border border-border hover:border-[#2CFF05]/50 text-foreground hover:bg-muted transition-all cursor-pointer flex items-center gap-1 text-xs font-bold px-3"
               title="Copy Link"
             >
               {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
@@ -337,9 +337,9 @@ export default function BlogArticleClient({
                 {post.tags.map((tag, idx) => (
                   <span
                     key={idx}
-                    className="px-3 py-1 rounded-xl bg-card border border-border text-xs font-semibold text-muted-foreground flex items-center gap-1.5 hover:border-[#8DFF00]/40 transition-colors"
+                    className="px-3 py-1 rounded-xl bg-card border border-border text-xs font-semibold text-muted-foreground flex items-center gap-1.5 hover:border-[#2CFF05]/40 transition-colors"
                   >
-                    <Tag size={10} className="text-[#8DFF00]" />
+                    <Tag size={10} className="text-[#2CFF05]" />
                     {tag}
                   </span>
                 ))}
@@ -347,8 +347,8 @@ export default function BlogArticleClient({
             </div>
 
             {/* Contextual Service Call To Action Box */}
-            <div className="p-6 sm:p-8 rounded-3xl border border-[#8DFF00]/40 bg-gradient-to-r from-card via-[#8DFF00]/10 to-card space-y-4 shadow-xl mt-10">
-              <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#8DFF00]">
+            <div className="p-6 sm:p-8 rounded-3xl border border-[#2CFF05]/40 bg-gradient-to-r from-card via-[#2CFF05]/10 to-card space-y-4 shadow-xl mt-10">
+              <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#2CFF05]">
                 <Bookmark size={16} />
                 <span>Official Bitium Technology Service</span>
               </div>
@@ -360,7 +360,7 @@ export default function BlogArticleClient({
               </p>
               <Link
                 href={post.relatedService.linkUrl}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] text-xs font-black uppercase tracking-wider shadow-lg shadow-[#8DFF00]/15 transition-all"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] text-xs font-black uppercase tracking-wider shadow-lg shadow-[#2CFF05]/15 transition-all"
               >
                 {post.relatedService.linkText}
                 <ExternalLink size={13} />
@@ -375,7 +375,7 @@ export default function BlogArticleClient({
             {/* Table of Contents */}
             <div className="sticky top-24 p-6 rounded-3xl border border-border bg-card/60 backdrop-blur-md space-y-4 shadow-xl">
               <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-foreground pb-2 border-b border-border/60">
-                <BookOpen size={15} className="text-[#8DFF00]" />
+                <BookOpen size={15} className="text-[#2CFF05]" />
                 <span>Table of Contents</span>
               </div>
 
@@ -388,7 +388,7 @@ export default function BlogArticleClient({
                       href={`#${item.id}`}
                       className={`block py-1.5 px-3 rounded-xl text-xs transition-all leading-snug ${
                         isActive
-                          ? 'bg-[#8DFF00]/15 text-[#8DFF00] font-bold border border-[#8DFF00]/30 translate-x-1'
+                          ? 'bg-[#2CFF05]/15 text-[#2CFF05] font-bold border border-[#2CFF05]/30 translate-x-1'
                           : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                       }`}
                     >
@@ -436,7 +436,7 @@ export default function BlogArticleClient({
             </div>
             <Link
               href="/blog"
-              className="text-xs font-bold text-[#8DFF00] hover:underline flex items-center gap-1"
+              className="text-xs font-bold text-[#2CFF05] hover:underline flex items-center gap-1"
             >
               View All &rarr;
             </Link>
@@ -447,7 +447,7 @@ export default function BlogArticleClient({
               <Link
                 key={rel.id}
                 href={`/blog/${rel.slug}`}
-                className="group rounded-2xl border border-border bg-card/40 overflow-hidden flex flex-col justify-between hover:border-[#8DFF00]/40 transition-all hover:-translate-y-1 shadow-lg"
+                className="group rounded-2xl border border-border bg-card/40 overflow-hidden flex flex-col justify-between hover:border-[#2CFF05]/40 transition-all hover:-translate-y-1 shadow-lg"
               >
                 <div className="relative aspect-video w-full overflow-hidden bg-background">
                   <Image
@@ -456,20 +456,20 @@ export default function BlogArticleClient({
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute top-2 left-2 bg-background/80 backdrop-blur-md px-2 py-0.5 rounded-md border border-border text-[9px] font-bold text-[#8DFF00]">
+                  <div className="absolute top-2 left-2 bg-background/80 backdrop-blur-md px-2 py-0.5 rounded-md border border-border text-[9px] font-bold text-[#2CFF05]">
                     {rel.category}
                   </div>
                 </div>
 
                 <div className="p-4 space-y-2">
-                  <h4 className="font-bold text-sm text-foreground group-hover:text-[#8DFF00] transition-colors line-clamp-2 leading-snug">
+                  <h4 className="font-bold text-sm text-foreground group-hover:text-[#2CFF05] transition-colors line-clamp-2 leading-snug">
                     {rel.title}
                   </h4>
                   <p className="text-xs text-muted-foreground line-clamp-2">
                     {rel.excerpt}
                   </p>
                   <p className="text-[10px] text-muted-foreground pt-1 flex items-center gap-1 font-medium">
-                    <Clock size={10} className="text-[#8DFF00]" /> {rel.readTime}
+                    <Clock size={10} className="text-[#2CFF05]" /> {rel.readTime}
                   </p>
                 </div>
               </Link>

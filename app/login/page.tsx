@@ -44,13 +44,13 @@ export default function LoginPage() {
   return (
     <div className="w-full min-h-screen bg-background text-foreground flex items-center justify-center py-16 px-4 relative overflow-hidden">
       {/* Background ambient glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#8DFF00]/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#2CFF05]/10 rounded-full blur-[140px] pointer-events-none" />
       
       <div className="w-full max-w-md rounded-3xl border border-border bg-card/50 backdrop-blur-xl p-8 space-y-6 shadow-2xl relative z-10">
         
         {/* Header */}
         <div className="text-center space-y-2">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#8DFF00] to-[#7acc00] flex items-center justify-center text-foreground mx-auto shadow-lg shadow-[#8DFF00]/25 mb-4">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#2CFF05] to-[#7acc00] flex items-center justify-center text-foreground mx-auto shadow-lg shadow-[#2CFF05]/25 mb-4">
             <User size={26} />
           </div>
           <h1 className="text-2xl font-black tracking-tight">Account Sign In</h1>
@@ -89,7 +89,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="yourname@example.com"
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-xs text-foreground placeholder-zinc-500 focus:outline-none focus:border-[#8DFF00] focus:ring-1 focus:ring-[#8DFF00] transition-colors"
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-xs text-foreground placeholder-zinc-500 focus:outline-none focus:border-[#2CFF05] focus:ring-1 focus:ring-[#2CFF05] transition-colors"
               />
             </div>
           </div>
@@ -106,7 +106,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-xs text-foreground placeholder-zinc-500 focus:outline-none focus:border-[#8DFF00] focus:ring-1 focus:ring-[#8DFF00] transition-colors"
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-xs text-foreground placeholder-zinc-500 focus:outline-none focus:border-[#2CFF05] focus:ring-1 focus:ring-[#2CFF05] transition-colors"
               />
             </div>
           </div>
@@ -114,7 +114,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 px-6 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] font-black text-xs uppercase tracking-wider shadow-lg shadow-[#8DFF00]/20 hover:shadow-[#8DFF00]/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full py-3.5 px-6 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] font-black text-xs uppercase tracking-wider shadow-lg shadow-[#2CFF05]/20 hover:shadow-[#2CFF05]/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {loading ? (
               <span>Signing In...</span>
@@ -132,7 +132,7 @@ export default function LoginPage() {
             <Home size={13} />
             <span>Return Home</span>
           </Link>
-          <Link href="/contact" className="hover:text-[#8DFF00] transition-colors">
+          <Link href="/contact" className="hover:text-[#2CFF05] transition-colors">
             Need Help?
           </Link>
         </div>

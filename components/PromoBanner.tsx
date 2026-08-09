@@ -79,15 +79,15 @@ export default function PromoBanner() {
           {/* Left Column: Interactive Fabric Feature (7 cols) */}
           <div className="lg:col-span-7 space-y-6 flex flex-col items-center lg:items-start text-center lg:text-left">
             {/* Eyebrow */}
-            <div className="promo-eyebrow inline-flex items-center gap-2 bg-[#8DFF00]/10 border border-[#8DFF00]/25 rounded-full px-3.5 py-1.5">
-              <Sparkles size={12} className="text-[#8DFF00]" />
-              <span className="font-heading font-semibold text-[11px] text-[#8DFF00] tracking-wider uppercase">Why DTF</span>
+            <div className="promo-eyebrow inline-flex items-center gap-2 bg-[#2CFF05]/10 border border-[#2CFF05]/25 rounded-full px-3.5 py-1.5">
+              <Sparkles size={12} className="text-[#2CFF05]" />
+              <span className="font-heading font-semibold text-[11px] text-[#2CFF05] tracking-wider uppercase">Why DTF</span>
             </div>
 
             {/* Heading */}
             <h2 className="promo-heading text-4xl sm:text-6xl font-black tracking-tight text-foreground leading-[1.1] font-heading">
               One Print Method.<br />
-              <span className="text-[#8DFF00]">Every Fabric.</span>
+              <span className="text-[#2CFF05]">Every Fabric.</span>
             </h2>
 
             {/* Intro line */}
@@ -103,8 +103,8 @@ export default function PromoBanner() {
                   onClick={() => handleTabClick(type.id)}
                   className={`px-4.5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 border cursor-pointer ${
                     activeTab === type.id
-                      ? 'bg-[#8DFF00] border-[#8DFF00] text-[#0a0a0a] shadow-lg shadow-[#8DFF00]/20 scale-105'
-                      : 'bg-card border-border text-muted-foreground hover:text-foreground hover:border-[#8DFF00]/40'
+                      ? 'bg-[#2CFF05] border-[#2CFF05] text-[#0a0a0a] shadow-lg shadow-[#2CFF05]/20 scale-105'
+                      : 'bg-card border-border text-muted-foreground hover:text-foreground hover:border-[#2CFF05]/40'
                   }`}
                 >
                   {type.label}
@@ -127,7 +127,7 @@ export default function PromoBanner() {
               <div className="flex justify-center lg:justify-start">
                 <a 
                   href="/canvas"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] font-black text-xs uppercase tracking-widest rounded-full shadow-lg shadow-[#8DFF00]/25 hover:shadow-[#8DFF00]/45 hover:scale-105 transition-all duration-300"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] font-black text-xs uppercase tracking-widest rounded-full shadow-lg shadow-[#2CFF05]/25 hover:shadow-[#2CFF05]/45 hover:scale-105 transition-all duration-300"
                 >
                   <span>Start Your Design</span>
                   <ArrowRight size={14} />

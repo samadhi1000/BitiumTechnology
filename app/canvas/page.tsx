@@ -359,12 +359,12 @@ export default function CanvasBuilder() {
                 onClick={() => setSelectedPreset(preset)}
                 className={`w-full text-left p-3.5 rounded-xl border text-sm font-semibold transition-all ${
                   selectedPreset.name === preset.name
-                    ? 'border-[#8DFF00] bg-[#8DFF00]/10 text-[#0a0a0a]'
+                    ? 'border-[#2CFF05] bg-[#2CFF05]/10 text-[#0a0a0a]'
                     : 'border-border bg-card hover:bg-muted text-muted-foreground hover:text-[#0a0a0a]'
                 }`}
               >
                 <div>{preset.name}</div>
-                <div className="text-xs text-[#8DFF00] mt-1">Rs. {preset.price.toLocaleString()}</div>
+                <div className="text-xs text-[#2CFF05] mt-1">Rs. {preset.price.toLocaleString()}</div>
               </button>
             ))}
           </div>
@@ -373,8 +373,8 @@ export default function CanvasBuilder() {
         {/* Upload Button */}
         <div className="p-6 rounded-2xl border border-border bg-card/40 space-y-4">
           <h3 className="font-bold text-sm text-foreground">2. Import Custom Logos</h3>
-          <label className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-border hover:border-[#8DFF00] rounded-xl cursor-pointer hover:bg-card/50 transition-all text-center">
-            <Upload className="text-muted-foreground hover:text-[#8DFF00] transition-colors" size={28} />
+          <label className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-border hover:border-[#2CFF05] rounded-xl cursor-pointer hover:bg-card/50 transition-all text-center">
+            <Upload className="text-muted-foreground hover:text-[#2CFF05] transition-colors" size={28} />
             <span className="text-xs text-muted-foreground mt-2 font-semibold">Upload PNG / JPEG</span>
             <span className="text-[10px] text-muted-foreground mt-1">Transparency recommended</span>
             <input
@@ -431,23 +431,23 @@ export default function CanvasBuilder() {
 
             {/* AI Tools Subpanel */}
             <div className="pt-4 border-t border-border/60 space-y-2">
-              <span className="text-[10px] font-bold text-[#8DFF00] uppercase tracking-widest flex items-center gap-1">
+              <span className="text-[10px] font-bold text-[#2CFF05] uppercase tracking-widest flex items-center gap-1">
                 <Sparkles size={10} /> AI Enhancers
               </span>
               <button
                 disabled={processingBg}
                 onClick={handleRemoveBackground}
-                className="w-full p-2.5 rounded-lg bg-card border border-border hover:border-[#8DFF00]/50 hover:bg-muted text-xs font-bold text-foreground hover:text-foreground transition-all flex items-center justify-center gap-2"
+                className="w-full p-2.5 rounded-lg bg-card border border-border hover:border-[#2CFF05]/50 hover:bg-muted text-xs font-bold text-foreground hover:text-foreground transition-all flex items-center justify-center gap-2"
               >
-                {processingBg ? <RefreshCw className="animate-spin" size={14} /> : <Sparkles size={14} className="text-[#8DFF00]" />}
+                {processingBg ? <RefreshCw className="animate-spin" size={14} /> : <Sparkles size={14} className="text-[#2CFF05]" />}
                 Remove Background (remove.bg)
               </button>
               <button
                 disabled={processingUpscale}
                 onClick={handleUpscale}
-                className="w-full p-2.5 rounded-lg bg-card border border-border hover:border-[#8DFF00]/50 hover:bg-muted text-xs font-bold text-foreground hover:text-foreground transition-all flex items-center justify-center gap-2"
+                className="w-full p-2.5 rounded-lg bg-card border border-border hover:border-[#2CFF05]/50 hover:bg-muted text-xs font-bold text-foreground hover:text-foreground transition-all flex items-center justify-center gap-2"
               >
-                {processingUpscale ? <RefreshCw className="animate-spin" size={14} /> : <Maximize2 size={14} className="text-[#8DFF00]" />}
+                {processingUpscale ? <RefreshCw className="animate-spin" size={14} /> : <Maximize2 size={14} className="text-[#2CFF05]" />}
                 Upscale to 300 DPI
               </button>
             </div>
@@ -512,7 +512,7 @@ export default function CanvasBuilder() {
           <div className="border-t border-border pt-4 flex justify-between items-end">
             <div>
               <span className="text-xs text-muted-foreground">Total Price</span>
-              <p className="text-2xl font-black text-[#8DFF00]">Rs. {selectedPreset.price.toLocaleString()}</p>
+              <p className="text-2xl font-black text-[#2CFF05]">Rs. {selectedPreset.price.toLocaleString()}</p>
             </div>
           </div>
 
@@ -528,7 +528,7 @@ export default function CanvasBuilder() {
               <button
                 onClick={handleAddToCart}
                 disabled={isUploading}
-                className="w-full py-4 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] disabled:opacity-60 disabled:cursor-not-allowed text-[#0a0a0a] font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-[#8DFF00]/10"
+                className="w-full py-4 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] disabled:opacity-60 disabled:cursor-not-allowed text-[#0a0a0a] font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-[#2CFF05]/10"
               >
                 {isUploading ? (
                   <>

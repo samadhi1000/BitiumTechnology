@@ -17,7 +17,7 @@
     --popover: #0F172A;
     --popover-foreground: #F8FAFC;
     
-    --primary: #8DFF00;
+    --primary: #2CFF05;
     --primary-foreground: #020617;
     
     --secondary: #1E293B;
@@ -26,7 +26,7 @@
     --muted: #1E293B;
     --muted-foreground: #CBD5E1;
     
-    --accent: #8DFF00;
+    --accent: #2CFF05;
     --accent-foreground: #020617;
     
     --destructive: #BE185D;
@@ -34,7 +34,7 @@
     
     --border: #334155;
     --input: #334155;
-    --ring: #8DFF00;
+    --ring: #2CFF05;
     
     --radius: 0.75rem;
 
@@ -67,7 +67,7 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   
-  --color-lime: #8DFF00;
+  --color-lime: #2CFF05;
   --color-lime-dark: #72d400;
 
   --font-sans: var(--font-sans), system-ui, sans-serif;
@@ -103,7 +103,7 @@ html.light-mode {
   --popover: #FFFFFF;
   --popover-foreground: #0F172A;
   
-  --primary: #4C8A00;
+  --primary: #2CFF05;
   --primary-foreground: #FFFFFF;
   
   --secondary: #F1F5F9;
@@ -112,60 +112,68 @@ html.light-mode {
   --muted: #F1F5F9;
   --muted-foreground: #475569;
   
-  --accent: #4C8A00;
+  --accent: #2CFF05;
   --accent-foreground: #FFFFFF;
   
   --border: #E2E8F0;
   --input: #E2E8F0;
-  --ring: #4C8A00;
+  --ring: #2CFF05;
 }
 
-/* Global contrast improvements for hardcoded lime green in Light Mode */
-html.light-mode .text-\[\#8DFF00\] {
-  color: #4C8A00 !important;
+/* Global styling for #2CFF05 in Light Mode */
+html.light-mode .text-\[\#2CFF05\] {
+  color: #2CFF05 !important;
 }
-html.light-mode .bg-\[\#8DFF00\] {
-  background-color: #4C8A00 !important;
-  color: #FFFFFF !important;
+html.light-mode .bg-\[\#2CFF05\] {
+  background-color: #2CFF05 !important;
+  color: #0a0a0a !important;
 }
-html.light-mode .border-\[\#8DFF00\] {
-  border-color: #4C8A00 !important;
+html.light-mode .border-\[\#2CFF05\] {
+  border-color: #2CFF05 !important;
 }
-html.light-mode .bg-\[\#8DFF00\]\/10 {
-  background-color: rgba(76, 138, 0, 0.08) !important;
+html.light-mode .bg-\[\#2CFF05\]\/10 {
+  background-color: rgba(44, 255, 5, 0.10) !important;
 }
-html.light-mode .bg-\[\#8DFF00\]\/20 {
-  background-color: rgba(76, 138, 0, 0.15) !important;
+html.light-mode .bg-\[\#2CFF05\]\/15 {
+  background-color: rgba(44, 255, 5, 0.15) !important;
 }
-html.light-mode .bg-\[\#8DFF00\]\/25 {
-  background-color: rgba(76, 138, 0, 0.20) !important;
+html.light-mode .bg-\[\#2CFF05\]\/20 {
+  background-color: rgba(44, 255, 5, 0.20) !important;
 }
-html.light-mode .border-\[\#8DFF00\]\/20 {
-  border-color: rgba(76, 138, 0, 0.20) !important;
+html.light-mode .bg-\[\#2CFF05\]\/25 {
+  background-color: rgba(44, 255, 5, 0.25) !important;
 }
-html.light-mode .border-\[\#8DFF00\]\/30 {
-  border-color: rgba(76, 138, 0, 0.30) !important;
+html.light-mode .border-\[\#2CFF05\]\/20 {
+  border-color: rgba(44, 255, 5, 0.20) !important;
 }
-html.light-mode .border-\[\#8DFF00\]\/40 {
-  border-color: rgba(76, 138, 0, 0.40) !important;
+html.light-mode .border-\[\#2CFF05\]\/30 {
+  border-color: rgba(44, 255, 5, 0.30) !important;
 }
-html.light-mode .focus-within\:border-\[\#8DFF00\]:focus-within {
-  border-color: #4C8A00 !important;
+html.light-mode .border-\[\#2CFF05\]\/40 {
+  border-color: rgba(44, 255, 5, 0.40) !important;
 }
-html.light-mode .focus\:border-\[\#8DFF00\]:focus {
-  border-color: #4C8A00 !important;
+html.light-mode .border-\[\#2CFF05\]\/50 {
+  border-color: rgba(44, 255, 5, 0.50) !important;
 }
-html.light-mode .hover\:text-\[\#8DFF00\]:hover {
-  color: #4C8A00 !important;
+html.light-mode .focus-within\:border-\[\#2CFF05\]:focus-within {
+  border-color: #2CFF05 !important;
 }
-html.light-mode .hover\:bg-\[\#8DFF00\]:hover {
-  background-color: #4C8A00 !important;
+html.light-mode .focus\:border-\[\#2CFF05\]:focus {
+  border-color: #2CFF05 !important;
 }
-html.light-mode .group-hover\:text-\[\#8DFF00\]:hover {
-  color: #4C8A00 !important;
+html.light-mode .hover\:text-\[\#2CFF05\]:hover {
+  color: #2CFF05 !important;
 }
-html.light-mode .group-hover\:bg-\[\#8DFF00\]:hover {
-  background-color: #4C8A00 !important;
+html.light-mode .hover\:bg-\[\#2CFF05\]:hover {
+  background-color: #2CFF05 !important;
+  color: #0a0a0a !important;
+}
+html.light-mode .group-hover\:text-\[\#2CFF05\]:hover {
+  color: #2CFF05 !important;
+}
+html.light-mode .group-hover\:bg-\[\#2CFF05\]:hover {
+  background-color: #2CFF05 !important;
+  color: #0a0a0a !important;
 }
 
 html.light-mode body {
@@ -233,7 +241,7 @@ html.light-mode .to-zinc-900 { --tw-gradient-to: var(--card) !important; }
 
 /* ── UI Re-skin Component Styles ─────────────────────────────────── */
 .lime-btn {
-  background: #8DFF00;
+  background: #2CFF05;
   color: #0a0a0a;
   font-family: var(--font-heading), 'Outfit', sans-serif;
   font-weight: 700;
@@ -318,13 +326,13 @@ html.dark .filter-btn {
   color: #cbd5e1;
 }
 .filter-btn.active, .filter-btn:hover {
-  background: #8DFF00;
-  border-color: #8DFF00;
+  background: #2CFF05;
+  border-color: #2CFF05;
   color: #0a0a0a;
 }
 html.dark .filter-btn.active, html.dark .filter-btn:hover {
-  background: #8DFF00;
-  border-color: #8DFF00;
+  background: #2CFF05;
+  border-color: #2CFF05;
   color: #0a0a0a;
 }
 

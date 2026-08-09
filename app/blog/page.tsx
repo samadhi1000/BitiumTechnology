@@ -48,7 +48,7 @@ export default function BlogIndexPage() {
   const featuredPost = BLOG_POSTS.find((p) => p.featured) || BLOG_POSTS[0];
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-[#8DFF00]/30 selection:text-[#0a0a0a] pb-24">
+    <div className="min-h-screen bg-background text-foreground selection:bg-[#2CFF05]/30 selection:text-[#0a0a0a] pb-24">
       
       {/* ── JSON-LD Structured Data ────────────────────────────────────── */}
       <script
@@ -88,17 +88,17 @@ export default function BlogIndexPage() {
         }} />
 
         {/* Ambient neon backdrop glows */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#8DFF00]/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#2CFF05]/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-5">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#8DFF00]/10 border border-[#8DFF00]/30 text-lime-400 text-xs font-extrabold uppercase tracking-widest">
-            <Sparkles size={13} className="text-[#8DFF00]" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#2CFF05]/10 border border-[#2CFF05]/30 text-lime-400 text-xs font-extrabold uppercase tracking-widest">
+            <Sparkles size={13} className="text-[#2CFF05]" />
             <span>Official Knowledge Hub & Insights</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl font-black uppercase tracking-tight text-foreground">
-            Printing & Craft <span className="text-[#8DFF00] drop-shadow-[0_0_20px_rgba(141,255,0,0.3)]">Mastery</span>
+            Printing & Craft <span className="text-[#2CFF05] drop-shadow-[0_0_20px_rgba(141,255,0,0.3)]">Mastery</span>
           </h1>
 
           <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
@@ -114,7 +114,7 @@ export default function BlogIndexPage() {
                 placeholder="Search articles, guides, mesh counts, DTF hacks..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3.5 rounded-2xl border border-border bg-card/60 backdrop-blur-md text-sm text-foreground placeholder-zinc-500 focus:outline-none focus:border-[#8DFF00] focus:ring-2 focus:ring-[#8DFF00]/20 transition-all shadow-xl"
+                className="w-full pl-12 pr-4 py-3.5 rounded-2xl border border-border bg-card/60 backdrop-blur-md text-sm text-foreground placeholder-zinc-500 focus:outline-none focus:border-[#2CFF05] focus:ring-2 focus:ring-[#2CFF05]/20 transition-all shadow-xl"
               />
               {searchQuery && (
                 <button
@@ -134,7 +134,7 @@ export default function BlogIndexPage() {
         
         {/* ── Featured Article Spotlight (Only shown on "All Articles" without active search) */}
         {selectedCategory === 'All Articles' && !searchQuery && featuredPost && (
-          <div className="relative rounded-3xl border border-border/80 bg-card/60 backdrop-blur-xl overflow-hidden hover:border-[#8DFF00]/40 transition-all duration-300 shadow-2xl group">
+          <div className="relative rounded-3xl border border-border/80 bg-card/60 backdrop-blur-xl overflow-hidden hover:border-[#2CFF05]/40 transition-all duration-300 shadow-2xl group">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
               
               {/* Featured Image */}
@@ -149,7 +149,7 @@ export default function BlogIndexPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-background" />
                 
                 <div className="absolute top-4 left-4 flex items-center gap-2">
-                  <span className="px-3.5 py-1 rounded-full bg-[#8DFF00] text-[#0a0a0a] text-xs font-black uppercase tracking-wider flex items-center gap-1 shadow-lg">
+                  <span className="px-3.5 py-1 rounded-full bg-[#2CFF05] text-[#0a0a0a] text-xs font-black uppercase tracking-wider flex items-center gap-1 shadow-lg">
                     <Flame size={13} /> Featured Post
                   </span>
                   <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-xs font-bold text-white">
@@ -162,18 +162,18 @@ export default function BlogIndexPage() {
               <div className="lg:col-span-5 p-6 sm:p-8 space-y-4">
                 <div className="flex items-center gap-3 text-xs text-muted-foreground font-medium">
                   <span className="flex items-center gap-1">
-                    <Calendar size={13} className="text-[#8DFF00]" />
+                    <Calendar size={13} className="text-[#2CFF05]" />
                     {featuredPost.publishedAt}
                   </span>
                   <span>•</span>
                   <span className="flex items-center gap-1">
-                    <Clock size={13} className="text-[#8DFF00]" />
+                    <Clock size={13} className="text-[#2CFF05]" />
                     {featuredPost.readTime}
                   </span>
                 </div>
 
                 <Link href={`/blog/${featuredPost.slug}`}>
-                  <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground hover:text-[#8DFF00] transition-colors leading-tight">
+                  <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground hover:text-[#2CFF05] transition-colors leading-tight">
                     {featuredPost.title}
                   </h2>
                 </Link>
@@ -196,7 +196,7 @@ export default function BlogIndexPage() {
 
                   <Link
                     href={`/blog/${featuredPost.slug}`}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] text-xs font-extrabold uppercase tracking-wider transition-all shadow-md shadow-[#8DFF00]/10"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] text-xs font-extrabold uppercase tracking-wider transition-all shadow-md shadow-[#2CFF05]/10"
                   >
                     Read Article
                     <ArrowRight size={13} />
@@ -226,13 +226,13 @@ export default function BlogIndexPage() {
                   onClick={() => setSelectedCategory(cat)}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
                     isSelected
-                      ? 'bg-[#8DFF00] text-[#0a0a0a] shadow-lg shadow-[#8DFF00]/20 scale-105'
+                      ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-lg shadow-[#2CFF05]/20 scale-105'
                       : 'bg-card border border-border text-muted-foreground hover:text-foreground hover:bg-muted'
                   }`}
                 >
                   <span>{cat}</span>
                   <span className={`text-[10px] px-1.5 py-0.2 rounded-md font-black ${
-                    isSelected ? 'bg-black text-[#8DFF00]' : 'bg-muted text-muted-foreground'
+                    isSelected ? 'bg-black text-[#2CFF05]' : 'bg-muted text-muted-foreground'
                   }`}>
                     {count}
                   </span>
@@ -256,7 +256,7 @@ export default function BlogIndexPage() {
             </p>
             <button
               onClick={() => { setSelectedCategory('All Articles'); setSearchQuery(''); }}
-              className="mt-2 px-4 py-2 rounded-xl bg-[#8DFF00] text-[#0a0a0a] text-xs font-bold cursor-pointer"
+              className="mt-2 px-4 py-2 rounded-xl bg-[#2CFF05] text-[#0a0a0a] text-xs font-bold cursor-pointer"
             >
               Reset Filters
             </button>
@@ -266,7 +266,7 @@ export default function BlogIndexPage() {
             {filteredPosts.map((post) => (
               <article
                 key={post.id}
-                className="group rounded-3xl border border-border bg-card/50 overflow-hidden flex flex-col justify-between transition-all duration-300 hover:border-[#8DFF00]/50 hover:shadow-2xl hover:shadow-[#8DFF00]/5 hover:-translate-y-1"
+                className="group rounded-3xl border border-border bg-card/50 overflow-hidden flex flex-col justify-between transition-all duration-300 hover:border-[#2CFF05]/50 hover:shadow-2xl hover:shadow-[#2CFF05]/5 hover:-translate-y-1"
               >
                 <div>
                   {/* Article Card Image */}
@@ -277,11 +277,11 @@ export default function BlogIndexPage() {
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute top-3 left-3 bg-background/80 backdrop-blur-md px-3 py-1 rounded-full border border-border text-[10px] font-extrabold uppercase tracking-wider text-[#8DFF00]">
+                    <div className="absolute top-3 left-3 bg-background/80 backdrop-blur-md px-3 py-1 rounded-full border border-border text-[10px] font-extrabold uppercase tracking-wider text-[#2CFF05]">
                       {post.category}
                     </div>
                     <div className="absolute bottom-3 right-3 bg-black/75 backdrop-blur-md px-2.5 py-0.5 rounded-lg border border-white/10 text-[10px] font-medium text-white flex items-center gap-1">
-                      <Clock size={11} className="text-[#8DFF00]" />
+                      <Clock size={11} className="text-[#2CFF05]" />
                       {post.readTime}
                     </div>
                   </div>
@@ -289,12 +289,12 @@ export default function BlogIndexPage() {
                   {/* Body Details */}
                   <div className="p-6 space-y-3">
                     <div className="flex items-center gap-2 text-[11px] text-muted-foreground font-medium">
-                      <Calendar size={12} className="text-[#8DFF00]" />
+                      <Calendar size={12} className="text-[#2CFF05]" />
                       <span>{post.publishedAt}</span>
                     </div>
 
                     <Link href={`/blog/${post.slug}`}>
-                      <h2 className="text-lg font-black text-foreground group-hover:text-[#8DFF00] transition-colors leading-snug line-clamp-2">
+                      <h2 className="text-lg font-black text-foreground group-hover:text-[#2CFF05] transition-colors leading-snug line-clamp-2">
                         {post.title}
                       </h2>
                     </Link>
@@ -325,7 +325,7 @@ export default function BlogIndexPage() {
 
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="text-xs font-extrabold text-[#8DFF00] group-hover:text-lime-300 flex items-center gap-1 transition-all group-hover:translate-x-1"
+                    className="text-xs font-extrabold text-[#2CFF05] group-hover:text-lime-300 flex items-center gap-1 transition-all group-hover:translate-x-1"
                   >
                     Read More &rarr;
                   </Link>
@@ -337,8 +337,8 @@ export default function BlogIndexPage() {
         )}
 
         {/* ── Newsletter / Technical Advisory Banner ─────────────────────── */}
-        <div className="rounded-3xl border border-border bg-gradient-to-r from-card via-[#8DFF00]/5 to-card p-8 sm:p-12 text-center space-y-4 shadow-xl">
-          <div className="w-12 h-12 rounded-2xl bg-[#8DFF00]/10 border border-[#8DFF00]/30 text-[#8DFF00] flex items-center justify-center mx-auto">
+        <div className="rounded-3xl border border-border bg-gradient-to-r from-card via-[#2CFF05]/5 to-card p-8 sm:p-12 text-center space-y-4 shadow-xl">
+          <div className="w-12 h-12 rounded-2xl bg-[#2CFF05]/10 border border-[#2CFF05]/30 text-[#2CFF05] flex items-center justify-center mx-auto">
             <BookOpen size={24} />
           </div>
           <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-foreground">
@@ -350,7 +350,7 @@ export default function BlogIndexPage() {
           <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/contact"
-              className="px-6 py-3.5 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] text-xs font-black uppercase tracking-wider transition-all shadow-lg shadow-[#8DFF00]/15"
+              className="px-6 py-3.5 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] text-xs font-black uppercase tracking-wider transition-all shadow-lg shadow-[#2CFF05]/15"
             >
               Talk to a Print Specialist
             </Link>

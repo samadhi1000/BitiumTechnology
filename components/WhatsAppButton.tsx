@@ -128,28 +128,8 @@ export default function WhatsAppButton() {
         </div>
       )}
 
-      {/* 4. Floating Trigger Buttons */}
-      <div className="flex flex-col items-center gap-3">
-        {/* Support Specialist Avatar bubble floating on top */}
-        {!isOpen && (
-          <div 
-            onClick={handleToggle}
-            className="w-11 h-11 rounded-full bg-card border border-border shadow-lg flex items-center justify-center overflow-hidden cursor-pointer hover:scale-105 active:scale-95 transition-all duration-300 relative wa-avatar-bounce"
-            title="Chat with support"
-          >
-            {/* Robot/Specialist SVG Avatar */}
-            <svg className="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="11" width="18" height="10" rx="2" />
-              <circle cx="12" cy="5" r="2" />
-              <path d="M12 7v4" />
-              <line x1="8" y1="16" x2="8" y2="16" />
-              <line x1="16" y1="16" x2="16" y2="16" />
-            </svg>
-            {/* Active online green dot */}
-            <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-[#25D366] border-2 border-card" />
-          </div>
-        )}
-
+      {/* 4. Floating Trigger Button */}
+      <div className="flex flex-col items-center">
         {/* The main green WhatsApp trigger button */}
         <button
           onClick={handleToggle}

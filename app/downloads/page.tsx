@@ -202,7 +202,7 @@ export default function DownloadsPage() {
   ];
 
   return (
-    <div className="w-full min-h-screen bg-background text-[#0a0a0a] selection:bg-[#8DFF00]/40 selection:text-[#0a0a0a] pb-24">
+    <div className="w-full min-h-screen bg-background text-[#0a0a0a] selection:bg-[#2CFF05]/40 selection:text-[#0a0a0a] pb-24">
       {/* Canonical Link */}
       <link rel="canonical" href="https://www.bitiumtechnology.com/downloads" />
 
@@ -227,11 +227,11 @@ export default function DownloadsPage() {
           backgroundSize: '20px 20px',
         }} />
         <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-4">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#8DFF00]/10 border border-[#8DFF00]/30 text-[#4c8a00] dark:text-[#8DFF00] text-xs font-bold uppercase tracking-wider">
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#2CFF05]/10 border border-[#2CFF05]/30 text-[#2CFF05] dark:text-[#2CFF05] text-xs font-bold uppercase tracking-wider">
             <Shield size={12} className="text-[#FFCB9A]" />
             Secure Asset Vault
           </span>
-          <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#8DFF00]">
+          <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#2CFF05]">
             Digital Designs & Downloads
           </h1>
           <p className="text-sm text-muted-foreground max-w-2xl mx-auto leading-relaxed">
@@ -252,7 +252,7 @@ export default function DownloadsPage() {
                 onClick={() => setCategory(opt.value)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                   category === opt.value
-                    ? 'bg-[#8DFF00] text-[#0a0a0a] shadow-md shadow-[#8DFF00]/20'
+                    ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-md shadow-[#2CFF05]/20'
                     : 'bg-background/60 hover:bg-muted text-muted-foreground hover:text-foreground border border-border'
                 }`}
               >
@@ -269,7 +269,7 @@ export default function DownloadsPage() {
               placeholder="Search design titles, tags..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-xl border border-border bg-background text-xs text-foreground placeholder-zinc-500 focus:outline-none focus:border-[#8DFF00] transition-colors"
+              className="w-full pl-10 pr-4 py-2 rounded-xl border border-border bg-background text-xs text-foreground placeholder-zinc-500 focus:outline-none focus:border-[#2CFF05] transition-colors"
             />
           </div>
         </div>
@@ -277,7 +277,7 @@ export default function DownloadsPage() {
         {/* Gallery Grid */}
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 space-y-3">
-            <Loader2 className="w-8 h-8 animate-spin text-[#8DFF00]" />
+            <Loader2 className="w-8 h-8 animate-spin text-[#2CFF05]" />
             <p className="text-xs text-muted-foreground">Loading verified digital artwork assets...</p>
           </div>
         ) : artworks.length === 0 ? (
@@ -291,7 +291,7 @@ export default function DownloadsPage() {
             {artworks.map((art) => (
               <div 
                 key={art.id}
-                className="group rounded-3xl border border-border bg-card overflow-hidden transition-all duration-300 hover:border-[#8DFF00]/50 hover:shadow-xl hover:shadow-[#8DFF00]/5 flex flex-col justify-between"
+                className="group rounded-3xl border border-border bg-card overflow-hidden transition-all duration-300 hover:border-[#2CFF05]/50 hover:shadow-xl hover:shadow-[#2CFF05]/5 flex flex-col justify-between"
               >
                 {/* Watermarked High-Res Preview */}
                 <div className="relative aspect-square w-full bg-background overflow-hidden select-none">
@@ -302,7 +302,7 @@ export default function DownloadsPage() {
                     aspectRatio="1/1"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute top-3 left-3 bg-background/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-border text-[10px] font-extrabold uppercase tracking-wider text-[#8DFF00]">
+                  <div className="absolute top-3 left-3 bg-background/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-border text-[10px] font-extrabold uppercase tracking-wider text-[#2CFF05]">
                     {art.category}
                   </div>
                   <div className="absolute top-3 right-3 bg-background/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-border text-[10px] font-bold text-foreground">
@@ -313,7 +313,7 @@ export default function DownloadsPage() {
                 {/* Content details */}
                 <div className="p-5 flex-grow flex flex-col justify-between space-y-4">
                   <div className="space-y-1.5">
-                    <h2 className="font-extrabold text-sm text-foreground group-hover:text-[#8DFF00] transition-colors line-clamp-1">
+                    <h2 className="font-extrabold text-sm text-foreground group-hover:text-[#2CFF05] transition-colors line-clamp-1">
                       {art.title}
                     </h2>
                     <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
@@ -339,7 +339,7 @@ export default function DownloadsPage() {
 
                     <button
                       onClick={() => setSelectedArt(art)}
-                      className="p-2 rounded-xl bg-background border border-border hover:border-[#8DFF00] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                      className="p-2 rounded-xl bg-background border border-border hover:border-[#2CFF05] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                       title="Inspect Specs"
                     >
                       <Eye size={16} />
@@ -349,7 +349,7 @@ export default function DownloadsPage() {
                   <div className="pt-2">
                     <button
                       onClick={() => setCheckoutArt(art)}
-                      className="w-full py-2.5 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors border border-[#7acc00] shadow-md shadow-[#8DFF00]/10 cursor-pointer"
+                      className="w-full py-2.5 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors border border-[#7acc00] shadow-md shadow-[#2CFF05]/10 cursor-pointer"
                     >
                       <ShoppingBag size={13} />
                       Buy Now
@@ -386,15 +386,15 @@ export default function DownloadsPage() {
                   </div>
                   <div className="w-full sm:w-1/2 flex flex-col justify-between">
                     <div>
-                      <span className="text-[10px] font-black text-[#8DFF00] uppercase tracking-widest block">{selectedArt.category}</span>
+                      <span className="text-[10px] font-black text-[#2CFF05] uppercase tracking-widest block">{selectedArt.category}</span>
                       <h2 className="text-xl font-black mt-1 text-foreground">{selectedArt.title}</h2>
                       <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{selectedArt.description}</p>
                     </div>
                     <div className="space-y-2 pt-4 border-t border-border mt-4">
                       <div className="flex justify-between text-xs"><span className="text-muted-foreground">File Size:</span><span className="font-bold text-foreground">{selectedArt.file_size || 'N/A'}</span></div>
-                      <div className="flex justify-between text-xs"><span className="text-muted-foreground">Format:</span><span className="font-bold text-[#8DFF00]">{selectedArt.file_format}</span></div>
+                      <div className="flex justify-between text-xs"><span className="text-muted-foreground">Format:</span><span className="font-bold text-[#2CFF05]">{selectedArt.file_format}</span></div>
                       <div className="flex justify-between text-xs"><span className="text-muted-foreground">Resolution:</span><span className="font-bold text-foreground">{selectedArt.resolution || 'Vector'}</span></div>
-                      <div className="flex justify-between text-xs pt-1 border-t border-border/60"><span className="text-muted-foreground font-bold">Secure Price:</span><span className="font-extrabold text-[#8DFF00]">Rs. {selectedArt.price.toLocaleString()}</span></div>
+                      <div className="flex justify-between text-xs pt-1 border-t border-border/60"><span className="text-muted-foreground font-bold">Secure Price:</span><span className="font-extrabold text-[#2CFF05]">Rs. {selectedArt.price.toLocaleString()}</span></div>
                     </div>
                   </div>
                 </div>
@@ -403,7 +403,7 @@ export default function DownloadsPage() {
                     setCheckoutArt(selectedArt);
                     setSelectedArt(null);
                   }}
-                  className="w-full py-3.5 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 border border-[#7acc00] cursor-pointer shadow-lg shadow-[#8DFF00]/15"
+                  className="w-full py-3.5 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 border border-[#7acc00] cursor-pointer shadow-lg shadow-[#2CFF05]/15"
                 >
                   <ShoppingBag size={14} />
                   Confirm Checkout & Buy Now
@@ -424,12 +424,12 @@ export default function DownloadsPage() {
                   <X size={16} />
                 </button>
                 <div className="text-center space-y-2">
-                  <span className="inline-flex items-center justify-center p-3 rounded-full bg-[#8DFF00]/10 border border-[#8DFF00]/30 text-[#8DFF00] mb-1">
+                  <span className="inline-flex items-center justify-center p-3 rounded-full bg-[#2CFF05]/10 border border-[#2CFF05]/30 text-[#2CFF05] mb-1">
                     <Shield size={24} />
                   </span>
                   <h2 className="text-xl font-black text-foreground">Secure Checkout</h2>
                   <p className="text-xs text-muted-foreground leading-relaxed">
-                    You are purchasing <strong className="text-foreground">{checkoutArt.title}</strong> for <strong className="text-[#8DFF00]">Rs. {checkoutArt.price.toLocaleString()}</strong>. Enter your email to confirm the transaction and receive secure Google Drive access.
+                    You are purchasing <strong className="text-foreground">{checkoutArt.title}</strong> for <strong className="text-[#2CFF05]">Rs. {checkoutArt.price.toLocaleString()}</strong>. Enter your email to confirm the transaction and receive secure Google Drive access.
                   </p>
                 </div>
 
@@ -443,14 +443,14 @@ export default function DownloadsPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       disabled={checkingOut}
-                      className="w-full px-4 py-3 rounded-xl border border-border bg-background text-sm text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                      className="w-full px-4 py-3 rounded-xl border border-border bg-background text-sm text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={checkingOut}
-                    className="w-full py-3.5 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] disabled:opacity-50 text-[#0a0a0a] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all border border-[#7acc00] shadow-lg shadow-[#8DFF00]/15 cursor-pointer"
+                    className="w-full py-3.5 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] disabled:opacity-50 text-[#0a0a0a] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all border border-[#7acc00] shadow-lg shadow-[#2CFF05]/15 cursor-pointer"
                   >
                     {checkingOut ? (
                       <>
@@ -476,7 +476,7 @@ export default function DownloadsPage() {
                 
                 {fulfillmentStatus === 'verifying' && (
                   <div className="space-y-4 py-8">
-                    <Loader2 className="w-12 h-12 animate-spin text-[#8DFF00] mx-auto" />
+                    <Loader2 className="w-12 h-12 animate-spin text-[#2CFF05] mx-auto" />
                     <h2 className="text-xl font-bold uppercase tracking-tight text-foreground">Verifying Payment Status</h2>
                     <p className="text-xs text-muted-foreground max-w-xs mx-auto leading-relaxed">
                       We are securely checking your payment status with PayHere. Please do not close this window. This may take a few seconds.
@@ -489,7 +489,7 @@ export default function DownloadsPage() {
 
                 {fulfillmentStatus === 'input_email' && (
                   <div className="space-y-4 py-4">
-                    <Shield className="w-12 h-12 text-[#8DFF00] mx-auto animate-pulse" />
+                    <Shield className="w-12 h-12 text-[#2CFF05] mx-auto animate-pulse" />
                     <h2 className="text-xl font-bold uppercase tracking-tight text-foreground">Access Verification Required</h2>
                     <p className="text-xs text-muted-foreground max-w-sm mx-auto leading-relaxed">
                       To securely download your digital products, please verify the customer email address used during checkout.
@@ -501,11 +501,11 @@ export default function DownloadsPage() {
                         placeholder="Enter your checkout email"
                         value={fulfillmentEmail}
                         onChange={(e) => setFulfillmentEmail(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border border-border bg-background text-xs text-center text-foreground focus:outline-none focus:border-[#8DFF00] transition-colors"
+                        className="w-full px-4 py-3 rounded-xl border border-border bg-background text-xs text-center text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                       />
                       <button
                         type="submit"
-                        className="w-full py-3 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-[#7acc00]"
+                        className="w-full py-3 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-[#7acc00]"
                       >
                         Unlock My Downloads
                         <ArrowRight size={13} />
@@ -537,7 +537,7 @@ export default function DownloadsPage() {
                               href={item.link} 
                               target="_blank" 
                               rel="noopener noreferrer"
-                              className="px-4 py-2 bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] font-bold text-xs rounded-xl flex items-center gap-1.5 transition-all shadow-md shadow-[#8DFF00]/10 cursor-pointer"
+                              className="px-4 py-2 bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] font-bold text-xs rounded-xl flex items-center gap-1.5 transition-all shadow-md shadow-[#2CFF05]/10 cursor-pointer"
                             >
                               <Download size={13} />
                               Download
@@ -583,7 +583,7 @@ export default function DownloadsPage() {
                             verifyFulfillment(fulfillmentOrderId, fulfillmentEmail);
                           }
                         }}
-                        className="w-1/2 py-3 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-[#0a0a0a] text-xs font-black transition-colors cursor-pointer border border-[#7acc00]"
+                        className="w-1/2 py-3 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] text-[#0a0a0a] text-xs font-black transition-colors cursor-pointer border border-[#7acc00]"
                       >
                         Retry Verification
                       </button>

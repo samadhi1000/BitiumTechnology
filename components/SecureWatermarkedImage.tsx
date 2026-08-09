@@ -149,7 +149,7 @@ export default function SecureWatermarkedImage({
       {/* 3. Loader state */}
       {loading && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-background text-muted-foreground">
-          <Loader2 className="animate-spin text-[#8DFF00]" size={28} />
+          <Loader2 className="animate-spin text-[#2CFF05]" size={28} />
           <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Securing Preview...</span>
         </div>
       )}

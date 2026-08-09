@@ -50,7 +50,7 @@ export default function Footer() {
           {/* Logo / Brand Column */}
           <div className="sm:col-span-2 lg:col-span-1 space-y-4">
             <div className="flex flex-col items-start space-y-1">
-              <span className="text-2xl font-black tracking-wider text-[#8DFF00] font-heading">
+              <span className="text-2xl font-black tracking-wider text-[#2CFF05] font-heading">
                 Bitium Technology
               </span>
               <span className="text-xs text-slate-400 font-semibold tracking-wide uppercase">

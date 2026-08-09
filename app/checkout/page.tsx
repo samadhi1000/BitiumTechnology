@@ -292,7 +292,7 @@ export default function CheckoutPage() {
         <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/"
-            className="px-6 py-3 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] text-black text-sm font-bold transition-all shadow-md"
+            className="px-6 py-3 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] text-black text-sm font-bold transition-all shadow-md"
           >
             Go to Store
           </Link>
@@ -686,7 +686,7 @@ export default function CheckoutPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 rounded-2xl bg-[#8DFF00] hover:bg-[#9eff1a] text-black font-extrabold text-base flex items-center justify-center gap-2 transition-all shadow-xl hover:shadow-[#8DFF00]/20 cursor-pointer"
+            className="w-full py-4 rounded-2xl bg-[#2CFF05] hover:bg-[#45ff24] text-black font-extrabold text-base flex items-center justify-center gap-2 transition-all shadow-xl hover:shadow-[#2CFF05]/20 cursor-pointer"
           >
             {loading ? (
               <RefreshCw className="animate-spin" size={20} />
@@ -721,7 +721,7 @@ export default function CheckoutPage() {
                   )}
                   <p className="text-muted-foreground text-[11px] mt-1">Qty: <span className="font-semibold text-foreground">{item.quantity}</span></p>
                 </div>
-                <p className="text-xs font-bold text-[#8DFF00] whitespace-nowrap">
+                <p className="text-xs font-bold text-[#2CFF05] whitespace-nowrap">
                   Rs. {(item.price * item.quantity).toLocaleString()}
                 </p>
               </div>
@@ -746,7 +746,7 @@ export default function CheckoutPage() {
           <div className="border-t border-border pt-4 flex justify-between items-end">
             <div>
               <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-extrabold">Grand Total</span>
-              <p className="text-2xl font-black text-[#8DFF00]">Rs. {total.toLocaleString()}</p>
+              <p className="text-2xl font-black text-[#2CFF05]">Rs. {total.toLocaleString()}</p>
             </div>
           </div>
 

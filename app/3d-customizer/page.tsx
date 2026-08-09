@@ -522,7 +522,7 @@ export default function DynamicMockupCustomizer() {
         {/* Title bar */}
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-bold text-foreground uppercase tracking-widest flex items-center gap-2">
-            <Eye size={15} className="text-[#8DFF00]" /> Interactive Mockup Studio
+            <Eye size={15} className="text-[#2CFF05]" /> Interactive Mockup Studio
           </h2>
           <span className="text-xs text-muted-foreground font-medium">Both canvases update color in sync</span>
         </div>
@@ -533,7 +533,7 @@ export default function DynamicMockupCustomizer() {
           {/* FRONT CANVAS */}
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#9eff1a] animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[#45ff24] animate-pulse" />
               <span className="text-xs font-bold text-foreground uppercase tracking-widest">Front View</span>
             </div>
             <div className="relative rounded-3xl overflow-hidden border border-border bg-gradient-to-br from-zinc-900 to-zinc-950 shadow-2xl flex items-center justify-center p-4 min-h-[500px]">
@@ -551,7 +551,7 @@ export default function DynamicMockupCustomizer() {
           {/* BACK CANVAS */}
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#9eff1a]" />
+              <span className="w-2 h-2 rounded-full bg-[#45ff24]" />
               <span className="text-xs font-bold text-foreground uppercase tracking-widest">Back View</span>
             </div>
             <div className="relative rounded-3xl overflow-hidden border border-border bg-gradient-to-br from-zinc-900 to-zinc-950 shadow-2xl flex items-center justify-center p-4 min-h-[500px]">
@@ -572,7 +572,7 @@ export default function DynamicMockupCustomizer() {
           <button
             onClick={handleAddToCart}
             disabled={isUploading}
-            className="w-full py-4 rounded-xl bg-[#8DFF00] hover:bg-[#9eff1a] disabled:opacity-60 disabled:cursor-not-allowed font-bold text-sm text-[#0a0a0a] flex items-center justify-center gap-2 transition-all glow-primary shadow-lg shadow-[#8DFF00]/20"
+            className="w-full py-4 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] disabled:opacity-60 disabled:cursor-not-allowed font-bold text-sm text-[#0a0a0a] flex items-center justify-center gap-2 transition-all glow-primary shadow-lg shadow-[#2CFF05]/20"
           >
             {isUploading ? (
               <>
