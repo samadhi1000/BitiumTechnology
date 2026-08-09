@@ -282,7 +282,7 @@ function HomeContent() {
             <h1 
               className="hero-title font-heading font-black text-[clamp(30px,4.5vw,54px)] tracking-tight leading-[1.08] text-foreground drop-shadow-md"
             >
-              High-Definition <span className="text-[#2CFF05]">Print Solutions</span> &amp; Equipment
+              High-Definition <span className="text-[#2CFF05]">Print Solutions</span>{' '}&amp; Equipment
             </h1>
             
             <p 
