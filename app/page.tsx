@@ -253,20 +253,27 @@ function HomeContent() {
 
       {/* 01. Hero Banner Section with Static Industrial Printer Background & Right Showcase */}
       <section className="relative overflow-hidden py-14 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 border-b border-border bg-background min-h-[600px] lg:min-h-[660px] flex items-center">
-        {/* Static Background Image (1st Screenshot) */}
+        {/* Static Background Image with Cinematic Studio Contrast & Lighting */}
         <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
           <Image
-            src="/images/hero-bg-1.jpg"
+            src="/images/hero-printer-bg.jpg"
             alt="Bitium Technology Industrial Printing Machinery"
             fill
             priority
-            quality={90}
-            className="object-cover object-center lg:object-right scale-105"
+            quality={95}
+            className="object-cover object-center lg:object-right opacity-90"
           />
-          {/* Subtle Radial & Linear gradient overlays for readable text on the left while preserving printer visuals */}
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 via-45% to-background/30 lg:to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
-          <div className="absolute inset-0 bg-radial-[at_left,_var(--tw-gradient-stops)] from-background/95 via-background/60 to-transparent" />
+          {/* 1. Base Darkening Tint across the entire image for rich contrast */}
+          <div className="absolute inset-0 bg-black/40" />
+
+          {/* 2. Deep Left-to-Right Gradient so headline & text stand out bold & crystal clear */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 via-45% to-black/20 lg:to-transparent" />
+
+          {/* 3. Top and Bottom Vignette fade seamlessly into page sections */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent via-50% to-background" />
+
+          {/* 4. Soft Radial Vignette around the edges */}
+          <div className="absolute inset-0 bg-radial-[at_center,_var(--tw-gradient-stops)] from-transparent via-black/25 to-black/75" />
         </div>
         
         <div className="max-w-7xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
