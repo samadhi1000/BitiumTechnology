@@ -8,6 +8,7 @@ import { useGSAP } from '@gsap/react';
 import PromoBanner from '@/components/PromoBanner';
 import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, Flame, CheckCircle2, Scissors, FlaskConical, PlayCircle, MessageSquareHeart, Upload, Grid, Cuboid, Package, Shield, Zap, Phone, ThumbsUp, Activity, Shirt, Feather, Clock, Droplet, PenTool, Crown } from 'lucide-react';
 import { HeroSearch } from '@/components/HeroSearch';
+import { HeroSlideshow } from '@/components/HeroSlideshow';
 import TrustSection from '@/components/TrustSection';
 
 // Icons for How It Works & Why Choose Us
@@ -251,12 +252,62 @@ function HomeContent() {
         }}
       />
 
-      {/* Hero Section */}
+      {/* 01. Hero Banner Section with Right-to-Left Background Slider */}
+      <section className="relative overflow-hidden py-16 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 border-b border-border bg-background">
+        <HeroSlideshow />
+        
+        <div className="max-w-4xl mx-auto relative z-10 text-center flex flex-col items-center justify-center gap-8">
+          <div className="w-full space-y-6 flex flex-col items-center justify-center">
+            <div 
+              className="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#f0ffd6] dark:bg-[#8DFF00]/10 border border-[#8DFF00]/30 text-[#3a6600] dark:text-[#8DFF00] text-xs font-semibold backdrop-blur-sm"
+            >
+              <Sparkles size={14} className="text-[#8DFF00]" />
+              <span>Bitium Technology Print Store</span>
+            </div>
+            
+            <h1 
+              className="hero-title font-heading font-black text-[clamp(32px,5vw,58px)] tracking-tight leading-[1.08] text-foreground drop-shadow-sm"
+            >
+              High-Definition <span className="text-[#8DFF00]">Print Solutions</span> &amp; Equipment
+            </h1>
+            
+            <p 
+              className="hero-text text-base sm:text-lg text-muted-foreground dark:text-zinc-300 max-w-2xl mx-auto leading-relaxed"
+            >
+              From custom precision stencils to industrial DTF film rolls, exposed screen printing, and traditional batik stamps — explore our specialized print technology store.
+            </p>
+
+            <div className="hero-search pt-2 w-full max-w-[520px] flex justify-center">
+              <HeroSearch />
+            </div>
+            
+            <div 
+              className="hero-buttons flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2"
+            >
+              <Link 
+                href="/canvas" 
+                className="lime-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] border-none cursor-pointer w-full sm:w-auto"
+              >
+                <span>Launch DTF Canvas</span>
+                <ArrowRight size={16} />
+              </Link>
+              <Link 
+                href="/stencil" 
+                className="ghost-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] cursor-pointer w-full sm:w-auto"
+              >
+                Browse Catalog
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 02. Interactive DTF Gang Sheet Builder Showcase Section (Shifted) */}
       <section className="bg-background py-[72px] px-6 pb-20 border-b border-border">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center hero-grid">
           {/* Left */}
           <div>
-            <div className="hero-badge inline-flex items-center gap-2 bg-[#f0ffd6] dark:bg-[#f0ffd6]/10 rounded-full px-[14px] py-[6px] mb-6 border border-[#8DFF00]/20">
+            <div className="inline-flex items-center gap-2 bg-[#f0ffd6] dark:bg-[#f0ffd6]/10 rounded-full px-[14px] py-[6px] mb-6 border border-[#8DFF00]/20">
               <div className="w-[6px] h-[6px] rounded-full bg-[#8DFF00]" />
               <span className="font-heading font-semibold text-[13px] text-[#3a6600] dark:text-[#8DFF00]">Professional DTF Printing</span>
             </div>
@@ -294,10 +345,6 @@ function HomeContent() {
                   </div>
                 </div>
               ))}
-            </div>
-            
-            <div className="hero-search w-full max-w-[460px]">
-              <HeroSearch />
             </div>
           </div>
 
