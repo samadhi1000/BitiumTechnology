@@ -17,6 +17,9 @@ export interface OrderItem {
   whatsappNo: string;
   shortCode?: string;
   address: string;
+  mobile1?: string;
+  mobile2?: string;
+  category?: string;
   note: string;
   date: string;
   totalAmount: string;
@@ -50,6 +53,9 @@ export const createEmptyOrder = (id?: string): OrderItem => ({
   whatsappNo: '',
   shortCode: '',
   address: '',
+  mobile1: '',
+  mobile2: '',
+  category: 'Stencils',
   note: '',
   date: new Date().toISOString().split('T')[0],
   totalAmount: '',
@@ -240,6 +246,13 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
                   {order.address ? `Addr: ${order.address}` : ''}
                 </span>
               </div>
+              {(order.mobile1 || order.mobile2) && (
+                <div className="border-b border-dotted border-gray-600 h-2.5 flex items-center overflow-hidden">
+                  <span className="text-[6px] truncate text-gray-800">
+                    Mob: {[order.mobile1, order.mobile2].filter(Boolean).join(', ')}
+                  </span>
+                </div>
+              )}
               <div className="border-b border-dotted border-gray-600 h-2.5 flex items-center overflow-hidden">
                 <span className="text-[6.5px] text-gray-600 truncate">
                   {order.id ? `Ref: ${order.id}` : ''}
@@ -290,16 +303,16 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
           </span>
         </div>
 
-        {/* Stencils Table Header */}
+        {/* Chart Table Header (A3, A2, A4) */}
         <div className="border-x border-b border-black grid grid-cols-5 text-center font-bold text-[7px] bg-gray-100">
           <div className="col-span-3 border-r border-black py-0.5">
-            A3 - STENCILS
+            A3
           </div>
           <div className="col-span-1 border-r border-black py-0.5">
-            A2 - STENCILS
+            A2
           </div>
           <div className="col-span-1 py-0.5">
-            A4 - STENCILS
+            A4
           </div>
         </div>
 

@@ -18,11 +18,14 @@ export interface OrderItem {
   whatsappNo: string;
   shortCode?: string;
   address: string;
+  mobile1?: string;
+  mobile2?: string;
+  category?: string;
   note: string;
   date: string;
   totalAmount: string;
   deliveryMethod: string;
-  // Stencils: 7 rows x 5 columns (cols 0,1,2 = A3, col 3 = A2, col 4 = A4)
+  // Chart items: 7 rows x 5 columns (cols 0,1,2 = A3, col 3 = A2, col 4 = A4)
   stencils: { code: string; qty?: string; checked: boolean }[][];
   // Fabric Painting: 4 rows x 5 columns
   fabricPainting: { code: string; qty?: string; checked: boolean }[][];
@@ -51,6 +54,9 @@ const createEmptyOrder = (): OrderItem => ({
   whatsappNo: "",
   shortCode: "",
   address: "",
+  mobile1: "",
+  mobile2: "",
+  category: "Stencils",
   note: "",
   date: new Date().toISOString().split("T")[0],
   totalAmount: "",
@@ -111,11 +117,14 @@ export default function OrderFormPage() {
     if (clientOrder.shortCode) text += `🔢 *Short Code:* ${clientOrder.shortCode}\n`;
     if (clientOrder.customerName) text += `👤 *Customer Name:* ${clientOrder.customerName}\n`;
     if (clientOrder.address) text += `📍 *Delivery Address:* ${clientOrder.address}\n`;
+    const mobiles = [clientOrder.mobile1, clientOrder.mobile2].filter(Boolean).join(" / ");
+    if (mobiles) text += `📞 *Mobile Numbers (02 Nos):* ${mobiles}\n`;
     text += `🚚 *Delivery Method:* ${clientOrder.deliveryMethod}\n`;
     if (clientOrder.totalAmount) text += `💰 *Total Amount:* Rs. ${clientOrder.totalAmount}\n`;
     if (clientOrder.note) text += `📝 *Note:* ${clientOrder.note}\n`;
 
-    text += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n🎨 *STENCILS ORDER:*\n`;
+    const catTitle = (clientOrder.category || "Stencils").toUpperCase();
+    text += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n🎨 *${catTitle} ORDER:*\n`;
     clientOrder.stencils.forEach((row, rIdx) => {
       row.forEach((cell, cIdx) => {
         if (cell.code.trim() || cell.qty?.trim() || cell.checked) {
@@ -320,6 +329,29 @@ export default function OrderFormPage() {
                   className="w-full text-xs px-2 py-1 border border-gray-400 rounded outline-none"
                 />
               </div>
+
+              {/* Mobile Numbers (02 Nos) */}
+              <div>
+                <label className="block text-[10px] font-bold text-gray-700 mb-0.5">
+                  Mobile Numbers (02 Nos):
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <input
+                    type="tel"
+                    placeholder="Mobile 1 (07X XXX XXXX)"
+                    value={clientOrder.mobile1 || ""}
+                    onChange={(e) => setClientOrder({ ...clientOrder, mobile1: e.target.value })}
+                    className="w-full text-xs px-2 py-1 border border-gray-400 rounded outline-none"
+                  />
+                  <input
+                    type="tel"
+                    placeholder="Mobile 2 (07X XXX XXXX)"
+                    value={clientOrder.mobile2 || ""}
+                    onChange={(e) => setClientOrder({ ...clientOrder, mobile2: e.target.value })}
+                    className="w-full text-xs px-2 py-1 border border-gray-400 rounded outline-none"
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Right Column: Delivery Method */}
@@ -370,10 +402,26 @@ export default function OrderFormPage() {
             </div>
           </div>
 
-          {/* STENCILS SECTION */}
+          {/* CATEGORY SELECTOR DROPDOWN BAR */}
+          <div className="border-b-2 border-black p-2.5 bg-gray-100 flex items-center justify-between gap-3 text-xs">
+            <label className="font-bold flex items-center gap-1.5 whitespace-nowrap">
+              <span>Category / Product Type:</span>
+            </label>
+            <select
+              value={clientOrder.category || "Stencils"}
+              onChange={(e) => setClientOrder({ ...clientOrder, category: e.target.value })}
+              className="flex-1 max-w-[280px] font-bold text-xs px-2.5 py-1.5 border-2 border-black rounded bg-white text-black focus:outline-none cursor-pointer"
+            >
+              <option value="Stencils">Stencils</option>
+              <option value="Screen Printing">Screen Printing</option>
+              <option value="Batik Stamp">Batik Stamp</option>
+            </select>
+          </div>
+
+          {/* CHART SECTION (A3, A2, A4) */}
           <div className="border-b-2 border-black">
             <div className="grid grid-cols-5 text-center font-bold text-xs bg-gray-200 border-b border-black">
-              <div className="col-span-3 border-r border-black py-1.5 uppercase">A3 - STENCILS</div>
+              <div className="col-span-3 border-r border-black py-1.5 uppercase">A3</div>
               <div className="col-span-1 border-r border-black py-1.5 uppercase text-[10px] sm:text-xs">A2</div>
               <div className="col-span-1 py-1.5 uppercase text-[10px] sm:text-xs">A4</div>
             </div>
