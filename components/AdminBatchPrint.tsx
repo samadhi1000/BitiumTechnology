@@ -15,13 +15,14 @@ export interface OrderItem {
   id: string;
   customerName: string;
   whatsappNo: string;
+  shortCode?: string;
   address: string;
   note: string;
   date: string;
   totalAmount: string;
   deliveryMethod: string;
-  stencils: { code: string; checked: boolean }[][];
-  fabricPainting: { code: string; checked: boolean }[][];
+  stencils: { code: string; qty?: string; checked: boolean }[][];
+  fabricPainting: { code: string; qty?: string; checked: boolean }[][];
   accessories: {
     rollerBrush: boolean;
     paintBrush: boolean;
@@ -47,16 +48,17 @@ export const createEmptyOrder = (id?: string): OrderItem => ({
   id: id || `ORD-${Date.now().toString().slice(-4)}`,
   customerName: '',
   whatsappNo: '',
+  shortCode: '',
   address: '',
   note: '',
   date: new Date().toISOString().split('T')[0],
   totalAmount: '',
   deliveryMethod: 'Cash On Delivery',
   stencils: Array.from({ length: 7 }, () =>
-    Array.from({ length: 5 }, () => ({ code: '', checked: false }))
+    Array.from({ length: 5 }, () => ({ code: '', qty: '', checked: false }))
   ),
   fabricPainting: Array.from({ length: 4 }, () =>
-    Array.from({ length: 5 }, () => ({ code: '', checked: false }))
+    Array.from({ length: 5 }, () => ({ code: '', qty: '', checked: false }))
   ),
   accessories: {
     rollerBrush: false,
@@ -75,25 +77,26 @@ export const sampleOrders: OrderItem[] = [
     id: 'ORD-101',
     customerName: 'Kavindu Perera',
     whatsappNo: '077 123 4567',
+    shortCode: '4567',
     address: 'No. 45, Temple Road, Kandy',
     note: 'Call before delivery',
     date: new Date().toISOString().split('T')[0],
     totalAmount: '4,850',
     deliveryMethod: 'Cash On Delivery',
     stencils: [
-      [{ code: 'A3-01', checked: true }, { code: 'A3-14', checked: true }, { code: '', checked: false }, { code: 'A2-05', checked: true }, { code: 'A4-12', checked: true }],
-      [{ code: 'A3-08', checked: true }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: 'A4-88', checked: true }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
+      [{ code: 'A3-01', qty: '1', checked: true }, { code: 'A3-14', qty: '2', checked: true }, { code: '', qty: '', checked: false }, { code: 'A2-05', qty: '1', checked: true }, { code: 'A4-12', qty: '1', checked: true }],
+      [{ code: 'A3-08', qty: '3', checked: true }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: 'A4-88', qty: '1', checked: true }],
+      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
+      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
+      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
+      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
+      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
     ],
     fabricPainting: [
-      [{ code: 'FB-01', checked: true }, { code: 'FB-04', checked: true }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
+      [{ code: 'FB-01', qty: '1', checked: true }, { code: 'FB-04', qty: '2', checked: true }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
+      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
+      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
+      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
     ],
     accessories: {
       rollerBrush: true,
@@ -107,25 +110,26 @@ export const sampleOrders: OrderItem[] = [
     id: 'ORD-102',
     customerName: 'Sanduni Jayasinghe',
     whatsappNo: '071 987 6543',
+    shortCode: '6543',
     address: '24/B, Galle Road, Matara',
     note: 'Fragile packing please',
     date: new Date().toISOString().split('T')[0],
     totalAmount: '6,200',
     deliveryMethod: 'Paid Courier',
     stencils: [
-      [{ code: 'A3-22', checked: true }, { code: 'A3-45', checked: true }, { code: 'A3-99', checked: true }, { code: 'A2-01', checked: true }, { code: '', checked: false }],
-      [{ code: 'A3-11', checked: true }, { code: '', checked: false }, { code: '', checked: false }, { code: 'A2-09', checked: true }, { code: 'A4-03', checked: true }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
+      [{ code: 'A3-22', qty: '2', checked: true }, { code: 'A3-45', qty: '1', checked: true }, { code: 'A3-99', qty: '1', checked: true }, { code: 'A2-01', qty: '1', checked: true }, { code: '', qty: '', checked: false }],
+      [{ code: 'A3-11', qty: '1', checked: true }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: 'A2-09', qty: '2', checked: true }, { code: 'A4-03', qty: '1', checked: true }],
+      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
+      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
+      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
+      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
+      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
     ],
     fabricPainting: [
-      [{ code: 'FB-12', checked: true }, { code: '', checked: false }, { code: 'FB-19', checked: true }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
+      [{ code: 'FB-12', qty: '1', checked: true }, { code: '', qty: '', checked: false }, { code: 'FB-19', qty: '1', checked: true }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
+      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
+      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
+      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
     ],
     accessories: {
       rollerBrush: false,
@@ -202,18 +206,28 @@ export const sampleOrders: OrderItem[] = [
 ];
 
 export function QuarterOrderCard({ order }: { order: OrderItem }) {
+  const shortCodeVal = order.shortCode || (order.whatsappNo ? order.whatsappNo.replace(/\D/g, '').slice(-4) : '');
+
   return (
     <div className="w-full h-full bg-white text-black font-sans border border-black flex flex-col justify-between select-none box-border p-1 text-[7.5px] leading-tight overflow-hidden">
       <div>
         {/* Top Header Section */}
         <div className="border border-black flex">
-          {/* Top Left: WhatsApp & Details */}
-          <div className="w-[56%] border-r border-black p-1 flex flex-col justify-between">
-            <div className="flex items-center gap-1 font-bold text-[8px]">
-              <span className="shrink-0">WATSAPP No.</span>
-              <span className="font-semibold text-[8px] truncate border-b border-dotted border-black flex-1">
-                {order.whatsappNo || ''}
-              </span>
+          {/* Top Left: WhatsApp & Details (Divided into WhatsApp No. + Short Code) */}
+          <div className="w-[58%] border-r border-black p-1 flex flex-col justify-between">
+            <div className="flex items-center justify-between gap-1 font-bold text-[8px]">
+              <div className="flex items-center gap-1 flex-1 min-w-0">
+                <span className="shrink-0 text-[7px] uppercase font-black">WhatsApp No.</span>
+                <span className="font-semibold text-[7.5px] truncate border-b border-dotted border-black flex-1">
+                  {order.whatsappNo || ''}
+                </span>
+              </div>
+              <div className="flex items-center gap-0.5 border border-black px-1 py-0.2 rounded bg-gray-100 shrink-0">
+                <span className="text-[5.5px] font-extrabold uppercase text-gray-700">Code:</span>
+                <span className="font-mono font-black text-[7.5px] text-black">
+                  {shortCodeVal}
+                </span>
+              </div>
             </div>
             <div className="mt-0.5 space-y-0.5">
               <div className="border-b border-dotted border-gray-600 h-3 flex items-center overflow-hidden">
@@ -235,7 +249,7 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
           </div>
 
           {/* Top Right: Delivery Options */}
-          <div className="w-[44%] p-1 text-[6.2px] font-medium flex flex-col justify-between gap-0.5 bg-gray-50/50 leading-tight">
+          <div className="w-[42%] p-1 text-[6.2px] font-medium flex flex-col justify-between gap-0.5 bg-gray-50/50 leading-tight">
             {defaultDeliveryOptions.map((item) => {
               const isSelected = order.deliveryMethod === item.id;
               return (
@@ -296,13 +310,20 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
               {row.map((cell, cIdx) => (
                 <div
                   key={`st-${rIdx}-${cIdx}`}
-                  className={`flex items-center justify-between px-0.5 ${
+                  className={`flex items-center justify-between px-0.5 gap-0.5 ${
                     cIdx < 4 ? 'border-r border-black' : ''
                   }`}
                 >
-                  <span className="text-[6.5px] font-mono font-medium truncate pr-0.5">
-                    {cell.code}
-                  </span>
+                  <div className="flex items-center gap-0.5 truncate flex-1 min-w-0 pr-0.5">
+                    {cell.qty ? (
+                      <span className="text-[5.5px] font-bold bg-gray-200 px-0.5 rounded shrink-0">
+                        {cell.qty}
+                      </span>
+                    ) : null}
+                    <span className="text-[6.5px] font-mono font-medium truncate">
+                      {cell.code}
+                    </span>
+                  </div>
                   <span className="w-2.5 h-2.5 border border-black shrink-0 inline-flex items-center justify-center font-bold text-[6.5px] leading-none">
                     {cell.checked ? '✓' : ''}
                   </span>
@@ -324,13 +345,20 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
               {row.map((cell, cIdx) => (
                 <div
                   key={`fab-${rIdx}-${cIdx}`}
-                  className={`flex items-center justify-between px-0.5 ${
+                  className={`flex items-center justify-between px-0.5 gap-0.5 ${
                     cIdx < 4 ? 'border-r border-black' : ''
                   }`}
                 >
-                  <span className="text-[6.5px] font-mono font-medium truncate pr-0.5">
-                    {cell.code}
-                  </span>
+                  <div className="flex items-center gap-0.5 truncate flex-1 min-w-0 pr-0.5">
+                    {cell.qty ? (
+                      <span className="text-[5.5px] font-bold bg-gray-200 px-0.5 rounded shrink-0">
+                        {cell.qty}
+                      </span>
+                    ) : null}
+                    <span className="text-[6.5px] font-mono font-medium truncate">
+                      {cell.code}
+                    </span>
+                  </div>
                   <span className="w-2.5 h-2.5 border border-black shrink-0 inline-flex items-center justify-center font-bold text-[6.5px] leading-none">
                     {cell.checked ? '✓' : ''}
                   </span>

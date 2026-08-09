@@ -16,15 +16,16 @@ export interface OrderItem {
   id: string;
   customerName: string;
   whatsappNo: string;
+  shortCode?: string;
   address: string;
   note: string;
   date: string;
   totalAmount: string;
   deliveryMethod: string;
   // Stencils: 7 rows x 5 columns (cols 0,1,2 = A3, col 3 = A2, col 4 = A4)
-  stencils: { code: string; checked: boolean }[][];
+  stencils: { code: string; qty?: string; checked: boolean }[][];
   // Fabric Painting: 4 rows x 5 columns
-  fabricPainting: { code: string; checked: boolean }[][];
+  fabricPainting: { code: string; qty?: string; checked: boolean }[][];
   // Accessories
   accessories: {
     rollerBrush: boolean;
@@ -48,16 +49,17 @@ const createEmptyOrder = (): OrderItem => ({
   id: `ORD-${Date.now().toString().slice(-4)}`,
   customerName: "",
   whatsappNo: "",
+  shortCode: "",
   address: "",
   note: "",
   date: new Date().toISOString().split("T")[0],
   totalAmount: "",
   deliveryMethod: "Cash On Delivery",
   stencils: Array.from({ length: 7 }, () =>
-    Array.from({ length: 5 }, () => ({ code: "", checked: false }))
+    Array.from({ length: 5 }, () => ({ code: "", qty: "", checked: false }))
   ),
   fabricPainting: Array.from({ length: 4 }, () =>
-    Array.from({ length: 5 }, () => ({ code: "", checked: false }))
+    Array.from({ length: 5 }, () => ({ code: "", qty: "", checked: false }))
   ),
   accessories: {
     rollerBrush: false,
@@ -106,6 +108,7 @@ export default function OrderFormPage() {
     text += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
     text += `📅 *Date:* ${clientOrder.date}\n`;
     text += `📱 *WhatsApp No:* ${clientOrder.whatsappNo || "N/A"}\n`;
+    if (clientOrder.shortCode) text += `🔢 *Short Code:* ${clientOrder.shortCode}\n`;
     if (clientOrder.customerName) text += `👤 *Customer Name:* ${clientOrder.customerName}\n`;
     if (clientOrder.address) text += `📍 *Delivery Address:* ${clientOrder.address}\n`;
     text += `🚚 *Delivery Method:* ${clientOrder.deliveryMethod}\n`;
@@ -115,9 +118,10 @@ export default function OrderFormPage() {
     text += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n🎨 *STENCILS ORDER:*\n`;
     clientOrder.stencils.forEach((row, rIdx) => {
       row.forEach((cell, cIdx) => {
-        if (cell.code.trim() || cell.checked) {
+        if (cell.code.trim() || cell.qty?.trim() || cell.checked) {
           const type = cIdx < 3 ? "A3" : cIdx === 3 ? "A2" : "A4";
-          text += `  • [${type}] ${cell.code || `Item ${rIdx + 1}`}\n`;
+          const qtyText = cell.qty?.trim() ? ` [Qty: ${cell.qty.trim()}]` : "";
+          text += `  • [${type}] ${cell.code || `Item ${rIdx + 1}`}${qtyText}\n`;
         }
       });
     });
@@ -125,8 +129,9 @@ export default function OrderFormPage() {
     text += `\n🖌️ *FABRIC PAINTING:*\n`;
     clientOrder.fabricPainting.forEach((row, rIdx) => {
       row.forEach((cell, cIdx) => {
-        if (cell.code.trim() || cell.checked) {
-          text += `  • Design: ${cell.code || `Item ${rIdx + 1}-${cIdx + 1}`}\n`;
+        if (cell.code.trim() || cell.qty?.trim() || cell.checked) {
+          const qtyText = cell.qty?.trim() ? ` [Qty: ${cell.qty.trim()}]` : "";
+          text += `  • Design: ${cell.code || `Item ${rIdx + 1}-${cIdx + 1}`}${qtyText}\n`;
         }
       });
     });
@@ -143,23 +148,39 @@ export default function OrderFormPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const updateClientStencil = (rowIdx: number, colIdx: number, field: "code" | "checked", val: any) => {
+  const updateClientStencil = (rowIdx: number, colIdx: number, field: "code" | "qty" | "checked", val: any) => {
     const updated = [...clientOrder.stencils];
-    updated[rowIdx][colIdx] = {
-      ...updated[rowIdx][colIdx],
+    const current = updated[rowIdx][colIdx];
+    const newCell = {
+      ...current,
       [field]: val,
-      ...(field === "code" && val.trim().length > 0 ? { checked: true } : {}),
     };
+    if (field === "code" || field === "qty") {
+      const hasContent = (field === "code" ? val : newCell.code).trim().length > 0 || 
+                         (field === "qty" ? val : (newCell.qty || "")).trim().length > 0;
+      if (hasContent) {
+        newCell.checked = true;
+      }
+    }
+    updated[rowIdx][colIdx] = newCell;
     setClientOrder({ ...clientOrder, stencils: updated });
   };
 
-  const updateClientFabric = (rowIdx: number, colIdx: number, field: "code" | "checked", val: any) => {
+  const updateClientFabric = (rowIdx: number, colIdx: number, field: "code" | "qty" | "checked", val: any) => {
     const updated = [...clientOrder.fabricPainting];
-    updated[rowIdx][colIdx] = {
-      ...updated[rowIdx][colIdx],
+    const current = updated[rowIdx][colIdx];
+    const newCell = {
+      ...current,
       [field]: val,
-      ...(field === "code" && val.trim().length > 0 ? { checked: true } : {}),
     };
+    if (field === "code" || field === "qty") {
+      const hasContent = (field === "code" ? val : newCell.code).trim().length > 0 || 
+                         (field === "qty" ? val : (newCell.qty || "")).trim().length > 0;
+      if (hasContent) {
+        newCell.checked = true;
+      }
+    }
+    updated[rowIdx][colIdx] = newCell;
     setClientOrder({ ...clientOrder, fabricPainting: updated });
   };
 
@@ -235,18 +256,43 @@ export default function OrderFormPage() {
           <div className="grid grid-cols-1 sm:grid-cols-12 border-b-2 border-black">
             {/* Left Column: Customer details */}
             <div className="sm:col-span-7 p-3.5 border-b sm:border-b-0 sm:border-r-2 border-black space-y-2.5">
-              <div>
-                <label className="block text-[11px] font-extrabold uppercase mb-1">
-                  WATSAPP No. <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="tel"
-                  required
-                  placeholder="07X XXX XXXX"
-                  value={clientOrder.whatsappNo}
-                  onChange={(e) => setClientOrder({ ...clientOrder, whatsappNo: e.target.value })}
-                  className="w-full text-xs font-semibold px-2.5 py-1.5 border border-black rounded focus:ring-1 focus:ring-black outline-none"
-                />
+              
+              {/* Divided WhatsApp Number & Short Code filling area */}
+              <div className="grid grid-cols-12 gap-2">
+                <div className="col-span-8">
+                  <label className="block text-[11px] font-extrabold uppercase mb-1">
+                    WhatsApp No. <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    placeholder="07X XXX XXXX"
+                    value={clientOrder.whatsappNo}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      const digits = val.replace(/\D/g, "");
+                      const last4 = digits.length >= 4 ? digits.slice(-4) : digits;
+                      setClientOrder({
+                        ...clientOrder,
+                        whatsappNo: val,
+                        shortCode: last4,
+                      });
+                    }}
+                    className="w-full text-xs font-semibold px-2.5 py-1.5 border border-black rounded focus:ring-1 focus:ring-black outline-none"
+                  />
+                </div>
+                <div className="col-span-4">
+                  <label className="block text-[11px] font-extrabold uppercase mb-1 text-gray-800">
+                    Short Code
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Last 4"
+                    value={clientOrder.shortCode ?? (clientOrder.whatsappNo.replace(/\D/g, "").slice(-4))}
+                    onChange={(e) => setClientOrder({ ...clientOrder, shortCode: e.target.value })}
+                    className="w-full text-xs font-bold font-mono px-2 py-1.5 border border-black rounded bg-gray-50 focus:ring-1 focus:ring-black outline-none text-center"
+                  />
+                </div>
               </div>
 
               <div>
@@ -338,22 +384,29 @@ export default function OrderFormPage() {
                   {row.map((cell, cIdx) => (
                     <div
                       key={`st-in-${rIdx}-${cIdx}`}
-                      className={`flex items-center justify-between p-1 ${
+                      className={`flex items-center justify-between p-1 gap-1 ${
                         cIdx < 4 ? "border-r border-black" : ""
                       }`}
                     >
                       <input
                         type="text"
-                        placeholder={`Code`}
+                        placeholder="Qty"
+                        value={cell.qty || ""}
+                        onChange={(e) => updateClientStencil(rIdx, cIdx, "qty", e.target.value)}
+                        className="w-8 sm:w-9 text-xs font-mono px-1 py-0.5 border border-gray-300 rounded text-center focus:outline-none focus:border-black shrink-0 bg-gray-50/50"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Code"
                         value={cell.code}
                         onChange={(e) => updateClientStencil(rIdx, cIdx, "code", e.target.value)}
-                        className="w-full text-xs font-mono px-1 focus:outline-none"
+                        className="w-full min-w-0 text-xs font-mono px-1 focus:outline-none"
                       />
                       <input
                         type="checkbox"
                         checked={cell.checked}
                         onChange={(e) => updateClientStencil(rIdx, cIdx, "checked", e.target.checked)}
-                        className="w-4 h-4 rounded border-2 border-black accent-black cursor-pointer shrink-0"
+                        className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded border-2 border-black accent-black cursor-pointer shrink-0"
                       />
                     </div>
                   ))}
@@ -373,22 +426,29 @@ export default function OrderFormPage() {
                   {row.map((cell, cIdx) => (
                     <div
                       key={`fab-in-${rIdx}-${cIdx}`}
-                      className={`flex items-center justify-between p-1 ${
+                      className={`flex items-center justify-between p-1 gap-1 ${
                         cIdx < 4 ? "border-r border-black" : ""
                       }`}
                     >
                       <input
                         type="text"
-                        placeholder={`Code`}
+                        placeholder="Qty"
+                        value={cell.qty || ""}
+                        onChange={(e) => updateClientFabric(rIdx, cIdx, "qty", e.target.value)}
+                        className="w-8 sm:w-9 text-xs font-mono px-1 py-0.5 border border-gray-300 rounded text-center focus:outline-none focus:border-black shrink-0 bg-gray-50/50"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Code"
                         value={cell.code}
                         onChange={(e) => updateClientFabric(rIdx, cIdx, "code", e.target.value)}
-                        className="w-full text-xs font-mono px-1 focus:outline-none"
+                        className="w-full min-w-0 text-xs font-mono px-1 focus:outline-none"
                       />
                       <input
                         type="checkbox"
                         checked={cell.checked}
                         onChange={(e) => updateClientFabric(rIdx, cIdx, "checked", e.target.checked)}
-                        className="w-4 h-4 rounded border-2 border-black accent-black cursor-pointer shrink-0"
+                        className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded border-2 border-black accent-black cursor-pointer shrink-0"
                       />
                     </div>
                   ))}
