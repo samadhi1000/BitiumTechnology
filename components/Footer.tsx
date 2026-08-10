@@ -114,9 +114,9 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               <li>
-                <a href="mailto:indrajith105@gmail.com" className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
+                <a href="mailto:hello@bitiumtechnology.com" className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
                   <Mail className="w-4 h-4" />
-                  indrajith105@gmail.com
+                  hello@bitiumtechnology.com
                 </a>
               </li>
               <li>

@@ -216,7 +216,7 @@ export const HeroSearch: React.FC<HeroSearchProps> = ({ className = '' }) => {
   const showDropdown = isFocused;
 
   return (
-    <div ref={containerRef} className={`relative w-full max-w-2xl ${className}`}>
+    <div ref={containerRef} className={`relative w-full max-w-2xl ${isFocused ? 'z-[100]' : 'z-20'} ${className}`}>
       
       {/* ── Search Bar Input Wrapper ── */}
       <motion.div
@@ -226,7 +226,7 @@ export const HeroSearch: React.FC<HeroSearchProps> = ({ className = '' }) => {
             : '0 0 0 1px rgba(0, 0, 0, 0.08), 0 4px 20px rgba(0, 0, 0, 0.06)',
         }}
         transition={{ duration: 0.2, ease: 'easeOut' }}
-        className="relative flex items-center rounded-2xl overflow-hidden bg-white dark:bg-black/60 backdrop-blur-xl border border-slate-200/90 dark:border-white/20 shadow-md dark:shadow-2xl transition-colors duration-300"
+        className="relative flex items-center rounded-2xl overflow-hidden bg-white/95 dark:bg-black/60 backdrop-blur-xl border border-slate-200/90 dark:border-white/20 shadow-md dark:shadow-2xl transition-colors duration-300"
       >
         {/* Search icon */}
         <div className="flex-shrink-0 pl-4 pr-2">
@@ -305,7 +305,7 @@ export const HeroSearch: React.FC<HeroSearchProps> = ({ className = '' }) => {
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
             role="listbox"
             aria-label="Search suggestions"
-            className="absolute top-full left-0 right-0 mt-3 rounded-2xl overflow-hidden z-50 bg-background/98 backdrop-blur-2xl border border-border/80 shadow-[0_24px_50px_-12px_rgba(0,0,0,0.85)]"
+            className="absolute top-full left-0 right-0 mt-3 rounded-2xl overflow-hidden z-[100] bg-white/98 dark:bg-[#080d1a]/98 backdrop-blur-2xl border border-slate-200 dark:border-white/20 shadow-[0_24px_50px_-12px_rgba(0,0,0,0.5)] dark:shadow-[0_24px_50px_-12px_rgba(0,0,0,0.9)]"
           >
             {/* Live Filter Results */}
             {filteredResults.length > 0 ? (

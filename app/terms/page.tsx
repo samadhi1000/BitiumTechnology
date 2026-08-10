@@ -184,7 +184,7 @@ export default function TermsPage() {
             <h2 className="text-xl font-bold text-[#2CFF05] font-heading">Contact Us</h2>
             <div className="p-4 rounded-2xl bg-background/50 border border-border/60 space-y-1 text-xs">
               <p className="font-extrabold text-foreground text-sm mb-1">Bitium Technology</p>
-              <p>Email: <a href="mailto:indrajith105@gmail.com" className="text-[#2CFF05] hover:underline">indrajith105@gmail.com</a></p>
+              <p>Email: <a href="mailto:hello@bitiumtechnology.com" className="text-[#2CFF05] hover:underline">hello@bitiumtechnology.com</a></p>
               <p>Phone: +94 71 552 0897 (Mobile)</p>
               <p>WhatsApp: +94 77 973 1097</p>
               <p>Address: 1391/1 New Town Digana, Rajawella, Digana, Sri Lanka, 20180</p>

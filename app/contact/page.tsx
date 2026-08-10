@@ -41,7 +41,7 @@ export default function ContactPage() {
               "@type": "LocalBusiness",
               "name": "Bitium Technology",
               "telephone": "+94779731097",
-              "email": "info@bitium.lk",
+              "email": "hello@bitiumtechnology.com",
               "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "102 Galle Road",
@@ -89,7 +89,11 @@ export default function ContactPage() {
                   <Mail size={18} className="text-[#2CFF05] mt-0.5" />
                   <div>
                     <p className="font-semibold text-foreground">Email Address</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">info@bitium.lk</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      <a href="mailto:hello@bitiumtechnology.com" className="hover:text-[#2CFF05] transition-colors">
+                        hello@bitiumtechnology.com
+                      </a>
+                    </p>
                   </div>
                 </div>
 

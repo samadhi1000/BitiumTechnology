@@ -142,7 +142,7 @@ export default function PrivacyPage() {
               <li>Withdraw consent for marketing communications at any time</li>
             </ul>
             <p>
-              To exercise any of these rights, contact us at <a href="mailto:indrajith105@gmail.com" className="text-[#2CFF05] hover:underline">indrajith105@gmail.com</a>.
+              To exercise any of these rights, contact us at <a href="mailto:hello@bitiumtechnology.com" className="text-[#2CFF05] hover:underline">hello@bitiumtechnology.com</a>.
             </p>
           </div>
 
@@ -182,7 +182,7 @@ export default function PrivacyPage() {
             <p>If you have questions about this policy or how we handle your data, reach out to:</p>
             <div className="p-4 rounded-2xl bg-background/50 border border-border/60 space-y-1 text-xs">
               <p className="font-extrabold text-foreground text-sm mb-1">Bitium Technology</p>
-              <p>Email: <a href="mailto:indrajith105@gmail.com" className="text-[#2CFF05] hover:underline">indrajith105@gmail.com</a></p>
+              <p>Email: <a href="mailto:hello@bitiumtechnology.com" className="text-[#2CFF05] hover:underline">hello@bitiumtechnology.com</a></p>
               <p>Phone: +94 71 552 0897 (Mobile)</p>
               <p>WhatsApp: +94 77 973 1097</p>
               <p>Address: 1391/1 New Town Digana, Rajawella, Digana, Sri Lanka, 20180</p>

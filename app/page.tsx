@@ -69,6 +69,7 @@ function HomeContent() {
       title: 'Stencils',
       description: 'Laser-cut Mylar stencils for saree work, hand painting, and wall art — cut clean, every time.',
       href: '/stencil',
+      image: '/images/catalog/stencils.jpg',
       icon: Palette,
       badge: '6 Categories'
     },
@@ -76,6 +77,7 @@ function HomeContent() {
       title: 'Screen Printing',
       description: 'Exposed screens, vectorized artwork, and positive tracing films, made to your exact specs.',
       href: '/screen-printing',
+      image: '/images/catalog/screen-printing.jpg',
       icon: Printer,
       badge: 'Professional Grade'
     },
@@ -83,6 +85,7 @@ function HomeContent() {
       title: 'DTF Printing',
       description: 'Custom sheet layouts, anime sticker packs, and cloth transfers — our most popular category.',
       href: '/dtf-printing',
+      image: '/images/catalog/dtf-printing.jpg',
       icon: Layers,
       badge: 'Hot Seller'
     },
@@ -90,6 +93,7 @@ function HomeContent() {
       title: 'Batik Stamps',
       description: 'Traditional copper and hand-carved wood Cap Batik stamps, made the way they\'ve always been made.',
       href: '/batik-stamp',
+      image: '/images/catalog/batik-stamp.jpg',
       icon: Stamp,
       badge: 'Traditional Art'
     },
@@ -97,6 +101,7 @@ function HomeContent() {
       title: 'Laser Cutting',
       description: 'Precision CO2 laser cutting for acrylic, wood, and custom profiles — built to your file, not a template.',
       href: '/laser-cutting',
+      image: '/images/catalog/laser-cutting.jpg',
       icon: Scissors,
       badge: 'CNC Precision'
     },
@@ -104,20 +109,23 @@ function HomeContent() {
       title: 'Consumables',
       description: 'Inks, hot melt powder, film rolls, emulsions, and wash chemicals — the supplies that keep your shop running.',
       href: '/materials',
+      image: '/images/catalog/consumables.jpg',
       icon: FlaskConical,
       badge: 'Industrial Grade'
     },
     {
       title: 'Video Tutorials',
       description: 'Learn how to master Screen & DTF printing with our step-by-step video guides.',
-      href: '#',
+      href: '/blog',
+      image: '/images/catalog/video-tutorials.jpg',
       icon: PlayCircle,
       badge: 'Learn & Master'
     },
     {
       title: 'Customer Feedbacks',
       description: 'See what our existing customers have to say about Bitium Technology Products.',
-      href: '#',
+      href: '/about',
+      image: '/images/catalog/customer-feedbacks.jpg',
       icon: MessageSquareHeart,
       badge: 'Real Stories'
     }
@@ -252,8 +260,8 @@ function HomeContent() {
       />
 
       {/* 01. Hero Banner Section with Static Industrial Printer Background & Right Showcase */}
-      <section className="relative overflow-hidden py-14 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 border-b border-border bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-white min-h-[600px] lg:min-h-[660px] flex items-center transition-colors duration-300">
-        {/* Static Background Image with Subtle Watermark in Light Mode & Rich Contrast in Dark Mode */}
+      <section className="relative py-14 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 border-b border-border bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-white min-h-[600px] lg:min-h-[660px] flex items-center transition-colors duration-300 z-20">
+        {/* Static Background Image with Crystal Clear Visibility & Gradient Falloff to the Right */}
         <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
           <Image
             src="/images/hero-printer-bg.jpg"
@@ -261,41 +269,41 @@ function HomeContent() {
             fill
             priority
             quality={95}
-            className="object-cover object-center lg:object-right opacity-50 dark:opacity-85 transition-opacity duration-300"
+            className="object-cover object-center lg:object-right opacity-90 dark:opacity-95 transition-opacity duration-300"
           />
-          {/* 1. Luminous Semi-Transparent Light Base Overlay / Deep Dark Mode Overlay */}
-          <div className="absolute inset-0 bg-white/60 dark:bg-black/50 backdrop-blur-[1px] transition-colors duration-300" />
+          {/* 1. Subtle Base Tint */}
+          <div className="absolute inset-0 bg-transparent dark:bg-black/25 transition-colors duration-300" />
 
-          {/* 2. Balanced Reading Gradient Scrim ensuring clear text readability while showcasing background */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/70 via-45% to-white/15 lg:to-transparent dark:from-[#020617]/95 dark:via-[#020617]/80 dark:via-45% dark:to-[#020617]/20 dark:lg:to-transparent transition-all duration-300" />
+          {/* 2. Text Reading Scrim on Left: High contrast behind text, tapering off smoothly from center to right */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 via-40% to-transparent to-75% dark:from-[#020617]/95 dark:via-[#020617]/80 dark:via-40% dark:to-transparent dark:to-75% transition-all duration-300" />
 
-          {/* 3. Smooth Bottom Blend to match the section below */}
-          <div className="absolute bottom-0 left-0 right-0 h-16 sm:h-20 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+          {/* 3. Subtle Bottom Edge Fade into next section */}
+          <div className="absolute bottom-0 left-0 right-0 h-8 sm:h-10 bg-gradient-to-t from-background/60 to-transparent pointer-events-none" />
         </div>
         
         <div className="max-w-7xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           {/* Left Column: Headline, Search, Actions */}
-          <div className="lg:col-span-7 xl:col-span-7 space-y-6 flex flex-col items-start text-left">
+          <div className="lg:col-span-7 xl:col-span-7 space-y-6 flex flex-col items-start text-left relative z-30">
             <div 
-              className="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 dark:bg-[#2CFF05]/15 border border-emerald-500/30 dark:border-[#2CFF05]/30 text-emerald-800 dark:text-[#2CFF05] text-xs font-semibold backdrop-blur-sm shadow-sm"
+              className="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 dark:bg-[#2CFF05]/15 border border-emerald-600/30 dark:border-[#2CFF05]/40 text-emerald-900 dark:text-[#2CFF05] text-xs font-bold backdrop-blur-md shadow-sm"
             >
               <Sparkles size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
               <span>Bitium Technology Print Store</span>
             </div>
             
             <h1 
-              className="hero-title font-heading font-black text-[clamp(32px,4.5vw,56px)] tracking-tight leading-[1.08] text-slate-900 dark:text-white drop-shadow-sm"
+              className="hero-title font-heading font-black text-[clamp(32px,4.5vw,56px)] tracking-tight leading-[1.08] text-slate-950 dark:text-white drop-shadow-sm dark:drop-shadow-[0_2px_16px_rgba(0,0,0,0.8)]"
             >
-              High-Definition <span className="text-emerald-600 dark:text-[#2CFF05] dark:drop-shadow-[0_0_20px_rgba(44,255,5,0.4)]">Print Solutions</span>{' '}&amp; Equipment
+              High-Definition <span className="text-emerald-600 dark:text-[#2CFF05] dark:drop-shadow-[0_0_24px_rgba(44,255,5,0.6)]">Print Solutions</span>{' '}&amp; Equipment
             </h1>
             
             <p 
-              className="hero-text text-base sm:text-lg text-slate-600 dark:text-zinc-300 max-w-xl leading-relaxed font-normal"
+              className="hero-text text-base sm:text-lg text-slate-800 dark:text-zinc-100 max-w-xl leading-relaxed font-medium dark:drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]"
             >
               From custom precision stencils to industrial DTF film rolls, exposed screen printing, and traditional batik stamps — explore our specialized print technology store.
             </p>
 
-            <div className="hero-search pt-1 w-full max-w-[500px]">
+            <div className="hero-search pt-1 w-full max-w-[500px] relative z-40">
               <HeroSearch />
             </div>
             
@@ -311,22 +319,22 @@ function HomeContent() {
               </Link>
               <Link 
                 href="/stencil" 
-                className="ghost-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] font-semibold cursor-pointer w-full sm:w-auto border border-slate-300 dark:border-white/20 bg-white dark:bg-white/10 hover:bg-slate-50 dark:hover:bg-white/20 text-slate-800 dark:text-white hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/50 transition-all shadow-sm"
+                className="ghost-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] font-semibold cursor-pointer w-full sm:w-auto border border-slate-300 dark:border-white/20 bg-white dark:bg-white/10 hover:bg-slate-50 dark:hover:bg-white/20 text-slate-900 dark:text-white hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/50 transition-all shadow-sm"
               >
                 Browse Catalog
               </Link>
             </div>
 
             {/* Quality Bullets */}
-            <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-medium text-slate-700 dark:text-zinc-300">
+            <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-bold text-slate-900 dark:text-zinc-100 dark:drop-shadow-[0_1px_6px_rgba(0,0,0,0.8)]">
               <span className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> Premium Quality
               </span>
-              <span className="text-slate-300 dark:text-zinc-600">•</span>
+              <span className="text-slate-400 dark:text-zinc-500">•</span>
               <span className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> Expert Support
               </span>
-              <span className="text-slate-300 dark:text-zinc-600">•</span>
+              <span className="text-slate-400 dark:text-zinc-500">•</span>
               <span className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> Fast Nationwide Delivery
               </span>
@@ -340,54 +348,94 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Brands Section */}
-      <section className="bg-zinc-50 dark:bg-card border-b border-border py-8 overflow-hidden">
-        <div className="max-w-7xl mx-auto text-center px-6">
-          <p className="text-[13px] font-heading font-semibold text-muted-foreground tracking-wider uppercase mb-6">Trusted by 1,000+ Brands & Businesses</p>
-        </div>
-        
-        {/* Infinite Carousel Marquee */}
-        <div className="w-full flex overflow-hidden relative">
-          {/* Gradient Fades for Marquee Edges */}
-          <div className="absolute top-0 left-0 w-24 h-full bg-gradient-to-r from-zinc-50 dark:from-zinc-900 to-transparent z-10 pointer-events-none" />
-          <div className="absolute top-0 right-0 w-24 h-full bg-gradient-to-l from-zinc-50 dark:from-zinc-900 to-transparent z-10 pointer-events-none" />
+      {/* 02. Trust & Partner Brands Strip - Modern Static Bento Grid with Live Proof Metrics */}
+      <section className="bg-slate-100/70 dark:bg-[#060b18] border-b border-border/80 py-10 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        {/* Subtle background glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-24 bg-emerald-500/5 dark:bg-[#2CFF05]/5 blur-3xl pointer-events-none rounded-full" />
+
+        <div className="max-w-7xl mx-auto flex flex-col gap-8 relative z-10">
           
-          <div className="animate-marquee gap-8 items-center px-4">
-            {/* We duplicate the array to make the infinite scroll seamless */}
+          {/* Header Row: Title & Trust Badge */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left border-b border-slate-200/80 dark:border-white/5 pb-5">
+            <div className="flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 dark:bg-[#2CFF05] animate-ping" />
+              <p className="font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase text-slate-800 dark:text-slate-200">
+                Trusted by 1,000+ Apparel Brands, Studios &amp; Manufacturers
+              </p>
+            </div>
+
+            {/* Live Trust Pill */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs text-slate-700 dark:text-zinc-300 shadow-sm">
+              <span className="text-amber-400">★★★★★</span>
+              <span className="font-bold text-slate-900 dark:text-white">4.9/5</span>
+              <span className="text-slate-400 dark:text-zinc-500">•</span>
+              <span className="text-muted-foreground">1,200+ Verified Orders</span>
+            </div>
+          </div>
+
+          {/* Clean Interactive Logo Matrix */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4">
             {[
-              { name: 'Sneaker Lab', icon: Activity },
-              { name: 'Urban Threads', icon: Shirt },
-              { name: 'Print Raven', icon: Feather },
-              { name: 'Overtime Co.', icon: Clock },
-              { name: 'InkFlow', icon: Droplet },
-              { name: 'Dezign Studio', icon: PenTool },
-              { name: 'Custom Kings', icon: Crown },
-              // Duplicate once
-              { name: 'Sneaker Lab', icon: Activity },
-              { name: 'Urban Threads', icon: Shirt },
-              { name: 'Print Raven', icon: Feather },
-              { name: 'Overtime Co.', icon: Clock },
-              { name: 'InkFlow', icon: Droplet },
-              { name: 'Dezign Studio', icon: PenTool },
-              { name: 'Custom Kings', icon: Crown },
-              // Duplicate twice for wider screens
-              { name: 'Sneaker Lab', icon: Activity },
-              { name: 'Urban Threads', icon: Shirt },
-              { name: 'Print Raven', icon: Feather },
-              { name: 'Overtime Co.', icon: Clock },
-              { name: 'InkFlow', icon: Droplet },
-              { name: 'Dezign Studio', icon: PenTool },
-              { name: 'Custom Kings', icon: Crown },
-            ].map((brand, i) => {
+              { name: 'Sneaker Lab', tag: 'Footwear', icon: Activity },
+              { name: 'Urban Threads', tag: 'Streetwear', icon: Shirt },
+              { name: 'Print Raven', tag: 'Boutique', icon: Feather },
+              { name: 'Overtime Co.', tag: 'Workwear', icon: Clock },
+              { name: 'InkFlow Studio', tag: 'Textile', icon: Droplet },
+              { name: 'Dezign Lab', tag: 'Agency', icon: PenTool },
+              { name: 'Custom Kings', tag: 'Merch', icon: Crown },
+            ].map((brand) => {
               const Icon = brand.icon;
               return (
-                <div key={i} className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border bg-card whitespace-nowrap group hover:border-[#2CFF05] hover:shadow-[0_4px_12px_rgba(141,255,0,0.1)] transition-all cursor-pointer">
-                  <Icon size={16} className="text-[#2CFF05]" />
-                  <span className="font-heading font-bold text-[14px] text-muted-foreground group-hover:text-foreground tracking-wide transition-colors">{brand.name}</span>
+                <div
+                  key={brand.name}
+                  className="group flex flex-col items-center justify-center p-3.5 sm:p-4 rounded-xl bg-white dark:bg-[#0b1329]/60 border border-slate-200/80 dark:border-white/5 hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/50 shadow-sm hover:shadow-md dark:hover:shadow-[0_4px_20px_rgba(44,255,5,0.08)] hover:-translate-y-0.5 transition-all duration-300 cursor-default select-none"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-white/5 group-hover:bg-emerald-500/10 dark:group-hover:bg-[#2CFF05]/10 flex items-center justify-center text-slate-600 dark:text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05] transition-colors mb-2">
+                    <Icon size={16} strokeWidth={2} />
+                  </div>
+                  <span className="font-heading font-bold text-[13px] text-slate-800 dark:text-zinc-200 group-hover:text-slate-950 dark:group-hover:text-white transition-colors truncate w-full text-center">
+                    {brand.name}
+                  </span>
+                  <span className="text-[10px] text-slate-400 dark:text-zinc-500 group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05] font-medium tracking-tight transition-colors">
+                    {brand.tag}
+                  </span>
                 </div>
               );
             })}
           </div>
+
+          {/* Quick Key Performance Proof Strip */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2">
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-white/60 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/5">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#2CFF05]" />
+              <div className="text-xs">
+                <span className="font-bold text-slate-900 dark:text-white">50,000+ </span>
+                <span className="text-muted-foreground">Prints Made</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-white/60 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/5">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#2CFF05]" />
+              <div className="text-xs">
+                <span className="font-bold text-slate-900 dark:text-white">24–48h </span>
+                <span className="text-muted-foreground">Fast Dispatch</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-white/60 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/5">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#2CFF05]" />
+              <div className="text-xs">
+                <span className="font-bold text-slate-900 dark:text-white">Industrial </span>
+                <span className="text-muted-foreground">CMYK + White</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-white/60 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/5">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#2CFF05]" />
+              <div className="text-xs">
+                <span className="font-bold text-slate-900 dark:text-white">100% </span>
+                <span className="text-muted-foreground">Quality Guarantee</span>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -423,36 +471,67 @@ function HomeContent() {
       <PromoBanner />
 
       {/* Products Section */}
-      <section className="py-20 px-6 bg-zinc-50 dark:bg-card/40 border-b border-border">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-zinc-50 dark:bg-card/40 border-b border-border">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-14">
             <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">Catalog</span>
             <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">Shop Our Printing Solutions</h2>
+            <p className="text-sm text-muted-foreground max-w-xl mx-auto mt-2.5">
+              Explore our full range of custom stencils, industrial DTF transfers, traditional Cap Batik stamps, precision cutting, and print consumables.
+            </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 products-grid">
-            {categories.map(c => {
-                const Icon = c.icon;
-                return (
-                  <Link key={c.title} href={c.href} className="product-card block bg-card rounded-[16px] overflow-hidden border border-border group">
-                    <div className="relative overflow-hidden bg-muted dark:bg-background p-6 flex justify-center items-center h-[160px]">
-                        <div className="p-4 rounded-2xl bg-background border border-border text-[#2CFF05] group-hover:scale-110 transition-transform">
-                            <Icon size={48} strokeWidth={1.5} />
-                        </div>
-                        {c.badge && (
-                            <div className="absolute top-3 left-3 bg-[#2CFF05] rounded-full px-2.5 py-[3px] font-heading font-bold text-[10px] text-[#0a0a0a]">
-                                {c.badge}
-                            </div>
-                        )}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 products-grid">
+            {categories.map((c) => {
+              const Icon = c.icon;
+              return (
+                <Link
+                  key={c.title}
+                  href={c.href}
+                  className="product-card group flex flex-col bg-white dark:bg-card/70 rounded-2xl overflow-hidden border border-slate-200/90 dark:border-white/10 hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/60 hover:shadow-xl dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition-all duration-300 hover:-translate-y-1"
+                >
+                  {/* Card Image Banner */}
+                  <div className="relative w-full h-[180px] sm:h-[190px] overflow-hidden bg-slate-100 dark:bg-zinc-900 select-none">
+                    <Image
+                      src={c.image}
+                      alt={c.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover group-hover:scale-108 transition-transform duration-500 ease-out"
+                    />
+                    {/* Subtle Scrim Gradient Overlay for contrast */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
+
+                    {/* Top Badge */}
+                    {c.badge && (
+                      <div className="absolute top-3 left-3 bg-[#2CFF05] text-slate-950 font-heading font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md z-10">
+                        {c.badge}
+                      </div>
+                    )}
+
+                    {/* Floating Icon Pill */}
+                    <div className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-[#2CFF05] flex items-center justify-center shadow-md z-10 group-hover:scale-110 transition-transform">
+                      <Icon size={16} strokeWidth={2} />
                     </div>
-                    <div className="p-5 bg-card">
-                        <h3 className="font-heading font-extrabold text-[16px] text-foreground mb-2 group-hover:text-[#2CFF05] transition-colors">{c.title}</h3>
-                        <p className="text-[13px] text-muted-foreground dark:text-muted-foreground leading-[1.55] mb-4 h-[60px] overflow-hidden">{c.description}</p>
-                        <div className="inline-flex items-center gap-1.5 font-heading font-bold text-[13px] text-foreground border-b-[1.5px] border-[#2CFF05] pb-[1px]">
-                            Browse Products <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-                        </div>
+                  </div>
+
+                  {/* Card Content Body */}
+                  <div className="p-5 flex flex-col flex-grow justify-between bg-white dark:bg-card/90">
+                    <div>
+                      <h3 className="font-heading font-black text-[16px] text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05] transition-colors mb-2">
+                        {c.title}
+                      </h3>
+                      <p className="text-[13px] text-slate-600 dark:text-zinc-300 leading-relaxed line-clamp-3 mb-4 font-normal">
+                        {c.description}
+                      </p>
                     </div>
-                  </Link>
-                );
+                    
+                    <div className="pt-2.5 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-xs font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05] transition-colors">
+                      <span>Browse Products</span>
+                      <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </Link>
+              );
             })}
           </div>
         </div>
@@ -574,7 +653,7 @@ function HomeContent() {
                 </div>
                 <div className="flex-1 bg-background rounded-md py-1 px-3 border border-border flex items-center gap-2">
                   <span className="text-[10px] text-muted-foreground">🔒</span>
-                  <span className="font-sans text-[11px] text-muted-foreground dark:text-muted-foreground">app.bitiumtechnology.com/builder</span>
+                  <span className="font-sans text-[11px] text-muted-foreground dark:text-muted-foreground">bitiumtechnology.com/builder</span>
                 </div>
                 <Link href="/3d-customizer" className="bg-[#2CFF05] hover:bg-[#7ce000] border-none rounded-md py-1.5 px-3 font-heading font-bold text-[10px] cursor-pointer text-[#0a0a0a] transition-colors decoration-none flex items-center justify-center">Preview in 3D</Link>
               </div>
@@ -653,7 +732,36 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* FAQ Section */}
+      {/* Testimonials (Reviews) */}
+      <section className="py-20 px-6 bg-background border-b border-border">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">Reviews</span>
+            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">What Our Customers Say</h2>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 testi-grid">
+            {testimonials.map((t, i) => (
+              <div key={t.name} className="bg-zinc-50 dark:bg-card rounded-[20px] p-8 border-[1.5px] border-border">
+                <div className="flex gap-1 mb-5">
+                  {Array.from({ length: 5 }).map((_, s) => <StarIcon key={s} filled={s < t.rating} />)}
+                </div>
+                <p className="text-[15px] text-muted-foreground dark:text-foreground leading-[1.7] mb-6 italic">{t.text}</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-[42px] h-[42px] rounded-full flex items-center justify-center font-heading font-extrabold text-[14px] text-[#0a0a0a] shrink-0" style={{ background: avatarColors[i] }}>
+                    {t.avatar}
+                  </div>
+                  <div>
+                    <div className="font-heading font-bold text-[14px] text-foreground">{t.name}</div>
+                    <div className="text-[12px] text-muted-foreground">{t.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section (Placed between Reviews and Ready to get started) */}
       <section className="py-24 px-6 bg-zinc-50 dark:bg-card/20 border-b border-border overflow-hidden relative">
         {/* Decorative subtle gradient background glow */}
         <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[350px] h-[350px] bg-[#2CFF05] rounded-full opacity-[0.03] blur-[120px] pointer-events-none" />
@@ -717,62 +825,45 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20 px-6 bg-background border-b border-border">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">Reviews</span>
-            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">What Our Customers Say</h2>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 testi-grid">
-            {testimonials.map((t, i) => (
-              <div key={t.name} className="bg-zinc-50 dark:bg-card rounded-[20px] p-8 border-[1.5px] border-border">
-                <div className="flex gap-1 mb-5">
-                  {Array.from({ length: 5 }).map((_, s) => <StarIcon key={s} filled={s < t.rating} />)}
-                </div>
-                <p className="text-[15px] text-muted-foreground dark:text-foreground leading-[1.7] mb-6 italic">{t.text}</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-[42px] h-[42px] rounded-full flex items-center justify-center font-heading font-extrabold text-[14px] text-[#0a0a0a] shrink-0" style={{ background: avatarColors[i] }}>
-                    {t.avatar}
-                  </div>
-                  <div>
-                    <div className="font-heading font-bold text-[14px] text-foreground">{t.name}</div>
-                    <div className="text-[12px] text-muted-foreground">{t.role}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
-      <section className="py-12 px-6 pb-20 bg-background">
+      <section className="py-12 px-4 sm:px-6 pb-20 bg-background">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-card dark:bg-[#0a0a0a] rounded-[24px] p-6 sm:p-16 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 lg:gap-12 items-center overflow-hidden relative border border-border shadow-xl cta-grid">
+          <div className="bg-[#0a0a0a] rounded-[24px] sm:rounded-[32px] p-8 sm:p-12 lg:p-16 grid grid-cols-1 lg:grid-cols-[1.2fr_auto] gap-10 lg:gap-14 items-center overflow-hidden relative border border-slate-800/80 shadow-2xl cta-grid">
             {/* Background accent */}
-            <div className="absolute -top-[60px] right-[300px] w-[200px] h-[200px] bg-[#2CFF05] rounded-full opacity-[0.08] blur-[40px]" />
+            <div className="absolute -top-[60px] right-[300px] w-[280px] h-[280px] bg-[#2CFF05] rounded-full opacity-[0.08] blur-[60px] pointer-events-none" />
             <div className="relative z-10 flex flex-col items-center lg:items-start text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 bg-[#2CFF05]/15 rounded-full px-3.5 py-1.5 mb-5">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#2CFF05]" />
+              <div className="inline-flex items-center gap-2 bg-[#2CFF05]/15 rounded-full px-3.5 py-1.5 mb-5 border border-[#2CFF05]/20">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#2CFF05] animate-pulse" />
                 <span className="font-heading font-semibold text-[12px] text-[#2CFF05]">Ready to get started?</span>
               </div>
-              <h2 className="font-heading font-black text-[clamp(28px,4vw,48px)] text-foreground dark:text-foreground leading-[1.1] mb-4">
+              <h2 className="font-heading font-black text-[clamp(30px,4.5vw,52px)] text-white leading-[1.08] mb-4">
                 Ready to Print<br />Your Design?
               </h2>
-              <p className="text-[16px] text-muted-foreground dark:text-muted-foreground leading-[1.65] mb-8 max-w-[440px]">
+              <p className="text-[15px] sm:text-[16px] text-slate-300 leading-[1.65] mb-8 max-w-[460px]">
                 Create your DTF sheet now and see your design come to life before printing. No minimums, 24-hour turnaround.
               </p>
-              <Link href="/canvas" className="lime-btn inline-flex items-center gap-[10px] px-8 py-4 rounded-full text-[15px] border-none cursor-pointer">
+              <Link href="/canvas" className="lime-btn inline-flex items-center gap-[10px] px-8 py-4 rounded-full text-[15px] font-bold border-none cursor-pointer shadow-lg shadow-[#2CFF05]/20 hover:scale-105 transition-all">
                 Start Your Design Now <ArrowRight size={16} />
               </Link>
             </div>
 
-            {/* Mockup images */}
-            <div className="flex gap-3 items-end justify-center relative z-10 w-full max-w-[340px] sm:max-w-none mx-auto lg:mx-0 mt-4 lg:mt-0 overflow-visible">
-              <img src="https://images.unsplash.com/photo-1601754664414-aa3e4f42e6d4?w=200&h=260&fit=crop&auto=format" alt="Custom printed shirt" className="w-[85px] sm:w-[120px] h-[115px] sm:h-[160px] object-cover rounded-2xl -rotate-6 shadow-lg shrink-0" />
-              <img src="https://images.unsplash.com/photo-1680292783974-a9a336c10366?w=200&h=280&fit=crop&auto=format" alt="Custom hoodie" className="w-[95px] sm:w-[130px] h-[130px] sm:h-[180px] object-cover rounded-2xl shadow-xl z-10 shrink-0" />
-              <img src="https://images.unsplash.com/photo-1615397587950-3cbb55f95b77?w=200&h=260&fit=crop&auto=format" alt="White hoodie" className="w-[85px] sm:w-[120px] h-[115px] sm:h-[160px] object-cover rounded-2xl rotate-6 shadow-lg shrink-0" />
+            {/* Mockup images - Enlarged to match left text height */}
+            <div className="flex gap-3 sm:gap-4 items-center justify-center relative z-10 w-full sm:max-w-none mx-auto lg:mx-0 mt-6 lg:mt-0">
+              <img 
+                src="https://images.unsplash.com/photo-1601754664414-aa3e4f42e6d4?w=400&h=600&fit=crop&auto=format" 
+                alt="Custom printed shirt" 
+                className="w-[110px] sm:w-[145px] lg:w-[165px] h-[190px] sm:h-[240px] lg:h-[270px] object-cover rounded-2xl sm:rounded-3xl -rotate-6 shadow-2xl border border-white/10 shrink-0 hover:rotate-0 transition-transform duration-300" 
+              />
+              <img 
+                src="https://images.unsplash.com/photo-1680292783974-a9a336c10366?w=400&h=600&fit=crop&auto=format" 
+                alt="Custom hoodie" 
+                className="w-[125px] sm:w-[165px] lg:w-[190px] h-[220px] sm:h-[275px] lg:h-[305px] object-cover rounded-2xl sm:rounded-3xl shadow-2xl border border-white/15 z-10 shrink-0 hover:scale-105 transition-transform duration-300" 
+              />
+              <img 
+                src="https://images.unsplash.com/photo-1615397587950-3cbb55f95b77?w=400&h=600&fit=crop&auto=format" 
+                alt="White hoodie" 
+                className="w-[110px] sm:w-[145px] lg:w-[165px] h-[190px] sm:h-[240px] lg:h-[270px] object-cover rounded-2xl sm:rounded-3xl rotate-6 shadow-2xl border border-white/10 shrink-0 hover:rotate-0 transition-transform duration-300" 
+              />
             </div>
           </div>
         </div>

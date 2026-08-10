@@ -4,6 +4,7 @@ import React, { useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { PenTool, Layers, Printer, Stamp, Scissors, ChevronLeft, ChevronRight } from "lucide-react";
+import { useTheme } from "@/lib/context/ThemeContext";
 
 interface HeroCardItem {
   id: string;
@@ -58,6 +59,7 @@ const HERO_ITEMS: HeroCardItem[] = [
 ];
 
 export const HeroShowcaseCarousel: React.FC = () => {
+  const { theme } = useTheme();
   // Triplicate array to allow continuous seamless wrapping in either direction
   const displayItems = [...HERO_ITEMS, ...HERO_ITEMS, ...HERO_ITEMS];
 
@@ -71,7 +73,6 @@ export const HeroShowcaseCarousel: React.FC = () => {
   const currentVelocity = useRef<number>(-0.6);
   const singleSetWidth = useRef<number>(0);
 
-  const isHovered = useRef<boolean>(false);
   const isDragging = useRef<boolean>(false);
   const dragStartX = useRef<number>(0);
   const lastMouseX = useRef<number>(0);
@@ -153,11 +154,10 @@ export const HeroShowcaseCarousel: React.FC = () => {
   };
 
   const handleMouseEnter = () => {
-    isHovered.current = true;
+    // Mouse entered
   };
 
   const handleMouseLeave = () => {
-    isHovered.current = false;
     // Resume gentle auto-scroll speed
     targetVelocity.current = -0.6;
   };
@@ -223,19 +223,23 @@ export const HeroShowcaseCarousel: React.FC = () => {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      className="w-full max-w-[540px] group relative select-none rounded-2xl sm:rounded-3xl border border-slate-200/90 dark:border-white/20 bg-white/95 dark:bg-black/50 backdrop-blur-xl p-4 sm:p-5 shadow-xl dark:shadow-2xl overflow-hidden transition-colors duration-300 cursor-grab active:cursor-grabbing"
+      className="w-full max-w-[540px] group relative select-none rounded-2xl sm:rounded-3xl border border-slate-300/40 dark:border-white/10 bg-white/[0.05] dark:bg-black/[0.05] backdrop-blur-[3px] p-4 sm:p-5 shadow-lg dark:shadow-2xl overflow-hidden transition-colors duration-300 cursor-grab active:cursor-grabbing"
     >
-      {/* Ambient Light Effect inside frame */}
-      <div className="absolute -top-20 -right-20 w-48 h-48 bg-emerald-500/10 dark:bg-[#2CFF05]/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-20 -left-20 w-48 h-48 bg-slate-300/20 dark:bg-white/10 rounded-full blur-3xl pointer-events-none" />
+      {/* Subtle ambient lighting inside frame */}
+      <div className="absolute -top-20 -right-20 w-48 h-48 bg-emerald-500/5 dark:bg-[#2CFF05]/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header inside frame */}
       <div className="mb-3.5 flex items-center justify-between relative z-10">
-        <h3 className="font-heading font-extrabold text-sm sm:text-[15px] tracking-tight text-slate-900 dark:text-white drop-shadow-sm flex items-center gap-2">
+        <h3 className="font-heading font-extrabold text-sm sm:text-[15px] tracking-tight flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#2CFF05] animate-pulse shrink-0" />
           <span>
-            Everything You Need to{" "}
-            <span className="text-emerald-600 dark:text-[#2CFF05] dark:drop-shadow-[0_0_10px_rgba(44,255,5,0.4)]">
+            <span 
+              className="hero-carousel-title-black font-black"
+              style={{ color: theme === 'light' ? '#000000' : '#ffffff' }}
+            >
+              Everything You Need to
+            </span>{" "}
+            <span className="text-emerald-600 dark:text-[#2CFF05] font-black dark:drop-shadow-[0_0_10px_rgba(44,255,5,0.4)]">
               Create, Print &amp; Deliver
             </span>
           </span>
@@ -249,7 +253,7 @@ export const HeroShowcaseCarousel: React.FC = () => {
               scrollStep("left");
             }}
             aria-label="Scroll carousel left"
-            className="w-6 h-6 rounded-full border border-slate-200 dark:border-white/15 bg-white dark:bg-black/60 flex items-center justify-center text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-all shadow-sm active:scale-95"
+            className="w-6 h-6 rounded-full border border-slate-300/40 dark:border-white/15 bg-white/20 dark:bg-black/30 backdrop-blur-sm flex items-center justify-center text-slate-800 dark:text-zinc-200 hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-all shadow-sm active:scale-95 cursor-pointer"
           >
             <ChevronLeft size={13} />
           </button>
@@ -259,7 +263,7 @@ export const HeroShowcaseCarousel: React.FC = () => {
               scrollStep("right");
             }}
             aria-label="Scroll carousel right"
-            className="w-6 h-6 rounded-full border border-slate-200 dark:border-white/15 bg-white dark:bg-black/60 flex items-center justify-center text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-all shadow-sm active:scale-95"
+            className="w-6 h-6 rounded-full border border-slate-300/40 dark:border-white/15 bg-white/20 dark:bg-black/30 backdrop-blur-sm flex items-center justify-center text-slate-800 dark:text-zinc-200 hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-all shadow-sm active:scale-95 cursor-pointer"
           >
             <ChevronRight size={13} />
           </button>
@@ -269,8 +273,8 @@ export const HeroShowcaseCarousel: React.FC = () => {
       {/* Viewport & Hardware Accelerated Infinite Track */}
       <div className="relative overflow-hidden w-full select-none py-1 z-10">
         {/* Soft edge gradient masks */}
-        <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-white/95 dark:from-black/50 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white/95 dark:from-black/50 to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-transparent to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-transparent to-transparent z-10 pointer-events-none" />
 
         <div
           ref={trackRef}
@@ -284,10 +288,10 @@ export const HeroShowcaseCarousel: React.FC = () => {
                 key={`${item.id}-${index}`}
                 href={item.href}
                 draggable={false}
-                className="w-[145px] sm:w-[155px] shrink-0 p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/90 dark:bg-white/[0.08] dark:hover:bg-white/[0.15] border border-slate-200/80 dark:border-white/15 hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/70 transition-all duration-200 flex flex-col group/card cursor-pointer shadow-sm dark:shadow-lg backdrop-blur-sm"
+                className="w-[145px] sm:w-[155px] shrink-0 p-2.5 rounded-xl bg-white/30 hover:bg-white/50 dark:bg-white/[0.04] dark:hover:bg-white/[0.08] backdrop-blur-md border border-white/40 dark:border-white/10 hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/70 transition-all duration-200 flex flex-col group/card cursor-pointer shadow-sm dark:shadow-lg"
               >
                 {/* Image */}
-                <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-slate-200 dark:bg-zinc-900 border border-slate-200 dark:border-white/20 mb-2 pointer-events-none">
+                <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-slate-100/50 dark:bg-zinc-900/60 border border-slate-200/50 dark:border-white/10 mb-2 pointer-events-none">
                   <Image
                     src={item.image}
                     alt={item.title}
@@ -303,13 +307,13 @@ export const HeroShowcaseCarousel: React.FC = () => {
                   <div className="w-5 h-5 rounded-full bg-emerald-500/15 dark:bg-[#2CFF05]/20 border border-emerald-500/30 dark:border-[#2CFF05]/40 flex items-center justify-center text-emerald-600 dark:text-[#2CFF05] shrink-0">
                     <Icon size={11} strokeWidth={2.2} />
                   </div>
-                  <h4 className="font-heading font-bold text-[12px] text-slate-900 dark:text-white group-hover/card:text-emerald-600 dark:group-hover/card:text-[#2CFF05] transition-colors truncate">
+                  <h4 className="font-heading font-bold text-[12px] text-slate-950 dark:text-white group-hover/card:text-emerald-600 dark:group-hover/card:text-[#2CFF05] transition-colors truncate">
                     {item.title}
                   </h4>
                 </div>
 
                 {/* Description */}
-                <p className="text-[10px] text-slate-600 dark:text-zinc-300 leading-tight line-clamp-2">
+                <p className="text-[10px] text-slate-700 dark:text-zinc-300 leading-tight line-clamp-2 font-medium">
                   {item.desc}
                 </p>
               </Link>

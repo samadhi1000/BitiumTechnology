@@ -615,3 +615,15 @@ nextjs-portal,
   opacity: 0 !important;
 }
 
+/* Enforce Pure Solid Black in Light Mode and Pure White in Dark Mode */
+html.light-mode .hero-carousel-title-black,
+html:not(.dark) .hero-carousel-title-black,
+.hero-carousel-title-black {
+  color: #000000;
+}
+
+html.dark .hero-carousel-title-black,
+.dark .hero-carousel-title-black {
+  color: #ffffff !important;
+}
+
