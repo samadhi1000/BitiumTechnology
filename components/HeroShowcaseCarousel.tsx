@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { PenTool, Layers, Printer, Stamp, Scissors, ChevronLeft, ChevronRight } from "lucide-react";
@@ -58,64 +58,68 @@ const HERO_ITEMS: HeroCardItem[] = [
 ];
 
 export const HeroShowcaseCarousel: React.FC = () => {
+  // Triplicate array to allow continuous seamless wrapping in either direction
+  const displayItems = [...HERO_ITEMS, ...HERO_ITEMS, ...HERO_ITEMS];
+
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const rafId = useRef<number | null>(null);
 
-  // Position state refs for silky smooth 60/120fps LERP
+  // Position & Velocity references for smooth 60/120fps physics
   const currentX = useRef<number>(0);
-  const targetX = useRef<number>(0);
-  const autoPlaySpeed = useRef<number>(0.35); // Ambient gentle drift when idle
+  const targetVelocity = useRef<number>(-0.6); // Base auto-scroll speed (negative = right-to-left)
+  const currentVelocity = useRef<number>(-0.6);
+  const singleSetWidth = useRef<number>(0);
+
   const isHovered = useRef<boolean>(false);
   const isDragging = useRef<boolean>(false);
   const dragStartX = useRef<number>(0);
-  const dragStartScroll = useRef<number>(0);
-  const maxScroll = useRef<number>(0);
+  const lastMouseX = useRef<number>(0);
 
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-
-  // Update bounds when container or track resizes
-  const updateBounds = useCallback(() => {
-    if (!containerRef.current || !trackRef.current) return;
-    const containerWidth = containerRef.current.clientWidth;
-    const trackWidth = trackRef.current.scrollWidth;
-    // maxScroll represents the maximum negative offset
-    maxScroll.current = Math.max(0, trackWidth - containerWidth + 24); // 24px padding margin
+  // Measure single set width (5 cards * (cardWidth + gap))
+  const updateMetrics = useCallback(() => {
+    if (!trackRef.current) return;
+    const totalWidth = trackRef.current.scrollWidth;
+    // Since displayItems has 3 sets:
+    singleSetWidth.current = totalWidth / 3;
   }, []);
 
   useEffect(() => {
-    updateBounds();
-    window.addEventListener("resize", updateBounds);
-    return () => window.removeEventListener("resize", updateBounds);
-  }, [updateBounds]);
+    updateMetrics();
+    window.addEventListener("resize", updateMetrics);
+    return () => window.removeEventListener("resize", updateMetrics);
+  }, [updateMetrics]);
 
-  // Main animation loop (LERP interpolation)
+  // Main animation loop
   useEffect(() => {
-    const animate = () => {
-      if (!isHovered.current && !isDragging.current) {
-        // Ambient auto-scroll when user is not actively interacting
-        targetX.current -= autoPlaySpeed.current;
-        if (targetX.current < -maxScroll.current) {
-          targetX.current = 0; // Loop back gently
-          currentX.current = 0;
-        } else if (targetX.current > 0) {
-          targetX.current = -maxScroll.current;
-        }
+    let lastTime = performance.now();
+
+    const animate = (time: number) => {
+      const delta = Math.min((time - lastTime) / 16.666, 2.0); // normalize frame rate
+      lastTime = time;
+
+      if (!isDragging.current) {
+        // Smoothly interpolate velocity
+        currentVelocity.current += (targetVelocity.current - currentVelocity.current) * 0.08;
+        currentX.current += currentVelocity.current * delta;
       }
 
-      // Linear interpolation (LERP): current = current + (target - current) * factor
-      const lerpFactor = isDragging.current ? 0.25 : 0.08;
-      currentX.current += (targetX.current - currentX.current) * lerpFactor;
+      // Infinite Seamless Wrapping Logic
+      if (singleSetWidth.current > 0) {
+        // If scrolled past the first set to the left, wrap seamlessly
+        while (currentX.current <= -singleSetWidth.current) {
+          currentX.current += singleSetWidth.current;
+        }
+        // If scrolled past zero to the right, wrap seamlessly
+        while (currentX.current > 0) {
+          currentX.current -= singleSetWidth.current;
+        }
+      }
 
       // Apply transform directly to GPU accelerated layer
       if (trackRef.current) {
         trackRef.current.style.transform = `translate3d(${currentX.current}px, 0, 0)`;
       }
-
-      // Update arrow button active states
-      setCanScrollLeft(currentX.current < -5);
-      setCanScrollRight(currentX.current > -maxScroll.current + 5);
 
       rafId.current = requestAnimationFrame(animate);
     };
@@ -127,17 +131,25 @@ export const HeroShowcaseCarousel: React.FC = () => {
     };
   }, []);
 
-  // Mouse Move Event Tracker (Maps mouse position across hero container to target translation)
+  // Mouse Move Event Tracker (Maps mouse position across container to speed and direction)
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isDragging.current || !containerRef.current) return;
 
     const rect = containerRef.current.getBoundingClientRect();
     // Normalized cursor X from -1 (left edge) to 0 (center) to +1 (right edge)
     const relativeX = (e.clientX - rect.left) / rect.width; // 0 to 1
-    const normalized = Math.max(0, Math.min(1, relativeX)); // Clamp [0, 1]
+    const offsetFromCenter = (relativeX - 0.5) * 2; // -1 (left) to 0 (center) to +1 (right)
 
-    // Map 0 -> targetX: 0, 1 -> targetX: -maxScroll
-    targetX.current = -normalized * maxScroll.current;
+    // Map position to velocity:
+    // Moving cursor to the right edge (offset > 0) => scrolls faster to the left (negative velocity)
+    // Moving cursor to the left edge (offset < 0) => scrolls to the right (positive velocity)
+    // Center (offset ≈ 0) => gentle base scroll
+    if (Math.abs(offsetFromCenter) < 0.15) {
+      targetVelocity.current = -0.4;
+    } else {
+      // Speed scales up to -3.5px/frame on right, or +3.5px/frame on left
+      targetVelocity.current = -offsetFromCenter * 3.5;
+    }
   };
 
   const handleMouseEnter = () => {
@@ -146,13 +158,15 @@ export const HeroShowcaseCarousel: React.FC = () => {
 
   const handleMouseLeave = () => {
     isHovered.current = false;
+    // Resume gentle auto-scroll speed
+    targetVelocity.current = -0.6;
   };
 
-  // Drag to scroll support (Mouse drag & touch)
+  // Drag / Swipe handling
   const handleMouseDown = (e: React.MouseEvent) => {
     isDragging.current = true;
     dragStartX.current = e.clientX;
-    dragStartScroll.current = targetX.current;
+    lastMouseX.current = e.clientX;
   };
 
   const handleMouseUp = () => {
@@ -161,36 +175,37 @@ export const HeroShowcaseCarousel: React.FC = () => {
 
   const handleDragMove = (e: React.MouseEvent) => {
     if (!isDragging.current) return;
-    const delta = e.clientX - dragStartX.current;
-    const nextTarget = dragStartScroll.current + delta * 1.5;
-    targetX.current = Math.max(-maxScroll.current, Math.min(0, nextTarget));
+    const deltaX = e.clientX - lastMouseX.current;
+    currentX.current += deltaX;
+    lastMouseX.current = e.clientX;
   };
 
-  // Touch Support
+  // Touch handlers for mobile
   const handleTouchStart = (e: React.TouchEvent) => {
     isDragging.current = true;
     dragStartX.current = e.touches[0].clientX;
-    dragStartScroll.current = targetX.current;
+    lastMouseX.current = e.touches[0].clientX;
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!isDragging.current) return;
-    const delta = e.touches[0].clientX - dragStartX.current;
-    const nextTarget = dragStartScroll.current + delta * 1.2;
-    targetX.current = Math.max(-maxScroll.current, Math.min(0, nextTarget));
+    const touchX = e.touches[0].clientX;
+    const deltaX = touchX - lastMouseX.current;
+    currentX.current += deltaX;
+    lastMouseX.current = touchX;
   };
 
   const handleTouchEnd = () => {
     isDragging.current = false;
   };
 
-  // Button navigation
+  // Step button actions
   const scrollStep = (direction: "left" | "right") => {
-    const stepSize = 180;
+    const stepSize = 168; // 1 card + gap
     if (direction === "left") {
-      targetX.current = Math.min(0, targetX.current + stepSize);
+      currentX.current += stepSize;
     } else {
-      targetX.current = Math.max(-maxScroll.current, targetX.current - stepSize);
+      currentX.current -= stepSize;
     }
   };
 
@@ -233,9 +248,8 @@ export const HeroShowcaseCarousel: React.FC = () => {
               e.stopPropagation();
               scrollStep("left");
             }}
-            disabled={!canScrollLeft}
             aria-label="Scroll carousel left"
-            className="w-6 h-6 rounded-full border border-slate-200 dark:border-white/15 bg-white dark:bg-black/60 flex items-center justify-center text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-[#2CFF05] disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm"
+            className="w-6 h-6 rounded-full border border-slate-200 dark:border-white/15 bg-white dark:bg-black/60 flex items-center justify-center text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-all shadow-sm active:scale-95"
           >
             <ChevronLeft size={13} />
           </button>
@@ -244,16 +258,15 @@ export const HeroShowcaseCarousel: React.FC = () => {
               e.stopPropagation();
               scrollStep("right");
             }}
-            disabled={!canScrollRight}
             aria-label="Scroll carousel right"
-            className="w-6 h-6 rounded-full border border-slate-200 dark:border-white/15 bg-white dark:bg-black/60 flex items-center justify-center text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-[#2CFF05] disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm"
+            className="w-6 h-6 rounded-full border border-slate-200 dark:border-white/15 bg-white dark:bg-black/60 flex items-center justify-center text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-all shadow-sm active:scale-95"
           >
             <ChevronRight size={13} />
           </button>
         </div>
       </div>
 
-      {/* Viewport & Hardware Accelerated Track */}
+      {/* Viewport & Hardware Accelerated Infinite Track */}
       <div className="relative overflow-hidden w-full select-none py-1 z-10">
         {/* Soft edge gradient masks */}
         <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-white/95 dark:from-black/50 to-transparent z-10 pointer-events-none" />
@@ -264,11 +277,11 @@ export const HeroShowcaseCarousel: React.FC = () => {
           style={{ willChange: "transform" }}
           className="flex items-stretch gap-3 transition-transform ease-out"
         >
-          {HERO_ITEMS.map((item) => {
+          {displayItems.map((item, index) => {
             const Icon = item.icon;
             return (
               <Link
-                key={item.id}
+                key={`${item.id}-${index}`}
                 href={item.href}
                 draggable={false}
                 className="w-[145px] sm:w-[155px] shrink-0 p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/90 dark:bg-white/[0.08] dark:hover:bg-white/[0.15] border border-slate-200/80 dark:border-white/15 hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/70 transition-all duration-200 flex flex-col group/card cursor-pointer shadow-sm dark:shadow-lg backdrop-blur-sm"
