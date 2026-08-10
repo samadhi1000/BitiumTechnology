@@ -274,8 +274,8 @@ function HomeContent() {
           {/* 1. Subtle Base Tint (Dark mode only) */}
           <div className="absolute inset-0 bg-transparent dark:bg-black/25 transition-colors duration-300" />
 
-          {/* 2. Text Reading Scrim: Heavy opaque white on left text area (0-40%), completely 100% transparent from center to right (50-100%) */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white/98 via-white/92 via-35% to-transparent to-55% dark:from-[#020617]/95 dark:via-[#020617]/80 dark:via-40% dark:to-transparent dark:to-75% transition-all duration-300" />
+          {/* 2. Text Reading Scrim: Full opaque white backdrop behind left text column (0-52%), smoothly transitioning into machinery background (62-80%) */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 via-52% to-transparent to-75% dark:from-[#020617] dark:via-[#020617]/90 dark:via-50% dark:to-transparent dark:to-75% transition-all duration-300" />
 
           {/* 3. Subtle Bottom Edge Fade into next section */}
           <div className="absolute bottom-0 left-0 right-0 h-8 sm:h-10 bg-gradient-to-t from-background/60 to-transparent pointer-events-none" />
@@ -292,9 +292,9 @@ function HomeContent() {
             </div>
             
             <h1 
-              className="hero-title font-heading font-black text-[clamp(32px,4.5vw,56px)] tracking-tight leading-[1.08] text-slate-950 dark:text-white drop-shadow-sm dark:drop-shadow-[0_2px_16px_rgba(0,0,0,0.8)]"
+              className="hero-title font-heading font-black text-[clamp(32px,4.5vw,56px)] tracking-tight leading-[1.08] text-slate-950 dark:text-white"
             >
-              High-Definition <span className="text-emerald-600 dark:text-[#2CFF05] dark:drop-shadow-[0_0_24px_rgba(44,255,5,0.6)]">Print Solutions</span>{' '}&amp; Equipment
+              High-Definition <span className="text-[#059669] dark:text-[#2CFF05] dark:drop-shadow-[0_0_24px_rgba(44,255,5,0.6)]">Print Solutions</span>{' '}&amp; Equipment
             </h1>
             
             <p 
