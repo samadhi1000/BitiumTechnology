@@ -246,16 +246,16 @@ export const HeroShowcaseCarousel: React.FC = () => {
         </h3>
 
         {/* Quick Nav Arrows */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <button
             onClick={(e) => {
               e.stopPropagation();
               scrollStep("left");
             }}
             aria-label="Scroll carousel left"
-            className="w-6 h-6 rounded-full border border-slate-300/40 dark:border-white/15 bg-white/20 dark:bg-black/30 backdrop-blur-sm flex items-center justify-center text-slate-800 dark:text-zinc-200 hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-all shadow-sm active:scale-95 cursor-pointer"
+            className="w-6 h-6 rounded-full border border-slate-300/60 dark:border-white/30 bg-white/40 dark:bg-white/10 backdrop-blur-sm flex items-center justify-center text-slate-800 dark:text-white hover:text-emerald-600 dark:hover:bg-[#2CFF05] dark:hover:text-[#0a0a0a] dark:hover:border-[#2CFF05] transition-all shadow-sm active:scale-95 cursor-pointer"
           >
-            <ChevronLeft size={13} />
+            <ChevronLeft size={13} className="text-current" />
           </button>
           <button
             onClick={(e) => {
@@ -263,9 +263,9 @@ export const HeroShowcaseCarousel: React.FC = () => {
               scrollStep("right");
             }}
             aria-label="Scroll carousel right"
-            className="w-6 h-6 rounded-full border border-slate-300/40 dark:border-white/15 bg-white/20 dark:bg-black/30 backdrop-blur-sm flex items-center justify-center text-slate-800 dark:text-zinc-200 hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-all shadow-sm active:scale-95 cursor-pointer"
+            className="w-6 h-6 rounded-full border border-slate-300/60 dark:border-white/30 bg-white/40 dark:bg-white/10 backdrop-blur-sm flex items-center justify-center text-slate-800 dark:text-white hover:text-emerald-600 dark:hover:bg-[#2CFF05] dark:hover:text-[#0a0a0a] dark:hover:border-[#2CFF05] transition-all shadow-sm active:scale-95 cursor-pointer"
           >
-            <ChevronRight size={13} />
+            <ChevronRight size={13} className="text-current" />
           </button>
         </div>
       </div>

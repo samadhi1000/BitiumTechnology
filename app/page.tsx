@@ -326,15 +326,15 @@ function HomeContent() {
             </div>
 
             {/* Quality Bullets */}
-            <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-bold text-slate-900 dark:text-zinc-100 dark:drop-shadow-[0_1px_6px_rgba(0,0,0,0.8)]">
+            <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-bold text-slate-900 dark:text-white dark:drop-shadow-[0_1px_6px_rgba(0,0,0,0.8)]">
               <span className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> Premium Quality
               </span>
-              <span className="text-slate-400 dark:text-zinc-500">•</span>
+              <span className="text-slate-400 dark:text-white/60">•</span>
               <span className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> Expert Support
               </span>
-              <span className="text-slate-400 dark:text-zinc-500">•</span>
+              <span className="text-slate-400 dark:text-white/60">•</span>
               <span className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> Fast Nationwide Delivery
               </span>
@@ -355,22 +355,12 @@ function HomeContent() {
 
         <div className="max-w-7xl mx-auto flex flex-col gap-8 relative z-10">
           
-          {/* Header Row: Title & Trust Badge */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left border-b border-slate-200/80 dark:border-white/5 pb-5">
-            <div className="flex items-center gap-3">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 dark:bg-[#2CFF05] animate-ping" />
-              <p className="font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase text-slate-800 dark:text-slate-200">
-                Trusted by 1,000+ Apparel Brands, Studios &amp; Manufacturers
-              </p>
-            </div>
-
-            {/* Live Trust Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs text-slate-700 dark:text-zinc-300 shadow-sm">
-              <span className="text-amber-400">★★★★★</span>
-              <span className="font-bold text-slate-900 dark:text-white">4.9/5</span>
-              <span className="text-slate-400 dark:text-zinc-500">•</span>
-              <span className="text-muted-foreground">1,200+ Verified Orders</span>
-            </div>
+          {/* Header Row: Title */}
+          <div className="flex items-center justify-center sm:justify-start gap-3 border-b border-slate-200/80 dark:border-white/5 pb-4">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 dark:bg-[#2CFF05] animate-ping" />
+            <p className="font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase text-slate-800 dark:text-slate-200">
+              Trusted by 1,000+ Apparel Brands, Studios &amp; Manufacturers
+            </p>
           </div>
 
           {/* Clean Interactive Logo Matrix */}
@@ -393,10 +383,10 @@ function HomeContent() {
                   <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-white/5 group-hover:bg-emerald-500/10 dark:group-hover:bg-[#2CFF05]/10 flex items-center justify-center text-slate-600 dark:text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05] transition-colors mb-2">
                     <Icon size={16} strokeWidth={2} />
                   </div>
-                  <span className="font-heading font-bold text-[13px] text-slate-800 dark:text-zinc-200 group-hover:text-slate-950 dark:group-hover:text-white transition-colors truncate w-full text-center">
+                  <span className="font-heading font-bold text-[13px] text-slate-800 dark:text-white group-hover:text-slate-950 dark:group-hover:text-[#2CFF05] transition-colors truncate w-full text-center">
                     {brand.name}
                   </span>
-                  <span className="text-[10px] text-slate-400 dark:text-zinc-500 group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05] font-medium tracking-tight transition-colors">
+                  <span className="text-[10px] text-slate-400 dark:text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05] font-medium tracking-tight transition-colors">
                     {brand.tag}
                   </span>
                 </div>
