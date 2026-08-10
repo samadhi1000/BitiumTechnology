@@ -269,13 +269,13 @@ function HomeContent() {
             fill
             priority
             quality={95}
-            className="object-cover object-center lg:object-right opacity-90 dark:opacity-95 transition-opacity duration-300"
+            className="object-cover object-center lg:object-right opacity-100 dark:opacity-95 transition-opacity duration-300"
           />
-          {/* 1. Subtle Base Tint */}
+          {/* 1. Subtle Base Tint (Dark mode only) */}
           <div className="absolute inset-0 bg-transparent dark:bg-black/25 transition-colors duration-300" />
 
-          {/* 2. Text Reading Scrim on Left: High contrast behind text, tapering off smoothly from center to right */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 via-40% to-transparent to-75% dark:from-[#020617]/95 dark:via-[#020617]/80 dark:via-40% dark:to-transparent dark:to-75% transition-all duration-300" />
+          {/* 2. Text Reading Scrim: Heavy opaque white on left text area (0-40%), completely 100% transparent from center to right (50-100%) */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/98 via-white/92 via-35% to-transparent to-55% dark:from-[#020617]/95 dark:via-[#020617]/80 dark:via-40% dark:to-transparent dark:to-75% transition-all duration-300" />
 
           {/* 3. Subtle Bottom Edge Fade into next section */}
           <div className="absolute bottom-0 left-0 right-0 h-8 sm:h-10 bg-gradient-to-t from-background/60 to-transparent pointer-events-none" />
