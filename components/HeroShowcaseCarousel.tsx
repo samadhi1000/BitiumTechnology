@@ -60,35 +60,51 @@ const HERO_ITEMS: HeroCardItem[] = [
 
 export const HeroShowcaseCarousel: React.FC = () => {
   const { theme } = useTheme();
-  // Triplicate array to allow continuous seamless wrapping in either direction
-  const displayItems = [...HERO_ITEMS, ...HERO_ITEMS, ...HERO_ITEMS];
+  // 5 sets buffer to allow completely seamless, infinite continuous wrapping in both directions
+  const displayItems = [...HERO_ITEMS, ...HERO_ITEMS, ...HERO_ITEMS, ...HERO_ITEMS, ...HERO_ITEMS];
 
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const rafId = useRef<number | null>(null);
 
   // Position & Velocity references for smooth 60/120fps physics
+  const singleSetWidth = useRef<number>(0);
   const currentX = useRef<number>(0);
   const targetVelocity = useRef<number>(-0.6); // Base auto-scroll speed (negative = right-to-left)
   const currentVelocity = useRef<number>(-0.6);
-  const singleSetWidth = useRef<number>(0);
 
   const isDragging = useRef<boolean>(false);
   const dragStartX = useRef<number>(0);
   const lastMouseX = useRef<number>(0);
 
-  // Measure single set width (5 cards * (cardWidth + gap))
+  // Measure exact single set width using DOM offset for sub-pixel accuracy
   const updateMetrics = useCallback(() => {
     if (!trackRef.current) return;
-    const totalWidth = trackRef.current.scrollWidth;
-    // Since displayItems has 3 sets:
-    singleSetWidth.current = totalWidth / 3;
+    const children = trackRef.current.children;
+    if (children.length > HERO_ITEMS.length) {
+      const firstChild = children[0] as HTMLElement;
+      const nextSetChild = children[HERO_ITEMS.length] as HTMLElement;
+      if (firstChild && nextSetChild) {
+        const calculatedSetWidth = nextSetChild.offsetLeft - firstChild.offsetLeft;
+        if (calculatedSetWidth > 0) {
+          singleSetWidth.current = calculatedSetWidth;
+          if (currentX.current === 0) {
+            currentX.current = -calculatedSetWidth * 2;
+          }
+        }
+      }
+    }
   }, []);
 
   useEffect(() => {
     updateMetrics();
+    // Delay initial measurement slightly to ensure images & layout are rendered
+    const t = setTimeout(updateMetrics, 100);
     window.addEventListener("resize", updateMetrics);
-    return () => window.removeEventListener("resize", updateMetrics);
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("resize", updateMetrics);
+    };
   }, [updateMetrics]);
 
   // Main animation loop
@@ -105,14 +121,12 @@ export const HeroShowcaseCarousel: React.FC = () => {
         currentX.current += currentVelocity.current * delta;
       }
 
-      // Infinite Seamless Wrapping Logic
+      // Infinite Seamless Wrapping Logic (Keeps currentX within buffer range with zero glitch)
       if (singleSetWidth.current > 0) {
-        // If scrolled past the first set to the left, wrap seamlessly
-        while (currentX.current <= -singleSetWidth.current) {
+        while (currentX.current <= -singleSetWidth.current * 3) {
           currentX.current += singleSetWidth.current;
         }
-        // If scrolled past zero to the right, wrap seamlessly
-        while (currentX.current > 0) {
+        while (currentX.current > -singleSetWidth.current * 2) {
           currentX.current -= singleSetWidth.current;
         }
       }
@@ -279,7 +293,7 @@ export const HeroShowcaseCarousel: React.FC = () => {
         <div
           ref={trackRef}
           style={{ willChange: "transform" }}
-          className="flex items-stretch gap-3 transition-transform ease-out"
+          className="flex items-stretch gap-3"
         >
           {displayItems.map((item, index) => {
             const Icon = item.icon;
