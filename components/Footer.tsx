@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 
 const footerLinks = {
@@ -49,14 +51,24 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
           {/* Logo / Brand Column */}
           <div className="sm:col-span-2 lg:col-span-1 space-y-4">
-            <div className="flex flex-col items-start space-y-1">
-              <span className="text-2xl font-black tracking-wider text-[#2CFF05] font-heading">
-                Bitium Technology
-              </span>
-              <span className="text-xs text-slate-400 font-semibold tracking-wide uppercase">
-                Premium Custom Printing & Laser Studio
-              </span>
-            </div>
+            <Link href="/" className="flex items-center space-x-2.5 sm:space-x-3 group relative py-1 hover:opacity-90 transition-opacity">
+              <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-white/20 shadow-[0_0_15px_rgba(255,26,60,0.25)] group-hover:scale-105 transition-transform shrink-0">
+                <Image
+                  src="/images/bitium-logo.jpg"
+                  alt="Bitium Technology"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-2xl sm:text-3xl font-black tracking-wider text-white flex items-center gap-0.5 leading-none font-heading">
+                  B<span className="text-[#ff1a3c] drop-shadow-[0_0_12px_#ff1a3c]">!</span>T<span className="text-[#ff1a3c] drop-shadow-[0_0_12px_#ff1a3c]">!</span>UM
+                </span>
+                <span className="text-xs sm:text-[13px] font-extrabold tracking-[0.25em] text-white uppercase leading-tight mt-0.5 sm:mt-1">
+                  Technology
+                </span>
+              </div>
+            </Link>
             
             <p className="text-sm text-slate-400 leading-relaxed max-w-xs" style={{ fontFamily: "var(--font-body)" }}>
               Sri Lanka's leading custom printing partner. Saturated DTF transfers, stencils, and custom apparel prints delivered in 24 hours.
