@@ -13,7 +13,7 @@ const MATERIALS_CONFIG: CategoryPageConfig = {
   titleHighlight: 'Materials & Inks',
   badgeText: 'Industrial Printing Supplies',
   description: 'Trade grade DTF textile inks, premium high-adhesive hot melt TPU powders, and double-matte hot peel DTF film rolls.',
-  heroImage: '/images/hero-cards/dtf.jpg',
+  heroImage: '/images/hero-cards/materials.jpg',
   searchPlaceholder: 'Search inks, powders, films & consumables...',
   itemSingular: 'Material / Supply',
   itemPlural: 'Supplies',

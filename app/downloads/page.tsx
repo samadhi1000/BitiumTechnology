@@ -279,7 +279,7 @@ export default function DownloadsPage() {
         <div className="absolute right-0 top-0 bottom-0 w-full sm:w-2/3 md:w-1/2 lg:w-5/12 pointer-events-none select-none z-0 hidden sm:block overflow-hidden">
           <div className="relative w-full h-full">
             <Image
-              src="/images/hero-cards/batik.jpg"
+              src="/images/hero-cards/downloads.jpg"
               alt="Digital Vector Assets"
               fill
               priority
