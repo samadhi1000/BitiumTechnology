@@ -597,3 +597,21 @@ html.dark .filter-btn.active, html.dark .filter-btn:hover {
   }
 }
 
+/* Hide floating dev tool overlays, assistant bot badges, and portal indicators */
+nextjs-portal,
+#__next-build-watcher,
+#nextjs-dev-overlay,
+[data-nextjs-toast],
+[data-nextjs-dev-tools],
+[data-nextjs-portal],
+[id*="gemini"],
+[class*="antigravity"],
+[id*="antigravity"],
+[class*="dev-companion"],
+[data-agent-badge] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
