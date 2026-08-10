@@ -222,19 +222,19 @@ export const HeroSearch: React.FC<HeroSearchProps> = ({ className = '' }) => {
       <motion.div
         animate={{
           boxShadow: isFocused
-            ? '0 0 0 1.5px rgba(141, 255, 0, 0.6), 0 8px 40px -8px rgba(141, 255, 0, 0.35), 0 2px 12px rgba(0, 0, 0, 0.6)'
-            : '0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 24px rgba(0, 0, 0, 0.45)',
+            ? '0 0 0 1.5px rgba(44, 255, 5, 0.6), 0 8px 40px -8px rgba(44, 255, 5, 0.25), 0 4px 16px rgba(0, 0, 0, 0.08)'
+            : '0 0 0 1px rgba(0, 0, 0, 0.08), 0 4px 20px rgba(0, 0, 0, 0.06)',
         }}
         transition={{ duration: 0.2, ease: 'easeOut' }}
-        className="relative flex items-center rounded-2xl overflow-hidden bg-card/80 backdrop-blur-xl border border-border"
+        className="relative flex items-center rounded-2xl overflow-hidden bg-white dark:bg-black/60 backdrop-blur-xl border border-slate-200/90 dark:border-white/20 shadow-md dark:shadow-2xl transition-colors duration-300"
       >
         {/* Search icon */}
         <div className="flex-shrink-0 pl-4 pr-2">
           <motion.div
-            animate={{ color: isFocused ? '#2CFF05' : '#71717a' }}
+            animate={{ color: isFocused ? '#16a34a' : '#94a3b8' }}
             transition={{ duration: 0.2 }}
           >
-            <Search className="w-5 h-5" aria-hidden="true" />
+            <Search className="w-5 h-5 text-slate-400 dark:text-zinc-400" aria-hidden="true" />
           </motion.div>
         </div>
 
@@ -253,7 +253,7 @@ export const HeroSearch: React.FC<HeroSearchProps> = ({ className = '' }) => {
           onChange={(e) => handleChange(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
-          className="flex-1 py-4 pr-2 bg-transparent text-foreground text-sm placeholder-zinc-500 outline-none font-sans"
+          className="flex-1 py-4 pr-2 bg-transparent text-slate-900 dark:text-white text-sm placeholder-slate-400 dark:placeholder-zinc-400 outline-none font-sans"
         />
 
         {/* Clear (X) button */}

@@ -252,8 +252,8 @@ function HomeContent() {
       />
 
       {/* 01. Hero Banner Section with Static Industrial Printer Background & Right Showcase */}
-      <section className="relative overflow-hidden py-14 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 border-b border-border bg-background min-h-[600px] lg:min-h-[660px] flex items-center">
-        {/* Static Background Image with Cinematic Studio Contrast & Lighting */}
+      <section className="relative overflow-hidden py-14 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 border-b border-border bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-white min-h-[600px] lg:min-h-[660px] flex items-center transition-colors duration-300">
+        {/* Static Background Image with Subtle Watermark in Light Mode & Rich Contrast in Dark Mode */}
         <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
           <Image
             src="/images/hero-printer-bg.jpg"
@@ -261,39 +261,36 @@ function HomeContent() {
             fill
             priority
             quality={95}
-            className="object-cover object-center lg:object-right opacity-90"
+            className="object-cover object-center lg:object-right opacity-50 dark:opacity-85 transition-opacity duration-300"
           />
-          {/* 1. Base Darkening Tint across the entire image for rich contrast */}
-          <div className="absolute inset-0 bg-black/40" />
+          {/* 1. Luminous Semi-Transparent Light Base Overlay / Deep Dark Mode Overlay */}
+          <div className="absolute inset-0 bg-white/60 dark:bg-black/50 backdrop-blur-[1px] transition-colors duration-300" />
 
-          {/* 2. Deep Left-to-Right Gradient so headline & text stand out bold & crystal clear */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 via-45% to-black/20 lg:to-transparent" />
+          {/* 2. Balanced Reading Gradient Scrim ensuring clear text readability while showcasing background */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/70 via-45% to-white/15 lg:to-transparent dark:from-[#020617]/95 dark:via-[#020617]/80 dark:via-45% dark:to-[#020617]/20 dark:lg:to-transparent transition-all duration-300" />
 
-          {/* 3. Top and Bottom Vignette fade seamlessly into page sections */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent via-50% to-background" />
-
-          {/* 4. Soft Radial Vignette around the edges */}
-          <div className="absolute inset-0 bg-radial-[at_center,_var(--tw-gradient-stops)] from-transparent via-black/25 to-black/75" />
+          {/* 3. Smooth Bottom Blend to match the section below */}
+          <div className="absolute bottom-0 left-0 right-0 h-16 sm:h-20 bg-gradient-to-t from-background to-transparent pointer-events-none" />
         </div>
         
         <div className="max-w-7xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           {/* Left Column: Headline, Search, Actions */}
           <div className="lg:col-span-7 xl:col-span-7 space-y-6 flex flex-col items-start text-left">
             <div 
-              className="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#2CFF05]/15 dark:bg-[#2CFF05]/10 border border-[#2CFF05]/30 text-[#2CFF05] text-xs font-semibold backdrop-blur-sm shadow-sm"
+              className="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 dark:bg-[#2CFF05]/15 border border-emerald-500/30 dark:border-[#2CFF05]/30 text-emerald-800 dark:text-[#2CFF05] text-xs font-semibold backdrop-blur-sm shadow-sm"
             >
-              <Sparkles size={14} className="text-[#2CFF05]" />
+              <Sparkles size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
               <span>Bitium Technology Print Store</span>
             </div>
             
             <h1 
-              className="hero-title font-heading font-black text-[clamp(30px,4.5vw,54px)] tracking-tight leading-[1.08] text-foreground drop-shadow-md"
+              className="hero-title font-heading font-black text-[clamp(32px,4.5vw,56px)] tracking-tight leading-[1.08] text-slate-900 dark:text-white drop-shadow-sm"
             >
-              High-Definition <span className="text-[#2CFF05]">Print Solutions</span>{' '}&amp; Equipment
+              High-Definition <span className="text-emerald-600 dark:text-[#2CFF05] dark:drop-shadow-[0_0_20px_rgba(44,255,5,0.4)]">Print Solutions</span>{' '}&amp; Equipment
             </h1>
             
             <p 
-              className="hero-text text-base sm:text-lg text-muted-foreground dark:text-white max-w-xl leading-relaxed font-normal"
+              className="hero-text text-base sm:text-lg text-slate-600 dark:text-zinc-300 max-w-xl leading-relaxed font-normal"
             >
               From custom precision stencils to industrial DTF film rolls, exposed screen printing, and traditional batik stamps — explore our specialized print technology store.
             </p>
@@ -307,36 +304,36 @@ function HomeContent() {
             >
               <Link 
                 href="/canvas" 
-                className="lime-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] border-none cursor-pointer w-full sm:w-auto shadow-lg shadow-[#2CFF05]/20 hover:scale-105 transition-all"
+                className="lime-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] font-bold border-none cursor-pointer w-full sm:w-auto shadow-lg shadow-[#2CFF05]/30 hover:scale-105 transition-all"
               >
                 <span>Launch DTF Canvas</span>
                 <ArrowRight size={16} />
               </Link>
               <Link 
                 href="/stencil" 
-                className="ghost-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] cursor-pointer w-full sm:w-auto hover:border-[#2CFF05]/40 transition-all"
+                className="ghost-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] font-semibold cursor-pointer w-full sm:w-auto border border-slate-300 dark:border-white/20 bg-white dark:bg-white/10 hover:bg-slate-50 dark:hover:bg-white/20 text-slate-800 dark:text-white hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/50 transition-all shadow-sm"
               >
                 Browse Catalog
               </Link>
             </div>
 
-            {/* Quality Bullets (From 1st Screenshot) */}
-            <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-medium text-muted-foreground dark:text-zinc-300">
+            {/* Quality Bullets */}
+            <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-medium text-slate-700 dark:text-zinc-300">
               <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full border border-[#2CFF05] inline-block" /> Premium Quality
+                <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> Premium Quality
               </span>
-              <span className="text-zinc-600 dark:text-zinc-500">•</span>
+              <span className="text-slate-300 dark:text-zinc-600">•</span>
               <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full border border-[#2CFF05] inline-block" /> Expert Support
+                <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> Expert Support
               </span>
-              <span className="text-zinc-600 dark:text-zinc-500">•</span>
+              <span className="text-slate-300 dark:text-zinc-600">•</span>
               <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full border border-[#2CFF05] inline-block" /> Fast Nationwide Delivery
+                <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> Fast Nationwide Delivery
               </span>
             </div>
           </div>
 
-          {/* Right Column: Hero Showcase Infinite Carousel Box (1st & 2nd Screenshot) */}
+          {/* Right Column: Hero Showcase Infinite Carousel Box */}
           <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end w-full">
             <HeroShowcaseCarousel />
           </div>
@@ -520,99 +517,6 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20 px-6 bg-background border-b border-border">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">Reviews</span>
-            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">What Our Customers Say</h2>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 testi-grid">
-            {testimonials.map((t, i) => (
-              <div key={t.name} className="bg-zinc-50 dark:bg-card rounded-[20px] p-8 border-[1.5px] border-border">
-                <div className="flex gap-1 mb-5">
-                  {Array.from({ length: 5 }).map((_, s) => <StarIcon key={s} filled={s < t.rating} />)}
-                </div>
-                <p className="text-[15px] text-muted-foreground dark:text-foreground leading-[1.7] mb-6 italic">{t.text}</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-[42px] h-[42px] rounded-full flex items-center justify-center font-heading font-extrabold text-[14px] text-[#0a0a0a] shrink-0" style={{ background: avatarColors[i] }}>
-                    {t.avatar}
-                  </div>
-                  <div>
-                    <div className="font-heading font-bold text-[14px] text-foreground">{t.name}</div>
-                    <div className="text-[12px] text-muted-foreground">{t.role}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-24 px-6 bg-zinc-50 dark:bg-card/20 border-b border-border overflow-hidden relative">
-        {/* Decorative subtle gradient background glow */}
-        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[350px] h-[350px] bg-[#2CFF05] rounded-full opacity-[0.03] blur-[120px] pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1.7fr] gap-16 items-start">
-            
-            {/* Left side: Heading & CTA */}
-            <div className="space-y-6 lg:sticky lg:top-24">
-              <div className="inline-flex items-center gap-2 bg-[#2CFF05]/10 border border-[#2CFF05]/25 rounded-full px-3.5 py-1.5">
-                <Sparkles size={12} className="text-[#2CFF05]" />
-                <span className="font-heading font-semibold text-[11px] text-[#2CFF05] tracking-wider uppercase">SUPPORT HUB</span>
-              </div>
-              <h2 className="font-heading font-black text-[clamp(32px,4.5vw,48px)] text-foreground leading-[1.1]">
-                Frequently Asked <span className="text-[#2CFF05]">Questions</span>
-              </h2>
-              <p className="text-[15px] text-muted-foreground leading-[1.65] max-w-md">
-                Need help with your design, files, or custom sheets? Find answers to commonly asked questions here, or reach out directly to our printing experts.
-              </p>
-              <div className="pt-2">
-                <Link href="/contact" className="lime-btn inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-xs font-black uppercase tracking-wider shadow-lg shadow-[#2CFF05]/10 hover:shadow-[#2CFF05]/25 cursor-pointer">
-                  <MessageSquareHeart size={14} /> Contact Support
-                </Link>
-              </div>
-            </div>
-            
-            {/* Right side: Accordion list */}
-            <div className="flex flex-col gap-4">
-              {faqs.map((faq, i) => (
-                <div 
-                  key={i} 
-                  className={`border border-border rounded-[20px] bg-card/30 dark:bg-[#0f172a]/20 hover:border-[#2CFF05]/40 transition-all duration-300 p-5 cursor-pointer ${
-                    openFaq === i ? 'border-[#2CFF05]/40 bg-card/65 dark:bg-[#0f172a]/45 shadow-[0_8px_30px_rgba(141,255,0,0.04)]' : ''
-                  }`}
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                >
-                  <button 
-                    className="w-full bg-transparent border-none cursor-pointer flex items-center justify-between gap-4 text-left p-0 focus:outline-none group"
-                  >
-                    <span className="font-heading font-bold text-[16px] text-foreground group-hover:text-[#2CFF05] transition-colors">{faq.q}</span>
-                    <div className={`w-8 h-8 rounded-full border border-border flex items-center justify-center text-foreground group-hover:border-[#2CFF05]/40 group-hover:text-[#2CFF05] transition-all duration-300 shrink-0 ${
-                      openFaq === i ? 'bg-[#2CFF05] border-[#2CFF05] text-[#0a0a0a] rotate-180' : ''
-                    }`}>
-                      <ChevronDown />
-                    </div>
-                  </button>
-                  <div className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${
-                    openFaq === i ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none'
-                  }`}>
-                    <div className="overflow-hidden">
-                      <p className="pt-4 text-[14px] text-muted-foreground leading-[1.7] border-t border-border/40 mt-4">
-                        {faq.a}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-          </div>
-        </div>
-      </section>
-
       {/* Interactive DTF Gang Sheet Builder Showcase Section */}
       <section className="bg-background py-[72px] px-6 pb-20 border-b border-border">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center hero-grid">
@@ -715,7 +619,7 @@ function HomeContent() {
                       src="/images/products/black_hoodie_uploaded_fitted.png" 
                       alt="Black Hoodie Preview" 
                       fill 
-                      className="object-contain"
+                      className="object-contain" 
                     />
                     
                    {selectedDesign && (
@@ -745,6 +649,99 @@ function HomeContent() {
                 <div className="text-[11px] text-muted-foreground">6 designs on sheet</div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-24 px-6 bg-zinc-50 dark:bg-card/20 border-b border-border overflow-hidden relative">
+        {/* Decorative subtle gradient background glow */}
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[350px] h-[350px] bg-[#2CFF05] rounded-full opacity-[0.03] blur-[120px] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1.7fr] gap-16 items-start">
+            
+            {/* Left side: Heading & CTA */}
+            <div className="space-y-6 lg:sticky lg:top-24">
+              <div className="inline-flex items-center gap-2 bg-[#2CFF05]/10 border border-[#2CFF05]/25 rounded-full px-3.5 py-1.5">
+                <Sparkles size={12} className="text-[#2CFF05]" />
+                <span className="font-heading font-semibold text-[11px] text-[#2CFF05] tracking-wider uppercase">SUPPORT HUB</span>
+              </div>
+              <h2 className="font-heading font-black text-[clamp(32px,4.5vw,48px)] text-foreground leading-[1.1]">
+                Frequently Asked <span className="text-[#2CFF05]">Questions</span>
+              </h2>
+              <p className="text-[15px] text-muted-foreground leading-[1.65] max-w-md">
+                Need help with your design, files, or custom sheets? Find answers to commonly asked questions here, or reach out directly to our printing experts.
+              </p>
+              <div className="pt-2">
+                <Link href="/contact" className="lime-btn inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-xs font-black uppercase tracking-wider shadow-lg shadow-[#2CFF05]/10 hover:shadow-[#2CFF05]/25 cursor-pointer">
+                  <MessageSquareHeart size={14} /> Contact Support
+                </Link>
+              </div>
+            </div>
+            
+            {/* Right side: Accordion list */}
+            <div className="flex flex-col gap-4">
+              {faqs.map((faq, i) => (
+                <div 
+                  key={i} 
+                  className={`border border-border rounded-[20px] bg-card/30 dark:bg-[#0f172a]/20 hover:border-[#2CFF05]/40 transition-all duration-300 p-5 cursor-pointer ${
+                    openFaq === i ? 'border-[#2CFF05]/40 bg-card/65 dark:bg-[#0f172a]/45 shadow-[0_8px_30px_rgba(141,255,0,0.04)]' : ''
+                  }`}
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                >
+                  <button 
+                    className="w-full bg-transparent border-none cursor-pointer flex items-center justify-between gap-4 text-left p-0 focus:outline-none group"
+                  >
+                    <span className="font-heading font-bold text-[16px] text-foreground group-hover:text-[#2CFF05] transition-colors">{faq.q}</span>
+                    <div className={`w-8 h-8 rounded-full border border-border flex items-center justify-center text-foreground group-hover:border-[#2CFF05]/40 group-hover:text-[#2CFF05] transition-all duration-300 shrink-0 ${
+                      openFaq === i ? 'bg-[#2CFF05] border-[#2CFF05] text-[#0a0a0a] rotate-180' : ''
+                    }`}>
+                      <ChevronDown />
+                    </div>
+                  </button>
+                  <div className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${
+                    openFaq === i ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none'
+                  }`}>
+                    <div className="overflow-hidden">
+                      <p className="pt-4 text-[14px] text-muted-foreground leading-[1.7] border-t border-border/40 mt-4">
+                        {faq.a}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 px-6 bg-background border-b border-border">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">Reviews</span>
+            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">What Our Customers Say</h2>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 testi-grid">
+            {testimonials.map((t, i) => (
+              <div key={t.name} className="bg-zinc-50 dark:bg-card rounded-[20px] p-8 border-[1.5px] border-border">
+                <div className="flex gap-1 mb-5">
+                  {Array.from({ length: 5 }).map((_, s) => <StarIcon key={s} filled={s < t.rating} />)}
+                </div>
+                <p className="text-[15px] text-muted-foreground dark:text-foreground leading-[1.7] mb-6 italic">{t.text}</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-[42px] h-[42px] rounded-full flex items-center justify-center font-heading font-extrabold text-[14px] text-[#0a0a0a] shrink-0" style={{ background: avatarColors[i] }}>
+                    {t.avatar}
+                  </div>
+                  <div>
+                    <div className="font-heading font-bold text-[14px] text-foreground">{t.name}</div>
+                    <div className="text-[12px] text-muted-foreground">{t.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
