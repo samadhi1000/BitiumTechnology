@@ -76,7 +76,7 @@ export default function CategoryPageTemplate({
   const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'name' | 'newest'>('featured');
   const [currentPage, setCurrentPage] = useState(1);
   const [wishlist, setWishlist] = useState<Record<string, boolean>>({});
-  const itemsPerPage = 12; // 12 items for clean 4x3 desktop grid
+  const itemsPerPage = 10; // 10 items per page as requested
 
   useEffect(() => {
     setActiveSub(subParam);
@@ -443,14 +443,18 @@ export default function CategoryPageTemplate({
               })}
             </div>
 
-            {/* Pagination Controls */}
+            {/* Pagination Controls (Matching Target Design: 10 items per page with clean pills) */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-1.5 sm:gap-2 mt-12 pt-8">
+              <div className="flex items-center justify-center gap-2 mt-14 pt-6 border-t border-slate-200/60 dark:border-white/5">
                 {/* Prev button */}
                 <button
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  onClick={() => {
+                    const nextP = Math.max(1, currentPage - 1);
+                    setCurrentPage(nextP);
+                    window.scrollTo({ top: 300, behavior: 'smooth' });
+                  }}
                   disabled={currentPage === 1}
-                  className="w-9 h-9 rounded-full border border-slate-200 dark:border-white/15 bg-white dark:bg-card text-slate-600 dark:text-zinc-300 hover:border-slate-300 dark:hover:border-white/30 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-all shadow-sm"
+                  className="w-9 h-9 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0b1329]/80 text-slate-600 dark:text-zinc-300 hover:border-emerald-500 dark:hover:border-[#2CFF05]/50 disabled:opacity-20 disabled:cursor-not-allowed flex items-center justify-center transition-all shadow-sm active:scale-95 cursor-pointer"
                   aria-label="Previous Page"
                 >
                   <ChevronLeft size={16} />
@@ -462,11 +466,14 @@ export default function CategoryPageTemplate({
                   return (
                     <button
                       key={page}
-                      onClick={() => setCurrentPage(page)}
-                      className={`w-9 h-9 rounded-full text-xs font-bold transition-all shadow-sm ${
+                      onClick={() => {
+                        setCurrentPage(page);
+                        window.scrollTo({ top: 300, behavior: 'smooth' });
+                      }}
+                      className={`w-9 h-9 rounded-full text-xs font-black transition-all cursor-pointer ${
                         isCurrent
-                          ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-md shadow-[#2CFF05]/20 scale-105'
-                          : 'border border-slate-200 dark:border-white/15 bg-white dark:bg-card text-slate-700 dark:text-zinc-300 hover:border-slate-300 dark:hover:border-white/30 hover:text-slate-900 dark:hover:text-white'
+                          ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-lg shadow-[#2CFF05]/30 scale-105'
+                          : 'border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0b1329]/80 text-slate-700 dark:text-zinc-300 hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/40 hover:text-slate-950 dark:hover:text-white'
                       }`}
                     >
                       {page}
@@ -476,9 +483,13 @@ export default function CategoryPageTemplate({
 
                 {/* Next button */}
                 <button
-                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  onClick={() => {
+                    const nextP = Math.min(totalPages, currentPage + 1);
+                    setCurrentPage(nextP);
+                    window.scrollTo({ top: 300, behavior: 'smooth' });
+                  }}
                   disabled={currentPage === totalPages}
-                  className="w-9 h-9 rounded-full border border-slate-200 dark:border-white/15 bg-white dark:bg-card text-slate-600 dark:text-zinc-300 hover:border-slate-300 dark:hover:border-white/30 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-all shadow-sm"
+                  className="w-9 h-9 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0b1329]/80 text-slate-600 dark:text-zinc-300 hover:border-emerald-500 dark:hover:border-[#2CFF05]/50 disabled:opacity-20 disabled:cursor-not-allowed flex items-center justify-center transition-all shadow-sm active:scale-95 cursor-pointer"
                   aria-label="Next Page"
                 >
                   <ChevronRight size={16} />

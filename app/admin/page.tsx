@@ -27,17 +27,19 @@ import {
   Package, 
   AlertTriangle, 
   CheckCircle, 
-  XCircle,
-  X,
-  Lock,
-  Key,
-  LogOut,
-  Folder,
-  Sparkles,
-  Upload,
-  Mail,
-  Printer,
-  FileText
+  XCircle, 
+  X, 
+  Lock, 
+  Key, 
+  LogOut, 
+  Folder, 
+  Sparkles, 
+  Upload, 
+  Mail, 
+  Printer, 
+  FileText,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import Image from 'next/image';
 import { sanitizeText } from '@/lib/security/sanitize';
@@ -410,6 +412,29 @@ export default function AdminPanelPage() {
     const matchesCategory = categoryFilter === 'all' || d.category === categoryFilter;
     return matchesSearch && matchesCategory;
   });
+
+  // Admin Pagination States (10 items per page)
+  const [adminProdPage, setAdminProdPage] = useState(1);
+  const [adminDigPage, setAdminDigPage] = useState(1);
+  const adminItemsPerPage = 10;
+
+  // Reset pagination on filter or search change
+  useEffect(() => {
+    setAdminProdPage(1);
+    setAdminDigPage(1);
+  }, [searchQuery, categoryFilter, activeTab]);
+
+  const totalProdPages = Math.ceil(filteredProducts.length / adminItemsPerPage);
+  const paginatedProducts = filteredProducts.slice(
+    (adminProdPage - 1) * adminItemsPerPage,
+    adminProdPage * adminItemsPerPage
+  );
+
+  const totalDigPages = Math.ceil(filteredDigital.length / adminItemsPerPage);
+  const paginatedDigital = filteredDigital.slice(
+    (adminDigPage - 1) * adminItemsPerPage,
+    adminDigPage * adminItemsPerPage
+  );
 
   // Calculate statistics
   const totalProductsCount = products.length;
@@ -799,7 +824,7 @@ export default function AdminPanelPage() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-zinc-900/50">
-                        {filteredProducts.map((p) => {
+                        {paginatedProducts.map((p) => {
                           const primaryStock = p.variants?.[0]?.stock_quantity ?? 0;
                           const discount = p.original_price ? Math.round(((p.original_price - p.price) / p.original_price) * 100) : 0;
                           
@@ -874,6 +899,51 @@ export default function AdminPanelPage() {
                         })}
                       </tbody>
                     </table>
+
+                    {/* Pagination Bar for Store Products (10 items per page) */}
+                    {totalProdPages > 1 && (
+                      <div className="p-4 border-t border-border bg-card/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <span className="text-[11px] text-muted-foreground">
+                          Showing <strong className="text-foreground">{(adminProdPage - 1) * adminItemsPerPage + 1}</strong> to{' '}
+                          <strong className="text-foreground">{Math.min(adminProdPage * adminItemsPerPage, filteredProducts.length)}</strong> of{' '}
+                          <strong className="text-foreground">{filteredProducts.length}</strong> products
+                        </span>
+
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            onClick={() => setAdminProdPage((p) => Math.max(1, p - 1))}
+                            disabled={adminProdPage === 1}
+                            className="w-8 h-8 rounded-full border border-border bg-card/40 hover:bg-card text-muted-foreground hover:text-foreground disabled:opacity-20 disabled:cursor-not-allowed flex items-center justify-center transition-all cursor-pointer"
+                            title="Previous Page"
+                          >
+                            <ChevronLeft size={14} />
+                          </button>
+
+                          {Array.from({ length: totalProdPages }, (_, i) => i + 1).map((page) => (
+                            <button
+                              key={page}
+                              onClick={() => setAdminProdPage(page)}
+                              className={`w-8 h-8 rounded-full text-xs font-black transition-all cursor-pointer ${
+                                adminProdPage === page
+                                  ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-lg shadow-[#2CFF05]/20 scale-105'
+                                  : 'border border-border bg-card/40 hover:bg-card text-muted-foreground hover:text-foreground'
+                              }`}
+                            >
+                              {page}
+                            </button>
+                          ))}
+
+                          <button
+                            onClick={() => setAdminProdPage((p) => Math.min(totalProdPages, p + 1))}
+                            disabled={adminProdPage === totalProdPages}
+                            className="w-8 h-8 rounded-full border border-border bg-card/40 hover:bg-card text-muted-foreground hover:text-foreground disabled:opacity-20 disabled:cursor-not-allowed flex items-center justify-center transition-all cursor-pointer"
+                            title="Next Page"
+                          >
+                            <ChevronRight size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )
               ) : (
@@ -899,7 +969,7 @@ export default function AdminPanelPage() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-zinc-900/50">
-                        {filteredDigital.map((d) => (
+                        {paginatedDigital.map((d) => (
                           <tr key={d.id} className="hover:bg-card/25 transition-colors">
                             <td className="p-4">
                               <div className="relative w-12 h-12 rounded-xl bg-background overflow-hidden border border-border">
@@ -947,6 +1017,51 @@ export default function AdminPanelPage() {
                         ))}
                       </tbody>
                     </table>
+
+                    {/* Pagination Bar for Digital Artworks (10 items per page) */}
+                    {totalDigPages > 1 && (
+                      <div className="p-4 border-t border-border bg-card/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <span className="text-[11px] text-muted-foreground">
+                          Showing <strong className="text-foreground">{(adminDigPage - 1) * adminItemsPerPage + 1}</strong> to{' '}
+                          <strong className="text-foreground">{Math.min(adminDigPage * adminItemsPerPage, filteredDigital.length)}</strong> of{' '}
+                          <strong className="text-foreground">{filteredDigital.length}</strong> designs
+                        </span>
+
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            onClick={() => setAdminDigPage((p) => Math.max(1, p - 1))}
+                            disabled={adminDigPage === 1}
+                            className="w-8 h-8 rounded-full border border-border bg-card/40 hover:bg-card text-muted-foreground hover:text-foreground disabled:opacity-20 disabled:cursor-not-allowed flex items-center justify-center transition-all cursor-pointer"
+                            title="Previous Page"
+                          >
+                            <ChevronLeft size={14} />
+                          </button>
+
+                          {Array.from({ length: totalDigPages }, (_, i) => i + 1).map((page) => (
+                            <button
+                              key={page}
+                              onClick={() => setAdminDigPage(page)}
+                              className={`w-8 h-8 rounded-full text-xs font-black transition-all cursor-pointer ${
+                                adminDigPage === page
+                                  ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-lg shadow-[#2CFF05]/20 scale-105'
+                                  : 'border border-border bg-card/40 hover:bg-card text-muted-foreground hover:text-foreground'
+                              }`}
+                            >
+                              {page}
+                            </button>
+                          ))}
+
+                          <button
+                            onClick={() => setAdminDigPage((p) => Math.min(totalDigPages, p + 1))}
+                            disabled={adminDigPage === totalDigPages}
+                            className="w-8 h-8 rounded-full border border-border bg-card/40 hover:bg-card text-muted-foreground hover:text-foreground disabled:opacity-20 disabled:cursor-not-allowed flex items-center justify-center transition-all cursor-pointer"
+                            title="Next Page"
+                          >
+                            <ChevronRight size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )
               )}

@@ -298,7 +298,7 @@ function HomeContent() {
             </h1>
             
             <p 
-              className="hero-text text-base sm:text-lg text-slate-800 dark:text-zinc-100 max-w-xl leading-relaxed font-medium dark:drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]"
+              className="hero-text text-base sm:text-lg text-slate-800 dark:text-white max-w-xl leading-relaxed font-medium dark:drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]"
             >
               From custom precision stencils to industrial DTF film rolls, exposed screen printing, and traditional batik stamps — explore our specialized print technology store.
             </p>
