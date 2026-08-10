@@ -72,10 +72,10 @@ export default function Navbar() {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-2xl sm:text-3xl font-black tracking-wider text-foreground flex items-center gap-0.5 leading-none">
+                <span className="text-2xl sm:text-3xl font-black tracking-wider text-slate-900 dark:text-white flex items-center gap-0.5 leading-none">
                   B<span className="text-[#ff1a3c] drop-shadow-[0_0_12px_#ff1a3c]">!</span>T<span className="text-[#ff1a3c] drop-shadow-[0_0_12px_#ff1a3c]">!</span>UM
                 </span>
-                <span className="text-xs sm:text-[13px] font-extrabold tracking-[0.25em] text-white uppercase leading-tight mt-0.5 sm:mt-1">
+                <span className="text-xs sm:text-[13px] font-extrabold tracking-[0.25em] text-slate-900 dark:text-white uppercase leading-tight mt-0.5 sm:mt-1 transition-colors">
                   Technology
                 </span>
               </div>
