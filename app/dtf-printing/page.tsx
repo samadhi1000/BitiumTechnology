@@ -4,8 +4,9 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { getProducts, Product } from '@/lib/products';
 import CategoryPageTemplate, { CategoryPageConfig } from '@/components/category/CategoryPageTemplate';
 import { Layers, Sparkles, Zap, Shirt, Palette, ShieldCheck, Box, Flame, RefreshCw } from 'lucide-react';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
-const DTF_PRINTING_CONFIG: CategoryPageConfig = {
+const DTF_PRINTING_CONFIG_EN: CategoryPageConfig = {
   slug: 'dtf-printing',
   categoryKey: 'dtf_sheet',
   breadcrumbName: 'DTF Printing',
@@ -92,7 +93,96 @@ const DTF_PRINTING_CONFIG: CategoryPageConfig = {
   },
 };
 
+const DTF_PRINTING_CONFIG_SI: CategoryPageConfig = {
+  slug: 'dtf-printing',
+  categoryKey: 'dtf_sheet',
+  breadcrumbName: 'DTF මුද්‍රණය',
+  titlePrimary: 'DTF',
+  titleHighlight: 'මුද්‍රණය (DTF Printing)',
+  badgeText: 'Direct-to-Film ට්‍රාන්ස්ෆර් මුද්‍රණ',
+  description: 'ඔබට අවශ්‍ය පරිදි සකසන ලද ගෑං ෂීට් (gang sheet) සැකසුම්, ඇනිමෙ ස්ටිකර් පැකේජ (anime sticker packs) සහ ඇඳුම් මාරු කිරීමේ මුද්‍රණ (cloth transfers) - ඔබේ ෂීට් එක අන්තර්ජාලය හරහා සකසා, පෙරදසුන (preview) බලා ඇණවුම් කරන්න, අපි එය මුද්‍රණය කර ඔබ වෙත එවන්නෙමු.',
+  heroImage: '/images/hero-cards/dtf.jpg',
+  searchPlaceholder: 'DTF මෝස්තර සහ ෂීට්ස් සොයන්න...',
+  itemSingular: 'DTF ට්‍රාන්ස්ෆර්',
+  itemPlural: 'ට්‍රාන්ස්ෆර්ස්',
+  subCategories: [
+    { id: 'tshirt-design', label: 'ටී-ෂර්ට් මෝස්තර' },
+    { id: 'dtf-sticker', label: 'DTF ස්ටිකර්ස්' },
+    { id: 'dtf-cloth', label: 'ඇඳුම් ට්‍රාන්ස්ෆර්ස්' },
+  ],
+  whyChooseUs: {
+    title: 'අපගේ DTF ට්‍රාන්ස්ෆර්ස් තෝරාගත යුත්තේ ඇයි?',
+    features: [
+      {
+        icon: <Sparkles size={16} />,
+        title: 'දීප්තිමත් CMYK+W වර්ණ',
+        desc: 'ඕනෑම වර්ණවත් රෙද්දක පැහැදිලි බව සඳහා ඝන සුදු පසුබිම් තට්ටුවක් (white base).',
+      },
+      {
+        icon: <ShieldCheck size={16} />,
+        title: '50+ වාරයක සේදීමේ කල්පැවැත්ම',
+        desc: 'කිසි විටෙකත් ඉරිතලා නොයන හෝ ගැලවී නොයන ඇදෙන සුළු හොට්-මෙල්ට් පවුඩර්.',
+      },
+      {
+        icon: <Zap size={16} />,
+        title: 'පැය 24ක් තුළ නැව්ගත කිරීම',
+        desc: 'අවම ඇණවුම් සීමාවකින් තොරව වේගවත්ම නිෂ්පාදනය.',
+      },
+    ],
+  },
+  perfectFor: {
+    title: 'පරිපූර්ණ වන්නේ',
+    items: [
+      { icon: <Shirt size={14} />, label: 'ටී-ෂර්ට් සහ හුඩීස්' },
+      { icon: <Palette size={14} />, label: 'කපු සහ පොලියෙස්ටර්' },
+      { icon: <Box size={14} />, label: 'තොප්පි (Caps & Hats)' },
+      { icon: <Flame size={14} />, label: 'ටෝට් බෑග්' },
+      { icon: <Layers size={14} />, label: 'ක්‍රීඩා ඇඳුම් සහ නයිලෝන්' },
+      { icon: <RefreshCw size={14} />, label: 'සන්නාම ටැග්ස් (Brand Tags)' },
+    ],
+  },
+  customCta: {
+    title: 'ඔබේම custom DTF gang sheets සකසනවාද?',
+    desc: 'අපගේ 3D ඉන්ටරැක්ටිව් කැන්වස් බිල්ඩරය භාවිත කර ඔබේ මෝස්තර පහසුවෙන් සකසා ගන්න.',
+    buttonText: 'ඔබේ නිර්මාණය අරඹන්න',
+    buttonHref: '/canvas',
+  },
+  afterListings: {
+    sections: [
+      {
+        title: 'DTF ඇණවුමක් ක්‍රියාත්මක වන ආකාරය',
+        content: 'ඔබගේ මෝස්තරය විශේෂිත ෆිල්ම් එකක් මත මුද්‍රණය කර, ඕනෑම රෙදි වර්ණයකදී වර්ණ දීප්තිමත්ව තබා ගැනීම සඳහා සුදු පැහැති පසුබිම් තට්ටුවක් (white base) යොදනු ලැබේ. ඉන්පසු එය උණුසුම්ව දියවන කුඩු වර්ගයකින් (hot-melt powder) ආලේප කරයි. එය ඔබට ලැබුණු පසු, හීට් ප්‍රෙස් (heat-press) යන්ත්‍රයකින් ඇඳුම මත ඇලවිය හැක - මෙහිදී ස්ක්‍රීන් සකස් කිරීම් හෝ අවම ඇණවුම් සීමාවන් නොමැත.',
+      },
+      {
+        title: 'මිනිසුන් සිල්ක් ස්ක්‍රීන් මුද්‍රණය වෙනුවට DTF තෝරා ගන්නේ ඇයි?',
+        content: 'DTF මුද්‍රණය මඟින් ඔබේ ඇණවුම් සඳහා උපරිම නම්‍යශීලී බවක් සහ ලාභදායී බවක් හිමි වේ.',
+        bullets: [
+          'ඔබගේ ක්‍රියාවලිය වෙනස් නොකර කපු (cotton), පොලියෙස්ටර් (polyester) සහ මිශ්‍ර රෙදිපිළි මත ඉතා පහසුවෙන් භාවිත කළ හැකිය.',
+          'වර්ණ කිහිපයක් හෝ ඡායාරූප වැනි මෝස්තර සඳහා අමතර පිරිවැයක් එකතු නොවේ.',
+          'තනි ටී-ෂර්ට් එකක් සඳහා හෝ කුඩා මෝස්තර රැසක් සහිත සම්පූර්ණ ගෑං ෂීට් (gang sheet) එකක් සඳහා වුවද ඉතා ලාභදායී වේ.',
+          'ඇඳුම් මත මුද්‍රණය කරන තෙක් මෙම ට්‍රාන්ස්ෆර් ෂීට්ස් පැතලිව පහසුවෙන් ගබඩා කර තැබිය හැක.',
+        ],
+      },
+      {
+        title: 'ඔබේම ෂීට් එකක් සාදා ගන්න',
+        content: 'අපගේ DTF Sheet Builder භාවිත කර ඔබේ මෝස්තර අවශ්‍ය පරිදි සකසන්න, නිශ්චිත පරතරයන් බලාගන්න සහ මුදල් ගෙවීමට පෙර නිමි ප්‍රමාණය පරීක්ෂා කරන්න - ඔබට බිල්ඩර් එකෙහි පෙනෙන ආකාරයටම එය මුද්‍රණය වේ.',
+      },
+      {
+        title: 'නිම කිරීමට ගතවන කාලය',
+        content: 'සාමාන්‍ය ෂීට්ස් ඔබ අනුමත කර පැය 24-48ක් ඇතුළත නැව්ගත කරනු ලැබේ (ship කරනු ලැබේ).',
+      },
+    ],
+  },
+  seo: {
+    title: 'DTF මුද්‍රණ එකතුව | Bitium Technology',
+    description: 'උසස් තත්ත්වයේ custom DTF gang sheets, ස්ටිකර් සහ මුද්‍රණ.',
+    canonicalUrl: 'https://www.bitiumtechnology.com/dtf-printing',
+  },
+};
+
 function DtfPrintingContent() {
+  const { language } = useLanguage();
+  const config = language === 'si' ? DTF_PRINTING_CONFIG_SI : DTF_PRINTING_CONFIG_EN;
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -108,7 +198,7 @@ function DtfPrintingContent() {
 
   return (
     <CategoryPageTemplate
-      config={DTF_PRINTING_CONFIG}
+      config={config}
       initialProducts={products}
       loading={loading}
     />

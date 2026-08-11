@@ -4,8 +4,9 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { getProducts, Product } from '@/lib/products';
 import CategoryPageTemplate, { CategoryPageConfig } from '@/components/category/CategoryPageTemplate';
 import { Printer, Sparkles, CheckCircle2, Shirt, Frame, Layers, FileText, Palette, Package } from 'lucide-react';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
-const SCREEN_PRINTING_CONFIG: CategoryPageConfig = {
+const SCREEN_PRINTING_CONFIG_EN: CategoryPageConfig = {
   slug: 'screen-printing',
   categoryKey: 'screen-printing',
   breadcrumbName: 'Screen Printing',
@@ -88,7 +89,92 @@ const SCREEN_PRINTING_CONFIG: CategoryPageConfig = {
   },
 };
 
+const SCREEN_PRINTING_CONFIG_SI: CategoryPageConfig = {
+  slug: 'screen-printing',
+  categoryKey: 'screen-printing',
+  breadcrumbName: 'සිල්ක් ස්ක්‍රීන් මුද්‍රණය',
+  titlePrimary: 'සිල්ක් ස්ක්‍රීන්',
+  titleHighlight: 'මුද්‍රණය (Screen Printing)',
+  badgeText: 'වෘත්තීය මට්ටමේ ස්ක්‍රීන් මුද්‍රණ උපාංග',
+  description: 'ඔබේ නිශ්චිත සැලසුමට අනුව සකසන ලද එක්ස්පෝස් කරන ලද ස්ක්‍රීන් (exposed screens), වෙක්ටර් කරන ලද නිර්මාණ (vectorized artwork) සහ පොසිටිව් ට්‍රේසිං ෆිල්ම්ස් (positive tracing films) - මුද්‍රණය සඳහා සූදානම්ය.',
+  heroImage: '/images/hero-cards/screenprint.jpg',
+  searchPlaceholder: 'ස්ක්‍රීන්, ෆිල්ම් සහ උපාංග සොයන්න...',
+  itemSingular: 'ස්ක්‍රීන් / උපාංගය',
+  itemPlural: 'නිෂ්පාදන',
+  subCategories: [
+    { id: 'screen-exposed', label: 'එක්ස්පෝස් කරන ලද ස්ක්‍රීන්' },
+    { id: 'artwork', label: 'වෙක්ටර් කරන ලද නිර්මාණ' },
+    { id: 'tracing-printouts', label: 'ට්‍රේසිං ප්‍රින්ටවුට්ස්' },
+    { id: 'positive-printouts', label: 'පොසිටිව් ෆිල්ම්' },
+  ],
+  whyChooseUs: {
+    title: 'අපගේ ස්ක්‍රීන් මුද්‍රණ උපාංග තෝරාගත යුත්තේ ඇයි?',
+    features: [
+      {
+        icon: <Printer size={16} />,
+        title: 'ඉහළ මෙෂ් ආතතිය (Mesh Tension)',
+        desc: 'පැහැදිලි රෙජිස්ට්‍රේෂන් සඳහා නිරවද්‍ය ලෙස ඇද සකසන ලද රාමු.',
+      },
+      {
+        icon: <Sparkles size={16} />,
+        title: 'මුද්‍රණයට සූදානම් එක්ස්පෝෂර්',
+        desc: 'උසස් තත්ත්වයේ එමල්ෂන් සහ UV කිරණ භාවිතයෙන් එක්ස්පෝස් කර ඇත.',
+      },
+      {
+        icon: <CheckCircle2 size={16} />,
+        title: 'වෘත්තීය මට්ටමේ ගුණාත්මකභාවය',
+        desc: 'දිගු කාලීන භාවිතය සඳහා ඇලුමිනියම් සහ ලී රාමු.',
+      },
+    ],
+  },
+  perfectFor: {
+    title: 'පරිපූර්ණ වන්නේ',
+    items: [
+      { icon: <Shirt size={14} />, label: 'ටී-ෂර්ට් මුද්‍රණය' },
+      { icon: <Frame size={14} />, label: 'කලා පෝස්ටර්' },
+      { icon: <Package size={14} />, label: 'பெට්ටි සහ ඇසුරුම්කරණය' },
+      { icon: <Palette size={14} />, label: 'රෙදිපිළි මුද්‍රණය' },
+      { icon: <FileText size={14} />, label: 'සාරි නිර්මාණකරණය' },
+      { icon: <Layers size={14} />, label: 'තොග ඇණවුම්' },
+    ],
+  },
+  customCta: {
+    title: 'ඔබට අවශ්‍ය පරිදි සකසාගත් ස්ක්‍රීන් එකක් අවශ්‍යද?',
+    desc: 'ඔබේ වෙක්ටර් සැලසුම අප වෙත එවා, මුද්‍රණයට සූදානම් ස්ක්‍රීන් එකක් ඔබේ නිවසටම ගෙන්වා ගන්න.',
+    buttonText: 'ස්ක්‍රීන් ඇණවුම් කරන්න',
+    buttonHref: '/order-form',
+  },
+  afterListings: {
+    sections: [
+      {
+        title: 'ස්ක්‍රීන් ඇණවුමකට ඇතුළත් වන්නේ මොනවාද?',
+        content: 'අපි ඔබේ කලාකෘතිය ලබාගෙන, එය මුද්‍රණයට සූදානම් නැතිනම් එය ට්‍රේස් හෝ වෙක්ටර් කර, ඔබේ රෙදි සහ විස්තර මට්ටමට ගැලපෙන මෙෂ් ප්‍රමාණයකින් (mesh count) යුතු ස්ක්‍රීන් එකක් මත එක්ස්පෝස් (expose) කර දෙන්නෙමු. ඔබට ලැබෙන්නේ තීන්ත දමා කෙළින්ම මුද්‍රණය කළ හැකි මට්ටමේ ස්ක්‍රීන් එකකි.',
+      },
+      {
+        title: 'ඇණවුම් කිරීමට පෙර දැනගත යුතු වැදගත් කරුණු',
+        content: 'පැහැදිලි මුද්‍රණයක් ලබා ගැනීම සඳහා පහත කරුණු දැන ගැනීම වැදගත් වේ.',
+        bullets: [
+          'සියුම් විස්තර සහ කුඩා අකුරු සඳහා සිහින් මෙෂ් එකක් (finer mesh) අවශ්‍ය වේ - පැහැදිලිව මුද්‍රණය කිරීම සඳහා ඔබේ මෝස්තරය වෙනස් කළ යුතු නම් අපි ඔබට ඒ පිළිබඳව පවසන්නෙමු.',
+          'වර්ණ කිහිපයක මෝස්තර සඳහා එක් එක් වර්ණයට වෙන වෙනම ස්ක්‍රීන් එක බැගින් අවශ්‍ය වේ; ඔබට මේ පිළිබඳව නිශ්චිත අවබෝධයක් නැත්නම් වර්ණ වෙන් කරගැනීමට අපි ඔබට උදවු කරන්නෙමු.',
+          'ස්ක්‍රීන් නැවත භාවිත කළ හැක - මූලික නඩත්තුව සමඟින්, එක ස්ක්‍රීන් එකකින් ටී-ෂර්ට් සිය ගණනක් මුද්‍රණය කළ හැකිය.',
+        ],
+      },
+      {
+        title: 'මෙය කා සඳහාද?',
+        content: 'තමන්ගේම මුද්‍රණ අංශයක් පවත්වාගෙන යන ව්‍යාපාරිකයින්, මෙම ක්‍රියාවලිය ඉගෙන ගන්නා සිසුන් සහ ඩිජිටල් මුද්‍රණ ක්‍රමවලට සීමා නොවී තීන්ත, පීඩනය සහ රෙදිපිළි මත සම්පූර්ණ පාලනයක් ලබා ගැනීමට කැමති ඕනෑම අයෙකු සඳහා මෙය සුදුසු වේ.',
+      },
+    ],
+  },
+  seo: {
+    title: 'ස්ක්‍රීන් මුද්‍රණ එකතුව | Bitium Technology',
+    description: 'සිල්ක් ස්ක්‍රීන් මුද්‍රණ උපාංග, එක්ස්පෝස් කරන ලද ස්ක්‍රීන් සහ පොසිටිව් ෆිල්ම්ස්.',
+    canonicalUrl: 'https://www.bitiumtechnology.com/screen-printing',
+  },
+};
+
 function ScreenPrintingContent() {
+  const { language } = useLanguage();
+  const config = language === 'si' ? SCREEN_PRINTING_CONFIG_SI : SCREEN_PRINTING_CONFIG_EN;
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -104,7 +190,7 @@ function ScreenPrintingContent() {
 
   return (
     <CategoryPageTemplate
-      config={SCREEN_PRINTING_CONFIG}
+      config={config}
       initialProducts={products}
       loading={loading}
     />
