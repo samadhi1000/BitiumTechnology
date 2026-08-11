@@ -3,6 +3,7 @@ import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/context/AuthContext";
 import { ThemeProvider } from "@/lib/context/ThemeContext";
+import { LanguageProvider } from "@/lib/context/LanguageContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PreloaderWrapper from "@/components/PreloaderWrapper";
@@ -51,15 +52,17 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans selection:bg-primary/40 selection:text-primary-foreground">
         <ThemeProvider>
-          <PreloaderWrapper>
-            <AuthProvider>
-              <Navbar />
-              <main className="flex-grow flex flex-col">{children}</main>
-              <Footer />
-              <CartDrawer />
-            </AuthProvider>
-          </PreloaderWrapper>
-          <WhatsAppButton />
+          <LanguageProvider>
+            <PreloaderWrapper>
+              <AuthProvider>
+                <Navbar />
+                <main className="flex-grow flex flex-col">{children}</main>
+                <Footer />
+                <CartDrawer />
+              </AuthProvider>
+            </PreloaderWrapper>
+            <WhatsAppButton />
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -7,6 +7,8 @@ import { usePathname } from 'next/navigation';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useAuth } from '@/lib/context/AuthContext';
 import { useTheme } from '@/lib/context/ThemeContext';
+import { useLanguage } from '@/lib/context/LanguageContext';
+import LanguageToggle from '@/components/LanguageToggle';
 import { 
   ShoppingBag, 
   User, 
@@ -34,6 +36,7 @@ export default function Navbar() {
   const openCart = useCartStore((state) => state.openCart);
   const { user, profile, signOut } = useAuth();
   const { theme, toggle } = useTheme();
+  const { t } = useLanguage();
   const pathname = usePathname();
   const [fromAdmin, setFromAdmin] = useState(false);
 
@@ -81,8 +84,8 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 w-full glass shadow-sm transition-all duration-300 border-b border-border/80 bg-background/90 backdrop-blur-md">
       <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
+          {/* Logo & Desktop Language Toggle (between Logo and Stencil) */}
+          <div className="flex-shrink-0 flex items-center gap-3 xl:gap-4">
             <Link href="/" onClick={closeMobileMenu} className="flex items-center space-x-2.5 sm:space-x-3 group relative py-1 hover:opacity-90 transition-opacity">
               <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-primary/50 shadow-[0_0_20px_rgba(99,102,241,0.5)] group-hover:scale-105 transition-transform">
                 <Image
@@ -102,6 +105,11 @@ export default function Navbar() {
                 </span>
               </div>
             </Link>
+
+            {/* Language toggle switch placed right between Logo and Stencil tab on Desktop */}
+            <div className="hidden lg:flex items-center pl-1">
+              <LanguageToggle />
+            </div>
           </div>
 
           {/* Desktop Navigation Links (Tidy & Cleanly Spaced) */}
@@ -113,7 +121,7 @@ export default function Navbar() {
               onMouseLeave={() => setStencilHovered(false)}
             >
               <Link href={adminLink('/stencil')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
-                <span>Stencil</span>
+                <span>{t.nav.stencil || 'Stencil'}</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${stencilHovered ? 'rotate-180' : ''}`} />
               </Link>
               {stencilHovered && (
@@ -149,7 +157,7 @@ export default function Navbar() {
               onMouseLeave={() => setScreenPrintingHovered(false)}
             >
               <Link href={adminLink('/screen-printing')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
-                <span>Screen Printing</span>
+                <span>{t.subNav.screenPrinting}</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${screenPrintingHovered ? 'rotate-180' : ''}`} />
               </Link>
               {screenPrintingHovered && (
@@ -182,7 +190,7 @@ export default function Navbar() {
               onMouseLeave={() => setDtfPrintingHovered(false)}
             >
               <Link href={adminLink('/dtf-printing')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
-                <span>DTF Printing</span>
+                <span>{t.subNav.dtfPrinting}</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${dtfPrintingHovered ? 'rotate-180' : ''}`} />
               </Link>
               {dtfPrintingHovered && (
@@ -215,7 +223,7 @@ export default function Navbar() {
               onMouseLeave={() => setBatikStampHovered(false)}
             >
               <Link href={adminLink('/batik-stamp')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
-                <span>Batik Stamp</span>
+                <span>{t.nav.batikStamp || 'Batik Stamp'}</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${batikStampHovered ? 'rotate-180' : ''}`} />
               </Link>
               {batikStampHovered && (
@@ -237,7 +245,7 @@ export default function Navbar() {
               onMouseLeave={() => setLaserCuttingHovered(false)}
             >
               <Link href={adminLink('/laser-cutting')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
-                <span>Laser Cutting</span>
+                <span>{t.subNav.laserCutting}</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${laserCuttingHovered ? 'rotate-180' : ''}`} />
               </Link>
               {laserCuttingHovered && (
@@ -270,19 +278,19 @@ export default function Navbar() {
               onMouseLeave={() => setToolkitHovered(false)}
             >
               <span className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
-                <span>Toolkit</span>
+                <span>{t.nav.toolkit || 'Toolkit'}</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${toolkitHovered ? 'rotate-180' : ''}`} />
               </span>
               {toolkitHovered && (
-                <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
+                <div className="absolute top-[60px] left-0 w-56 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
                   <Link href={adminLink('/3d-customizer')} className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-[#2CFF05] hover:bg-card transition-colors flex items-center gap-1">
-                    <Shirt size={11} /> Mockup Studio
+                    <Shirt size={11} /> {t.subNav.mockupStudio}
                   </Link>
                   <Link href={adminLink('/canvas')} className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-[#45ff24] hover:bg-card transition-colors flex items-center gap-1">
-                    <LayoutGrid size={11} /> Canvas Builder
+                    <LayoutGrid size={11} /> {t.subNav.canvasBuilder}
                   </Link>
                   <Link href={adminLink('/size-guide')} className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-emerald-400 hover:bg-card transition-colors flex items-center gap-1">
-                    <Layers size={11} /> Size Guide
+                    <Layers size={11} /> {t.subNav.sizeGuide}
                   </Link>
                 </div>
               )}
@@ -290,12 +298,12 @@ export default function Navbar() {
 
             {/* 07. Digital downloads */}
             <Link href={adminLink('/downloads')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
-              Downloads
+              {t.nav.downloads || 'Downloads'}
             </Link>
 
             {/* 08. Materials / Consumables */}
             <Link href={adminLink('/materials')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
-              Materials / Consumables
+              {t.nav.materials || 'Materials / Consumables'}
             </Link>
           </div>
 
@@ -383,6 +391,12 @@ export default function Navbar() {
         <div className="lg:hidden w-full bg-background/95 border-t border-border shadow-2xl backdrop-blur-xl max-h-[calc(100vh-80px)] overflow-y-auto animate-in slide-in-from-top duration-300">
           <div className="px-4 pt-3 pb-8 space-y-2">
             
+            {/* Mobile Language Switcher Row */}
+            <div className="flex items-center justify-between p-3 rounded-xl bg-card border border-border mb-3">
+              <span className="text-xs font-bold text-foreground">Language / භාෂාව</span>
+              <LanguageToggle />
+            </div>
+
             {/* Quick Studio Bar */}
             <div className="mb-4">
               <Link
@@ -404,7 +418,7 @@ export default function Navbar() {
               >
                 <div className="flex items-center gap-2">
                   <Palette size={16} className="text-primary" />
-                  <span>Stencil</span>
+                  <span>{t.nav.stencil || 'Stencil'}</span>
                 </div>
                 <ChevronDown
                   size={16}
@@ -452,7 +466,7 @@ export default function Navbar() {
               >
                 <div className="flex items-center gap-2">
                   <Printer size={16} className="text-primary" />
-                  <span>Screen Printing</span>
+                  <span>{t.subNav.screenPrinting}</span>
                 </div>
                 <ChevronDown
                   size={16}
@@ -497,7 +511,7 @@ export default function Navbar() {
               >
                 <div className="flex items-center gap-2">
                   <Layers size={16} className="text-primary" />
-                  <span>DTF Printing</span>
+                  <span>{t.subNav.dtfPrinting}</span>
                 </div>
                 <ChevronDown
                   size={16}
@@ -542,7 +556,7 @@ export default function Navbar() {
               >
                 <div className="flex items-center gap-2">
                   <Stamp size={16} className="text-primary" />
-                  <span>Batik Stamp</span>
+                  <span>{t.nav.batikStamp || 'Batik Stamp'}</span>
                 </div>
                 <ChevronDown
                   size={16}
@@ -573,7 +587,7 @@ export default function Navbar() {
               >
                 <div className="flex items-center gap-2">
                   <Scissors size={16} className="text-primary" />
-                  <span>Laser Cutting</span>
+                  <span>{t.subNav.laserCutting}</span>
                 </div>
                 <ChevronDown
                   size={16}
@@ -618,7 +632,7 @@ export default function Navbar() {
               >
                 <div className="flex items-center gap-2">
                   <Sparkles size={16} className="text-primary" />
-                  <span>Toolkit</span>
+                  <span>{t.nav.toolkit || 'Toolkit'}</span>
                 </div>
                 <ChevronDown
                   size={16}
@@ -635,21 +649,21 @@ export default function Navbar() {
                     onClick={closeMobileMenu}
                     className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-[#45ff24] hover:bg-card hover:text-foreground"
                   >
-                    Mockup Studio
+                    {t.subNav.mockupStudio}
                   </Link>
                   <Link
                     href={adminLink('/canvas')}
                     onClick={closeMobileMenu}
                     className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-[#45ff24] hover:bg-card hover:text-foreground"
                   >
-                    Canvas Builder
+                    {t.subNav.canvasBuilder}
                   </Link>
                   <Link
                     href={adminLink('/size-guide')}
                     onClick={closeMobileMenu}
                     className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-300 hover:bg-card hover:text-foreground"
                   >
-                    Size Guide
+                    {t.subNav.sizeGuide}
                   </Link>
                 </div>
               )}
@@ -663,7 +677,7 @@ export default function Navbar() {
             >
               <div className="flex items-center gap-2">
                 <Download size={16} className="text-primary" />
-                <span>Digital downloads</span>
+                <span>{t.nav.downloads || 'Digital downloads'}</span>
               </div>
               <ChevronRight size={16} className="text-muted-foreground" />
             </Link>
@@ -676,7 +690,7 @@ export default function Navbar() {
             >
               <div className="flex items-center gap-2">
                 <PackageCheck size={16} className="text-primary" />
-                <span>Materials / Consumables</span>
+                <span>{t.nav.materials || 'Materials / Consumables'}</span>
               </div>
               <ChevronRight size={16} className="text-muted-foreground" />
             </Link>

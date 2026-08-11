@@ -9,6 +9,7 @@ import PromoBanner from '@/components/PromoBanner';
 import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, Flame, CheckCircle2, Scissors, FlaskConical, PlayCircle, MessageSquareHeart, Upload, Grid, Cuboid, Package, Shield, Zap, Phone, ThumbsUp, Activity, Shirt, Feather, Clock, Droplet, PenTool, Crown } from 'lucide-react';
 import { HeroSearch } from '@/components/HeroSearch';
 import { HeroShowcaseCarousel } from '@/components/HeroShowcaseCarousel';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 // Icons for How It Works & Why Choose Us
 const UploadIcon = () => <Upload size={28} className="text-primary" strokeWidth={1.8} />;
@@ -44,6 +45,7 @@ if (typeof window !== 'undefined') {
 
 function HomeContent() {
   const container = React.useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   const traditionalDesigns = [
     { id: 1, bg: '#ff6b35', cardImage: '/images/products/design_1_card.png', motifImage: '/images/products/design_1_motif.png', title: 'Sri Lankan Peacock Motif' },
@@ -288,19 +290,23 @@ function HomeContent() {
               className="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 dark:bg-[#2CFF05]/15 border border-emerald-600/30 dark:border-[#2CFF05]/40 text-emerald-900 dark:text-[#2CFF05] text-xs font-bold backdrop-blur-md shadow-sm"
             >
               <Sparkles size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
-              <span>Bitium Technology Print Store</span>
+              <span>{t.hero.badge}</span>
             </div>
             
             <h1 
-              className="hero-title font-heading font-black text-[clamp(32px,4.5vw,56px)] tracking-tight leading-[1.08] text-slate-950 dark:text-white"
+              className="hero-title font-heading font-black text-[clamp(28px,4.2vw,52px)] tracking-tight leading-[1.12] text-slate-950 dark:text-white"
             >
-              High-Definition <span className="text-[#059669] dark:text-[#2CFF05] dark:drop-shadow-[0_0_24px_rgba(44,255,5,0.6)]">Print Solutions</span>{' '}&amp; Equipment
+              {t.hero.titlePrefix}
+              <span className="text-[#059669] dark:text-[#2CFF05] dark:drop-shadow-[0_0_24px_rgba(44,255,5,0.6)]">
+                {t.hero.titleHighlight}
+              </span>
+              {t.hero.titleSuffix}
             </h1>
             
             <p 
               className="hero-text text-base sm:text-lg text-slate-800 dark:text-white max-w-xl leading-relaxed font-medium dark:drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]"
             >
-              From custom precision stencils to industrial DTF film rolls, exposed screen printing, and traditional batik stamps — explore our specialized print technology store.
+              {t.hero.description}
             </p>
 
             <div className="hero-search pt-1 w-full max-w-[500px] relative z-40">
@@ -314,29 +320,29 @@ function HomeContent() {
                 href="/canvas" 
                 className="lime-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] font-bold border-none cursor-pointer w-full sm:w-auto shadow-lg shadow-[#2CFF05]/30 hover:scale-105 transition-all"
               >
-                <span>Launch DTF Canvas</span>
+                <span>{t.hero.btnCreate}</span>
                 <ArrowRight size={16} />
               </Link>
               <Link 
                 href="/stencil" 
                 className="ghost-btn flex items-center justify-center gap-[10px] px-8 py-3.5 rounded-full text-[15px] font-semibold cursor-pointer w-full sm:w-auto border border-slate-300 dark:border-white/20 bg-white dark:bg-white/10 hover:bg-slate-50 dark:hover:bg-white/20 text-slate-900 dark:text-white hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/50 transition-all shadow-sm"
               >
-                Browse Catalog
+                {t.hero.btnBrowse}
               </Link>
             </div>
 
             {/* Quality Bullets */}
             <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-bold text-slate-900 dark:text-white dark:drop-shadow-[0_1px_6px_rgba(0,0,0,0.8)]">
               <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> Premium Quality
+                <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> {t.hero.stats.accuracyTitle}
               </span>
               <span className="text-slate-400 dark:text-white/60">•</span>
               <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> Expert Support
+                <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> {t.hero.stats.turnaroundTitle}
               </span>
               <span className="text-slate-400 dark:text-white/60">•</span>
               <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> Fast Nationwide Delivery
+                <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> {t.hero.stats.ordersTitle}
               </span>
             </div>
           </div>
@@ -399,29 +405,29 @@ function HomeContent() {
             <div className="flex items-center gap-3 p-3 rounded-lg bg-white/60 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/5">
               <div className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#2CFF05]" />
               <div className="text-xs">
-                <span className="font-bold text-slate-900 dark:text-white">50,000+ </span>
-                <span className="text-muted-foreground">Prints Made</span>
+                <span className="font-bold text-slate-900 dark:text-white">{t.hero.stats.accuracyTitle}</span>
+                <span className="text-muted-foreground block text-[11px]">{t.hero.stats.accuracySub}</span>
               </div>
             </div>
             <div className="flex items-center gap-3 p-3 rounded-lg bg-white/60 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/5">
               <div className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#2CFF05]" />
               <div className="text-xs">
-                <span className="font-bold text-slate-900 dark:text-white">24–48h </span>
-                <span className="text-muted-foreground">Fast Dispatch</span>
+                <span className="font-bold text-slate-900 dark:text-white">{t.hero.stats.turnaroundTitle}</span>
+                <span className="text-muted-foreground block text-[11px]">{t.hero.stats.turnaroundSub}</span>
               </div>
             </div>
             <div className="flex items-center gap-3 p-3 rounded-lg bg-white/60 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/5">
               <div className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#2CFF05]" />
               <div className="text-xs">
-                <span className="font-bold text-slate-900 dark:text-white">Industrial </span>
-                <span className="text-muted-foreground">CMYK + White</span>
+                <span className="font-bold text-slate-900 dark:text-white">{t.hero.stats.ordersTitle}</span>
+                <span className="text-muted-foreground block text-[11px]">{t.hero.stats.ordersSub}</span>
               </div>
             </div>
             <div className="flex items-center gap-3 p-3 rounded-lg bg-white/60 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/5">
               <div className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#2CFF05]" />
               <div className="text-xs">
-                <span className="font-bold text-slate-900 dark:text-white">100% </span>
-                <span className="text-muted-foreground">Quality Guarantee</span>
+                <span className="font-bold text-slate-900 dark:text-white">{t.hero.stats.ratingTitle}</span>
+                <span className="text-muted-foreground block text-[11px]">{t.hero.stats.ratingSub}</span>
               </div>
             </div>
           </div>
