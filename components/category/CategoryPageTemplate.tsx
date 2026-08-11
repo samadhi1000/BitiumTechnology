@@ -429,7 +429,7 @@ export default function CategoryPageTemplate({
                       {/* View Product Link */}
                       <Link
                         href={`/products/${product.id}`}
-                        className="mt-3 pt-2.5 border-t border-slate-100 dark:border-white/10 flex items-center justify-between text-xs font-bold text-slate-700 dark:text-zinc-200 group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05] transition-colors"
+                        className="mt-3 pt-2.5 border-t border-slate-100 dark:border-white/10 flex items-center justify-between text-xs font-bold text-slate-700 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05] transition-colors"
                       >
                         <span>View {config.itemSingular}</span>
                         <ArrowRight
@@ -532,11 +532,11 @@ export default function CategoryPageTemplate({
             </h3>
             <div className="grid grid-cols-2 gap-3.5 my-auto">
               {config.perfectFor.items.map((item, i) => (
-                <div key={i} className="flex items-center gap-2">
+                <div key={i} className="flex items-center gap-2 group/item">
                   <span className="text-emerald-600 dark:text-[#2CFF05] shrink-0 text-sm">
                     {item.icon}
                   </span>
-                  <span className="text-xs font-semibold text-slate-700 dark:text-zinc-200">
+                  <span className="text-xs font-semibold text-slate-700 dark:text-white hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-colors cursor-pointer">
                     {item.label}
                   </span>
                 </div>

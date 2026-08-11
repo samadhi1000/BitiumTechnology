@@ -619,37 +619,37 @@ export default function DownloadsPage() {
             <div className="grid grid-cols-2 gap-3.5 my-auto">
               <div className="flex items-center gap-2">
                 <Scissors size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
-                <span className="text-xs font-semibold text-slate-700 dark:text-zinc-200">
+                <span className="text-xs font-semibold text-slate-700 dark:text-white hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-colors cursor-pointer">
                   Laser Cutters
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Printer size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
-                <span className="text-xs font-semibold text-slate-700 dark:text-zinc-200">
+                <span className="text-xs font-semibold text-slate-700 dark:text-white hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-colors cursor-pointer">
                   DTF Printers
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Shirt size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
-                <span className="text-xs font-semibold text-slate-700 dark:text-zinc-200">
+                <span className="text-xs font-semibold text-slate-700 dark:text-white hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-colors cursor-pointer">
                   Screen Printing
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Box size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
-                <span className="text-xs font-semibold text-slate-700 dark:text-zinc-200">
+                <span className="text-xs font-semibold text-slate-700 dark:text-white hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-colors cursor-pointer">
                   CNC Routing
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Flame size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
-                <span className="text-xs font-semibold text-slate-700 dark:text-zinc-200">
+                <span className="text-xs font-semibold text-slate-700 dark:text-white hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-colors cursor-pointer">
                   Vinyl Plotters
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Layers size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
-                <span className="text-xs font-semibold text-slate-700 dark:text-zinc-200">
+                <span className="text-xs font-semibold text-slate-700 dark:text-white hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-colors cursor-pointer">
                   Print-on-Demand
                 </span>
               </div>
