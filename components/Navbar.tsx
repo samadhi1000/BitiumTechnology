@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useAuth } from '@/lib/context/AuthContext';
 import { useTheme } from '@/lib/context/ThemeContext';
@@ -35,11 +35,18 @@ export default function Navbar() {
   const { user, profile, signOut } = useAuth();
   const { theme, toggle } = useTheme();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const [fromAdmin, setFromAdmin] = useState(false);
 
   // Detect if currently on admin page, or if user navigated here from admin panel.
-  const isAdminPage = pathname === '/admin';
-  const fromAdmin = isAdminPage || searchParams.get('from') === 'admin';
+  useEffect(() => {
+    if (pathname === '/admin') {
+      setFromAdmin(true);
+    } else if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      setFromAdmin(params.get('from') === 'admin');
+    }
+  }, [pathname]);
+
   const profileHref = fromAdmin ? '/admin' : '/profile';
 
   // Helper: appends ?from=admin to any URL when user is on or came from admin page.
