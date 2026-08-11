@@ -12,7 +12,7 @@ const MATERIALS_CONFIG: CategoryPageConfig = {
   titlePrimary: 'Printing',
   titleHighlight: 'Materials & Inks',
   badgeText: 'Industrial Printing Supplies',
-  description: 'Trade grade DTF textile inks, premium high-adhesive hot melt TPU powders, and double-matte hot peel DTF film rolls.',
+  description: 'Everything your print floor runs on — DTF inks and film, hot-melt powder, screen-printing emulsions, sensitizers, and wash chemicals — in stock and ready to ship.',
   heroImage: '/images/hero-cards/materials.jpg',
   searchPlaceholder: 'Search inks, powders, films & consumables...',
   itemSingular: 'Material / Supply',
@@ -56,6 +56,28 @@ const MATERIALS_CONFIG: CategoryPageConfig = {
     desc: 'Get direct wholesale rates and scheduled monthly dispatch for your print shop.',
     buttonText: 'Request Wholesale Pricing',
     buttonHref: '/contact',
+  },
+  afterListings: {
+    sections: [
+      {
+        title: 'Stocked for both DTF and screen printing',
+        content: 'Whether you\'re running a DTF printer or exposing your own screens, running out of a consumable mid-job stalls your whole order queue. We keep the essentials in stock so a low-ink day doesn\'t turn into a lost week.',
+      },
+      {
+        title: 'What\'s available',
+        content: 'We carry the core consumables that professional print shops rely on day to day.',
+        bullets: [
+          'DTF inks and double-matte film rolls',
+          'Hot-melt transfer powder',
+          'Screen-printing photo emulsions and sensitizers',
+          'Emulsion remover and screen reclaiming chemicals',
+        ],
+      },
+      {
+        title: 'Buying in bulk',
+        content: 'Running a shop day to day? Ask us about standing orders — we can set up a recurring delivery so consumables show up before you run low, instead of after.',
+      },
+    ],
   },
   seo: {
     title: 'DTF Materials & Printing Consumables | Bitium Technology',

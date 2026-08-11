@@ -12,7 +12,7 @@ const LASER_CUTTING_CONFIG: CategoryPageConfig = {
   titlePrimary: 'Laser Cutting',
   titleHighlight: 'Collection',
   badgeText: 'Precision Laser Cut & Engraving',
-  description: 'High-precision industrial laser cutting, engraving, and custom profiling on acrylic, wood, leather, and metal.',
+  description: 'Precision CO2 laser cutting for acrylic, wood, and custom profiles — cut and engraved straight from your file, no tooling required.',
   heroImage: '/images/hero-cards/laser.jpg',
   searchPlaceholder: 'Search laser cut products & materials...',
   itemSingular: 'Laser Product',
@@ -58,6 +58,36 @@ const LASER_CUTTING_CONFIG: CategoryPageConfig = {
     desc: 'Upload your vector file or artwork for an instant cutting quotation and advice.',
     buttonText: 'Request Laser Quote',
     buttonHref: '/contact',
+  },
+  afterListings: {
+    sections: [
+      {
+        title: 'How this is different from our stencil cutting',
+        content: 'Our Stencil page is about laser-cut Mylar for painting and fabric work. This page is about cutting and engraving the material itself — acrylic signage, wooden nameplates, keychains, panels, and custom-shaped profiles you\'d otherwise need a die or mold for.',
+      },
+      {
+        title: 'What you can order',
+        content: 'We handle a wide range of custom laser work across multiple materials.',
+        bullets: [
+          'Custom-shaped acrylic pieces (signs, stands, awards, decor)',
+          'Wood engraving — nameplates, coasters, gift pieces',
+          'Cut-to-shape profiles from your own outline or logo',
+          'Layered or multi-piece designs that assemble after cutting',
+        ],
+      },
+      {
+        title: 'Getting your file ready',
+        content: 'A vector file (SVG or AI) gives the cleanest result, since the laser follows the outline exactly. If you only have a photo or a rough sketch, send it anyway — we\'ll trace it into a cuttable file and confirm the outline with you before cutting.',
+      },
+      {
+        title: 'Material thickness matters',
+        content: 'Send us the thickness you\'re working with (or ask us to recommend one) — it changes cutting speed, how fine a detail can hold its shape, and whether engraving or a full cut-through is the better call for your design.',
+      },
+      {
+        title: 'Who this is for',
+        content: 'Small businesses needing signage or branded pieces, gift makers, hobbyists prototyping a shape before committing to a bigger batch, and anyone who needs one exact cut rather than a mass-produced stock shape.',
+      },
+    ],
   },
   seo: {
     title: 'Laser Cutting Services & Products | Bitium Technology',

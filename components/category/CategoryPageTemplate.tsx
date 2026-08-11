@@ -49,6 +49,13 @@ export interface CategoryPageConfig {
     icon?: React.ReactNode;
     image?: string;
   };
+  afterListings?: {
+    sections: {
+      title: string;
+      content: string;
+      bullets?: string[];
+    }[];
+  };
   seo: {
     title: string;
     description: string;
@@ -76,7 +83,7 @@ export default function CategoryPageTemplate({
   const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'name' | 'newest'>('featured');
   const [currentPage, setCurrentPage] = useState(1);
   const [wishlist, setWishlist] = useState<Record<string, boolean>>({});
-  const itemsPerPage = 10; // 10 items per page as requested
+  const itemsPerPage = 20; // 20 items per page (4 columns x 5 rows)
 
   useEffect(() => {
     setActiveSub(subParam);
@@ -497,6 +504,34 @@ export default function CategoryPageTemplate({
               </div>
             )}
           </>
+        )}
+
+        {/* ── AFTER LISTINGS - Rich SEO Content Section ── */}
+        {config.afterListings && config.afterListings.sections.length > 0 && (
+          <section className="mt-16 pt-10 border-t border-slate-200/80 dark:border-white/10">
+            <div className="max-w-4xl">
+              {config.afterListings.sections.map((section, i) => (
+                <div key={i} className={i > 0 ? 'mt-10' : ''}>
+                  <h3 className="font-heading font-extrabold text-lg sm:text-xl text-slate-900 dark:text-white mb-3">
+                    {section.title}
+                  </h3>
+                  <p className="text-sm sm:text-[15px] text-slate-600 dark:text-zinc-300 leading-relaxed">
+                    {section.content}
+                  </p>
+                  {section.bullets && section.bullets.length > 0 && (
+                    <ul className="mt-4 space-y-2.5">
+                      {section.bullets.map((bullet, j) => (
+                        <li key={j} className="flex items-start gap-3 text-sm text-slate-600 dark:text-zinc-300">
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-[#2CFF05] shrink-0" />
+                          <span className="leading-relaxed">{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
         )}
 
         {/* ── BOTTOM VALUE PROPS SECTION (3 Clean Info Boxes matching target screenshot) ── */}

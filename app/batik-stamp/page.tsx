@@ -12,7 +12,7 @@ const BATIK_STAMP_CONFIG: CategoryPageConfig = {
   titlePrimary: 'Batik Stamp',
   titleHighlight: 'Collection',
   badgeText: 'Handcrafted Cap Batik Stamps',
-  description: 'Authentic handcrafted copper and solid wood Cap Batik printing stamps for traditional fabric waxing and textile manufacturing.',
+  description: 'Traditional copper and hand-carved wood Cap Batik stamps, made the way batik makers have always made them.',
   heroImage: '/images/hero-cards/batik.jpg',
   searchPlaceholder: 'Search batik stamps & motifs...',
   itemSingular: 'Batik Stamp',
@@ -56,6 +56,22 @@ const BATIK_STAMP_CONFIG: CategoryPageConfig = {
     desc: 'We craft bespoke copper Cap Batik stamps based on your custom artwork and motifs.',
     buttonText: 'Request Custom Stamp',
     buttonHref: '/contact',
+  },
+  afterListings: {
+    sections: [
+      {
+        title: 'Copper vs. wood stamps',
+        content: 'Copper stamps (cap) hold fine, repeating detail well and last through heavy daily use — the standard choice for production batik. Wood stamps carve more freely, so they suit bolder, one-off, or hand-carved motifs where a little natural variation is part of the look.',
+      },
+      {
+        title: 'What we need from you',
+        content: 'A photo or drawing of the motif is enough to start. We\'ll confirm sizing and repeat spacing with you before anything is carved or cast, so there are no surprises on the finished stamp.',
+      },
+      {
+        title: 'Who orders these',
+        content: 'Batik studios keeping traditional methods alive, textile schools, and makers who want a stamp built to their own pattern instead of a stock design.',
+      },
+    ],
   },
   seo: {
     title: 'Batik Stamp Collection | Bitium Technology',

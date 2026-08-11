@@ -12,7 +12,7 @@ const STENCIL_CONFIG: CategoryPageConfig = {
   titlePrimary: 'Stencil',
   titleHighlight: 'Collection',
   badgeText: 'Precision Mylar & Metal Stencils',
-  description: 'Precision-cut stencil designs for creative projects, fabric printing, painting and more.',
+  description: 'Precision-cut Mylar stencils for saree work, hand painting, and wall art. Every stencil is laser-cut from your design, so the lines stay sharp no matter how detailed the pattern is.',
   heroImage: '/images/hero-cards/stencil.jpg',
   searchPlaceholder: 'Search stencils...',
   itemSingular: 'Stencil',
@@ -61,6 +61,32 @@ const STENCIL_CONFIG: CategoryPageConfig = {
     desc: 'We can create any precision laser-cut design you need with no minimums.',
     buttonText: 'Contact Us',
     buttonHref: '/contact',
+  },
+  afterListings: {
+    sections: [
+      {
+        title: 'Why laser-cut stencils?',
+        content: 'Hand-cut stencils shift a little every time — a curve here, a corner there. A laser follows your file exactly, so if you\'re repeating a pattern across ten sarees or a whole wall mural, every cut matches the last one.',
+      },
+      {
+        title: 'What you can use them for',
+        content: 'Our Mylar stencils are versatile enough for a wide range of creative and commercial applications.',
+        bullets: [
+          'Saree and fabric block printing',
+          'Wall art and mural templates',
+          'Henna and hand-painting guides',
+          'Repeat-pattern textile work',
+        ],
+      },
+      {
+        title: 'Getting your design ready',
+        content: 'You can send us a photo of a sketch, a vector file, or just describe what you want — we\'ll clean it up and turn it into a cuttable design before anything goes near the laser. If a detail is too fine to hold its shape once cut, we\'ll flag it and suggest a fix rather than print it as-is.',
+      },
+      {
+        title: 'Turnaround',
+        content: 'Most stencil orders are ready within a couple of days, depending on size and how many you need cut.',
+      },
+    ],
   },
   seo: {
     title: 'Stencil Collection | Bitium Technology',

@@ -12,7 +12,7 @@ const DTF_PRINTING_CONFIG: CategoryPageConfig = {
   titlePrimary: 'DTF Printing',
   titleHighlight: 'Collection',
   badgeText: 'Direct-to-Film Transfers',
-  description: 'High-definition custom direct-to-film transfers, sticker rolls, and ready-to-press garment sheets.',
+  description: 'Custom gang sheet layouts, anime sticker packs, and cloth transfers — build your sheet online, preview it, and we print and ship it.',
   heroImage: '/images/hero-cards/dtf.jpg',
   searchPlaceholder: 'Search DTF designs, rolls & sheets...',
   itemSingular: 'DTF Transfer',
@@ -58,6 +58,32 @@ const DTF_PRINTING_CONFIG: CategoryPageConfig = {
     desc: 'Use our 3D interactive canvas gang sheet builder to arrange your designs effortlessly.',
     buttonText: 'Launch DTF Canvas',
     buttonHref: '/canvas',
+  },
+  afterListings: {
+    sections: [
+      {
+        title: 'How a DTF order works',
+        content: 'Your design gets printed onto film, layered with a white base so colors stay bright on any fabric color, then coated with a hot-melt powder. When it arrives, you heat-press it onto the garment — no screens, no setup, no minimum order.',
+      },
+      {
+        title: 'Why people choose DTF over screen printing',
+        content: 'DTF transfers offer flexibility that traditional screen printing can\'t match for small runs and full-color work.',
+        bullets: [
+          'Works on cotton, polyester, and blends without changing your process',
+          'No cost jump for full-color or photo-style designs',
+          'Makes sense for a single shirt or a full gang sheet of small designs',
+          'Transfers store flat until you\'re ready to press them',
+        ],
+      },
+      {
+        title: 'Build your own sheet',
+        content: 'Use the DTF Sheet Builder to lay out your designs, see exact spacing, and check the finished size before you pay — what you see in the builder is what gets printed.',
+      },
+      {
+        title: 'Turnaround',
+        content: 'Standard sheets ship within 24–48 hours of approval.',
+      },
+    ],
   },
   seo: {
     title: 'DTF Printing Collection | Bitium Technology',
