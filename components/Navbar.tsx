@@ -277,10 +277,10 @@ export default function Navbar() {
               onMouseEnter={() => setToolkitHovered(true)}
               onMouseLeave={() => setToolkitHovered(false)}
             >
-              <span className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
+              <Link href={adminLink('/3d-customizer')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>{t.nav.toolkit || 'Toolkit'}</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${toolkitHovered ? 'rotate-180' : ''}`} />
-              </span>
+              </Link>
               {toolkitHovered && (
                 <div className="absolute top-[60px] left-0 w-56 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
                   <Link href={adminLink('/3d-customizer')} className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-[#2CFF05] hover:bg-card transition-colors flex items-center gap-1">

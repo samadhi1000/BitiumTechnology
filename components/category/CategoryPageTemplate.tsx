@@ -173,10 +173,12 @@ export default function CategoryPageTemplate({
         <div className="absolute right-0 top-0 bottom-0 w-full sm:w-2/3 md:w-1/2 lg:w-5/12 pointer-events-none select-none z-0 hidden sm:block overflow-hidden">
           <div className="relative w-full h-full">
             <Image
+              key={config.heroImage}
               src={config.heroImage}
               alt={config.titlePrimary}
               fill
               priority
+              unoptimized
               quality={90}
               className="object-cover object-center opacity-90 dark:opacity-85 transition-opacity duration-300"
               style={{
