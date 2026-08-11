@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useAuth } from '@/lib/context/AuthContext';
 import { useTheme } from '@/lib/context/ThemeContext';
@@ -33,6 +34,20 @@ export default function Navbar() {
   const openCart = useCartStore((state) => state.openCart);
   const { user, profile, signOut } = useAuth();
   const { theme, toggle } = useTheme();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Detect if currently on admin page, or if user navigated here from admin panel.
+  const isAdminPage = pathname === '/admin';
+  const fromAdmin = isAdminPage || searchParams.get('from') === 'admin';
+  const profileHref = fromAdmin ? '/admin' : '/profile';
+
+  // Helper: appends ?from=admin to any URL when user is on or came from admin page.
+  const adminLink = (href: string) => {
+    if (!fromAdmin) return href;
+    const separator = href.includes('?') ? '&' : '?';
+    return `${href}${separator}from=admin`;
+  };
   
   // Desktop Dropdown hover states
   const [stencilHovered, setStencilHovered] = useState(false);
@@ -90,13 +105,13 @@ export default function Navbar() {
               onMouseEnter={() => setStencilHovered(true)}
               onMouseLeave={() => setStencilHovered(false)}
             >
-              <Link href="/stencil" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
+              <Link href={adminLink('/stencil')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>Stencil</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${stencilHovered ? 'rotate-180' : ''}`} />
               </Link>
               {stencilHovered && (
                 <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
-                  <Link href="/stencil" className="px-3 py-2 rounded-lg text-[11px] font-bold text-primary hover:bg-card transition-colors">
+                  <Link href={adminLink('/stencil')} className="px-3 py-2 rounded-lg text-[11px] font-bold text-primary hover:bg-card transition-colors">
                     All Stencils
                   </Link>
                   <hr className="border-border my-0.5" />
@@ -110,7 +125,7 @@ export default function Navbar() {
                   ].map((item) => (
                     <Link 
                       key={item.sub} 
-                      href={`/stencil?sub=${item.sub}`} 
+                      href={adminLink(`/stencil?sub=${item.sub}`)} 
                       className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-foreground hover:text-foreground"
                     >
                       {item.label}
@@ -126,13 +141,13 @@ export default function Navbar() {
               onMouseEnter={() => setScreenPrintingHovered(true)}
               onMouseLeave={() => setScreenPrintingHovered(false)}
             >
-              <Link href="/screen-printing" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
+              <Link href={adminLink('/screen-printing')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>Screen Printing</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${screenPrintingHovered ? 'rotate-180' : ''}`} />
               </Link>
               {screenPrintingHovered && (
                 <div className="absolute top-[60px] left-0 w-52 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
-                  <Link href="/screen-printing" className="px-3 py-2 rounded-lg text-[11px] font-bold text-primary hover:bg-card transition-colors">
+                  <Link href={adminLink('/screen-printing')} className="px-3 py-2 rounded-lg text-[11px] font-bold text-primary hover:bg-card transition-colors">
                     All Screen Printing
                   </Link>
                   <hr className="border-border my-0.5" />
@@ -143,7 +158,7 @@ export default function Navbar() {
                   ].map((item) => (
                     <Link 
                       key={item.sub} 
-                      href={`/screen-printing?sub=${item.sub}`} 
+                      href={adminLink(`/screen-printing?sub=${item.sub}`)} 
                       className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-foreground hover:text-foreground"
                     >
                       {item.label}
@@ -159,13 +174,13 @@ export default function Navbar() {
               onMouseEnter={() => setDtfPrintingHovered(true)}
               onMouseLeave={() => setDtfPrintingHovered(false)}
             >
-              <Link href="/dtf-printing" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
+              <Link href={adminLink('/dtf-printing')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>DTF Printing</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${dtfPrintingHovered ? 'rotate-180' : ''}`} />
               </Link>
               {dtfPrintingHovered && (
                 <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
-                  <Link href="/dtf-printing" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-primary hover:bg-card transition-colors">
+                  <Link href={adminLink('/dtf-printing')} className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-primary hover:bg-card transition-colors">
                     All DTF Printing
                   </Link>
                   <hr className="border-border my-0.5" />
@@ -176,7 +191,7 @@ export default function Navbar() {
                   ].map((item) => (
                     <Link 
                       key={item.sub} 
-                      href={`/dtf-printing?sub=${item.sub}`} 
+                      href={adminLink(`/dtf-printing?sub=${item.sub}`)} 
                       className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-foreground hover:text-foreground"
                     >
                       {item.label}
@@ -192,14 +207,14 @@ export default function Navbar() {
               onMouseEnter={() => setBatikStampHovered(true)}
               onMouseLeave={() => setBatikStampHovered(false)}
             >
-              <Link href="/batik-stamp" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
+              <Link href={adminLink('/batik-stamp')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>Batik Stamp</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${batikStampHovered ? 'rotate-180' : ''}`} />
               </Link>
               {batikStampHovered && (
                 <div className="absolute top-[60px] left-0 w-44 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
                   <Link 
-                    href="/batik-stamp" 
+                    href={adminLink('/batik-stamp')} 
                     className="px-3 py-2 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-foreground hover:text-foreground"
                   >
                     Cap Batik
@@ -214,13 +229,13 @@ export default function Navbar() {
               onMouseEnter={() => setLaserCuttingHovered(true)}
               onMouseLeave={() => setLaserCuttingHovered(false)}
             >
-              <Link href="/laser-cutting" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
+              <Link href={adminLink('/laser-cutting')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>Laser Cutting</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${laserCuttingHovered ? 'rotate-180' : ''}`} />
               </Link>
               {laserCuttingHovered && (
                 <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
-                  <Link href="/laser-cutting" className="px-3 py-2 rounded-lg text-[11px] font-bold text-primary hover:bg-card transition-colors">
+                  <Link href={adminLink('/laser-cutting')} className="px-3 py-2 rounded-lg text-[11px] font-bold text-primary hover:bg-card transition-colors">
                     All Laser Cutting
                   </Link>
                   <hr className="border-border my-0.5" />
@@ -231,7 +246,7 @@ export default function Navbar() {
                   ].map((item) => (
                     <Link 
                       key={item.sub} 
-                      href={`/laser-cutting?sub=${item.sub}`} 
+                      href={adminLink(`/laser-cutting?sub=${item.sub}`)} 
                       className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-foreground hover:text-foreground"
                     >
                       {item.label}
@@ -253,13 +268,13 @@ export default function Navbar() {
               </span>
               {toolkitHovered && (
                 <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
-                  <Link href="/3d-customizer" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-[#2CFF05] hover:bg-card transition-colors flex items-center gap-1">
+                  <Link href={adminLink('/3d-customizer')} className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-[#2CFF05] hover:bg-card transition-colors flex items-center gap-1">
                     <Shirt size={11} /> Mockup Studio
                   </Link>
-                  <Link href="/canvas" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-[#45ff24] hover:bg-card transition-colors flex items-center gap-1">
+                  <Link href={adminLink('/canvas')} className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-[#45ff24] hover:bg-card transition-colors flex items-center gap-1">
                     <LayoutGrid size={11} /> Canvas Builder
                   </Link>
-                  <Link href="/size-guide" className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-emerald-400 hover:bg-card transition-colors flex items-center gap-1">
+                  <Link href={adminLink('/size-guide')} className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-emerald-400 hover:bg-card transition-colors flex items-center gap-1">
                     <Layers size={11} /> Size Guide
                   </Link>
                 </div>
@@ -267,12 +282,12 @@ export default function Navbar() {
             </div>
 
             {/* 07. Digital downloads */}
-            <Link href="/downloads" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
+            <Link href={adminLink('/downloads')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
               Downloads
             </Link>
 
             {/* 08. Materials / Consumables */}
-            <Link href="/materials" className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
+            <Link href={adminLink('/materials')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
               Materials / Consumables
             </Link>
           </div>
@@ -319,11 +334,20 @@ export default function Navbar() {
             {/* Desktop Auth */}
             {user && (
               <div className="hidden lg:flex items-center space-x-3">
-                <Link href="/profile" className="flex items-center space-x-2 text-sm font-medium hover:text-primary transition-colors">
-                  <User size={18} className="text-muted-foreground" />
+                <Link
+                  href={profileHref}
+                  title={fromAdmin ? 'Back to Admin Panel' : 'Profile'}
+                  className="flex items-center space-x-2 text-sm font-medium hover:text-primary transition-colors"
+                >
+                  <User size={18} className={fromAdmin ? 'text-[#2CFF05]' : 'text-muted-foreground'} />
                   <span className="max-w-[100px] truncate">
                     {profile?.full_name || user.email}
                   </span>
+                  {fromAdmin && (
+                    <span className="text-[10px] font-bold text-[#2CFF05] bg-[#2CFF05]/10 border border-[#2CFF05]/30 px-1.5 py-0.5 rounded-full leading-none">
+                      ADMIN
+                    </span>
+                  )}
                 </Link>
                 <button
                   onClick={() => signOut()}
@@ -386,7 +410,7 @@ export default function Navbar() {
               {mobileSubOpen === 'stencil' && (
                 <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-border/50">
                   <Link
-                    href="/stencil"
+                    href={adminLink('/stencil')}
                     onClick={closeMobileMenu}
                     className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#45ff24]/10"
                   >
@@ -402,7 +426,7 @@ export default function Navbar() {
                   ].map((item) => (
                     <Link
                       key={item.sub}
-                      href={`/stencil?sub=${item.sub}`}
+                      href={adminLink(`/stencil?sub=${item.sub}`)}
                       onClick={closeMobileMenu}
                       className="block px-3 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-card hover:text-foreground"
                     >
@@ -434,7 +458,7 @@ export default function Navbar() {
               {mobileSubOpen === 'screen' && (
                 <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-border/50">
                   <Link
-                    href="/screen-printing"
+                    href={adminLink('/screen-printing')}
                     onClick={closeMobileMenu}
                     className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#45ff24]/10"
                   >
@@ -447,7 +471,7 @@ export default function Navbar() {
                   ].map((item) => (
                     <Link
                       key={item.sub}
-                      href={`/screen-printing?sub=${item.sub}`}
+                      href={adminLink(`/screen-printing?sub=${item.sub}`)}
                       onClick={closeMobileMenu}
                       className="block px-3 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-card hover:text-foreground"
                     >
@@ -479,7 +503,7 @@ export default function Navbar() {
               {mobileSubOpen === 'dtf' && (
                 <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-border/50">
                   <Link
-                    href="/dtf-printing"
+                    href={adminLink('/dtf-printing')}
                     onClick={closeMobileMenu}
                     className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#45ff24]/10"
                   >
@@ -492,7 +516,7 @@ export default function Navbar() {
                   ].map((item) => (
                     <Link
                       key={item.sub}
-                      href={`/dtf-printing?sub=${item.sub}`}
+                      href={adminLink(`/dtf-printing?sub=${item.sub}`)}
                       onClick={closeMobileMenu}
                       className="block px-3 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-card hover:text-foreground"
                     >
@@ -524,7 +548,7 @@ export default function Navbar() {
               {mobileSubOpen === 'batik' && (
                 <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-border/50">
                   <Link
-                    href="/batik-stamp"
+                    href={adminLink('/batik-stamp')}
                     onClick={closeMobileMenu}
                     className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#45ff24]/10"
                   >
@@ -555,7 +579,7 @@ export default function Navbar() {
               {mobileSubOpen === 'laser' && (
                 <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-border/50">
                   <Link
-                    href="/laser-cutting"
+                    href={adminLink('/laser-cutting')}
                     onClick={closeMobileMenu}
                     className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#45ff24]/10"
                   >
@@ -568,7 +592,7 @@ export default function Navbar() {
                   ].map((item) => (
                     <Link
                       key={item.sub}
-                      href={`/laser-cutting?sub=${item.sub}`}
+                      href={adminLink(`/laser-cutting?sub=${item.sub}`)}
                       onClick={closeMobileMenu}
                       className="block px-3 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-card hover:text-foreground"
                     >
@@ -600,21 +624,21 @@ export default function Navbar() {
               {mobileSubOpen === 'toolkit' && (
                 <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-border/50">
                   <Link
-                    href="/3d-customizer"
+                    href={adminLink('/3d-customizer')}
                     onClick={closeMobileMenu}
                     className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-[#45ff24] hover:bg-card hover:text-foreground"
                   >
                     Mockup Studio
                   </Link>
                   <Link
-                    href="/canvas"
+                    href={adminLink('/canvas')}
                     onClick={closeMobileMenu}
                     className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-[#45ff24] hover:bg-card hover:text-foreground"
                   >
                     Canvas Builder
                   </Link>
                   <Link
-                    href="/size-guide"
+                    href={adminLink('/size-guide')}
                     onClick={closeMobileMenu}
                     className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-300 hover:bg-card hover:text-foreground"
                   >
@@ -626,7 +650,7 @@ export default function Navbar() {
 
             {/* 06. Digital downloads */}
             <Link
-              href="/downloads"
+              href={adminLink('/downloads')}
               onClick={closeMobileMenu}
               className="flex items-center justify-between px-4 py-3 rounded-xl bg-card/50 hover:bg-card border border-border text-sm font-bold text-foreground"
             >
@@ -639,7 +663,7 @@ export default function Navbar() {
 
             {/* 6. Materials / Consumables */}
             <Link
-              href="/materials"
+              href={adminLink('/materials')}
               onClick={closeMobileMenu}
               className="flex items-center justify-between px-4 py-3 rounded-xl bg-card/50 hover:bg-card border border-border text-sm font-bold text-foreground"
             >
@@ -654,11 +678,20 @@ export default function Navbar() {
             {user && (
               <div className="pt-4 border-t border-border mt-4">
                 <div className="flex items-center justify-between bg-card p-3 rounded-xl border border-border">
-                  <Link href="/profile" onClick={closeMobileMenu} className="flex items-center space-x-2 text-sm font-medium text-foreground">
-                    <User size={18} className="text-primary" />
+                  <Link
+                    href={profileHref}
+                    onClick={closeMobileMenu}
+                    className="flex items-center space-x-2 text-sm font-medium text-foreground"
+                  >
+                    <User size={18} className={fromAdmin ? 'text-[#2CFF05]' : 'text-primary'} />
                     <span className="max-w-[150px] truncate">
                       {profile?.full_name || user.email}
                     </span>
+                    {fromAdmin && (
+                      <span className="text-[10px] font-bold text-[#2CFF05] bg-[#2CFF05]/10 border border-[#2CFF05]/30 px-1.5 py-0.5 rounded-full leading-none">
+                        ADMIN
+                      </span>
+                    )}
                   </Link>
                   <button
                     onClick={() => {
