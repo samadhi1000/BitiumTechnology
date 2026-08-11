@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import * as fabric from 'fabric';
 import { 
-  Eye, ArrowLeft, ShoppingBag, Loader2
+  Eye, ArrowLeft, ShoppingBag, Loader2, ChevronRight
 } from 'lucide-react';
 import Link from 'next/link';
 import { useCartStore } from '@/lib/store/cartStore';
@@ -461,7 +461,7 @@ export default function DynamicMockupCustomizer() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8">
+    <div className="w-full">
       {/* Canonical Link */}
       <link rel="canonical" href="https://www.bitiumtechnology.com/3d-customizer" />
 
@@ -478,27 +478,57 @@ export default function DynamicMockupCustomizer() {
           })
         }}
       />
-      {/* LEFT COLUMN: Controls */}
-      <div className="w-full lg:w-80 flex flex-col gap-6">
-        <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-semibold mb-2">
-          <ArrowLeft size={16} /> Back to Home
-        </Link>
 
-        {/* Toolkit Hero Image Header Card */}
-        <div className="relative w-full h-36 rounded-2xl overflow-hidden border border-slate-200/80 dark:border-white/15 shadow-lg group select-none">
-          <Image
-            src="/images/hero-cards/toolkit.jpg"
-            alt="3D Mockup Studio Toolkit"
-            fill
-            priority
-            className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-          <div className="absolute bottom-3 left-3.5 right-3.5">
-            <span className="text-[10px] font-black text-[#2CFF05] uppercase tracking-widest block mb-0.5">Toolkit Studio</span>
-            <h1 className="font-heading font-black text-lg text-white leading-tight">3D Mockup Studio</h1>
+      {/* ── TOP HERO HEADER SECTION MATCHING STORE CATEGORY PAGES ── */}
+      <header className="relative bg-white dark:bg-[#080d1a] border-b border-slate-200/80 dark:border-white/10 overflow-hidden pt-8 pb-10 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+        {/* Right side Contextual Image with Seamless Smooth Gradient Fade Mask */}
+        <div className="absolute right-0 top-0 bottom-0 w-full sm:w-2/3 md:w-1/2 lg:w-5/12 pointer-events-none select-none z-0 hidden sm:block overflow-hidden">
+          <div className="relative w-full h-full">
+            <Image
+              src="/images/hero-cards/toolkit.jpg"
+              alt="3D Mockup Studio Toolkit"
+              fill
+              priority
+              quality={90}
+              className="object-cover object-center opacity-90 dark:opacity-85 transition-opacity duration-300"
+              style={{
+                maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
+                WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
+              }}
+            />
+            {/* Smooth Top & Bottom subtle edge blend */}
+            <div className="absolute inset-0 bg-gradient-to-t from-white/40 dark:from-[#080d1a]/50 via-transparent to-white/20 dark:to-[#080d1a]/20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-white/80 dark:from-[#080d1a]/80 via-transparent to-transparent" />
           </div>
         </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          {/* Breadcrumbs */}
+          <nav className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-zinc-400 mb-4">
+            <Link href="/" className="hover:text-slate-900 dark:hover:text-white transition-colors">
+              Home
+            </Link>
+            <ChevronRight size={12} className="text-slate-400" />
+            <span className="text-slate-900 dark:text-white font-semibold">
+              3D Mockup Studio
+            </span>
+          </nav>
+
+          {/* Title & Description */}
+          <div className="max-w-2xl">
+            <h1 className="font-heading font-black text-3xl sm:text-4xl lg:text-5xl tracking-tight text-slate-900 dark:text-white leading-[1.1] mb-3">
+              3D Mockup <span className="text-emerald-600 dark:text-[#2CFF05]">Studio</span>
+            </h1>
+            <p className="text-slate-600 dark:text-zinc-300 text-sm sm:text-[15px] leading-relaxed max-w-xl font-normal">
+              Visualize your custom artwork on apparel in real-time with our interactive 3D studio viewer. Upload artwork, adjust garment colors, and test print finishes.
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8">
+        {/* LEFT COLUMN: Controls */}
+        <div className="w-full lg:w-80 flex flex-col gap-6">
 
         {/* Base Colors Selector */}
         <ColorSelector 
@@ -608,5 +638,6 @@ export default function DynamicMockupCustomizer() {
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 }
