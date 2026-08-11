@@ -3,7 +3,7 @@
 import React, { useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { PenTool, Layers, Printer, Stamp, Scissors, ChevronLeft, ChevronRight } from "lucide-react";
+import { PenTool, Layers, Printer, Stamp, Scissors, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { useTheme } from "@/lib/context/ThemeContext";
 
 interface HeroCardItem {
@@ -55,6 +55,14 @@ const HERO_ITEMS: HeroCardItem[] = [
     image: "/images/hero-cards/laser.jpg",
     href: "/laser-cutting",
     icon: Scissors,
+  },
+  {
+    id: "toolkit",
+    title: "Toolkit Studio",
+    desc: "Interactive 3D mockup studio and gang sheet canvas builder.",
+    image: "/images/hero-cards/toolkit.jpg",
+    href: "/3d-customizer",
+    icon: Sparkles,
   },
 ];
 

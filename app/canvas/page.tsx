@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useAuth } from '@/lib/context/AuthContext';
 import { uploadCanvasToCloudinary } from '@/lib/cloudinary';
@@ -349,6 +350,21 @@ export default function CanvasBuilder() {
       />
       {/* LEFT COLUMN: Controls & Presets */}
       <div className="w-full lg:w-80 flex flex-col gap-6">
+        {/* Toolkit Hero Image Header Card */}
+        <div className="relative w-full h-36 rounded-2xl overflow-hidden border border-slate-200/80 dark:border-white/15 shadow-lg group select-none">
+          <Image
+            src="/images/hero-cards/toolkit.jpg"
+            alt="Gang Sheet Canvas Builder Toolkit"
+            fill
+            priority
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+          <div className="absolute bottom-3 left-3.5 right-3.5">
+            <span className="text-[10px] font-black text-[#2CFF05] uppercase tracking-widest block mb-0.5">Toolkit Studio</span>
+            <h1 className="font-heading font-black text-lg text-white leading-tight">Gang Sheet Builder</h1>
+          </div>
+        </div>
         {/* Preset Selector */}
         <div className="p-6 rounded-2xl border border-border bg-card/40 space-y-4">
           <h3 className="font-bold text-sm text-foreground">1. Select Sheet Dimensions</h3>

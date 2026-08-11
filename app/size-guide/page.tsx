@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { 
   Sparkles, 
   Ruler, 
@@ -104,19 +105,42 @@ export default function SizeGuidePage() {
 
       <div className="max-w-[1400px] mx-auto relative z-10 space-y-16">
         
-        {/* Header Block */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#45ff24]/10 border border-[#2CFF05]/30 text-[#45ff24] text-xs font-semibold">
-            <Ruler size={12} className="animate-pulse" />
-            <span>Interactive Fit Assistant</span>
+      {/* TOP HERO HEADER WITH TOOLKIT BACKGROUND IMAGE */}
+      <header className="relative bg-white dark:bg-[#080d1a] border-b border-slate-200/80 dark:border-white/10 overflow-hidden pt-8 pb-10 px-4 sm:px-6 lg:px-8 transition-colors duration-300 mb-12">
+        <div className="absolute right-0 top-0 bottom-0 w-full sm:w-2/3 md:w-1/2 lg:w-5/12 pointer-events-none select-none z-0 hidden sm:block overflow-hidden">
+          <div className="relative w-full h-full">
+            <Image
+              src="/images/hero-cards/toolkit.jpg"
+              alt="Apparel Sizing Toolkit"
+              fill
+              priority
+              quality={90}
+              className="object-cover object-center opacity-90 dark:opacity-85 transition-opacity duration-300"
+              style={{
+                maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
+                WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-white/40 dark:from-[#080d1a]/50 via-transparent to-white/20 dark:to-[#080d1a]/20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-white/80 dark:from-[#080d1a]/80 via-transparent to-transparent" />
           </div>
-          <h1 className="text-4xl sm:text-6xl font-black tracking-tight">
-            T-Shirt <span className="text-[#2CFF05]">Size & Fit Guide</span>
-          </h1>
-          <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-            Find your perfect fit. Toggle between units, view dimensions on our interactive model, or use the Fit Calculator for an instant recommendation.
-          </p>
         </div>
+
+        <div className="max-w-[1400px] mx-auto relative z-10">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#45ff24]/10 border border-[#2CFF05]/30 text-[#45ff24] text-xs font-semibold mb-3">
+              <Ruler size={12} className="animate-pulse" />
+              <span>Interactive Fit Assistant</span>
+            </div>
+            <h1 className="font-heading font-black text-3xl sm:text-5xl tracking-tight text-slate-900 dark:text-white leading-[1.1] mb-3">
+              T-Shirt <span className="text-emerald-600 dark:text-[#2CFF05]">Size & Fit Guide</span>
+            </h1>
+            <p className="text-slate-600 dark:text-zinc-300 text-xs sm:text-sm leading-relaxed max-w-xl font-normal">
+              Find your perfect fit. Toggle between units, view dimensions on our interactive model, or use the Fit Calculator for an instant recommendation.
+            </p>
+          </div>
+        </div>
+      </header>
 
         {/* Main Interface Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

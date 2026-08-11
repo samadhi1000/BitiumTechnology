@@ -171,15 +171,15 @@ export default function CategoryPageTemplate({
               fill
               priority
               quality={90}
-              className="object-cover object-center opacity-40 dark:opacity-30"
+              className="object-cover object-center opacity-90 dark:opacity-85 transition-opacity duration-300"
               style={{
-                maskImage: 'linear-gradient(to left, rgba(0,0,0,0.95) 20%, rgba(0,0,0,0) 100%)',
-                WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,0.95) 20%, rgba(0,0,0,0) 100%)',
+                maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
+                WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
               }}
             />
             {/* Smooth Top & Bottom subtle edge blend */}
-            <div className="absolute inset-0 bg-gradient-to-t from-white/90 dark:from-[#080d1a]/90 via-transparent to-white/50 dark:to-[#080d1a]/50" />
-            <div className="absolute inset-0 bg-gradient-to-r from-white dark:from-[#080d1a] via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-white/40 dark:from-[#080d1a]/50 via-transparent to-white/20 dark:to-[#080d1a]/20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-white/80 dark:from-[#080d1a]/80 via-transparent to-transparent" />
           </div>
         </div>
 

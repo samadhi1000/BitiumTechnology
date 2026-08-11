@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import * as fabric from 'fabric';
 import { 
   Eye, ArrowLeft, ShoppingBag, Loader2
@@ -482,6 +483,22 @@ export default function DynamicMockupCustomizer() {
         <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-semibold mb-2">
           <ArrowLeft size={16} /> Back to Home
         </Link>
+
+        {/* Toolkit Hero Image Header Card */}
+        <div className="relative w-full h-36 rounded-2xl overflow-hidden border border-slate-200/80 dark:border-white/15 shadow-lg group select-none">
+          <Image
+            src="/images/hero-cards/toolkit.jpg"
+            alt="3D Mockup Studio Toolkit"
+            fill
+            priority
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+          <div className="absolute bottom-3 left-3.5 right-3.5">
+            <span className="text-[10px] font-black text-[#2CFF05] uppercase tracking-widest block mb-0.5">Toolkit Studio</span>
+            <h1 className="font-heading font-black text-lg text-white leading-tight">3D Mockup Studio</h1>
+          </div>
+        </div>
 
         {/* Base Colors Selector */}
         <ColorSelector 
