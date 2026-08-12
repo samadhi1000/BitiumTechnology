@@ -103,20 +103,20 @@ export const translations: Record<Language, Translations> = {
       portfolio: "අපගේ නිමවුම්",
       about: "අප පිළිබඳව",
       contact: "අප හා සම්බන්ධ වන්න",
-      stencil: "ස්ටෙන්සිල් (Stencil)",
-      batikStamp: "බතික් මුද්‍රා (Batik Stamp)",
-      downloads: "බාගත කිරීම් (Downloads)",
+      stencil: "ස්ටෙන්සිල්",
+      batikStamp: "බතික් මුද්‍රා",
+      downloads: "බාගත කිරීම්",
       materials: "ද්‍රව්‍ය හා අමුද්‍රව්‍ය",
       toolkit: "මෙවලම් කට්ටලය"
     },
     subNav: {
       dtfPrinting: "DTF මුද්‍රණය",
       screenPrinting: "ස්ක්‍රීන් මුද්‍රණය",
-      laserCutting: "ලේසර් කැපුම් (Laser Cutting)",
-      engraving: "කැටයම් කිරීම් (Engraving)",
-      canvasBuilder: "කැන්වස් නිර්මාණකරණය (Canvas Builder)",
-      mockupStudio: "මොකප් මැදිරිය (Mockup Studio)",
-      sizeGuide: "ප්‍රමාණ මඟපෙන්වීම (Size Guide)"
+      laserCutting: "ලේසර් කැපුම්",
+      engraving: "කැටයම් කිරීම්",
+      canvasBuilder: "කැන්වස් නිර්මාණකරණය",
+      mockupStudio: "මොකප් ස්ටුඩියෝ",
+      sizeGuide: "ප්‍රමාණ මඟපෙන්වීම"
     },
     hero: {
       badge: "වෘත්තීය මට්ටමේ මුද්‍රණ සහ ලේසර් තාක්ෂණය",
