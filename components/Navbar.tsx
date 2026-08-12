@@ -84,8 +84,8 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 w-full glass shadow-sm transition-all duration-300 border-b border-border/80 bg-background/90 backdrop-blur-md">
       <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Logo & Desktop Language Toggle (between Logo and Stencil) */}
-          <div className="flex-shrink-0 flex items-center gap-3 xl:gap-4">
+          {/* Logo */}
+          <div className="flex-shrink-0 flex items-center">
             <Link href="/" onClick={closeMobileMenu} className="flex items-center space-x-2.5 sm:space-x-3 group relative py-1 hover:opacity-90 transition-opacity">
               <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-primary/50 shadow-[0_0_20px_rgba(99,102,241,0.5)] group-hover:scale-105 transition-transform">
                 <Image
@@ -105,15 +105,10 @@ export default function Navbar() {
                 </span>
               </div>
             </Link>
-
-            {/* Language toggle switch placed right between Logo and Stencil tab on Desktop */}
-            <div className="hidden lg:flex items-center pl-1">
-              <LanguageToggle />
-            </div>
           </div>
 
           {/* Desktop Navigation Links (Tidy & Cleanly Spaced) */}
-          <div className="hidden lg:flex items-center gap-1 xl:gap-2 2xl:gap-3 h-full">
+          <div className="hidden lg:flex items-center gap-1.5 xl:gap-3 2xl:gap-4 h-full">
             {/* 02. Stencil Page Dropdown */}
             <div 
               className="relative h-full flex items-center"
@@ -345,6 +340,11 @@ export default function Navbar() {
                 </span>
               )}
             </button>
+
+            {/* Language Toggle — desktop only, far right after cart */}
+            <div className="hidden lg:flex items-center">
+              <LanguageToggle />
+            </div>
 
             {/* Desktop Auth */}
             {user && (

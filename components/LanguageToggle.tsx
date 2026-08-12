@@ -2,65 +2,38 @@
 
 import React from 'react';
 import { useLanguage } from '@/lib/context/LanguageContext';
-import { Globe } from 'lucide-react';
 
 interface LanguageToggleProps {
   className?: string;
   compact?: boolean;
 }
 
-export default function LanguageToggle({ className = '', compact = false }: LanguageToggleProps) {
+export default function LanguageToggle({ className = '' }: LanguageToggleProps) {
   const { language, setLanguage } = useLanguage();
 
+  const isSinhala = language === 'si';
+
+  const toggle = () => setLanguage(isSinhala ? 'en' : 'si');
+
   return (
-    <div
-      className={`relative inline-flex items-center p-0.5 sm:p-1 rounded-full border border-slate-300/80 dark:border-zinc-700/80 bg-slate-200/50 dark:bg-card/70 backdrop-blur-md shadow-inner transition-all duration-300 hover:border-emerald-500/60 dark:hover:border-[#2CFF05]/50 ${className}`}
-      role="group"
-      aria-label="Language selection"
+    <button
+      type="button"
+      onClick={toggle}
+      aria-label={isSinhala ? 'Switch to English' : 'Switch to Sinhala'}
+      title={isSinhala ? 'Switch to English' : 'සිංහලට මාරු වන්න'}
+      className={`
+        inline-flex items-center justify-center
+        h-7 min-w-[2.75rem] px-2.5
+        rounded-md border border-zinc-700
+        bg-card text-[11px] font-bold tracking-wide
+        text-[#2CFF05] hover:border-[#2CFF05] hover:bg-[#2CFF05]/10
+        transition-all duration-200 cursor-pointer select-none
+        shadow-[0_0_6px_rgba(44,255,5,0.15)]
+        hover:shadow-[0_0_10px_rgba(44,255,5,0.35)]
+        ${className}
+      `}
     >
-      {/* Globe Icon */}
-      <div className="pl-1.5 pr-0.5 text-slate-500 dark:text-zinc-400 hidden sm:flex items-center">
-        <Globe size={13} className="text-emerald-600 dark:text-[#2CFF05]" />
-      </div>
-
-      {/* Sliding background pill */}
-      <div
-        className={`absolute top-0.5 sm:top-1 bottom-0.5 sm:bottom-1 rounded-full bg-white dark:bg-[#2CFF05] shadow-sm transition-all duration-300 ease-out pointer-events-none ${
-          language === 'en'
-            ? 'left-1 sm:left-6 w-[34px] sm:w-[38px] shadow-[0_2px_8px_rgba(0,0,0,0.15)] dark:shadow-[0_0_12px_rgba(44,255,5,0.4)]'
-            : 'left-[36px] sm:left-[66px] w-[34px] sm:w-[38px] shadow-[0_2px_8px_rgba(0,0,0,0.15)] dark:shadow-[0_0_12px_rgba(44,255,5,0.4)]'
-        }`}
-      />
-
-      {/* EN Button */}
-      <button
-        type="button"
-        onClick={() => setLanguage('en')}
-        className={`relative z-10 px-2 sm:px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-bold transition-colors duration-200 cursor-pointer ${
-          language === 'en'
-            ? 'text-slate-900 dark:text-[#0a0a0a]'
-            : 'text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white'
-        }`}
-        aria-pressed={language === 'en'}
-        title="English"
-      >
-        EN
-      </button>
-
-      {/* SI Button */}
-      <button
-        type="button"
-        onClick={() => setLanguage('si')}
-        className={`relative z-10 px-2 sm:px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-bold transition-colors duration-200 cursor-pointer ${
-          language === 'si'
-            ? 'text-slate-900 dark:text-[#0a0a0a]'
-            : 'text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white'
-        }`}
-        aria-pressed={language === 'si'}
-        title="සිංහල (Sinhala)"
-      >
-        සිං
-      </button>
-    </div>
+      {isSinhala ? 'සිං' : 'EN'}
+    </button>
   );
 }
