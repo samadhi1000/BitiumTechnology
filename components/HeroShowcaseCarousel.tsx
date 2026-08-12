@@ -245,7 +245,7 @@ export const HeroShowcaseCarousel: React.FC = () => {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      className="w-full max-w-[540px] group relative select-none rounded-2xl sm:rounded-3xl border border-slate-300/40 dark:border-white/10 bg-white/[0.05] dark:bg-black/[0.05] backdrop-blur-[3px] p-4 sm:p-5 shadow-lg dark:shadow-2xl overflow-hidden transition-colors duration-300 cursor-grab active:cursor-grabbing"
+      className="w-full max-w-[640px] group relative select-none rounded-2xl sm:rounded-3xl border border-white/10 dark:border-white/10 bg-black/25 dark:bg-black/45 backdrop-blur-[6px] p-4 sm:p-5 shadow-xl dark:shadow-2xl overflow-hidden transition-colors duration-300 cursor-grab active:cursor-grabbing"
     >
       {/* Subtle ambient lighting inside frame */}
       <div className="absolute -top-20 -right-20 w-48 h-48 bg-emerald-500/5 dark:bg-[#2CFF05]/10 rounded-full blur-3xl pointer-events-none" />
@@ -310,10 +310,10 @@ export const HeroShowcaseCarousel: React.FC = () => {
                 key={`${item.id}-${index}`}
                 href={item.href}
                 draggable={false}
-                className="w-[145px] sm:w-[155px] shrink-0 p-2.5 rounded-xl bg-white/30 hover:bg-white/50 dark:bg-white/[0.04] dark:hover:bg-white/[0.08] backdrop-blur-md border border-white/40 dark:border-white/10 hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/70 transition-all duration-200 flex flex-col group/card cursor-pointer shadow-sm dark:shadow-lg"
+                className="w-[134px] sm:w-[140px] shrink-0 p-2.5 rounded-xl bg-zinc-900/90 hover:bg-zinc-800/95 dark:bg-zinc-900/90 dark:hover:bg-zinc-800/95 backdrop-blur-md border border-white/10 dark:border-white/10 hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/70 transition-all duration-200 flex flex-col group/card cursor-pointer shadow-sm dark:shadow-lg"
               >
                 {/* Image */}
-                <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-slate-100/50 dark:bg-zinc-900/60 border border-slate-200/50 dark:border-white/10 mb-2 pointer-events-none">
+                <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-zinc-800/70 dark:bg-zinc-900/80 border border-white/10 dark:border-white/10 mb-2 pointer-events-none">
                   <Image
                     src={item.image}
                     alt={item.title}
@@ -329,13 +329,13 @@ export const HeroShowcaseCarousel: React.FC = () => {
                   <div className="w-5 h-5 rounded-full bg-emerald-500/15 dark:bg-[#2CFF05]/20 border border-emerald-500/30 dark:border-[#2CFF05]/40 flex items-center justify-center text-emerald-600 dark:text-[#2CFF05] shrink-0">
                     <Icon size={11} strokeWidth={2.2} />
                   </div>
-                  <h4 className="font-heading font-bold text-[12px] text-slate-950 dark:text-white group-hover/card:text-emerald-600 dark:group-hover/card:text-[#2CFF05] transition-colors truncate">
+                  <h4 className="font-heading font-bold text-[12px] text-white group-hover/card:text-emerald-400 dark:group-hover/card:text-[#2CFF05] transition-colors truncate">
                     {item.title}
                   </h4>
                 </div>
 
                 {/* Description */}
-                <p className="text-[10px] text-slate-700 dark:text-zinc-300 leading-tight line-clamp-2 font-medium">
+                <p className="text-[10px] text-zinc-400 leading-tight line-clamp-2 font-medium">
                   {item.desc}
                 </p>
               </Link>
