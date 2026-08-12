@@ -223,7 +223,7 @@ export const HeroShowcaseCarousel: React.FC = () => {
 
   // Step button actions
   const scrollStep = (direction: "left" | "right") => {
-    const stepSize = 168; // 1 card + gap
+    const stepSize = 168; // 1 card (155px) + gap (12px)
     if (direction === "left") {
       currentX.current += stepSize;
     } else {
@@ -245,7 +245,7 @@ export const HeroShowcaseCarousel: React.FC = () => {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      className="w-full max-w-[640px] group relative select-none rounded-2xl sm:rounded-3xl border border-white/10 dark:border-white/10 bg-black/25 dark:bg-black/45 backdrop-blur-[6px] p-4 sm:p-5 shadow-xl dark:shadow-2xl overflow-hidden transition-colors duration-300 cursor-grab active:cursor-grabbing"
+      className="w-full max-w-[700px] group relative select-none rounded-2xl sm:rounded-3xl border border-white/10 dark:border-white/10 bg-black/25 dark:bg-black/45 backdrop-blur-[6px] p-4 sm:p-5 shadow-xl dark:shadow-2xl overflow-hidden transition-colors duration-300 cursor-grab active:cursor-grabbing"
     >
       {/* Subtle ambient lighting inside frame */}
       <div className="absolute -top-20 -right-20 w-48 h-48 bg-emerald-500/5 dark:bg-[#2CFF05]/10 rounded-full blur-3xl pointer-events-none" />
@@ -310,7 +310,7 @@ export const HeroShowcaseCarousel: React.FC = () => {
                 key={`${item.id}-${index}`}
                 href={item.href}
                 draggable={false}
-                className="w-[134px] sm:w-[140px] shrink-0 p-2.5 rounded-xl bg-zinc-900/90 hover:bg-zinc-800/95 dark:bg-zinc-900/90 dark:hover:bg-zinc-800/95 backdrop-blur-md border border-white/10 dark:border-white/10 hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/70 transition-all duration-200 flex flex-col group/card cursor-pointer shadow-sm dark:shadow-lg"
+                className="w-[145px] sm:w-[155px] shrink-0 p-2.5 rounded-xl bg-zinc-900/90 hover:bg-zinc-800/95 dark:bg-zinc-900/90 dark:hover:bg-zinc-800/95 backdrop-blur-md border border-white/10 dark:border-white/10 hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/70 transition-all duration-200 flex flex-col group/card cursor-pointer shadow-sm dark:shadow-lg"
               >
                 {/* Image */}
                 <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-zinc-800/70 dark:bg-zinc-900/80 border border-white/10 dark:border-white/10 mb-2 pointer-events-none">

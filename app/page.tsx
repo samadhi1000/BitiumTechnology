@@ -277,7 +277,7 @@ function HomeContent() {
           <div className="absolute inset-0 bg-transparent dark:bg-black/25 transition-colors duration-300" />
 
           {/* 2. Text Reading Scrim: Full opaque white backdrop behind left text column (0-52%), smoothly transitioning into machinery background (62-80%) */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 via-52% to-transparent to-75% dark:from-[#020617] dark:via-[#020617]/90 dark:via-50% dark:to-transparent dark:to-75% transition-all duration-300" />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 via-40% to-transparent to-58% dark:from-[#020617] dark:via-[#020617]/90 dark:via-38% dark:to-transparent dark:to-58% transition-all duration-300" />
 
           {/* 3. Subtle Bottom Edge Fade into next section */}
           <div className="absolute bottom-0 left-0 right-0 h-8 sm:h-10 bg-gradient-to-t from-background/60 to-transparent pointer-events-none" />
@@ -285,7 +285,7 @@ function HomeContent() {
         
         <div className="max-w-7xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           {/* Left Column: Headline, Search, Actions */}
-          <div className="lg:col-span-7 xl:col-span-7 space-y-6 flex flex-col items-start text-left relative z-30">
+          <div className="lg:col-span-5 xl:col-span-5 space-y-6 flex flex-col items-start text-left relative z-30">
             <div 
               className="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 dark:bg-[#2CFF05]/15 border border-emerald-600/30 dark:border-[#2CFF05]/40 text-emerald-900 dark:text-[#2CFF05] text-xs font-bold backdrop-blur-md shadow-sm"
             >
@@ -348,7 +348,7 @@ function HomeContent() {
           </div>
 
           {/* Right Column: Hero Showcase Infinite Carousel Box */}
-          <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end w-full">
+          <div className="lg:col-span-7 xl:col-span-7 flex justify-center w-full">
             <HeroShowcaseCarousel />
           </div>
         </div>
