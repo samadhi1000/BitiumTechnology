@@ -509,8 +509,8 @@ html.dark .filter-btn.active, html.dark .filter-btn:hover {
   background-position: 250% 250%;
   animation: logo-metallic-shine 6s infinite ease-in-out;
   
-  mask-image: var(--logo-mask-url, url('/images/stack-unleash-logo.png'));
-  -webkit-mask-image: var(--logo-mask-url, url('/images/stack-unleash-logo.png'));
+  mask-image: var(--logo-mask-url, url('/images/stack-unleash-logo.webp'));
+  -webkit-mask-image: var(--logo-mask-url, url('/images/stack-unleash-logo.webp'));
   mask-size: contain;
   -webkit-mask-size: contain;
   mask-repeat: no-repeat;
@@ -626,4 +626,28 @@ html.dark .hero-carousel-title-black,
 .dark .hero-carousel-title-black {
   color: #ffffff !important;
 }
+
+/* ── 95% Transparent Glass Cards CSS ── */
+.hero-showcase-card,
+.transparent-card {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: blur(5px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+}
+
+html.dark-mode .hero-showcase-card,
+html.dark .hero-showcase-card,
+.dark-mode .hero-showcase-card,
+.dark .hero-showcase-card,
+html.dark-mode .transparent-card,
+html.dark .transparent-card,
+.dark-mode .transparent-card,
+.dark .transparent-card {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+}
+
 

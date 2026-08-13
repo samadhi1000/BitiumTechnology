@@ -174,29 +174,41 @@ export default function CommunityForumPage() {
   // Toast feedback
   const [toastMessage, setToastMessage] = useState('');
 
-  useEffect(() => {
-    // Load posts from local storage or set initial posts
-    const saved = localStorage.getItem('bitium_forum_posts');
-    if (saved) {
-      setPosts(JSON.parse(saved));
-    } else {
-      setPosts(INITIAL_POSTS);
-      localStorage.setItem('bitium_forum_posts', JSON.stringify(INITIAL_POSTS));
+  const fetchCommunityPosts = async () => {
+    try {
+      const res = await fetch('/api/community');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.posts && Array.isArray(data.posts)) {
+          setPosts(prev => {
+            return data.posts.map((newP: Post) => {
+              const existing = prev.find(p => p.id === newP.id);
+              return {
+                ...newP,
+                isLikedByUser: existing ? existing.isLikedByUser : false,
+                isBookmarkedByUser: existing ? existing.isBookmarkedByUser : false,
+              };
+            });
+          });
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching community posts:', err);
     }
-  }, []);
-
-  const savePosts = (updatedPosts: Post[]) => {
-    setPosts(updatedPosts);
-    localStorage.setItem('bitium_forum_posts', JSON.stringify(updatedPosts));
   };
 
-  const handleCreatePost = (e: React.FormEvent) => {
+  useEffect(() => {
+    fetchCommunityPosts();
+    const interval = setInterval(fetchCommunityPosts, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleCreatePost = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTitle.trim() || !newContent.trim()) return;
 
     setIsPosting(true);
 
-    // Identify user profile details or guest details
     let authorName = 'Anonymous Printer';
     let authorAvatar = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80';
     let authorRole = 'Member';
@@ -228,65 +240,80 @@ export default function CommunityForumPage() {
       createdAt: 'Just now'
     };
 
-    const updated = [newPost, ...posts];
-    savePosts(updated);
+    setPosts(prev => [newPost, ...prev]);
 
-    // Reset fields
+    try {
+      await fetch('/api/community', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'create_post', post: newPost }),
+      });
+      fetchCommunityPosts();
+    } catch (err) {
+      console.error(err);
+    }
+
     setNewTitle('');
     setNewContent('');
     setNewImageUrl('');
     setIsPosting(false);
 
-    // Trigger simulated response from an expert after 4 seconds
     setTimeout(() => {
-      const savedPosts = JSON.parse(localStorage.getItem('bitium_forum_posts') || '[]');
-      const postIdx = savedPosts.findIndex((p: Post) => p.id === newPost.id);
-      if (postIdx !== -1) {
-        const randomExpert = ['Suresh Bandara', 'Amani Fernando', 'Nihal Gunawardena', 'Dilani Silva'][Math.floor(Math.random() * 4)];
-        const randomAvatar = [
-          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
-          'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80',
-          'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
-          'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80'
-        ][Math.floor(Math.random() * 4)];
-        
-        const responseText = EXPERT_RESPONSES[Math.floor(Math.random() * EXPERT_RESPONSES.length)];
-        
-        const simulatedComment: Comment = {
-          id: `comment-${Date.now()}`,
-          authorName: randomExpert,
-          authorAvatar: randomAvatar,
-          authorBadge: 'Industry Expert',
-          content: responseText,
-          createdAt: 'Just now'
-        };
+      const randomExpert = ['Suresh Bandara', 'Amani Fernando', 'Nihal Gunawardena', 'Dilani Silva'][Math.floor(Math.random() * 4)];
+      const randomAvatar = [
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80',
+        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
+        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80'
+      ][Math.floor(Math.random() * 4)];
+      
+      const responseText = EXPERT_RESPONSES[Math.floor(Math.random() * EXPERT_RESPONSES.length)];
+      
+      const simulatedComment: Comment = {
+        id: `comment-${Date.now()}`,
+        authorName: randomExpert,
+        authorAvatar: randomAvatar,
+        authorBadge: 'Industry Expert',
+        content: responseText,
+        createdAt: 'Just now'
+      };
 
-        const currentPosts = [...savedPosts];
-        currentPosts[postIdx].comments = [...currentPosts[postIdx].comments, simulatedComment];
-        savePosts(currentPosts);
-        
+      fetch('/api/community', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'add_comment', postId: newPost.id, comment: simulatedComment }),
+      }).then(() => {
+        fetchCommunityPosts();
         setToastMessage(`New reply from ${randomExpert}!`);
         setTimeout(() => setToastMessage(''), 3000);
-      }
+      });
     }, 4000);
   };
 
-  const handleLikePost = (postId: string) => {
-    const updated = posts.map(p => {
-      if (p.id === postId) {
-        const isLiked = !p.isLikedByUser;
-        return {
-          ...p,
-          isLikedByUser: isLiked,
-          likes: isLiked ? p.likes + 1 : p.likes - 1
-        };
-      }
-      return p;
-    });
-    savePosts(updated);
+  const handleLikePost = async (postId: string) => {
+    const target = posts.find(p => p.id === postId);
+    if (!target) return;
+    const isLiked = !target.isLikedByUser;
+
+    setPosts(prev => prev.map(p => p.id === postId ? {
+      ...p,
+      isLikedByUser: isLiked,
+      likes: isLiked ? p.likes + 1 : Math.max(0, p.likes - 1)
+    } : p));
+
+    try {
+      await fetch('/api/community', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'like_post', postId, isLiked }),
+      });
+      fetchCommunityPosts();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleAddComment = (postId: string, commentText: string) => {
+  const handleAddComment = async (postId: string, commentText: string) => {
     if (!commentText.trim()) return;
 
     let commenterName = 'Anonymous Member';
@@ -312,16 +339,21 @@ export default function CommunityForumPage() {
       createdAt: 'Just now'
     };
 
-    const updated = posts.map(p => {
-      if (p.id === postId) {
-        return {
-          ...p,
-          comments: [...p.comments, newComment]
-        };
-      }
-      return p;
-    });
-    savePosts(updated);
+    setPosts(prev => prev.map(p => p.id === postId ? {
+      ...p,
+      comments: [...p.comments, newComment]
+    } : p));
+
+    try {
+      await fetch('/api/community', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'add_comment', postId, comment: newComment }),
+      });
+      fetchCommunityPosts();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleShare = (postId: string) => {
@@ -356,12 +388,12 @@ export default function CommunityForumPage() {
         
         {/* Header Block */}
         <div className="text-center space-y-3 max-w-2xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2CFF05]/10 border border-[#2CFF05]/20 text-[10px] font-bold text-[#2CFF05] uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2CFF05]/15 border border-emerald-600/30 dark:border-[#2CFF05]/30 text-[10px] font-extrabold text-emerald-700 dark:text-[#2CFF05] uppercase tracking-wider">
             <Users size={12} />
             <span>Community Feed</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight uppercase leading-none">
-            Bitium <span className="text-[#2CFF05]">Community Hub</span>
+            Bitium <span className="text-[#2CFF05] [text-shadow:_0_1.5px_3px_rgba(0,0,0,0.85)] dark:[text-shadow:_0_0_12px_rgba(44,255,5,0.4)]">Community Hub</span>
           </h1>
           <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">
             {t.hubSub}
@@ -385,7 +417,7 @@ export default function CommunityForumPage() {
                     onClick={() => setSelectedCategory(cat.id)}
                     className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-between ${
                       selectedCategory === cat.id
-                        ? 'bg-[#2CFF05]/15 border border-[#2CFF05]/30 text-[#2CFF05] pl-4 font-black'
+                        ? 'bg-[#2CFF05]/15 border border-[#2CFF05]/40 text-emerald-700 dark:text-[#2CFF05] pl-4 font-black'
                         : 'border border-transparent text-muted-foreground hover:text-foreground hover:bg-card/40'
                     }`}
                   >
@@ -436,7 +468,7 @@ export default function CommunityForumPage() {
 
             {/* New Post Creator Form */}
             <div className="p-5 rounded-2xl border border-border bg-card/15 backdrop-blur-md space-y-4">
-              <h3 className="text-xs font-black uppercase tracking-wider text-[#2CFF05] flex items-center gap-2 border-b border-border/50 pb-2">
+              <h3 className="text-xs font-black uppercase tracking-wider text-emerald-700 dark:text-[#2CFF05] flex items-center gap-2 border-b border-border/50 pb-2">
                 <Sparkles size={14} />
                 <span>{t.newPost}</span>
               </h3>
@@ -550,7 +582,7 @@ export default function CommunityForumPage() {
                             <div className="flex items-center gap-1.5 flex-wrap">
                               <span className="font-extrabold text-xs text-foreground">{post.authorName}</span>
                               {post.authorBadge && (
-                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-[#2CFF05]/10 border border-[#2CFF05]/20 text-[8px] font-black text-[#2CFF05] uppercase tracking-wider">
+                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-[#2CFF05]/15 border border-[#2CFF05]/30 text-[8px] font-black text-emerald-700 dark:text-[#2CFF05] uppercase tracking-wider">
                                   <Shield size={8} />
                                   <span>{post.authorBadge}</span>
                                 </span>
@@ -560,7 +592,7 @@ export default function CommunityForumPage() {
                           </div>
                         </div>
 
-                        <span className="px-2 py-0.5 rounded-md bg-card border border-border text-[9px] font-extrabold text-[#2CFF05] uppercase tracking-widest">
+                        <span className="px-2 py-0.5 rounded-md bg-card border border-border text-[9px] font-extrabold text-emerald-700 dark:text-[#2CFF05] uppercase tracking-widest">
                           #{post.category}
                         </span>
                       </div>
@@ -590,7 +622,7 @@ export default function CommunityForumPage() {
                             onClick={() => handleLikePost(post.id)}
                             className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer ${
                               post.isLikedByUser
-                                ? 'bg-[#2CFF05]/15 border-[#2CFF05]/30 text-[#2CFF05] scale-105'
+                                ? 'bg-[#2CFF05]/15 border-[#2CFF05]/40 text-emerald-700 dark:text-[#2CFF05] scale-105 font-bold'
                                 : 'border-border bg-card/25 hover:bg-card hover:text-foreground'
                             }`}
                           >
@@ -603,7 +635,7 @@ export default function CommunityForumPage() {
                             onClick={() => setActiveCommentsPostId(isCommentsOpen ? null : post.id)}
                             className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer ${
                               isCommentsOpen
-                                ? 'bg-[#2CFF05]/15 border-[#2CFF05]/30 text-[#2CFF05] scale-105'
+                                ? 'bg-[#2CFF05]/15 border-[#2CFF05]/40 text-emerald-700 dark:text-[#2CFF05] scale-105 font-bold'
                                 : 'border-border bg-card/25 hover:bg-card hover:text-foreground'
                             }`}
                           >
@@ -623,7 +655,7 @@ export default function CommunityForumPage() {
                           <button
                             onClick={() => {
                               const updated = posts.map(p => p.id === post.id ? { ...p, isBookmarkedByUser: !p.isBookmarkedByUser } : p);
-                              savePosts(updated);
+                              setPosts(updated);
                               setToastMessage(post.isBookmarkedByUser ? 'Removed from bookmarks' : 'Post bookmarked!');
                               setTimeout(() => setToastMessage(''), 2500);
                             }}

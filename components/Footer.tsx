@@ -14,7 +14,6 @@ const footerLinks = {
     { label: "Laser Cutting", href: "/laser-cutting" },
   ],
   toolkit: [
-    { label: "Online Order Form (A6)", href: "/order-form" },
     { label: "Blog & Master Guides", href: "/blog" },
     { label: "Digital downloads", href: "/downloads" },
     { label: "Materials / Consumables", href: "/materials" },
@@ -54,7 +53,7 @@ export default function Footer() {
             <Link href="/" className="flex items-center space-x-2.5 sm:space-x-3 group relative py-1 hover:opacity-90 transition-opacity">
               <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-white/20 shadow-[0_0_15px_rgba(255,26,60,0.25)] group-hover:scale-105 transition-transform shrink-0">
                 <Image
-                  src="/images/bitium-logo.jpg"
+                  src="/images/bitium-logo.webp"
                   alt="Bitium Technology"
                   fill
                   className="object-cover"
@@ -143,7 +142,7 @@ export default function Footer() {
             {/* Social Buttons */}
             <div className="flex items-center gap-3 mt-6">
               {[
-                { icon: TiktokIcon, label: "Tiktok", href: "https://www.tiktok.com/@Raid07072" },
+                { icon: TiktokIcon, label: "Tiktok", href: "https://www.tiktok.com/@bitiumtechnology" },
                 { icon: FacebookIcon, label: "Facebook", href: "https://web.facebook.com/bitiumtechnology" },
               ].map((social) => {
                 const Icon = social.icon;
@@ -180,7 +179,7 @@ export default function Footer() {
                 {/* Metallic Shine Masked Container */}
                 <div className="transition-transform duration-300 group-hover:scale-105 flex-shrink-0 logo-shine-container mr-1.5">
                   <img
-                    src="/images/stack-unleash-logo.png"
+                    src="/images/stack-unleash-logo.webp"
                     alt="StackUnleash Icon"
                     className="h-[28px] w-auto object-contain logo-fire-glow"
                   />

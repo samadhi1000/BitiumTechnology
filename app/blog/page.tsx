@@ -63,7 +63,7 @@ export default function BlogIndexPage() {
             publisher: {
               '@type': 'Organization',
               name: 'Bitium Technology',
-              logo: 'https://www.bitiumtechnology.com/images/bitium-logo.jpg'
+              logo: 'https://www.bitiumtechnology.com/images/bitium-logo.webp'
             },
             blogPost: BLOG_POSTS.map((p) => ({
               '@type': 'BlogPosting',

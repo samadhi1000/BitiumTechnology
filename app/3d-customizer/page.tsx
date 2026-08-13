@@ -9,6 +9,7 @@ import {
 import Link from 'next/link';
 import { useCartStore } from '@/lib/store/cartStore';
 import { uploadCanvasToCloudinary } from '@/lib/cloudinary';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 import { ColorSelector, ColorOption } from '@/components/customizer/ColorSelector';
 import { SizeSelector } from '@/components/customizer/SizeSelector';
@@ -28,6 +29,7 @@ const T_SHIRT_COLORS: ColorOption[] = [
 const SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
 
 export default function DynamicMockupCustomizer() {
+  const { t } = useLanguage();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const backCanvasRef = useRef<HTMLCanvasElement>(null);
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
@@ -482,8 +484,8 @@ export default function DynamicMockupCustomizer() {
         <div className="absolute right-0 top-0 bottom-0 w-full sm:w-2/3 md:w-1/2 lg:w-5/12 pointer-events-none select-none z-0 hidden sm:block overflow-hidden">
           <div className="relative w-full h-full">
             <Image
-              key="/images/hero-cards/toolkit.jpg"
-              src="/images/hero-cards/toolkit.jpg"
+              key="/images/hero-cards/toolkit.webp"
+              src="/images/hero-cards/toolkit.webp"
               alt="3D Mockup Studio Toolkit"
               fill
               priority
@@ -505,21 +507,24 @@ export default function DynamicMockupCustomizer() {
           {/* Breadcrumbs */}
           <nav className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-zinc-400 mb-4">
             <Link href="/" className="hover:text-slate-900 dark:hover:text-white transition-colors">
-              Home
+              {t.toolkitPage?.breadcrumbHome || 'Home'}
             </Link>
             <ChevronRight size={12} className="text-slate-400" />
             <span className="text-slate-900 dark:text-white font-semibold">
-              3D Mockup Studio
+              {t.toolkitPage?.breadcrumbCurrent || '3D Mockup Studio'}
             </span>
           </nav>
 
           {/* Title & Description */}
           <div className="max-w-2xl">
             <h1 className="font-heading font-black text-3xl sm:text-4xl lg:text-5xl tracking-tight text-slate-900 dark:text-white leading-[1.1] mb-3">
-              3D Mockup <span className="text-emerald-600 dark:text-[#2CFF05]">Studio</span>
+              {t.toolkitPage?.titleMain || '3D Mockup '}
+              <span className="text-emerald-600 dark:text-[#2CFF05]">
+                {t.toolkitPage?.titleHighlight || 'Studio'}
+              </span>
             </h1>
             <p className="text-slate-600 dark:text-zinc-300 text-sm sm:text-[15px] leading-relaxed max-w-xl font-normal">
-              Visualize your custom artwork on apparel in real-time with our interactive 3D studio viewer. Upload artwork, adjust garment colors, and test print finishes.
+              {t.toolkitPage?.description || 'Visualize your custom artwork on apparel in real-time with our interactive 3D studio viewer. Upload artwork, adjust garment colors, and test print finishes.'}
             </p>
           </div>
         </div>
@@ -568,9 +573,9 @@ export default function DynamicMockupCustomizer() {
         {/* Title bar */}
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-bold text-foreground uppercase tracking-widest flex items-center gap-2">
-            <Eye size={15} className="text-[#2CFF05]" /> Interactive Mockup Studio
+            <Eye size={15} className="text-[#2CFF05]" /> {t.toolkitPage?.studioHeader || 'Interactive Mockup Studio'}
           </h2>
-          <span className="text-xs text-muted-foreground font-medium">Both canvases update color in sync</span>
+          <span className="text-xs text-muted-foreground font-medium">{t.toolkitPage?.syncNote || 'Both canvases update color in sync'}</span>
         </div>
 
         {/* Dual canvas grid */}
@@ -580,7 +585,7 @@ export default function DynamicMockupCustomizer() {
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#45ff24] animate-pulse" />
-              <span className="text-xs font-bold text-foreground uppercase tracking-widest">Front View</span>
+              <span className="text-xs font-bold text-foreground uppercase tracking-widest">{t.toolkitPage?.frontView || 'Front View'}</span>
             </div>
             <div className="relative rounded-3xl overflow-hidden border border-border bg-gradient-to-br from-zinc-900 to-zinc-950 shadow-2xl flex items-center justify-center p-4 min-h-[500px]">
               <div className="relative bg-transparent rounded-2xl overflow-hidden border border-border/20 shadow-lg">
@@ -588,7 +593,7 @@ export default function DynamicMockupCustomizer() {
               </div>
               <div className="absolute bottom-3 left-0 right-0 text-center pointer-events-none">
                 <p className="text-[10px] text-muted-foreground font-bold">
-                  {logoImage ? 'Drag · Resize · Rotate the logo on the T-shirt' : 'Use Front View upload to add a chest graphic'}
+                  {logoImage ? (t.toolkitPage?.frontHint || 'Drag · Resize · Rotate the logo on the T-shirt') : 'Use Front View upload to add a chest graphic'}
                 </p>
               </div>
             </div>
@@ -598,7 +603,7 @@ export default function DynamicMockupCustomizer() {
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#45ff24]" />
-              <span className="text-xs font-bold text-foreground uppercase tracking-widest">Back View</span>
+              <span className="text-xs font-bold text-foreground uppercase tracking-widest">{t.toolkitPage?.backView || 'Back View'}</span>
             </div>
             <div className="relative rounded-3xl overflow-hidden border border-border bg-gradient-to-br from-zinc-900 to-zinc-950 shadow-2xl flex items-center justify-center p-4 min-h-[500px]">
               <div className="relative bg-transparent rounded-2xl overflow-hidden border border-border/20 shadow-lg">
@@ -606,7 +611,7 @@ export default function DynamicMockupCustomizer() {
               </div>
               <div className="absolute bottom-3 left-0 right-0 text-center pointer-events-none">
                 <p className="text-[10px] text-muted-foreground font-bold">
-                  {backLogoImage ? 'Drag · Resize · Rotate the back graphic' : 'Use Back View upload to add a back print'}
+                  {backLogoImage ? (t.toolkitPage?.backHint || 'Drag · Resize · Rotate the back graphic') : 'Use Back View upload to add a back print'}
                 </p>
               </div>
             </div>
@@ -627,7 +632,7 @@ export default function DynamicMockupCustomizer() {
               </>
             ) : (
               <>
-                <ShoppingBag size={16} /> Add Custom Design to Cart (Rs. 2,490.00)
+                <ShoppingBag size={16} /> {t.toolkitPage?.addToCartBtn || 'Add Custom Design to Cart'} (Rs. 2,490.00)
               </>
             )}
           </button>

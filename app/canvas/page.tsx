@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useAuth } from '@/lib/context/AuthContext';
 import { uploadCanvasToCloudinary } from '@/lib/cloudinary';
+import { useLanguage } from '@/lib/context/LanguageContext';
 import * as fabric from 'fabric';
 import { 
   Upload, Trash2, Copy, Trash, RefreshCw, ZoomIn, 
@@ -27,6 +28,7 @@ const PRESETS: SheetPreset[] = [
 ];
 
 export default function CanvasBuilder() {
+  const { t } = useLanguage();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
@@ -353,8 +355,8 @@ export default function CanvasBuilder() {
         <div className="absolute right-0 top-0 bottom-0 w-full sm:w-2/3 md:w-1/2 lg:w-5/12 pointer-events-none select-none z-0 hidden sm:block overflow-hidden">
           <div className="relative w-full h-full">
             <Image
-              key="/images/hero-cards/toolkit.jpg"
-              src="/images/hero-cards/toolkit.jpg"
+              key="/images/hero-cards/toolkit.webp"
+              src="/images/hero-cards/toolkit.webp"
               alt="DTF Gang Sheet Canvas Toolkit"
               fill
               priority
@@ -376,21 +378,24 @@ export default function CanvasBuilder() {
           {/* Breadcrumbs */}
           <nav className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-zinc-400 mb-4">
             <Link href="/" className="hover:text-slate-900 dark:hover:text-white transition-colors">
-              Home
+              {t.canvasPage?.breadcrumbHome || 'Home'}
             </Link>
             <ChevronRight size={12} className="text-slate-400" />
             <span className="text-slate-900 dark:text-white font-semibold">
-              Gang Sheet Canvas Builder
+              {t.canvasPage?.breadcrumbCurrent || 'Canvas Builder'}
             </span>
           </nav>
 
           {/* Title & Description */}
           <div className="max-w-2xl">
             <h1 className="font-heading font-black text-3xl sm:text-4xl lg:text-5xl tracking-tight text-slate-900 dark:text-white leading-[1.1] mb-3">
-              Gang Sheet <span className="text-emerald-600 dark:text-[#2CFF05]">Canvas Builder</span>
+              {t.canvasPage?.titleMain || 'Canvas '}
+              <span className="text-emerald-600 dark:text-[#2CFF05]">
+                {t.canvasPage?.titleHighlight || 'Builder'}
+              </span>
             </h1>
             <p className="text-slate-600 dark:text-zinc-300 text-sm sm:text-[15px] leading-relaxed max-w-xl font-normal">
-              Arrange, scale, duplicate, and optimize your print files onto high-resolution DTF gang sheets with instant AI background removal and resolution upscaling tools.
+              {t.canvasPage?.description || 'Arrange, scale, duplicate, and optimize your print files onto high-resolution DTF sheets with instant AI background removal and resolution upscaling tools.'}
             </p>
           </div>
         </div>

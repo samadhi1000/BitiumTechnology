@@ -32,6 +32,7 @@ import {
 } from 'lucide-react';
 import { loadPayHereScript } from '@/lib/payhere-loader';
 import SecureWatermarkedImage from '@/components/SecureWatermarkedImage';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 interface DigitalArtwork {
   id: string;
@@ -47,16 +48,17 @@ interface DigitalArtwork {
   resolution?: string;
 }
 
-const CATEGORY_OPTIONS = [
-  { value: 'all', label: 'All Designs' },
-  { value: 'batik', label: 'Traditional Batik' },
-  { value: 'vector', label: 'Vector & SVG' },
-  { value: 'dtf', label: 'DTF Sheets' },
-  { value: 'wall-art', label: 'Wall Decor' }
-];
-
 export default function DownloadsPage() {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
+
+  const categoryOptions = [
+    { value: 'all', label: t.downloadsPage?.catAll || 'All Designs' },
+    { value: 'batik', label: t.downloadsPage?.catBatik || 'Traditional Batik' },
+    { value: 'vector', label: t.downloadsPage?.catVector || 'Vector & SVG' },
+    { value: 'dtf', label: t.downloadsPage?.catDtf || 'DTF Sheets' },
+    { value: 'wall-art', label: t.downloadsPage?.catWall || 'Wall Decor' }
+  ];
   const [artworks, setArtworks] = useState<DigitalArtwork[]>([]);
   const [category, setCategory] = useState<string>('all');
   const [search, setSearch] = useState<string>('');
@@ -278,8 +280,8 @@ export default function DownloadsPage() {
         <div className="absolute right-0 top-0 bottom-0 w-full sm:w-2/3 md:w-1/2 lg:w-5/12 pointer-events-none select-none z-0 hidden sm:block overflow-hidden">
           <div className="relative w-full h-full">
             <Image
-              key="/images/hero-cards/downloads.jpg"
-              src="/images/hero-cards/downloads.jpg"
+              key="/images/hero-cards/downloads.webp"
+              src="/images/hero-cards/downloads.webp"
               alt="Digital Vector Assets"
               fill
               priority
@@ -300,24 +302,24 @@ export default function DownloadsPage() {
           {/* Breadcrumbs */}
           <nav className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-zinc-400 mb-4">
             <Link href="/" className="hover:text-slate-900 dark:hover:text-white transition-colors">
-              Home
+              {t.downloadsPage?.breadcrumbHome || 'Home'}
             </Link>
             <ChevronRight size={12} className="text-slate-400" />
             <span className="text-slate-900 dark:text-white font-semibold">
-              Digital Downloads
+              {t.downloadsPage?.breadcrumbCurrent || 'Digital Downloads'}
             </span>
           </nav>
 
           {/* Title & Description */}
           <div className="max-w-2xl mb-8">
             <h1 className="font-heading font-black text-3xl sm:text-4xl lg:text-5xl tracking-tight text-slate-900 dark:text-white leading-[1.1] mb-3">
-              Digital Designs &{' '}
+              {t.downloadsPage?.titleMain || 'Digital Designs & '}
               <span className="text-emerald-600 dark:text-[#2CFF05] drop-shadow-sm">
-                Downloads
+                {t.downloadsPage?.titleHighlight || 'Downloads'}
               </span>
             </h1>
             <p className="text-slate-600 dark:text-zinc-300 text-sm sm:text-[15px] leading-relaxed max-w-xl font-normal">
-              High-resolution vector files, batik layouts, laser cut paths, and DTF gang sheets with instant Google Drive delivery upon payment.
+              {t.downloadsPage?.description || 'High-resolution vector files, batik layouts, laser cut paths, and DTF gang sheets with instant Google Drive delivery upon payment.'}
             </p>
           </div>
 
@@ -331,7 +333,7 @@ export default function DownloadsPage() {
               />
               <input
                 type="text"
-                placeholder="Search vector designs, SVG, stencils, tags..."
+                placeholder={t.downloadsPage?.searchPlaceholder || "Search vector designs, SVG, stencils, tags..."}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 rounded-full bg-slate-50 dark:bg-card/70 border border-slate-200/90 dark:border-white/15 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-zinc-400 focus:outline-none focus:border-emerald-500 dark:focus:border-[#2CFF05] focus:ring-2 focus:ring-emerald-500/10 dark:focus:ring-[#2CFF05]/10 shadow-sm transition-all"
@@ -348,17 +350,17 @@ export default function DownloadsPage() {
 
             {/* Sort Dropdown */}
             <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
-              <span className="text-xs font-medium text-slate-500 dark:text-zinc-400">Sort by:</span>
+              <span className="text-xs font-medium text-slate-500 dark:text-zinc-400">{t.downloadsPage?.sortByLabel || 'Sort by:'}</span>
               <div className="relative">
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
                   className="appearance-none bg-slate-50 dark:bg-card/70 border border-slate-200/90 dark:border-white/15 text-xs font-semibold text-slate-900 dark:text-white py-2 pl-3.5 pr-8 rounded-full focus:outline-none focus:border-emerald-500 dark:focus:border-[#2CFF05] cursor-pointer shadow-sm"
                 >
-                  <option value="featured">Featured</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="name">Alphabetical (A-Z)</option>
+                  <option value="featured">{t.downloadsPage?.sortFeatured || 'Featured'}</option>
+                  <option value="price-low">{t.downloadsPage?.sortPriceLow || 'Price: Low to High'}</option>
+                  <option value="price-high">{t.downloadsPage?.sortPriceHigh || 'Price: High to Low'}</option>
+                  <option value="name">{t.downloadsPage?.sortName || 'Alphabetical (A-Z)'}</option>
                 </select>
                 <ChevronDown
                   size={14}
@@ -371,7 +373,7 @@ export default function DownloadsPage() {
           {/* Category Filter Pills Row */}
           <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
             <div className="flex flex-wrap items-center gap-2">
-              {CATEGORY_OPTIONS.map((opt) => {
+              {categoryOptions.map((opt) => {
                 const isSelected = category === opt.value;
                 return (
                   <button
@@ -496,7 +498,7 @@ export default function DownloadsPage() {
                       <div className="mt-auto pt-2 border-t border-slate-100 dark:border-white/10 flex items-center justify-between">
                         <div>
                           <span className="text-[9px] text-slate-400 dark:text-zinc-500 uppercase font-bold tracking-wider block">
-                            Instant Access
+                            {t.downloadsPage?.instantAccess || 'Instant Access'}
                           </span>
                           <span className="font-heading font-black text-[14px] sm:text-[15px] text-emerald-600 dark:text-[#2CFF05]">
                             Rs. {art.price.toLocaleString()}
@@ -509,7 +511,7 @@ export default function DownloadsPage() {
                           className="px-3.5 py-1.5 rounded-full bg-[#2CFF05] hover:bg-[#3af816] text-[#0a0a0a] font-bold text-xs flex items-center gap-1.5 shadow-md shadow-[#2CFF05]/15 transition-all hover:scale-105 cursor-pointer"
                         >
                           <ShoppingBag size={12} />
-                          Buy Now
+                          {t.downloadsPage?.buyNow || 'Buy Now'}
                         </button>
                       </div>
                     </div>
@@ -565,7 +567,7 @@ export default function DownloadsPage() {
           {/* Card 1: Why Choose Us */}
           <div className="md:col-span-5 bg-white dark:bg-card/70 rounded-2xl border border-slate-200/90 dark:border-white/10 p-5 sm:p-6 shadow-sm flex flex-col justify-between">
             <h3 className="font-heading font-extrabold text-base text-slate-900 dark:text-white mb-4">
-              Why choose our digital assets?
+              {t.downloadsPage?.whyTitle || 'Why choose our digital assets?'}
             </h3>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
@@ -574,10 +576,10 @@ export default function DownloadsPage() {
                 </div>
                 <div>
                   <h4 className="font-heading font-bold text-xs sm:text-[13px] text-slate-900 dark:text-white">
-                    Clean Vector Geometry
+                    {t.downloadsPage?.why1Title || 'Clean Vector Geometry'}
                   </h4>
                   <p className="text-[11px] sm:text-xs text-slate-500 dark:text-zinc-400 leading-normal">
-                    Optimized paths without broken nodes for seamless CNC & laser cuts.
+                    {t.downloadsPage?.why1Desc || 'Optimized paths without broken nodes for seamless CNC & laser cuts.'}
                   </p>
                 </div>
               </div>
@@ -588,10 +590,10 @@ export default function DownloadsPage() {
                 </div>
                 <div>
                   <h4 className="font-heading font-bold text-xs sm:text-[13px] text-slate-900 dark:text-white">
-                    Instant Google Drive Access
+                    {t.downloadsPage?.why2Title || 'Instant Google Drive Access'}
                   </h4>
                   <p className="text-[11px] sm:text-xs text-slate-500 dark:text-zinc-400 leading-normal">
-                    Automated secure fulfillment delivers download links immediately.
+                    {t.downloadsPage?.why2Desc || 'Automated secure fulfillment delivers download links immediately.'}
                   </p>
                 </div>
               </div>
@@ -602,10 +604,10 @@ export default function DownloadsPage() {
                 </div>
                 <div>
                   <h4 className="font-heading font-bold text-xs sm:text-[13px] text-slate-900 dark:text-white">
-                    Commercial License Included
+                    {t.downloadsPage?.why3Title || 'Commercial License Included'}
                   </h4>
                   <p className="text-[11px] sm:text-xs text-slate-500 dark:text-zinc-400 leading-normal">
-                    Full commercial usage rights for end-products and apparel prints.
+                    {t.downloadsPage?.why3Desc || 'Full commercial usage rights for end-products and apparel prints.'}
                   </p>
                 </div>
               </div>
@@ -615,43 +617,43 @@ export default function DownloadsPage() {
           {/* Card 2: Perfect For */}
           <div className="md:col-span-4 bg-white dark:bg-card/70 rounded-2xl border border-slate-200/90 dark:border-white/10 p-5 sm:p-6 shadow-sm flex flex-col">
             <h3 className="font-heading font-extrabold text-base text-slate-900 dark:text-white mb-4">
-              Perfect for
+              {t.downloadsPage?.perfectTitle || 'Perfect for'}
             </h3>
             <div className="grid grid-cols-2 gap-3.5 my-auto">
               <div className="flex items-center gap-2">
                 <Scissors size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
                 <span className="text-xs font-semibold text-slate-700 dark:text-white hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-colors cursor-pointer">
-                  Laser Cutters
+                  {t.downloadsPage?.laserCutters || 'Laser Cutters'}
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Printer size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
                 <span className="text-xs font-semibold text-slate-700 dark:text-white hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-colors cursor-pointer">
-                  DTF Printers
+                  {t.downloadsPage?.dtfPrinters || 'DTF Printers'}
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Shirt size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
                 <span className="text-xs font-semibold text-slate-700 dark:text-white hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-colors cursor-pointer">
-                  Screen Printing
+                  {t.downloadsPage?.screenPrinting || 'Screen Printing'}
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Box size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
                 <span className="text-xs font-semibold text-slate-700 dark:text-white hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-colors cursor-pointer">
-                  CNC Routing
+                  {t.downloadsPage?.cncRouting || 'CNC Routing'}
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Flame size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
                 <span className="text-xs font-semibold text-slate-700 dark:text-white hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-colors cursor-pointer">
-                  Vinyl Plotters
+                  {t.downloadsPage?.vinylPlotters || 'Vinyl Plotters'}
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Layers size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
                 <span className="text-xs font-semibold text-slate-700 dark:text-white hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-colors cursor-pointer">
-                  Print-on-Demand
+                  {t.downloadsPage?.printOnDemand || 'Print-on-Demand'}
                 </span>
               </div>
             </div>
@@ -661,10 +663,10 @@ export default function DownloadsPage() {
           <div className="md:col-span-3 bg-white dark:bg-card/70 rounded-2xl border border-slate-200/90 dark:border-white/10 p-5 sm:p-6 shadow-sm flex flex-col justify-between relative overflow-hidden">
             <div className="relative z-10">
               <h3 className="font-heading font-extrabold text-base text-slate-900 dark:text-white mb-2">
-                Need a custom vector?
+                {t.downloadsPage?.customVectorTitle || 'Need a custom vector?'}
               </h3>
               <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed mb-5">
-                We can digitize and vector convert any physical motif, photo, or sketch into clean cut paths.
+                {t.downloadsPage?.customVectorDesc || 'We can digitize and vector convert any physical motif, photo, or sketch into clean cut paths.'}
               </p>
             </div>
 
@@ -673,7 +675,7 @@ export default function DownloadsPage() {
                 href="/contact"
                 className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-full bg-[#2CFF05] text-[#0a0a0a] text-xs font-bold hover:bg-[#3af816] transition-all shadow-md shadow-[#2CFF05]/20 hover:scale-[1.02]"
               >
-                <span>Request Custom Artwork</span>
+                <span>{t.downloadsPage?.requestCustomBtn || 'Request Custom Artwork'}</span>
                 <ArrowRight size={13} />
               </Link>
             </div>

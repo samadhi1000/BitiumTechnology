@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     siteName: "Bitium Technology",
     images: [
       {
-        url: "/images/og-bitium.jpg",
+        url: "/images/og-bitium.webp",
         width: 1200,
         height: 630,
         alt: "Bitium Technology - Professional DTF & Laser Printing",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Custom DTF Printing & Gang Sheets | Bitium Technology",
     description: "Design your own DTF transfers online, preview them in 3D, and get vibrant, durable prints shipped in 24 hours. No minimum orders. Try Bitium today.",
-    images: ["/images/og-bitium.jpg"],
+    images: ["/images/og-bitium.webp"],
   },
 };
 

@@ -19,7 +19,7 @@ const DEFAULT_TRENDING = [
     description: 'High-definition full color DTF transfer sheet. Upload multiple designs with instant background removal.',
     price: 3500,
     original_price: 4500,
-    image_url: '/images/products/dtf-sheet.jpg',
+    image_url: '/images/products/dtf-sheet.webp',
     badge: '🔥 #1 Trending',
     link: '/canvas',
     btnText: 'Launch Canvas Builder'
@@ -32,7 +32,7 @@ const DEFAULT_TRENDING = [
     description: 'Reusable precision laser-cut Mylar stencil for elegant saree hand-painting & fabric art.',
     price: 1800,
     original_price: 2400,
-    image_url: '/images/products/saree-border-dtf.jpg',
+    image_url: '/images/products/saree-border-dtf.webp',
     badge: '✨ Popular Choice',
     link: '/products/stencil-saree-1',
     btnText: 'View Stencil'
@@ -45,7 +45,7 @@ const DEFAULT_TRENDING = [
     description: 'Handcrafted authentic fabric pattern print transfer for traditional and modern apparel.',
     price: 4900,
     original_price: 6500,
-    image_url: '/images/products/stitch-dtf.jpg',
+    image_url: '/images/products/stitch-dtf.webp',
     badge: '🎨 Craft Special',
     link: '/products/batik-stamp-cap-batik-1',
     btnText: 'Explore Print'

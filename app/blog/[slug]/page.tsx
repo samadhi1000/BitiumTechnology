@@ -101,7 +101,7 @@ export default async function BlogPostPage({ params }: Props) {
       name: 'Bitium Technology',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://www.bitiumtechnology.com/images/bitium-logo.jpg',
+        url: 'https://www.bitiumtechnology.com/images/bitium-logo.webp',
       },
     },
   };

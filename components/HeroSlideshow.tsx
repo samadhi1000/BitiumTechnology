@@ -4,10 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const IMAGES = [
-  '/images/hero-bg-1.jpg',
-  '/images/hero-bg-2.jpg',
-  '/images/hero-bg-3.jpg',
-  '/images/hero-bg-4.jpg',
+  '/images/hero-bg-1.webp',
+  '/images/hero-bg-2.webp',
+  '/images/hero-bg-3.webp',
+  '/images/hero-bg-4.webp',
 ];
 
 export const HeroSlideshow: React.FC = () => {

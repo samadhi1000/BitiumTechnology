@@ -53,11 +53,11 @@ export const BLOG_POSTS: BlogPost[] = [
     "author": {
       "name": "Asanka Udawatte",
       "role": "Director of Growth & AI Strategy - Stack Unleash",
-      "avatar": "/images/bitium-logo.jpg"
+      "avatar": "/images/bitium-logo.webp"
     },
     "publishedAt": "2026-08-01",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/an-illustration-depicting-custom-vs-letter-stencils.png",
+    "coverImage": "/images/blogs/an-illustration-depicting-custom-vs-letter-stencils.webp",
     "coverAlt": "an illustration depicting custom stencils vs letter stencils",
     "featured": true,
     "tableOfContents": [
@@ -108,11 +108,11 @@ export const BLOG_POSTS: BlogPost[] = [
     "author": {
       "name": "Asanka Udawatte",
       "role": "Director of Growth & AI Strategy - Stack Unleash",
-      "avatar": "/images/bitium-logo.jpg"
+      "avatar": "/images/bitium-logo.webp"
     },
     "publishedAt": "2026-08-02",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/a-laser-cutting-machine-on-duty.jpeg",
+    "coverImage": "/images/blogs/a-laser-cutting-machine-on-duty.webp",
     "coverAlt": "a laser cutting machine on duty",
     "featured": false,
     "tableOfContents": [
@@ -151,11 +151,11 @@ export const BLOG_POSTS: BlogPost[] = [
     "author": {
       "name": "Asanka Udawatte",
       "role": "Director of Growth & AI Strategy - Stack Unleash",
-      "avatar": "/images/bitium-logo.jpg"
+      "avatar": "/images/bitium-logo.webp"
     },
     "publishedAt": "2026-08-03",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/a-man-is-applying-a-wall-stencil.jpeg",
+    "coverImage": "/images/blogs/a-man-is-applying-a-wall-stencil.webp",
     "coverAlt": "A man is applying a wall stencil",
     "featured": false,
     "tableOfContents": [
@@ -194,11 +194,11 @@ export const BLOG_POSTS: BlogPost[] = [
     "author": {
       "name": "Asanka Udawatte",
       "role": "Director of Growth & AI Strategy - Stack Unleash",
-      "avatar": "/images/bitium-logo.jpg"
+      "avatar": "/images/bitium-logo.webp"
     },
     "publishedAt": "2026-08-04",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/a-man-is-using-a-screen-printing-machine.jpeg",
+    "coverImage": "/images/blogs/a-man-is-using-a-screen-printing-machine.webp",
     "coverAlt": "a man is using a screen printing machine",
     "featured": false,
     "tableOfContents": [
@@ -249,11 +249,11 @@ export const BLOG_POSTS: BlogPost[] = [
     "author": {
       "name": "Asanka Udawatte",
       "role": "Director of Growth & AI Strategy - Stack Unleash",
-      "avatar": "/images/bitium-logo.jpg"
+      "avatar": "/images/bitium-logo.webp"
     },
     "publishedAt": "2026-08-05",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/a-woman-is-wearing-a-dtf-printed-t-shirt.jpeg",
+    "coverImage": "/images/blogs/a-woman-is-wearing-a-dtf-printed-t-shirt.webp",
     "coverAlt": "a woman is wearing a DTF printed T-shirt",
     "featured": false,
     "tableOfContents": [
@@ -292,11 +292,11 @@ export const BLOG_POSTS: BlogPost[] = [
     "author": {
       "name": "Asanka Udawatte",
       "role": "Director of Growth & AI Strategy - Stack Unleash",
-      "avatar": "/images/bitium-logo.jpg"
+      "avatar": "/images/bitium-logo.webp"
     },
     "publishedAt": "2026-08-06",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/a-dtf-print-and-a-set-of-printed-objrcts.jpeg",
+    "coverImage": "/images/blogs/a-dtf-print-and-a-set-of-printed-objrcts.webp",
     "coverAlt": "a DTF print and a set of printed objrcts",
     "featured": false,
     "tableOfContents": [
@@ -363,11 +363,11 @@ export const BLOG_POSTS: BlogPost[] = [
     "author": {
       "name": "Asanka Udawatte",
       "role": "Director of Growth & AI Strategy - Stack Unleash",
-      "avatar": "/images/bitium-logo.jpg"
+      "avatar": "/images/bitium-logo.webp"
     },
     "publishedAt": "2026-08-07",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/a-man-checking-the-laser-cutting-output.jpeg",
+    "coverImage": "/images/blogs/a-man-checking-the-laser-cutting-output.webp",
     "coverAlt": "A man checking the laser cutting output",
     "featured": false,
     "tableOfContents": [
@@ -430,11 +430,11 @@ export const BLOG_POSTS: BlogPost[] = [
     "author": {
       "name": "Asanka Udawatte",
       "role": "Director of Growth & AI Strategy - Stack Unleash",
-      "avatar": "/images/bitium-logo.jpg"
+      "avatar": "/images/bitium-logo.webp"
     },
     "publishedAt": "2026-08-08",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/a-person-is-designing-a-batik-stamp.jpeg",
+    "coverImage": "/images/blogs/a-person-is-designing-a-batik-stamp.webp",
     "coverAlt": "a person is designing a batik stamp",
     "featured": false,
     "tableOfContents": [
@@ -477,11 +477,11 @@ export const BLOG_POSTS: BlogPost[] = [
     "author": {
       "name": "Asanka Udawatte",
       "role": "Director of Growth & AI Strategy - Stack Unleash",
-      "avatar": "/images/bitium-logo.jpg"
+      "avatar": "/images/bitium-logo.webp"
     },
     "publishedAt": "2026-08-09",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/a-woman-is-using-a-batik-stamp.jpeg",
+    "coverImage": "/images/blogs/a-woman-is-using-a-batik-stamp.webp",
     "coverAlt": "a woman is using a batik stamp",
     "featured": false,
     "tableOfContents": [
@@ -536,11 +536,11 @@ export const BLOG_POSTS: BlogPost[] = [
     "author": {
       "name": "Asanka Udawatte",
       "role": "Director of Growth & AI Strategy - Stack Unleash",
-      "avatar": "/images/bitium-logo.jpg"
+      "avatar": "/images/bitium-logo.webp"
     },
     "publishedAt": "2026-08-10",
     "readTime": "5 min read",
-    "coverImage": "/images/blogs/a-man-is-operating-a-screen-printing-printer.jpeg",
+    "coverImage": "/images/blogs/a-man-is-operating-a-screen-printing-printer.webp",
     "coverAlt": "a man is operating a screen printing printer",
     "featured": false,
     "tableOfContents": [

@@ -33,7 +33,7 @@ export interface SizeVariantInput {
 // Subcategory definitions (15 subcategories, 9 items each = 135 products total)
 const SUBCAT_DATA = [
   // Stencil
-  { cat: 'stencil', sub: 'hand-painting', names: ['Tropical Palm & Monstera Stencil', 'Feathered Leaf Pattern Stencil', 'Wild Vine Leaves Hand-Painting Stencil', 'Botanical Branch & Leaves Stencil', 'Floral Bouquet Hand-Painting Stencil', 'Vintage Logo Hand-Painting Stencil', 'Tropical Leaves Hand-Painting Stencil', 'Cyberpunk Accent Hand-Painting Stencil', 'Cute Animal Hand-Painting Stencil'], image: '/images/products/stencil-hand-painting-1.jpg', price: 450, orig: 600 },
+  { cat: 'stencil', sub: 'hand-painting', names: ['Tropical Palm & Monstera Stencil', 'Feathered Leaf Pattern Stencil', 'Wild Vine Leaves Hand-Painting Stencil', 'Botanical Branch & Leaves Stencil', 'Floral Bouquet Hand-Painting Stencil', 'Vintage Logo Hand-Painting Stencil', 'Tropical Leaves Hand-Painting Stencil', 'Cyberpunk Accent Hand-Painting Stencil', 'Cute Animal Hand-Painting Stencil'], image: '/images/products/stencil-hand-painting-1.webp', price: 450, orig: 600 },
   { cat: 'stencil', sub: 'saree', names: ['Traditional Gold Zari Saree Stencil', 'Royal Peacock Saree Border Stencil', 'Silver Vines Saree Lace Stencil', 'Copper Paisley Border Saree Stencil', 'Lotus Petals Border Saree Stencil', 'Mandala Lace Border Saree Stencil', 'Chevron Geo Saree Border Stencil', 'Elephant March Saree Stencil', 'Classic Temple Saree Stencil'], image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80', price: 750, orig: 950 },
   { cat: 'stencil', sub: 'tote-bags', names: ['Cute Bear Tote Bag Stencil', 'Save the Earth Eco Tote Stencil', 'Retro Cassette Tote Bag Stencil', 'Aesthetic Line Art Tote Stencil', 'Minimalist Sun & Moon Tote Stencil', 'Coffee Lover Quote Tote Stencil', 'Wildflower Bouquet Tote Stencil', 'Tokyo Street Neon Tote Stencil', 'Kawaii Cat Paw Tote Stencil'], image: 'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&w=600&q=80', price: 380, orig: 500 },
   { cat: 'stencil', sub: 'batik', names: ['Traditional Tjanting Batik Stencil', 'Floral Vine Batik Border Stencil', 'Geometric Kawung Batik Stencil', 'Royal Parang Pattern Batik Stencil', 'Mega Mendung Cloud Batik Stencil', 'Modern Abstract Batik Stencil', 'Symmetrical Mandala Batik Stencil', 'Siriwasa Traditional Batik Stencil', 'Ocean Wave Motif Batik Stencil'], image: 'https://images.unsplash.com/photo-1508807526345-15e988543c28?auto=format&fit=crop&w=600&q=80', price: 650, orig: 850 },
@@ -73,7 +73,7 @@ const SUBCAT_DATA = [
       'Premium DTF Film Roll 60cm – Double Matte', 
       'Premium DTF Film Roll 60cm – Hot Peel'
     ], 
-    image: '/images/products/dtf-white-ink.jpg',
+    image: '/images/products/dtf-white-ink.webp',
     prices: [6500, 6500, 4900, 7500, 7500, 14000, 14000],
     origs: [8000, 8000, 6000, 9500, 9500, 18000, 18000]
   }
@@ -84,11 +84,11 @@ const MOCK_PRODUCTS: Product[] = [];
 // Dictionary of unique copyright-free Unsplash images mapped to specific subcategory index items
 const UNIQUE_IMAGES: Record<string, string[]> = {
   'hand-painting': [
-    '/images/products/stencil-hand-painting-1.jpg',
-    '/images/products/stencil-hand-painting-2.jpg',
-    '/images/products/stencil-hand-painting-3.jpg',
-    '/images/products/stencil-hand-painting-4.jpg',
-    '/images/products/stencil-hand-painting-5.jpg',
+    '/images/products/stencil-hand-painting-1.webp',
+    '/images/products/stencil-hand-painting-2.webp',
+    '/images/products/stencil-hand-painting-3.webp',
+    '/images/products/stencil-hand-painting-4.webp',
+    '/images/products/stencil-hand-painting-5.webp',
     'https://images.unsplash.com/photo-1515462277126-270d878326e5', // Vintage Logo
     'https://images.unsplash.com/photo-1448375240586-882707db888b', // Leaves
     'https://images.unsplash.com/photo-1563089145-599997674d42', // Cyberpunk
@@ -117,24 +117,24 @@ const UNIQUE_IMAGES: Record<string, string[]> = {
     'https://images.unsplash.com/photo-1590874103328-eac38a683ce7'
   ],
   'tshirt-design': [
-    '/images/products/mountain-vintage-tee.jpg',
-    '/images/products/demon-slayer-tee.jpg',
-    '/images/products/labubu-new.jpg',
-    '/images/products/stitch-dtf.jpg',
-    '/images/products/bear-street-dtf.jpg',
-    '/images/products/hike-that-tee.jpg',
-    '/images/products/hike-that-tee-back.jpg',
-    '/images/products/half-mile-tee.jpg',
-    '/images/products/heavyweight-tee.jpg'
+    '/images/products/mountain-vintage-tee.webp',
+    '/images/products/demon-slayer-tee.webp',
+    '/images/products/labubu-new.webp',
+    '/images/products/stitch-dtf.webp',
+    '/images/products/bear-street-dtf.webp',
+    '/images/products/hike-that-tee.webp',
+    '/images/products/hike-that-tee-back.webp',
+    '/images/products/half-mile-tee.webp',
+    '/images/products/heavyweight-tee.webp'
   ],
   'printing-materials': [
-    '/images/products/dtf-white-ink.jpg',
-    '/images/products/dtf-color-ink.jpg',
-    '/images/products/dtf-powder.jpg',
-    '/images/products/dtf-film-roll.jpg',
-    '/images/products/dtf-film-roll.jpg',
-    '/images/products/dtf-film-roll.jpg',
-    '/images/products/dtf-film-roll.jpg'
+    '/images/products/dtf-white-ink.webp',
+    '/images/products/dtf-color-ink.webp',
+    '/images/products/dtf-powder.webp',
+    '/images/products/dtf-film-roll.webp',
+    '/images/products/dtf-film-roll.webp',
+    '/images/products/dtf-film-roll.webp',
+    '/images/products/dtf-film-roll.webp'
   ]
 };
 

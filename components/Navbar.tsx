@@ -90,7 +90,7 @@ export default function Navbar() {
             <Link href="/" onClick={closeMobileMenu} className="flex items-center space-x-2.5 sm:space-x-3 group relative py-1 hover:opacity-90 transition-opacity">
               <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-primary/50 shadow-[0_0_20px_rgba(99,102,241,0.5)] group-hover:scale-105 transition-transform">
                 <Image
-                  src="/images/bitium-logo.jpg"
+                  src="/images/bitium-logo.webp"
                   alt="Bitium Technology"
                   fill
                   priority
@@ -109,7 +109,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation Links (Tidy & Cleanly Spaced) */}
-          <div className="hidden lg:flex items-center gap-1.5 xl:gap-3 2xl:gap-4 h-full">
+          <div className="hidden lg:flex items-center gap-2 xl:gap-4 2xl:gap-6 h-full">
             {/* 02. Stencil Page Dropdown */}
             <div 
               className="relative h-full flex items-center"
@@ -301,11 +301,6 @@ export default function Navbar() {
             {/* 08. Materials / Consumables */}
             <Link href={adminLink('/materials')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
               {t.nav.materials || 'Materials / Consumables'}
-            </Link>
-
-            {/* 09. Community Hub */}
-            <Link href={adminLink('/community')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
-              {t.nav.community || 'Community Hub'}
             </Link>
           </div>
 
@@ -699,19 +694,6 @@ export default function Navbar() {
               <div className="flex items-center gap-2">
                 <PackageCheck size={16} className="text-primary" />
                 <span>{t.nav.materials || 'Materials / Consumables'}</span>
-              </div>
-              <ChevronRight size={16} className="text-muted-foreground" />
-            </Link>
-
-            {/* 7. Community Hub */}
-            <Link
-              href={adminLink('/community')}
-              onClick={closeMobileMenu}
-              className="flex items-center justify-between px-4 py-3 rounded-xl bg-card/50 hover:bg-card border border-border text-sm font-bold text-foreground"
-            >
-              <div className="flex items-center gap-2">
-                <Users size={16} className="text-primary" />
-                <span>{t.nav.community || 'Community Hub'}</span>
               </div>
               <ChevronRight size={16} className="text-muted-foreground" />
             </Link>

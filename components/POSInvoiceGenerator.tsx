@@ -469,7 +469,7 @@ export default function POSInvoiceGenerator() {
             <div className="space-y-1.5">
               <div className="flex items-center gap-2.5 logo-wrapper shrink-0">
                 <img 
-                  src="/images/bitium-logo.jpg" 
+                  src="/images/bitium-logo.webp" 
                   alt="Bitium Technology Logo" 
                   className="w-10 h-10 rounded-full object-cover border border-zinc-200 shadow-sm shrink-0" 
                 />

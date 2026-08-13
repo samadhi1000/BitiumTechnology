@@ -6,7 +6,7 @@ import Link from 'next/link';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import PromoBanner from '@/components/PromoBanner';
-import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, Flame, CheckCircle2, Scissors, FlaskConical, PlayCircle, MessageSquareHeart, Upload, Grid, Cuboid, Package, Shield, Zap, Phone, ThumbsUp, Activity, Shirt, Feather, Clock, Droplet, PenTool, Crown, Target, Star } from 'lucide-react';
+import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, Flame, CheckCircle2, Scissors, FlaskConical, PlayCircle, MessageSquareHeart, Upload, Grid, Cuboid, Package, Shield, Zap, Phone, ThumbsUp, Activity, Shirt, Feather, Clock, Droplet, PenTool, Crown, Target, Star, Users } from 'lucide-react';
 import { HeroSearch } from '@/components/HeroSearch';
 import { HeroShowcaseCarousel } from '@/components/HeroShowcaseCarousel';
 import { useLanguage } from '@/lib/context/LanguageContext';
@@ -48,12 +48,12 @@ function HomeContent() {
   const { t } = useLanguage();
 
   const traditionalDesigns = [
-    { id: 1, bg: '#ff6b35', cardImage: '/images/products/design_1_card.png', motifImage: '/images/products/design_1_motif.png', title: 'Sri Lankan Peacock Motif' },
-    { id: 2, bg: '#7c3aed', cardImage: '/images/products/design_2_card.png', motifImage: '/images/products/design_2_motif.png', title: 'Traditional Sun Motif' },
-    { id: 3, bg: '#059669', cardImage: '/images/products/design_3_card.png', motifImage: '/images/products/design_3_motif.png', title: 'Sri Lankan Traditional Dancers' },
-    { id: 4, bg: '#dc2626', cardImage: '/images/products/design_4_card.png', motifImage: '/images/products/design_4_motif.png', title: 'Traditional Bird Line Art' },
-    { id: 5, bg: '#d97706', cardImage: '/images/products/design_5_card.png', motifImage: '/images/products/design_5_motif.png', title: 'Majestic Lion Motif' },
-    { id: 6, bg: '#0284c7', cardImage: '/images/products/design_6_card.png', motifImage: '/images/products/design_6_motif.png', title: 'Batik Symmetrical Border Pattern' }
+    { id: 1, bg: '#ff6b35', cardImage: '/images/products/design_1_card.webp', motifImage: '/images/products/design_1_motif.webp', title: 'Sri Lankan Peacock Motif' },
+    { id: 2, bg: '#7c3aed', cardImage: '/images/products/design_2_card.webp', motifImage: '/images/products/design_2_motif.webp', title: 'Traditional Sun Motif' },
+    { id: 3, bg: '#059669', cardImage: '/images/products/design_3_card.webp', motifImage: '/images/products/design_3_motif.webp', title: 'Sri Lankan Traditional Dancers' },
+    { id: 4, bg: '#dc2626', cardImage: '/images/products/design_4_card.webp', motifImage: '/images/products/design_4_motif.webp', title: 'Traditional Bird Line Art' },
+    { id: 5, bg: '#d97706', cardImage: '/images/products/design_5_card.webp', motifImage: '/images/products/design_5_motif.webp', title: 'Majestic Lion Motif' },
+    { id: 6, bg: '#0284c7', cardImage: '/images/products/design_6_card.webp', motifImage: '/images/products/design_6_motif.webp', title: 'Batik Symmetrical Border Pattern' }
   ];
   const [selectedDesign, setSelectedDesign] = useState<typeof traditionalDesigns[0] | null>(traditionalDesigns[0]);
 
@@ -68,90 +68,90 @@ function HomeContent() {
 
   const categories = [
     {
-      title: 'Stencils',
-      description: 'Laser-cut Mylar stencils for saree work, hand painting, and wall art — cut clean, every time.',
+      title: t.homeSections?.categories?.stencilsTitle || 'Stencils',
+      description: t.homeSections?.categories?.stencilsDesc || 'Laser-cut Mylar stencils for saree work, hand painting, and wall art — cut clean, every time.',
       href: '/stencil',
-      image: '/images/catalog/stencils.jpg',
+      image: '/images/catalog/stencils.webp',
       icon: Palette,
-      badge: '6 Categories'
+      badge: t.homeSections?.categories?.stencilsBadge || '6 Categories'
     },
     {
-      title: 'Screen Printing',
-      description: 'Exposed screens, vectorized artwork, and positive tracing films, made to your exact specs.',
+      title: t.homeSections?.categories?.screenTitle || 'Screen Printing',
+      description: t.homeSections?.categories?.screenDesc || 'Exposed screens, vectorized artwork, and positive tracing films, made to your exact specs.',
       href: '/screen-printing',
-      image: '/images/catalog/screen-printing.jpg',
+      image: '/images/catalog/screen-printing.webp',
       icon: Printer,
-      badge: 'Professional Grade'
+      badge: t.homeSections?.categories?.screenBadge || 'Professional Grade'
     },
     {
-      title: 'DTF Printing',
-      description: 'Custom sheet layouts, anime sticker packs, and cloth transfers — our most popular category.',
+      title: t.homeSections?.categories?.dtfTitle || 'DTF Printing',
+      description: t.homeSections?.categories?.dtfDesc || 'Custom sheet layouts, anime sticker packs, and cloth transfers — our most popular category.',
       href: '/dtf-printing',
-      image: '/images/catalog/dtf-printing.jpg',
+      image: '/images/catalog/dtf-printing.webp',
       icon: Layers,
-      badge: 'Hot Seller'
+      badge: t.homeSections?.categories?.dtfBadge || 'Hot Seller'
     },
     {
-      title: 'Batik Stamps',
-      description: 'Traditional copper and hand-carved wood Cap Batik stamps, made the way they\'ve always been made.',
+      title: t.homeSections?.categories?.batikTitle || 'Batik Stamps',
+      description: t.homeSections?.categories?.batikDesc || 'Traditional copper and hand-carved wood Cap Batik stamps, made the way they\'ve always been made.',
       href: '/batik-stamp',
-      image: '/images/catalog/batik-stamp.jpg',
+      image: '/images/catalog/batik-stamp.webp',
       icon: Stamp,
-      badge: 'Traditional Art'
+      badge: t.homeSections?.categories?.batikBadge || 'Traditional Art'
     },
     {
-      title: 'Laser Cutting',
-      description: 'Precision CO2 laser cutting for acrylic, wood, and custom profiles — built to your file, not a template.',
+      title: t.homeSections?.categories?.laserTitle || 'Laser Cutting',
+      description: t.homeSections?.categories?.laserDesc || 'Precision CO2 laser cutting for acrylic, wood, and custom profiles — built to your file, not a template.',
       href: '/laser-cutting',
-      image: '/images/catalog/laser-cutting.jpg',
+      image: '/images/catalog/laser-cutting.webp',
       icon: Scissors,
-      badge: 'CNC Precision'
+      badge: t.homeSections?.categories?.laserBadge || 'CNC Precision'
     },
     {
-      title: 'Consumables',
-      description: 'Inks, hot melt powder, film rolls, emulsions, and wash chemicals — the supplies that keep your shop running.',
+      title: t.homeSections?.categories?.consumablesTitle || 'Consumables',
+      description: t.homeSections?.categories?.consumablesDesc || 'Inks, hot melt powder, film rolls, emulsions, and wash chemicals — the supplies that keep your shop running.',
       href: '/materials',
-      image: '/images/catalog/consumables.jpg',
+      image: '/images/catalog/consumables.webp',
       icon: FlaskConical,
-      badge: 'Industrial Grade'
+      badge: t.homeSections?.categories?.consumablesBadge || 'Industrial Grade'
     },
     {
-      title: 'Video Tutorials',
-      description: 'Learn how to master Screen & DTF printing with our step-by-step video guides.',
+      title: t.homeSections?.categories?.tutorialsTitle || 'Video Tutorials',
+      description: t.homeSections?.categories?.tutorialsDesc || 'Learn how to master Screen & DTF printing with our step-by-step video guides.',
       href: '/blog',
-      image: '/images/catalog/video-tutorials.jpg',
+      image: '/images/catalog/video-tutorials.webp',
       icon: PlayCircle,
-      badge: 'Learn & Master'
+      badge: t.homeSections?.categories?.tutorialsBadge || 'Learn & Master'
     },
     {
-      title: 'Customer Feedbacks',
-      description: 'See what our existing customers have to say about Bitium Technology Products.',
+      title: t.homeSections?.categories?.feedbacksTitle || 'Customer Feedbacks',
+      description: t.homeSections?.categories?.feedbacksDesc || 'See what our existing customers have to say about Bitium Technology Products.',
       href: '/about',
-      image: '/images/catalog/customer-feedbacks.jpg',
+      image: '/images/catalog/customer-feedbacks.webp',
       icon: MessageSquareHeart,
-      badge: 'Real Stories'
+      badge: t.homeSections?.categories?.feedbacksBadge || 'Real Stories'
     }
   ];
 
   const steps = [
-    { num: 1, icon: <UploadIcon />, title: 'Upload Your Design', desc: 'Upload artwork in PNG, JPG, or PDF format. We support all major file types.' },
-    { num: 2, icon: <GridIcon />, title: 'Arrange Your Sheet', desc: 'Resize and organize your designs on the gang sheet for maximum efficiency.' },
-    { num: 3, icon: <CubeIcon />, title: 'Preview in 3D', desc: 'See your design on realistic apparel before you commit to printing.' },
-    { num: 4, icon: <PackageIcon />, title: 'We Print & Ship', desc: 'Premium quality printing delivered to your door within 24–48 hours.' },
+    { num: 1, icon: <UploadIcon />, title: t.homeSections?.steps?.s1Title || 'Upload Your Design', desc: t.homeSections?.steps?.s1Desc || 'Upload artwork in PNG, JPG, or PDF format. We support all major file types.' },
+    { num: 2, icon: <GridIcon />, title: t.homeSections?.steps?.s2Title || 'Arrange Your Sheet', desc: t.homeSections?.steps?.s2Desc || 'Resize and organize your designs on the gang sheet for maximum efficiency.' },
+    { num: 3, icon: <CubeIcon />, title: t.homeSections?.steps?.s3Title || 'Preview in 3D', desc: t.homeSections?.steps?.s3Desc || 'See your design on realistic apparel before you commit to printing.' },
+    { num: 4, icon: <PackageIcon />, title: t.homeSections?.steps?.s4Title || 'We Print & Ship', desc: t.homeSections?.steps?.s4Desc || 'Premium quality printing delivered to your door within 24–48 hours.' },
   ];
   
   const benefits = [
-    { icon: <ShieldIcon />, title: 'Premium Quality', desc: 'Top-grade materials and advanced printing technology for lasting results.' },
-    { icon: <DropletIcon />, title: 'Vibrant Colors', desc: 'High-opacity, ultra-vibrant inks that stand out on any fabric color.' },
-    { icon: <LayersIcon />, title: 'No Minimum Order', desc: 'Order one sheet or thousands — no minimums, ever.' },
-    { icon: <HeadphonesIcon />, title: 'Expert Support', desc: 'Our team is here to help at every step of your order.' },
-    { icon: <ThumbsUpIcon />, title: 'Satisfaction Guarantee', desc: "If you're not happy, we make it right. No questions asked." },
+    { icon: <ShieldIcon />, title: t.homeSections?.benefits?.b1Title || 'Premium Quality', desc: t.homeSections?.benefits?.b1Desc || 'Top-grade materials and advanced printing technology for lasting results.' },
+    { icon: <DropletIcon />, title: t.homeSections?.benefits?.b2Title || 'Vibrant Colors', desc: t.homeSections?.benefits?.b2Desc || 'High-opacity, ultra-vibrant inks that stand out on any fabric color.' },
+    { icon: <LayersIcon />, title: t.homeSections?.benefits?.b3Title || 'No Minimum Order', desc: t.homeSections?.benefits?.b3Desc || 'Order one sheet or thousands — no minimums, ever.' },
+    { icon: <HeadphonesIcon />, title: t.homeSections?.benefits?.b4Title || 'Expert Support', desc: t.homeSections?.benefits?.b4Desc || 'Our team is here to help at every step of your order.' },
+    { icon: <ThumbsUpIcon />, title: t.homeSections?.benefits?.b5Title || 'Satisfaction Guarantee', desc: t.homeSections?.benefits?.b5Desc || "If you're not happy, we make it right. No questions asked." },
   ];
   
   const galleryItems = [
     // DTF Printing
     { src: 'https://images.unsplash.com/photo-1601754664414-aa3e4f42e6d4?w=500&h=400&fit=crop&auto=format', alt: 'Custom black and white shirt', cat: 'DTF Printing' },
-    { src: 'https://images.unsplash.com/photo-1564557287817-3785e38ec1f5?w=500&h=400&fit=crop&auto=format', alt: 'Custom gray hoodie', cat: 'DTF Printing' },
+    { src: '/images/dtf-tiger-hoodie.webp', alt: 'Neo-Nature Tiger DTF Print Hoodie', cat: 'DTF Printing' },
     { src: 'https://images.unsplash.com/photo-1680292783974-a9a336c10366?w=500&h=400&fit=crop&auto=format', alt: 'Black hoodie custom', cat: 'DTF Printing' },
     { src: 'https://images.unsplash.com/photo-1615397587950-3cbb55f95b77?w=500&h=400&fit=crop&auto=format', alt: 'White hoodie apparel mockup', cat: 'DTF Printing' },
 
@@ -181,6 +181,13 @@ function HomeContent() {
   ];
 
   const filters = ['DTF Printing', 'Screen Printing', 'Laser Cutting', 'Stencils', 'Batik Stamp'];
+  const filterLabels: Record<string, string> = {
+    'DTF Printing': t.subNav?.dtfPrinting || 'DTF Printing',
+    'Screen Printing': t.subNav?.screenPrinting || 'Screen Printing',
+    'Laser Cutting': t.subNav?.laserCutting || 'Laser Cutting',
+    'Stencils': t.nav?.stencil || 'Stencils',
+    'Batik Stamp': t.nav?.batikStamp || 'Batik Stamp',
+  };
   const [activeGallery, setActiveGallery] = useState('DTF Printing');
   const visibleGallery = galleryItems.filter(g => g.cat === activeGallery);
 
@@ -192,14 +199,14 @@ function HomeContent() {
     'Batik Stamp': '/batik-stamp',
   };
 
-  const testimonials = [
+  const testimonials = t.homeSections?.testimonialsList || [
     { name: 'Kavinda P.', role: 'Apparel Brand Owner', rating: 5, text: '"Bitium Technology provided the cleanest DTF prints I\'ve ever seen. The colors popped instantly."', avatar: 'KP' },
     { name: 'Design Studio X', role: 'Interior Designers', rating: 5, text: '"The custom laser cut stencils for our mural project were flawless. Exceeded expectations!"', avatar: 'DS' },
     { name: 'Sahan M.', role: 'Local Screen Printer', rating: 5, text: '"Fastest screen exposing service in the city. Really appreciate the quick turnarounds."', avatar: 'SM' },
   ];
   const avatarColors = ['#2CFF05', '#7c3aed', '#0284c7'];
   
-  const faqs = [
+  const faqs = t.homeSections?.faqs || [
     { q: 'What is DTF printing?', a: 'DTF (Direct-to-Film) printing is a modern transfer method where designs are printed onto a special film and then heat-pressed onto garments. It produces vibrant, full-color prints on virtually any fabric.' },
     { q: 'What file formats do you accept?', a: 'We accept PNG (preferred for transparency), JPG, PDF, AI, and PSD files. For best results, submit artwork at 300 DPI or higher with a transparent background.' },
     { q: 'How long does shipping take?', a: 'Standard production takes 24 hours from order confirmation. Domestic shipping typically adds 2–5 business days. Express overnight options are available at checkout.' },
@@ -219,7 +226,7 @@ function HomeContent() {
             "@context": "https://schema.org",
             "@type": "LocalBusiness",
             "name": "Bitium Technology",
-            "image": "https://www.bitiumtechnology.com/images/bitium-logo.jpg",
+            "image": "https://www.bitiumtechnology.com/images/bitium-logo.webp",
             "@id": "https://www.bitiumtechnology.com/#organization",
             "url": "https://www.bitiumtechnology.com/",
             "telephone": "+94779731097",
@@ -263,7 +270,7 @@ function HomeContent() {
         {/* Static Background Image with Crystal Clear Visibility & Gradient Falloff to the Right */}
         <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
           <Image
-            src="/images/hero-printer-bg.jpg"
+            src="/images/hero-printer-bg.webp"
             alt="Bitium Technology Industrial Printing Machinery"
             fill
             priority
@@ -474,10 +481,14 @@ function HomeContent() {
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-zinc-50 dark:bg-card/40 border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
-            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">Catalog</span>
-            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">Shop Our Printing Solutions</h2>
+            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">
+              {t.homeSections?.catalogBadge || 'Catalog'}
+            </span>
+            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">
+              {t.homeSections?.catalogTitle || 'Shop Our Printing Solutions'}
+            </h2>
             <p className="text-sm text-muted-foreground max-w-xl mx-auto mt-2.5">
-              Explore our full range of custom stencils, industrial DTF transfers, traditional Cap Batik stamps, precision cutting, and print consumables.
+              {t.homeSections?.catalogDesc || 'Explore our full range of custom stencils, industrial DTF transfers, traditional Cap Batik stamps, precision cutting, and print consumables.'}
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 products-grid">
@@ -526,7 +537,7 @@ function HomeContent() {
                     </div>
                     
                     <div className="pt-2.5 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-xs font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05] transition-colors">
-                      <span>Browse Products</span>
+                      <span>{t.homeSections?.categories?.browseBtn || 'Browse Products'}</span>
                       <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
@@ -541,8 +552,12 @@ function HomeContent() {
       <section className="py-20 px-6 bg-background border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">Benefits</span>
-            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">The Bitium Advantage</h2>
+            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">
+              {t.homeSections?.whyBadge || 'Benefits'}
+            </span>
+            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">
+              {t.homeSections?.whyTitle || 'The Bitium Advantage'}
+            </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 benefits-grid">
             {benefits.map(b => (
@@ -562,14 +577,18 @@ function HomeContent() {
       <section className="py-20 px-6 bg-zinc-50 dark:bg-card/40 border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-9">
-            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">Gallery</span>
-            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">See Our Work</h2>
+            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">
+              {t.homeSections?.galleryBadge || 'Gallery'}
+            </span>
+            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">
+              {t.homeSections?.galleryTitle || 'See Our Work'}
+            </h2>
           </div>
 
           <div className="flex justify-center gap-2 flex-wrap mb-8">
             {filters.map(f => (
               <button key={f} className={`filter-btn ${activeGallery === f ? 'active' : ''}`} onClick={() => setActiveGallery(f)}>
-                {f}
+                {filterLabels[f] || f}
               </button>
             ))}
           </div>
@@ -579,7 +598,7 @@ function HomeContent() {
               <div key={i} className="group rounded-xl overflow-hidden bg-muted aspect-square relative cursor-pointer">
                 <img src={item.src} alt={item.alt} className="w-full h-full object-cover block" />
                 <div className="absolute inset-0 bg-black/50 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  <div className="font-heading font-bold text-[13px] text-foreground">{item.cat}</div>
+                  <div className="font-heading font-bold text-[13px] text-foreground">{filterLabels[item.cat] || item.cat}</div>
                 </div>
               </div>
             ))}
@@ -590,7 +609,7 @@ function HomeContent() {
               href={categoryUrlMap[activeGallery] || '/dtf-printing'} 
               className="ghost-btn inline-flex items-center gap-2 px-8 py-3 rounded-full text-[14px] cursor-pointer"
             >
-              View full catalogue <ArrowRight size={14} />
+              {t.homeSections?.viewCatalogueBtn || 'View full catalogue'} <ArrowRight size={14} />
             </Link>
           </div>
         </div>
@@ -603,24 +622,28 @@ function HomeContent() {
           <div>
             <div className="inline-flex items-center gap-2 bg-[#2CFF05]/15 dark:bg-[#2CFF05]/10 rounded-full px-[14px] py-[6px] mb-6 border border-[#2CFF05]/30">
               <div className="w-[6px] h-[6px] rounded-full bg-[#2CFF05]" />
-              <span className="font-heading font-semibold text-[13px] text-[#2CFF05]">Professional DTF Printing</span>
+              <span className="font-heading font-semibold text-[13px] text-[#2CFF05]">
+                {t.homeSections?.dtfShowcaseBadge || 'Professional DTF Printing'}
+              </span>
             </div>
 
             <h2 className="hero-title font-heading font-black text-[clamp(32px,4.5vw,52px)] leading-[1.05] text-foreground mb-5">
-              Custom <span className="text-[#2CFF05]">DTF</span> Transfers<br />Made Simple.
+              {t.homeSections?.dtfShowcaseTitle1 || 'Custom '}
+              <span className="text-[#2CFF05]">DTF</span>{' '}
+              {t.homeSections?.dtfShowcaseTitle2 || 'Transfers Made Simple.'}
             </h2>
 
             <p className="hero-text text-[16px] text-muted-foreground dark:text-muted-foreground leading-[1.65] mb-9 max-w-[460px]">
-              Upload your artwork, arrange your gang sheet, preview your final print in 3D, and order professional-quality transfers in minutes.
+              {t.homeSections?.dtfShowcaseDesc || 'Upload your artwork, arrange your gang sheet, preview your final print in 3D, and order professional-quality transfers in minutes.'}
             </p>
 
             <div className="hero-buttons flex gap-3 flex-wrap mb-10">
               <Link href="/canvas" className="lime-btn flex items-center gap-[10px] px-7 py-3.5 rounded-full text-[15px] border-none cursor-pointer">
-                Create Your DTF Sheet
+                {t.homeSections?.dtfShowcaseBtnCreate || 'Create Your DTF Sheet'}
                 <ArrowRight size={16} />
               </Link>
               <Link href="/stencil" className="ghost-btn flex items-center gap-[10px] px-7 py-3.5 rounded-full text-[15px] cursor-pointer">
-                Browse Products
+                {t.homeSections?.dtfShowcaseBtnBrowse || 'Browse Products'}
               </Link>
             </div>
 
@@ -639,7 +662,9 @@ function HomeContent() {
                   <span className="text-[10px] text-muted-foreground">🔒</span>
                   <span className="font-sans text-[11px] text-muted-foreground dark:text-muted-foreground">bitiumtechnology.com/builder</span>
                 </div>
-                <Link href="/3d-customizer" className="bg-[#2CFF05] hover:bg-[#7ce000] border-none rounded-md py-1.5 px-3 font-heading font-bold text-[10px] cursor-pointer text-[#0a0a0a] transition-colors decoration-none flex items-center justify-center">Preview in 3D</Link>
+                <Link href="/3d-customizer" className="bg-[#2CFF05] hover:bg-[#7ce000] border-none rounded-md py-1.5 px-3 font-heading font-bold text-[10px] cursor-pointer text-[#0a0a0a] transition-colors decoration-none flex items-center justify-center">
+                  {t.hero?.previewBtn || 'Preview in 3D'}
+                </Link>
               </div>
 
               {/* App content */}
@@ -679,7 +704,7 @@ function HomeContent() {
                   {/* Realistic Hoodie Preview */}
                   <div className="relative w-full h-[180px] flex items-center justify-center overflow-hidden">
                     <Image 
-                      src="/images/products/black_hoodie_uploaded_fitted.png" 
+                      src="/images/products/black_hoodie_uploaded_fitted.webp" 
                       alt="Black Hoodie Preview" 
                       fill 
                       className="object-contain" 
@@ -708,8 +733,12 @@ function HomeContent() {
             <div className="float-anim absolute -bottom-4 -right-2 bg-card rounded-[14px] shadow-[0_12px_40px_rgba(0,0,0,0.15)] border border-border py-3 px-4 flex items-center gap-3 z-20">
               <div className="w-9 h-9 bg-primary rounded-[10px] flex items-center justify-center text-[18px]">🎨</div>
               <div>
-                <div className="font-heading font-bold text-[12px] text-foreground">3D Preview Ready</div>
-                <div className="text-[11px] text-muted-foreground">6 designs on sheet</div>
+                <div className="font-heading font-bold text-[12px] text-foreground">
+                  {t.homeSections?.dtfShowcaseCardTitle || '3D Preview Ready'}
+                </div>
+                <div className="text-[11px] text-muted-foreground">
+                  {t.homeSections?.dtfShowcaseCardSub || '6 designs on sheet'}
+                </div>
               </div>
             </div>
           </div>
@@ -720,27 +749,47 @@ function HomeContent() {
       <section className="py-20 px-6 bg-background border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">Reviews</span>
-            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">What Our Customers Say</h2>
+            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">
+              {t.homeSections?.reviewsBadge || 'Reviews'}
+            </span>
+            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">
+              {t.homeSections?.reviewsTitle || 'What Our Customers Say'}
+            </h2>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 testi-grid">
-            {testimonials.map((t, i) => (
-              <div key={t.name} className="bg-zinc-50 dark:bg-card rounded-[20px] p-8 border-[1.5px] border-border">
+            {testimonials.map((tItem, i) => (
+              <div key={tItem.name} className="bg-zinc-50 dark:bg-card rounded-[20px] p-8 border-[1.5px] border-border">
                 <div className="flex gap-1 mb-5">
-                  {Array.from({ length: 5 }).map((_, s) => <StarIcon key={s} filled={s < t.rating} />)}
+                  {Array.from({ length: 5 }).map((_, s) => <StarIcon key={s} filled={s < tItem.rating} />)}
                 </div>
-                <p className="text-[15px] text-muted-foreground dark:text-foreground leading-[1.7] mb-6 italic">{t.text}</p>
+                <p className="text-[15px] text-muted-foreground dark:text-foreground leading-[1.7] mb-6 italic">{tItem.text}</p>
                 <div className="flex items-center gap-3">
                   <div className="w-[42px] h-[42px] rounded-full flex items-center justify-center font-heading font-extrabold text-[14px] text-[#0a0a0a] shrink-0" style={{ background: avatarColors[i] }}>
-                    {t.avatar}
+                    {tItem.avatar}
                   </div>
                   <div>
-                    <div className="font-heading font-bold text-[14px] text-foreground">{t.name}</div>
-                    <div className="text-[12px] text-muted-foreground">{t.role}</div>
+                    <div className="font-heading font-bold text-[14px] text-foreground">{tItem.name}</div>
+                    <div className="text-[12px] text-muted-foreground">{tItem.role}</div>
                   </div>
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Community Hub CTA Button */}
+          <div className="text-center mt-12">
+            <Link 
+              href="/community" 
+              className="lime-btn inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full text-[14px] font-bold shadow-lg shadow-[#2CFF05]/15 hover:scale-105 transition-all cursor-pointer"
+            >
+              <Users size={18} />
+              <span>
+                {t.homeSections?.whyBadge === 'විශේෂත්වයන්' 
+                  ? 'අපගේ සමූහයට එකතු වන්න (Visit Our Community)' 
+                  : 'Visit Our Community'}
+              </span>
+              <ArrowRight size={16} />
+            </Link>
           </div>
         </div>
       </section>
@@ -757,17 +806,22 @@ function HomeContent() {
             <div className="space-y-6 lg:sticky lg:top-24">
               <div className="inline-flex items-center gap-2 bg-[#2CFF05]/10 border border-[#2CFF05]/25 rounded-full px-3.5 py-1.5">
                 <Sparkles size={12} className="text-[#2CFF05]" />
-                <span className="font-heading font-semibold text-[11px] text-[#2CFF05] tracking-wider uppercase">SUPPORT HUB</span>
+                <span className="font-heading font-semibold text-[11px] text-[#2CFF05] tracking-wider uppercase">
+                  {t.homeSections?.faqBadge || 'SUPPORT HUB'}
+                </span>
               </div>
               <h2 className="font-heading font-black text-[clamp(32px,4.5vw,48px)] text-foreground leading-[1.1]">
-                Frequently Asked <span className="text-[#2CFF05]">Questions</span>
+                {t.homeSections?.faqTitle1 || 'Frequently Asked '}
+                <span className="text-[#2CFF05]">
+                  {t.homeSections?.faqTitle2 || 'Questions'}
+                </span>
               </h2>
               <p className="text-[15px] text-muted-foreground leading-[1.65] max-w-md">
-                Need help with your design, files, or custom sheets? Find answers to commonly asked questions here, or reach out directly to our printing experts.
+                {t.homeSections?.faqDesc || 'Need help with your design, files, or custom sheets? Find answers to commonly asked questions here, or reach out directly to our printing experts.'}
               </p>
               <div className="pt-2">
                 <Link href="/contact" className="lime-btn inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-xs font-black uppercase tracking-wider shadow-lg shadow-[#2CFF05]/10 hover:shadow-[#2CFF05]/25 cursor-pointer">
-                  <MessageSquareHeart size={14} /> Contact Support
+                  <MessageSquareHeart size={14} /> {t.homeSections?.faqSupportBtn || 'Contact Support'}
                 </Link>
               </div>
             </div>
@@ -818,16 +872,19 @@ function HomeContent() {
             <div className="relative z-10 flex flex-col items-center lg:items-start text-center lg:text-left">
               <div className="inline-flex items-center gap-2 bg-[#2CFF05]/15 rounded-full px-3.5 py-1.5 mb-5 border border-[#2CFF05]/20">
                 <div className="w-1.5 h-1.5 rounded-full bg-[#2CFF05] animate-pulse" />
-                <span className="font-heading font-semibold text-[12px] text-[#2CFF05]">Ready to get started?</span>
+                <span className="font-heading font-semibold text-[12px] text-[#2CFF05]">
+                  {t.homeSections?.ctaBadge || 'Ready to get started?'}
+                </span>
               </div>
               <h2 className="font-heading font-black text-[clamp(30px,4.5vw,52px)] text-white leading-[1.08] mb-4">
-                Ready to Print<br />Your Design?
+                {t.homeSections?.ctaTitle1 || 'Ready to Print'}<br />
+                {t.homeSections?.ctaTitle2 || 'Your Design?'}
               </h2>
               <p className="text-[15px] sm:text-[16px] text-slate-300 leading-[1.65] mb-8 max-w-[460px]">
-                Create your DTF sheet now and see your design come to life before printing. No minimums, 24-hour turnaround.
+                {t.homeSections?.ctaDesc || 'Create your DTF sheet now and see your design come to life before printing. No minimums, 24-hour turnaround.'}
               </p>
               <Link href="/canvas" className="lime-btn inline-flex items-center gap-[10px] px-8 py-4 rounded-full text-[15px] font-bold border-none cursor-pointer shadow-lg shadow-[#2CFF05]/20 hover:scale-105 transition-all">
-                Start Your Design Now <ArrowRight size={16} />
+                {t.homeSections?.ctaBtn || 'Start Your Design Now'} <ArrowRight size={16} />
               </Link>
             </div>
 

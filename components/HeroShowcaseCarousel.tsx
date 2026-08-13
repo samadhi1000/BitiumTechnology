@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PenTool, Layers, Printer, Stamp, Scissors, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { useTheme } from "@/lib/context/ThemeContext";
+import { useLanguage } from "@/lib/context/LanguageContext";
 
 interface HeroCardItem {
   id: string;
@@ -15,61 +16,63 @@ interface HeroCardItem {
   icon: React.ElementType;
 }
 
-const HERO_ITEMS: HeroCardItem[] = [
-  {
-    id: "stencil",
-    title: "Custom Stencils",
-    desc: "Precision laser-cut stencils for every creative need.",
-    image: "/images/hero-cards/stencil.jpg",
-    href: "/stencil",
-    icon: PenTool,
-  },
-  {
-    id: "dtf",
-    title: "DTF Film Rolls",
-    desc: "High-quality film rolls for vibrant and durable prints.",
-    image: "/images/hero-cards/dtf.jpg",
-    href: "/dtf-printing",
-    icon: Layers,
-  },
-  {
-    id: "screen-printing",
-    title: "Screen Printing",
-    desc: "Professional screen printing materials and accessories.",
-    image: "/images/hero-cards/screenprint.jpg",
-    href: "/screen-printing",
-    icon: Printer,
-  },
-  {
-    id: "batik-stamp",
-    title: "Batik Stamps",
-    desc: "Traditional batik stamps crafted to perfection.",
-    image: "/images/hero-cards/batik.jpg",
-    href: "/batik-stamp",
-    icon: Stamp,
-  },
-  {
-    id: "laser-cutting",
-    title: "Laser Engraving",
-    desc: "Precision CNC laser cutting and engraving solutions.",
-    image: "/images/hero-cards/laser.jpg",
-    href: "/laser-cutting",
-    icon: Scissors,
-  },
-  {
-    id: "toolkit",
-    title: "Toolkit Studio",
-    desc: "Interactive 3D mockup studio and gang sheet canvas builder.",
-    image: "/images/hero-cards/toolkit.jpg",
-    href: "/3d-customizer",
-    icon: Sparkles,
-  },
-];
-
 export const HeroShowcaseCarousel: React.FC = () => {
   const { theme } = useTheme();
+  const { t } = useLanguage();
+
+  const heroItems: HeroCardItem[] = [
+    {
+      id: "stencil",
+      title: t.heroCards?.customStencils?.title || "Custom Stencils",
+      desc: t.heroCards?.customStencils?.desc || "Precision laser-cut stencils for every creative need.",
+      image: "/images/hero-cards/stencil.webp",
+      href: "/stencil",
+      icon: PenTool,
+    },
+    {
+      id: "dtf",
+      title: t.heroCards?.dtfFilmRolls?.title || "DTF Film Rolls",
+      desc: t.heroCards?.dtfFilmRolls?.desc || "High-quality film rolls for vibrant and durable prints.",
+      image: "/images/hero-cards/dtf.webp",
+      href: "/dtf-printing",
+      icon: Layers,
+    },
+    {
+      id: "screen-printing",
+      title: t.heroCards?.screenPrinting?.title || "Screen Printing",
+      desc: t.heroCards?.screenPrinting?.desc || "Professional screen printing materials and accessories.",
+      image: "/images/hero-cards/screenprint.webp",
+      href: "/screen-printing",
+      icon: Printer,
+    },
+    {
+      id: "batik-stamp",
+      title: t.heroCards?.batikStamps?.title || "Batik Stamps",
+      desc: t.heroCards?.batikStamps?.desc || "Traditional batik stamps crafted to perfection.",
+      image: "/images/hero-cards/batik.webp",
+      href: "/batik-stamp",
+      icon: Stamp,
+    },
+    {
+      id: "laser-cutting",
+      title: t.heroCards?.laserEngraving?.title || "Laser Engraving",
+      desc: t.heroCards?.laserEngraving?.desc || "Precision CNC laser cutting and engraving solutions.",
+      image: "/images/hero-cards/laser.webp",
+      href: "/laser-cutting",
+      icon: Scissors,
+    },
+    {
+      id: "toolkit",
+      title: t.heroCards?.toolkitStudio?.title || "Toolkit Studio",
+      desc: t.heroCards?.toolkitStudio?.desc || "Interactive 3D mockup studio and gang sheet canvas builder.",
+      image: "/images/hero-cards/toolkit.webp",
+      href: "/3d-customizer",
+      icon: Sparkles,
+    },
+  ];
+
   // 5 sets buffer to allow completely seamless, infinite continuous wrapping in both directions
-  const displayItems = [...HERO_ITEMS, ...HERO_ITEMS, ...HERO_ITEMS, ...HERO_ITEMS, ...HERO_ITEMS];
+  const displayItems = [...heroItems, ...heroItems, ...heroItems, ...heroItems, ...heroItems];
 
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -89,9 +92,9 @@ export const HeroShowcaseCarousel: React.FC = () => {
   const updateMetrics = useCallback(() => {
     if (!trackRef.current) return;
     const children = trackRef.current.children;
-    if (children.length > HERO_ITEMS.length) {
+    if (children.length > heroItems.length) {
       const firstChild = children[0] as HTMLElement;
-      const nextSetChild = children[HERO_ITEMS.length] as HTMLElement;
+      const nextSetChild = children[heroItems.length] as HTMLElement;
       if (firstChild && nextSetChild) {
         const calculatedSetWidth = nextSetChild.offsetLeft - firstChild.offsetLeft;
         if (calculatedSetWidth > 0) {
@@ -255,10 +258,7 @@ export const HeroShowcaseCarousel: React.FC = () => {
         <h3 className="font-heading font-extrabold text-sm sm:text-[15px] tracking-tight flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#2CFF05] animate-pulse shrink-0" />
           <span>
-            <span 
-              className="hero-carousel-title-black font-black"
-              style={{ color: theme === 'light' ? '#000000' : '#ffffff' }}
-            >
+            <span className="font-black text-white">
               Everything You Need to
             </span>{" "}
             <span className="text-emerald-600 dark:text-[#2CFF05] font-black dark:drop-shadow-[0_0_10px_rgba(44,255,5,0.4)]">
@@ -310,7 +310,7 @@ export const HeroShowcaseCarousel: React.FC = () => {
                 key={`${item.id}-${index}`}
                 href={item.href}
                 draggable={false}
-                className="w-[145px] sm:w-[155px] shrink-0 p-2.5 rounded-xl bg-zinc-900/90 hover:bg-zinc-800/95 dark:bg-zinc-900/90 dark:hover:bg-zinc-800/95 backdrop-blur-md border border-white/10 dark:border-white/10 hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/70 transition-all duration-200 flex flex-col group/card cursor-pointer shadow-sm dark:shadow-lg"
+                className="w-[145px] sm:w-[155px] shrink-0 p-2.5 rounded-xl hero-showcase-card hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/70 transition-all duration-200 flex flex-col group/card cursor-pointer shadow-sm dark:shadow-lg"
               >
                 {/* Image */}
                 <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-zinc-800/70 dark:bg-zinc-900/80 border border-white/10 dark:border-white/10 mb-2 pointer-events-none">
@@ -335,7 +335,7 @@ export const HeroShowcaseCarousel: React.FC = () => {
                 </div>
 
                 {/* Description */}
-                <p className="text-[10px] text-zinc-400 leading-tight line-clamp-2 font-medium">
+                <p className="text-[10px] text-white/80 leading-tight line-clamp-2 font-medium">
                   {item.desc}
                 </p>
               </Link>
