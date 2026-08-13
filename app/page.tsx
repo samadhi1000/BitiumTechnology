@@ -331,63 +331,51 @@ function HomeContent() {
               </Link>
             </div>
 
-            {/* Refactored Feature Items Row */}
-            <div className="pt-3 grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 w-full">
-              {/* Feature 1: Print Accuracy */}
-              <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/70 dark:bg-white/[0.06] border border-slate-200/80 dark:border-white/10 backdrop-blur-md shadow-sm">
-                <div className="w-8 h-8 rounded-lg bg-red-500/10 dark:bg-red-500/20 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0">
-                  <Target size={18} strokeWidth={2.2} />
-                </div>
-                <div className="min-w-0">
-                  <div className="font-heading font-extrabold text-xs sm:text-[13px] text-slate-950 dark:text-white truncate">
+            {/* Refactored Clean Hero Stats Row */}
+            <div className="pt-2 flex flex-wrap items-center gap-5 sm:gap-6 text-slate-900 dark:text-white">
+              <div className="flex items-center gap-2">
+                <span className="text-[18px]">🎯</span>
+                <div>
+                  <div className="font-heading font-extrabold text-xs sm:text-[13px] leading-tight text-slate-950 dark:text-white">
                     {t.hero.stats.accuracyTitle}
                   </div>
-                  <div className="text-[11px] text-slate-600 dark:text-slate-300 font-medium truncate">
+                  <div className="text-[11px] text-slate-600 dark:text-slate-300 font-medium">
                     {t.hero.stats.accuracySub}
                   </div>
                 </div>
               </div>
 
-              {/* Feature 2: Turnaround */}
-              <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/70 dark:bg-white/[0.06] border border-slate-200/80 dark:border-white/10 backdrop-blur-md shadow-sm">
-                <div className="w-8 h-8 rounded-lg bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-                  <Zap size={18} strokeWidth={2.2} />
-                </div>
-                <div className="min-w-0">
-                  <div className="font-heading font-extrabold text-xs sm:text-[13px] text-slate-950 dark:text-white truncate">
+              <div className="flex items-center gap-2">
+                <span className="text-[18px]">⚡</span>
+                <div>
+                  <div className="font-heading font-extrabold text-xs sm:text-[13px] leading-tight text-slate-950 dark:text-white">
                     {t.hero.stats.turnaroundTitle}
                   </div>
-                  <div className="text-[11px] text-slate-600 dark:text-slate-300 font-medium truncate">
+                  <div className="text-[11px] text-slate-600 dark:text-slate-300 font-medium">
                     {t.hero.stats.turnaroundSub}
                   </div>
                 </div>
               </div>
 
-              {/* Feature 3: Orders */}
-              <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/70 dark:bg-white/[0.06] border border-slate-200/80 dark:border-white/10 backdrop-blur-md shadow-sm">
-                <div className="w-8 h-8 rounded-lg bg-orange-500/10 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0">
-                  <Package size={18} strokeWidth={2.2} />
-                </div>
-                <div className="min-w-0">
-                  <div className="font-heading font-extrabold text-xs sm:text-[13px] text-slate-950 dark:text-white truncate">
+              <div className="flex items-center gap-2">
+                <span className="text-[18px]">📦</span>
+                <div>
+                  <div className="font-heading font-extrabold text-xs sm:text-[13px] leading-tight text-slate-950 dark:text-white">
                     {t.hero.stats.ordersTitle}
                   </div>
-                  <div className="text-[11px] text-slate-600 dark:text-slate-300 font-medium truncate">
+                  <div className="text-[11px] text-slate-600 dark:text-slate-300 font-medium">
                     {t.hero.stats.ordersSub}
                   </div>
                 </div>
               </div>
 
-              {/* Feature 4: Satisfaction */}
-              <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/70 dark:bg-white/[0.06] border border-slate-200/80 dark:border-white/10 backdrop-blur-md shadow-sm">
-                <div className="w-8 h-8 rounded-lg bg-yellow-500/10 dark:bg-yellow-500/20 text-yellow-600 dark:text-yellow-400 flex items-center justify-center shrink-0">
-                  <Star size={18} strokeWidth={2.2} className="fill-yellow-500 text-yellow-500" />
-                </div>
-                <div className="min-w-0">
-                  <div className="font-heading font-extrabold text-xs sm:text-[13px] text-slate-950 dark:text-white truncate">
+              <div className="flex items-center gap-2">
+                <span className="text-[18px]">⭐</span>
+                <div>
+                  <div className="font-heading font-extrabold text-xs sm:text-[13px] leading-tight text-slate-950 dark:text-white">
                     {t.hero.stats.ratingTitle}
                   </div>
-                  <div className="text-[11px] text-slate-600 dark:text-slate-300 font-medium truncate">
+                  <div className="text-[11px] text-slate-600 dark:text-slate-300 font-medium">
                     {t.hero.stats.ratingSub}
                   </div>
                 </div>
@@ -635,22 +623,6 @@ function HomeContent() {
               </Link>
             </div>
 
-            <div className="flex gap-6 flex-wrap mb-10">
-              {[
-                { icon: '🎯', label: '99% Print Accuracy', sub: 'Vibrant & Durable' },
-                { icon: '⚡', label: '24h Turnaround', sub: 'Fast Production' },
-                { icon: '📦', label: '10,000+ Orders', sub: 'Happy Customers' },
-                { icon: '⭐', label: '5★ Satisfaction', sub: 'Top Rated Support' },
-              ].map(item => (
-                <div key={item.label} className="flex items-center gap-2">
-                  <span className="text-[18px]">{item.icon}</span>
-                  <div>
-                    <div className="font-heading font-bold text-[13px] text-foreground">{item.label}</div>
-                    <div className="text-[11px] text-muted-foreground dark:text-muted-foreground">{item.sub}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* Right – Product Mockup */}
