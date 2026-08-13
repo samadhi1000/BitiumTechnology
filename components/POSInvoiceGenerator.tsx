@@ -463,13 +463,18 @@ export default function POSInvoiceGenerator() {
           className={`bg-white text-zinc-900 border border-zinc-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl relative print:border-none print:shadow-none print:p-0 print:m-0 ${
             printLayout === 'POS-80mm' ? 'invoice-pos-layout max-w-[80mm] mx-auto' : 'invoice-a4-layout'
           }`}
-          style={{ contentVisibility: 'auto' }}
         >
           {/* Print Header */}
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1">
-              <div className="h-8 w-28 text-emerald-900 flex items-center logo-wrapper shrink-0">
-                <BitiumLogo />
+              <div className="flex items-center gap-2 logo-wrapper shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-emerald-700 text-white font-black text-xs flex items-center justify-center tracking-tighter shadow-sm">
+                  B!T
+                </div>
+                <div>
+                  <div className="font-black text-sm tracking-wider text-zinc-950 uppercase leading-none">BITIUM</div>
+                  <div className="text-[7.5px] font-bold tracking-[0.2em] text-emerald-700 uppercase">TECHNOLOGY</div>
+                </div>
               </div>
               <p className="text-[9px] text-zinc-500 font-semibold leading-relaxed max-w-[180px] shop-details">
                 Bitium Technology (Pvt) Ltd.<br />
@@ -631,7 +636,7 @@ export default function POSInvoiceGenerator() {
       {/* ─── PRINT CUSTOM STYLING RULES (Robust Page Break & Thermal POS Compatibility) ─── */}
       <style jsx global>{`
         @media print {
-          /* Force page margins and sizing defaults to fit thermal rolls or A4 paper nicely */
+          /* Force page margins and sizing defaults */
           @page {
             margin: 0mm !important;
             size: auto;
@@ -639,57 +644,66 @@ export default function POSInvoiceGenerator() {
 
           /* Reset all potential display constraints of layouts, scroll views and sidebars */
           html, body {
-            background-color: #fff !important;
-            color: #000 !important;
+            background-color: #ffffff !important;
+            color: #000000 !important;
             height: auto !important;
             overflow: visible !important;
             margin: 0 !important;
             padding: 0 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
 
-          /* Strip down and hide Next.js layout wrappers, navbars and main layout containers */
-          #__next, main, nav, footer, header, #whatsapp-button, .print\\:hidden {
+          /* Hide everything by default using visibility */
+          body * {
+            visibility: hidden !important;
+          }
+
+          /* Make ONLY the invoice print area and its contents visible */
+          #invoice-print-area,
+          #invoice-print-area * {
+            visibility: visible !important;
+          }
+
+          /* Explicitly hide interactive buttons or items with print:hidden or no-print */
+          #invoice-print-area .print\:hidden,
+          #invoice-print-area .no-print,
+          .print\:hidden,
+          .no-print,
+          nav,
+          footer,
+          header,
+          #whatsapp-button {
             display: none !important;
-            height: 0 !important;
-            overflow: hidden !important;
+            visibility: hidden !important;
           }
 
-          /* Target parent containers of invoice sheet and force them to render as plain block wrappers without widths or constraints */
-          .min-h-screen, .max-w-7xl, .grid, .xl\\:col-span-12, .xl\\:col-span-5 {
-            display: block !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            border: none !important;
-            box-shadow: none !important;
-            transform: none !important;
-            height: auto !important;
-          }
-
-          /* Force invoice-print-area to fill page and be positioned at the top-left */
+          /* Position #invoice-print-area at top left of document */
           #invoice-print-area {
             display: block !important;
             position: absolute !important;
             left: 0 !important;
             top: 0 !important;
-            width: 100% !important;
-            height: auto !important;
-            background: #fff !important;
-            color: #000 !important;
+            background: #ffffff !important;
+            color: #000000 !important;
             border: none !important;
             box-shadow: none !important;
             margin: 0 !important;
             border-radius: 0 !important;
+            z-index: 9999999 !important;
           }
 
           /* ─── A4 Print Specifics ─── */
-          .invoice-a4-layout {
-            padding: 15mm !important;
+          #invoice-print-area.invoice-a4-layout {
+            width: 100% !important;
+            max-width: 210mm !important;
+            padding: 12mm 16mm !important;
+            margin: 0 auto !important;
+            box-sizing: border-box !important;
           }
 
           /* ─── POS 80mm Print Specifics (Thermal Printer Roll) ─── */
-          .invoice-pos-layout {
+          #invoice-print-area.invoice-pos-layout {
             width: 80mm !important;
             max-width: 80mm !important;
             padding: 4mm !important;
@@ -698,67 +712,67 @@ export default function POSInvoiceGenerator() {
             box-sizing: border-box !important;
           }
 
-          .invoice-pos-layout .logo-wrapper {
-            transform: scale(0.8) !important;
+          #invoice-print-area.invoice-pos-layout .logo-wrapper {
+            transform: scale(0.85) !important;
             transform-origin: left top !important;
             margin-bottom: 2px !important;
           }
 
-          .invoice-pos-layout .shop-details {
+          #invoice-print-area.invoice-pos-layout .shop-details {
             font-size: 8px !important;
-            max-w: 160px !important;
+            max-width: 160px !important;
             line-height: 1.2 !important;
           }
 
-          .invoice-pos-layout .header-title {
+          #invoice-print-area.invoice-pos-layout .header-title {
             font-size: 14px !important;
           }
 
-          .invoice-pos-layout .details-list,
-          .invoice-pos-layout .customer-section {
+          #invoice-print-area.invoice-pos-layout .details-list,
+          #invoice-print-area.invoice-pos-layout .customer-section {
             font-size: 9px !important;
             line-height: 1.3 !important;
           }
 
-          .invoice-pos-layout .items-table th,
-          .invoice-pos-layout .items-table td {
-            padding: 1.5px 0 !important;
+          #invoice-print-area.invoice-pos-layout .items-table th,
+          #invoice-print-area.invoice-pos-layout .items-table td {
+            padding: 2px 0 !important;
             font-size: 9px !important;
           }
 
-          .invoice-pos-layout .items-table th.col-size,
-          .invoice-pos-layout .items-table td.col-size {
-            display: none !important; /* Hide size column in POS roll to save horizontal space */
+          #invoice-print-area.invoice-pos-layout .items-table th.col-size,
+          #invoice-print-area.invoice-pos-layout .items-table td.col-size {
+            display: none !important;
           }
 
-          .invoice-pos-layout .summary-section {
+          #invoice-print-area.invoice-pos-layout .summary-section {
             flex-direction: column !important;
             gap: 8px !important;
           }
 
-          .invoice-pos-layout .summary-section .payment-info {
+          #invoice-print-area.invoice-pos-layout .summary-section .payment-info {
             max-width: 100% !important;
             font-size: 8.5px !important;
           }
 
-          .invoice-pos-layout .summary-section .calculations-list {
+          #invoice-print-area.invoice-pos-layout .summary-section .calculations-list {
             width: 100% !important;
             font-size: 9.5px !important;
             border-top: 1px dashed #ccc !important;
             padding-top: 6px !important;
           }
 
-          .invoice-pos-layout .invoice-footer {
+          #invoice-print-area.invoice-pos-layout .invoice-footer {
             font-size: 8px !important;
             border-top: 1px dashed #ccc !important;
             padding-top: 6px !important;
           }
 
-          .invoice-pos-layout .invoice-footer .footer-thanks {
+          #invoice-print-area.invoice-pos-layout .invoice-footer .footer-thanks {
             font-size: 8px !important;
           }
 
-          .invoice-pos-layout .invoice-footer .footer-legal {
+          #invoice-print-area.invoice-pos-layout .invoice-footer .footer-legal {
             font-size: 7px !important;
             max-width: 100% !important;
           }
