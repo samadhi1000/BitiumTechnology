@@ -258,8 +258,7 @@ export default function DownloadsPage() {
 
   return (
     <div className="w-full min-h-screen bg-[#F8FAFC] dark:bg-[#020617] text-slate-900 dark:text-white transition-colors duration-300">
-      {/* Canonical Link & Schema */}
-      <link rel="canonical" href="https://www.bitiumtechnology.com/downloads" />
+      {/* Schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

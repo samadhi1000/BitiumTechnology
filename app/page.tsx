@@ -211,9 +211,6 @@ function HomeContent() {
 
   return (
     <div ref={container} className="w-full min-h-screen bg-background text-foreground">
-      {/* Canonical Link */}
-      <link rel="canonical" href="https://www.bitiumtechnology.com/" />
-
       {/* LocalBusiness Schema */}
       <script
         type="application/ld+json"
@@ -286,14 +283,14 @@ function HomeContent() {
         <div className="max-w-7xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           {/* Left Column: Headline, Search, Actions */}
           <div className="lg:col-span-6 xl:col-span-6 space-y-6 flex flex-col items-start text-left relative z-30">
-            <div 
+            <h1 
               className="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 dark:bg-[#2CFF05]/15 border border-emerald-600/30 dark:border-[#2CFF05]/40 text-emerald-900 dark:text-[#2CFF05] text-xs font-bold backdrop-blur-md shadow-sm"
             >
               <Sparkles size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
               <span>{t.hero.badge}</span>
-            </div>
+            </h1>
             
-            <h1 
+            <h2 
               className="hero-title font-heading font-black text-[clamp(28px,4.2vw,52px)] tracking-tight leading-[1.12] text-slate-950 dark:text-white"
             >
               {t.hero.titlePrefix}
@@ -301,7 +298,7 @@ function HomeContent() {
                 {t.hero.titleHighlight}
               </span>
               {t.hero.titleSuffix}
-            </h1>
+            </h2>
             
             <p 
               className="hero-text text-base sm:text-lg text-slate-800 dark:text-white max-w-xl leading-relaxed font-medium dark:drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]"
@@ -331,15 +328,15 @@ function HomeContent() {
               </Link>
             </div>
 
-            {/* Refactored Clean Hero Stats Row (Single 4-Column Row, No Scrollbars) */}
+            {/* Refactored Clean Hero Stats Row (Single 4-Column Row, Complete Text Rendering) */}
             <div className="pt-2 grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 lg:gap-3.5 w-full text-slate-900 dark:text-white">
               <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                 <span className="text-base sm:text-[18px] shrink-0">🎯</span>
                 <div className="min-w-0">
-                  <div className="font-heading font-extrabold text-[11px] sm:text-xs leading-tight text-slate-950 dark:text-white truncate">
+                  <div className="font-heading font-extrabold text-[11px] sm:text-xs leading-tight text-slate-950 dark:text-white">
                     {t.hero.stats.accuracyTitle}
                   </div>
-                  <div className="text-[10px] sm:text-[11px] text-slate-600 dark:text-slate-300 font-medium truncate">
+                  <div className="text-[10px] sm:text-[11px] text-slate-600 dark:text-slate-300 font-medium leading-tight">
                     {t.hero.stats.accuracySub}
                   </div>
                 </div>
@@ -348,10 +345,10 @@ function HomeContent() {
               <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                 <span className="text-base sm:text-[18px] shrink-0">⚡</span>
                 <div className="min-w-0">
-                  <div className="font-heading font-extrabold text-[11px] sm:text-xs leading-tight text-slate-950 dark:text-white truncate">
+                  <div className="font-heading font-extrabold text-[11px] sm:text-xs leading-tight text-slate-950 dark:text-white">
                     {t.hero.stats.turnaroundTitle}
                   </div>
-                  <div className="text-[10px] sm:text-[11px] text-slate-600 dark:text-slate-300 font-medium truncate">
+                  <div className="text-[10px] sm:text-[11px] text-slate-600 dark:text-slate-300 font-medium leading-tight">
                     {t.hero.stats.turnaroundSub}
                   </div>
                 </div>
@@ -360,10 +357,10 @@ function HomeContent() {
               <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                 <span className="text-base sm:text-[18px] shrink-0">📦</span>
                 <div className="min-w-0">
-                  <div className="font-heading font-extrabold text-[11px] sm:text-xs leading-tight text-slate-950 dark:text-white truncate">
+                  <div className="font-heading font-extrabold text-[11px] sm:text-xs leading-tight text-slate-950 dark:text-white">
                     {t.hero.stats.ordersTitle}
                   </div>
-                  <div className="text-[10px] sm:text-[11px] text-slate-600 dark:text-slate-300 font-medium truncate">
+                  <div className="text-[10px] sm:text-[11px] text-slate-600 dark:text-slate-300 font-medium leading-tight">
                     {t.hero.stats.ordersSub}
                   </div>
                 </div>
@@ -372,10 +369,10 @@ function HomeContent() {
               <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                 <span className="text-base sm:text-[18px] shrink-0">⭐</span>
                 <div className="min-w-0">
-                  <div className="font-heading font-extrabold text-[11px] sm:text-xs leading-tight text-slate-950 dark:text-white truncate">
+                  <div className="font-heading font-extrabold text-[11px] sm:text-xs leading-tight text-slate-950 dark:text-white">
                     {t.hero.stats.ratingTitle}
                   </div>
-                  <div className="text-[10px] sm:text-[11px] text-slate-600 dark:text-slate-300 font-medium truncate">
+                  <div className="text-[10px] sm:text-[11px] text-slate-600 dark:text-slate-300 font-medium leading-tight">
                     {t.hero.stats.ratingSub}
                   </div>
                 </div>

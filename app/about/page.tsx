@@ -7,9 +7,6 @@ import Link from 'next/link';
 export default function AboutPage() {
   return (
     <div className="w-full min-h-screen bg-background text-foreground py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Canonical Link */}
-      <link rel="canonical" href="https://www.bitiumtechnology.com/about" />
-
       {/* AboutPage Schema */}
       <script
         type="application/ld+json"

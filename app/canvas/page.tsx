@@ -333,9 +333,6 @@ export default function CanvasBuilder() {
 
   return (
     <div className="w-full">
-      {/* Canonical Link */}
-      <link rel="canonical" href="https://www.bitiumtechnology.com/canvas" />
-
       {/* WebPage Schema */}
       <script
         type="application/ld+json"

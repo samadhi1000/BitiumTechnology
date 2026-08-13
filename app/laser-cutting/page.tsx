@@ -110,9 +110,9 @@ const LASER_CUTTING_CONFIG_SI: CategoryPageConfig = {
   itemSingular: 'ලේසර් නිෂ්පාදනය',
   itemPlural: 'නිෂ්පාදන',
   subCategories: [
-    { id: 'acrylic', label: 'ඇක්‍රිලික් කැපුම් සහ නාමපුවරු' },
+    { id: 'acrylic', label: 'ඇක්‍රිලික් කැපුම් සහ කැටයම්' },
     { id: 'wood', label: 'ලී කැටයම්' },
-    { id: 'custom-profile', label: 'විශේෂිත හැඩතල' },
+    { id: 'custom-profile', label: 'විශේෂ ඇණවුම් කැපුම්' },
   ],
   whyChooseUs: {
     title: 'අපගේ නිරවද්‍ය ලේසර් කැපුම් සේවා තෝරාගත යුත්තේ ඇයි?',

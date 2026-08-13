@@ -102,10 +102,10 @@ const SCREEN_PRINTING_CONFIG_SI: CategoryPageConfig = {
   itemSingular: 'ස්ක්‍රීන් / උපාංගය',
   itemPlural: 'නිෂ්පාදන',
   subCategories: [
-    { id: 'screen-exposed', label: 'එක්ස්පෝස් කරන ලද ස්ක්‍රීන්' },
+    { id: 'screen-exposed', label: 'එක්ස්පෝස් කළ ස්ක්‍රීන්' },
     { id: 'artwork', label: 'වෙක්ටර් කරන ලද නිර්මාණ' },
-    { id: 'tracing-printouts', label: 'ට්‍රේසිං ප්‍රින්ටවුට්ස්' },
-    { id: 'positive-printouts', label: 'පොසිටිව් ෆිල්ම්' },
+    { id: 'tracing-printouts', label: 'ට්‍රේසිං ප්‍රින්ට්-අවුට්' },
+    { id: 'positive-printouts', label: 'පොසිටිව් ප්‍රින්ට්-අවුට්' },
   ],
   whyChooseUs: {
     title: 'අපගේ ස්ක්‍රීන් මුද්‍රණ උපාංග තෝරාගත යුත්තේ ඇයි?',

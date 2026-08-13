@@ -116,22 +116,22 @@ export default function Navbar() {
               onMouseLeave={() => setStencilHovered(false)}
             >
               <Link href={adminLink('/stencil')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
-                <span>{t.nav.stencil || 'Stencil'}</span>
+                <span>{t.nav.stencil || 'Stencils'}</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${stencilHovered ? 'rotate-180' : ''}`} />
               </Link>
               {stencilHovered && (
                 <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
                   <Link href={adminLink('/stencil')} className="px-3 py-2 rounded-lg text-[11px] font-bold text-primary hover:bg-card transition-colors">
-                    All Stencils
+                    {t.nav.allStencils}
                   </Link>
                   <hr className="border-border my-0.5" />
                   {[
-                    { sub: 'hand-painting', label: 'Hand Painting' },
-                    { sub: 'saree', label: 'Saree' },
-                    { sub: 'tote-bags', label: 'Tote Bags' },
-                    { sub: 'batik', label: 'Batik' },
-                    { sub: 'wall-decoration', label: 'Wall Decoration' },
-                    { sub: 'titanium', label: 'Titanium' }
+                    { sub: 'hand-painting', label: t.nav.handPainting },
+                    { sub: 'saree', label: t.nav.saree },
+                    { sub: 'tote-bags', label: t.nav.toteBags },
+                    { sub: 'batik', label: t.nav.batik },
+                    { sub: 'wall-decoration', label: t.nav.wallDecoration },
+                    { sub: 'titanium', label: t.nav.titanium }
                   ].map((item) => (
                     <Link 
                       key={item.sub} 
@@ -158,13 +158,13 @@ export default function Navbar() {
               {screenPrintingHovered && (
                 <div className="absolute top-[60px] left-0 w-52 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
                   <Link href={adminLink('/screen-printing')} className="px-3 py-2 rounded-lg text-[11px] font-bold text-primary hover:bg-card transition-colors">
-                    All Screen Printing
+                    {t.nav.allScreenPrinting}
                   </Link>
                   <hr className="border-border my-0.5" />
                   {[
-                    { sub: 'screen-exposed', label: 'Screen Exposed' },
-                    { sub: 'tracing-printouts', label: 'Tracing Printouts' },
-                    { sub: 'positive-printouts', label: 'Positive Printouts' }
+                    { sub: 'screen-exposed', label: t.nav.screenExposed },
+                    { sub: 'tracing-printouts', label: t.nav.tracingPrintouts },
+                    { sub: 'positive-printouts', label: t.nav.positivePrintouts }
                   ].map((item) => (
                     <Link 
                       key={item.sub} 
@@ -191,13 +191,13 @@ export default function Navbar() {
               {dtfPrintingHovered && (
                 <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
                   <Link href={adminLink('/dtf-printing')} className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-primary hover:bg-card transition-colors">
-                    All DTF Printing
+                    {t.nav.allDtfPrinting}
                   </Link>
                   <hr className="border-border my-0.5" />
                   {[
-                    { sub: 'tshirt-design', label: 'T-Shirt Design' },
-                    { sub: 'dtf-sticker', label: 'DTF Sticker' },
-                    { sub: 'dtf-cloth', label: 'DTF Cloth' }
+                    { sub: 'tshirt-design', label: t.nav.tshirtDesign },
+                    { sub: 'dtf-sticker', label: t.nav.dtfSticker },
+                    { sub: 'dtf-cloth', label: t.nav.dtfCloth }
                   ].map((item) => (
                     <Link 
                       key={item.sub} 
@@ -218,7 +218,7 @@ export default function Navbar() {
               onMouseLeave={() => setBatikStampHovered(false)}
             >
               <Link href={adminLink('/batik-stamp')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
-                <span>{t.nav.batikStamp || 'Batik Stamp'}</span>
+                <span>{t.nav.batikStamp || 'Batik Stamps'}</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${batikStampHovered ? 'rotate-180' : ''}`} />
               </Link>
               {batikStampHovered && (
@@ -227,7 +227,7 @@ export default function Navbar() {
                     href={adminLink('/batik-stamp')} 
                     className="px-3 py-2 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-foreground hover:text-foreground"
                   >
-                    Cap Batik
+                    {t.nav.capBatik}
                   </Link>
                 </div>
               )}
@@ -246,13 +246,13 @@ export default function Navbar() {
               {laserCuttingHovered && (
                 <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
                   <Link href={adminLink('/laser-cutting')} className="px-3 py-2 rounded-lg text-[11px] font-bold text-primary hover:bg-card transition-colors">
-                    All Laser Cutting
+                    {t.nav.allLaserCutting}
                   </Link>
                   <hr className="border-border my-0.5" />
                   {[
-                    { sub: 'acrylic', label: 'Acrylic Cut & Engrave' },
-                    { sub: 'wood', label: 'Wood Engraving' },
-                    { sub: 'custom-profile', label: 'Custom Profiles' }
+                    { sub: 'acrylic', label: t.nav.acrylicCutEngrave },
+                    { sub: 'wood', label: t.nav.woodEngraving },
+                    { sub: 'custom-profile', label: t.nav.customProfiles }
                   ].map((item) => (
                     <Link 
                       key={item.sub} 
@@ -435,15 +435,15 @@ export default function Navbar() {
                     onClick={closeMobileMenu}
                     className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#45ff24]/10"
                   >
-                    View All Stencils →
+                    {t.nav.allStencils} →
                   </Link>
                   {[
-                    { sub: 'hand-painting', label: 'Hand Painting' },
-                    { sub: 'saree', label: 'Saree' },
-                    { sub: 'tote-bags', label: 'Tote Bags' },
-                    { sub: 'batik', label: 'Batik' },
-                    { sub: 'wall-decoration', label: 'Wall Decoration' },
-                    { sub: 'titanium', label: 'Titanium' }
+                    { sub: 'hand-painting', label: t.nav.handPainting },
+                    { sub: 'saree', label: t.nav.saree },
+                    { sub: 'tote-bags', label: t.nav.toteBags },
+                    { sub: 'batik', label: t.nav.batik },
+                    { sub: 'wall-decoration', label: t.nav.wallDecoration },
+                    { sub: 'titanium', label: t.nav.titanium }
                   ].map((item) => (
                     <Link
                       key={item.sub}
@@ -483,12 +483,12 @@ export default function Navbar() {
                     onClick={closeMobileMenu}
                     className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#45ff24]/10"
                   >
-                    View All Screen Printing →
+                    {t.nav.allScreenPrinting} →
                   </Link>
                   {[
-                    { sub: 'screen-exposed', label: 'Screen Exposed' },
-                    { sub: 'tracing-printouts', label: 'Tracing Printouts' },
-                    { sub: 'positive-printouts', label: 'Positive Printouts' }
+                    { sub: 'screen-exposed', label: t.nav.screenExposed },
+                    { sub: 'tracing-printouts', label: t.nav.tracingPrintouts },
+                    { sub: 'positive-printouts', label: t.nav.positivePrintouts }
                   ].map((item) => (
                     <Link
                       key={item.sub}
@@ -528,12 +528,12 @@ export default function Navbar() {
                     onClick={closeMobileMenu}
                     className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#45ff24]/10"
                   >
-                    View All DTF Printing →
+                    {t.nav.allDtfPrinting} →
                   </Link>
                   {[
-                    { sub: 'tshirt-design', label: 'T-Shirt Design' },
-                    { sub: 'dtf-sticker', label: 'DTF Sticker' },
-                    { sub: 'dtf-cloth', label: 'DTF Cloth' }
+                    { sub: 'tshirt-design', label: t.nav.tshirtDesign },
+                    { sub: 'dtf-sticker', label: t.nav.dtfSticker },
+                    { sub: 'dtf-cloth', label: t.nav.dtfCloth }
                   ].map((item) => (
                     <Link
                       key={item.sub}
@@ -556,7 +556,7 @@ export default function Navbar() {
               >
                 <div className="flex items-center gap-2">
                   <Stamp size={16} className="text-primary" />
-                  <span>{t.nav.batikStamp || 'Batik Stamp'}</span>
+                  <span>{t.nav.batikStamp || 'Batik Stamps'}</span>
                 </div>
                 <ChevronDown
                   size={16}
@@ -573,7 +573,7 @@ export default function Navbar() {
                     onClick={closeMobileMenu}
                     className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#45ff24]/10"
                   >
-                    View All Batik Stamps →
+                    {t.nav.allBatikStamps} →
                   </Link>
                 </div>
               )}
@@ -604,12 +604,12 @@ export default function Navbar() {
                     onClick={closeMobileMenu}
                     className="block px-3 py-2 rounded-lg text-xs font-bold text-primary bg-[#45ff24]/10"
                   >
-                    View All Laser Cutting →
+                    {t.nav.allLaserCutting} →
                   </Link>
                   {[
-                    { sub: 'acrylic', label: 'Acrylic Cut & Engrave' },
-                    { sub: 'wood', label: 'Wood Engraving' },
-                    { sub: 'custom-profile', label: 'Custom Profiles' }
+                    { sub: 'acrylic', label: t.nav.acrylicCutEngrave },
+                    { sub: 'wood', label: t.nav.woodEngraving },
+                    { sub: 'custom-profile', label: t.nav.customProfiles }
                   ].map((item) => (
                     <Link
                       key={item.sub}

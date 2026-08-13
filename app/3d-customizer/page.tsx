@@ -462,9 +462,6 @@ export default function DynamicMockupCustomizer() {
 
   return (
     <div className="w-full">
-      {/* Canonical Link */}
-      <link rel="canonical" href="https://www.bitiumtechnology.com/3d-customizer" />
-
       {/* WebPage Schema */}
       <script
         type="application/ld+json"

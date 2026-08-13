@@ -110,7 +110,7 @@ const STENCIL_CONFIG_SI: CategoryPageConfig = {
   itemSingular: 'ස්ටෙන්සිල්',
   itemPlural: 'ස්ටෙන්සිල්',
   subCategories: [
-    { id: 'hand-painting', label: 'අත් තීන්ත ආලේපන' },
+    { id: 'hand-painting', label: 'හෑන්ඩ්' },
     { id: 'saree', label: 'සාරි බෝඩර්' },
     { id: 'tote-bags', label: 'ටෝට් බෑග්' },
     { id: 'batik', label: 'බතික් රටා' },

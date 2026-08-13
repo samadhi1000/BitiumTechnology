@@ -6,9 +6,6 @@ import { Scale } from 'lucide-react';
 export default function TermsPage() {
   return (
     <div className="w-full min-h-screen bg-background text-foreground py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Canonical Link */}
-      <link rel="canonical" href="https://www.bitiumtechnology.com/terms" />
-
       {/* Terms of Service Schema */}
       <script
         type="application/ld+json"

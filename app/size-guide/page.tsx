@@ -80,9 +80,6 @@ export default function SizeGuidePage() {
 
   return (
     <div className="w-full min-h-screen bg-background text-foreground py-16 sm:py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Canonical Link */}
-      <link rel="canonical" href="https://www.bitiumtechnology.com/size-guide" />
-
       {/* WebPage Schema */}
       <script
         type="application/ld+json"
