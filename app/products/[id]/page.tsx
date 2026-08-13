@@ -30,12 +30,17 @@ export default function ProductPage({ params }: ProductPageProps) {
       if (data) {
         setProduct(data);
         if (data.variants && data.variants.length > 0) {
-          // Auto-select ONLY when the product has a single "Default" variant
-          // (existing mock products). Multi-size products require manual selection.
-          const isDefaultOnly =
-            data.variants.length === 1 && data.variants[0].attributes.size === 'Default';
-          if (isDefaultOnly) {
+          // If the product only has a single variant, auto-select it immediately
+          if (data.variants.length === 1) {
             setSelectedVariant(data.variants[0]);
+          } else {
+            // Check if all variants are default placeholders
+            const isAllDefault = data.variants.every(
+              (v) => v.attributes.size === 'Default' || v.name === 'Standard Option'
+            );
+            if (isAllDefault) {
+              setSelectedVariant(data.variants[0]);
+            }
           }
         }
       }
@@ -70,11 +75,23 @@ export default function ProductPage({ params }: ProductPageProps) {
     );
   }
 
-  // ── Derive size list (exclude 'Default' placeholder) ──────────────────────
+  // ── Helper to derive size labels dynamically ──────────────────────────────
+  const getVariantSizeLabel = (v: Variant) => {
+    if (v.attributes.size && v.attributes.size !== 'Default') {
+      return v.attributes.size as string;
+    }
+    if (v.attributes.width && v.attributes.height) {
+      return `${v.attributes.width}" x ${v.attributes.height}"`;
+    }
+    return v.name !== 'Standard Option' ? v.name : '';
+  };
+
+  // ── Derive size list ──────────────────────────────────────────────────────
   const allVariants = product.variants ?? [];
-  const sizedVariants = allVariants.filter(
-    (v) => v.attributes.size && v.attributes.size !== 'Default'
-  );
+  const sizedVariants = allVariants.filter((v) => {
+    const label = getVariantSizeLabel(v);
+    return label !== '' && label !== 'Default';
+  });
   const hasRealSizes = sizedVariants.length > 0;
 
   // Lowest price across all size variants (used for "From Rs." display)
@@ -204,7 +221,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                 {/* Size button grid */}
                 <div className="flex flex-wrap gap-2.5">
                   {sizedVariants.map((variant) => {
-                    const sz = variant.attributes.size as string;
+                    const sz = getVariantSizeLabel(variant);
                     const variantPrice = variant.price_override ?? product.price;
                     const isSelected = selectedVariant?.id === variant.id;
 
@@ -213,7 +230,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                         key={variant.id}
                         onClick={() => handleSelectSize(variant)}
                         className={`
-                          min-w-[72px] px-3 py-2.5 flex flex-col items-center justify-center
+                          min-w-[72px] px-3.5 py-2.5 flex flex-col items-center justify-center
                           rounded-xl border text-center transition-all duration-150
                           ${isSelected
                             ? 'bg-[#2CFF05] border-[#2CFF05] text-[#0a0a0a] shadow-lg shadow-[#2CFF05]/25 scale-105'
@@ -241,8 +258,8 @@ export default function ProductPage({ params }: ProductPageProps) {
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <Check size={12} className="text-[#2CFF05]" />
                     <span>
-                      <strong className="text-foreground">{selectedVariant.attributes.size}</strong> selected
-                      {selectedVariant.attributes.size === 'Meters' && (
+                      <strong className="text-foreground">{getVariantSizeLabel(selectedVariant)}</strong> selected
+                      {getVariantSizeLabel(selectedVariant).includes('Meter') && (
                         <span className="ml-1">&mdash; use Quantity for total meters</span>
                       )}
                     </span>
@@ -254,7 +271,7 @@ export default function ProductPage({ params }: ProductPageProps) {
             {/* ── QUANTITY ─────────────────────────────────────────────── */}
             <div className="space-y-2">
               <span className="text-sm font-semibold text-foreground">
-                Quantity{selectedVariant?.attributes.size === 'Meters' ? ' (meters)' : ''}:
+                Quantity{getVariantSizeLabel(selectedVariant || allVariants[0]).includes('Meter') ? ' (meters)' : ''}:
               </span>
               <div className="flex items-center space-x-3 bg-card border border-border rounded-xl w-fit p-1">
                 <button

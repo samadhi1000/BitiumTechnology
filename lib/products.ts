@@ -163,6 +163,46 @@ SUBCAT_DATA.forEach((sc) => {
       ? (sc as any).origs[idx] 
       : (sc as any).orig;
 
+    // Generate size variants based on category to test the size selector feature
+    let mockVariants: Variant[] = [];
+    if (sc.cat === 'stencil' || sc.cat === 'screen-printing') {
+      const sizes = ['A4', 'A3', 'A2', 'A1'];
+      const mults = [1.0, 1.7, 2.8, 4.2];
+      mockVariants = sizes.map((size, sIdx) => ({
+        id: `var-${sc.cat}-${sc.sub}-${idx + 1}-${size}`,
+        product_id: `${sc.cat}-${sc.sub}-${idx + 1}`,
+        name: size,
+        sku: `${skuCode}-${size}`,
+        price_override: Math.round(itemPrice * mults[sIdx]),
+        stock_quantity: 100 + idx * 5,
+        attributes: { size }
+      }));
+    } else if (sc.cat === 'dtf_sheet') {
+      const sizes = ['A6', 'A5', 'A4', 'A3', 'A2', 'A1', 'Meters'];
+      const mults = [0.5, 0.7, 1.0, 1.7, 2.8, 4.2, 1.2];
+      mockVariants = sizes.map((size, sIdx) => ({
+        id: `var-${sc.cat}-${sc.sub}-${idx + 1}-${size}`,
+        product_id: `${sc.cat}-${sc.sub}-${idx + 1}`,
+        name: size,
+        sku: `${skuCode}-${size}`,
+        price_override: Math.round(itemPrice * mults[sIdx]),
+        stock_quantity: 100 + idx * 5,
+        attributes: { size }
+      }));
+    } else {
+      mockVariants = [
+        {
+          id: `var-${sc.cat}-${sc.sub}-${idx + 1}`,
+          product_id: `${sc.cat}-${sc.sub}-${idx + 1}`,
+          name: 'Standard Option',
+          sku: skuCode,
+          price_override: null,
+          stock_quantity: 250 + idx * 10,
+          attributes: { size: 'Default', type: sc.sub }
+        }
+      ];
+    }
+
     MOCK_PRODUCTS.push({
       id: `${sc.cat}-${sc.sub}-${idx + 1}`,
       name: name,
@@ -173,17 +213,7 @@ SUBCAT_DATA.forEach((sc) => {
       category: sc.cat as any,
       sub_category: sc.sub,
       is_active: true,
-      variants: [
-        {
-          id: `var-${sc.cat}-${sc.sub}-${idx + 1}`,
-          product_id: `${sc.cat}-${sc.sub}-${idx + 1}`,
-          name: 'Standard Option',
-          sku: skuCode,
-          price_override: null,
-          stock_quantity: 250 + idx * 10,
-          attributes: { size: 'Default', type: sc.sub }
-        }
-      ]
+      variants: mockVariants
     });
   });
 });

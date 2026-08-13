@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Plus, 
   Trash2, 
@@ -53,6 +53,9 @@ export default function POSInvoiceGenerator() {
   const [discountType, setDiscountType] = useState<'percentage' | 'flat'>('flat');
   const [extraCharges, setExtraCharges] = useState<number>(0);
   const [extraChargesNotes, setExtraChargesNotes] = useState('');
+
+  // Print layout sizing format
+  const [printLayout, setPrintLayout] = useState<'A4' | 'POS-80mm'>('A4');
 
   const [isClient, setIsClient] = useState(false);
 
@@ -174,7 +177,7 @@ export default function POSInvoiceGenerator() {
   return (
     <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
       
-      {/* ─── LEFT COLUMN: PRODUCT INTAKE & INVOICE CONTROLS (8 cols) ─── */}
+      {/* ─── LEFT COLUMN: PRODUCT INTAKE & INVOICE CONTROLS (7 cols) ─── */}
       <div className="xl:col-span-7 space-y-6 print:hidden">
         
         {/* Step 1: Customer Details */}
@@ -415,39 +418,68 @@ export default function POSInvoiceGenerator() {
       {/* ─── RIGHT COLUMN: INVOICE PREVIEW & PRINTING (5 cols) ─── */}
       <div className="xl:col-span-5 space-y-6">
         
+        {/* Toggle print Layout formats */}
+        <div className="p-4 rounded-2xl border border-border bg-card/10 backdrop-blur-sm space-y-2.5 print:hidden">
+          <label className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">📐 Select Receipt / Bill Format</label>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={() => setPrintLayout('A4')}
+              className={`py-2 rounded-xl text-[11px] font-black uppercase tracking-wider border transition-all ${
+                printLayout === 'A4'
+                  ? 'bg-[#2CFF05]/15 border-[#2CFF05]/30 text-[#2CFF05]'
+                  : 'bg-background border-border text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              📄 A4 Standard Bill
+            </button>
+            <button
+              onClick={() => setPrintLayout('POS-80mm')}
+              className={`py-2 rounded-xl text-[11px] font-black uppercase tracking-wider border transition-all ${
+                printLayout === 'POS-80mm'
+                  ? 'bg-[#2CFF05]/15 border-[#2CFF05]/30 text-[#2CFF05]'
+                  : 'bg-background border-border text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              📟 POS Receipt (80mm)
+            </button>
+          </div>
+        </div>
+
         {/* Action Bar */}
         <div className="flex items-center gap-3 print:hidden">
           <button
             onClick={handlePrint}
             disabled={lineItems.length === 0}
-            className="flex-grow flex items-center justify-center gap-2 py-3.5 rounded-xl bg-[#2CFF05] hover:bg-[#7acc00] disabled:bg-zinc-700 disabled:opacity-40 text-black font-black text-xs uppercase tracking-wider shadow-lg shadow-[#2CFF05]/15 transition-all cursor-pointer hover:scale-[1.01]"
+            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-[#2CFF05] hover:bg-[#7acc00] disabled:bg-zinc-700 disabled:opacity-40 text-black font-black text-xs uppercase tracking-wider shadow-lg shadow-[#2CFF05]/15 transition-all cursor-pointer hover:scale-[1.01]"
           >
             <Printer size={16} />
-            <span>Print Customer Bill / Invoice</span>
+            <span>Print Customer Bill</span>
           </button>
         </div>
 
         {/* ── INVOICE SHEET AREA ── */}
         <div 
           id="invoice-print-area" 
-          className="bg-white text-zinc-900 border border-zinc-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl relative print:border-none print:shadow-none print:p-0 print:m-0"
+          className={`bg-white text-zinc-900 border border-zinc-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl relative print:border-none print:shadow-none print:p-0 print:m-0 ${
+            printLayout === 'POS-80mm' ? 'invoice-pos-layout max-w-[80mm] mx-auto' : 'invoice-a4-layout'
+          }`}
           style={{ contentVisibility: 'auto' }}
         >
           {/* Print Header */}
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1">
-              <div className="h-8 w-28 text-emerald-900 flex items-center">
+              <div className="h-8 w-28 text-emerald-900 flex items-center logo-wrapper shrink-0">
                 <BitiumLogo />
               </div>
-              <p className="text-[9px] text-zinc-500 font-semibold leading-relaxed max-w-[200px]">
+              <p className="text-[9px] text-zinc-500 font-semibold leading-relaxed max-w-[180px] shop-details">
                 Bitium Technology (Pvt) Ltd.<br />
                 No. 123 Main Street, Colombo, LK.<br />
                 support@bitiumtechnology.com | +94 77 123 4567
               </p>
             </div>
             <div className="text-right space-y-1">
-              <h2 className="text-lg font-black tracking-tight text-emerald-800 uppercase leading-none">Bill / Invoice</h2>
-              <div className="text-[10px] font-bold text-zinc-500 font-mono">
+              <h2 className="text-lg font-black tracking-tight text-emerald-800 uppercase leading-none header-title">Bill / Invoice</h2>
+              <div className="text-[10px] font-bold text-zinc-500 font-mono details-list">
                 <div>No: {invoiceNo || 'Draft'}</div>
                 <div>Date: {invoiceDate}</div>
                 <div>Pay Method: {paymentMethod}</div>
@@ -458,11 +490,11 @@ export default function POSInvoiceGenerator() {
           <hr className="border-zinc-200" />
 
           {/* Customer info */}
-          <div className="grid grid-cols-2 gap-4 text-[10px] leading-relaxed">
+          <div className="grid grid-cols-2 gap-4 text-[10px] leading-relaxed customer-section">
             <div>
               <span className="font-extrabold text-zinc-400 uppercase block tracking-wider text-[8px]">Invoiced To:</span>
               <strong className="text-zinc-800 text-xs block">{customerName || 'Cash Walk-in Client'}</strong>
-              {customerPhone && <div className="text-zinc-600 font-medium">WhatsApp: {customerPhone}</div>}
+              {customerPhone && <div className="text-zinc-600 font-medium font-mono">WhatsApp: {customerPhone}</div>}
               {customerAddress && <div className="text-zinc-500">{customerAddress}</div>}
             </div>
             <div className="text-right">
@@ -474,14 +506,14 @@ export default function POSInvoiceGenerator() {
 
           {/* Table of items */}
           <div className="space-y-2">
-            <table className="w-full border-collapse text-left text-[10px]">
+            <table className="w-full border-collapse text-left text-[10px] items-table">
               <thead>
                 <tr className="border-b-2 border-zinc-300 text-zinc-500 font-extrabold uppercase text-[8px] tracking-wider">
                   <th className="py-2">Item Description</th>
-                  <th className="py-2 text-center w-14">Size</th>
-                  <th className="py-2 text-right w-16">Price</th>
-                  <th className="py-2 text-center w-12">Qty</th>
-                  <th className="py-2 text-right w-20">Total</th>
+                  <th className="py-2 text-center w-14 col-size">Size</th>
+                  <th className="py-2 text-right w-16 col-price">Price</th>
+                  <th className="py-2 text-center w-12 col-qty">Qty</th>
+                  <th className="py-2 text-right w-20 col-total">Total</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-150">
@@ -494,16 +526,16 @@ export default function POSInvoiceGenerator() {
                 ) : (
                   lineItems.map(item => (
                     <tr key={item.id} className="align-middle">
-                      <td className="py-2.5 font-bold text-zinc-800">
+                      <td className="py-2.5 font-bold text-zinc-800 item-name">
                         {item.name}
                       </td>
-                      <td className="py-2.5 text-center text-zinc-500 font-mono font-bold">
+                      <td className="py-2.5 text-center text-zinc-500 font-mono font-bold col-size">
                         {item.size}
                       </td>
-                      <td className="py-2.5 text-right font-mono text-zinc-600 font-semibold">
+                      <td className="py-2.5 text-right font-mono text-zinc-600 font-semibold col-price">
                         Rs.{item.price.toLocaleString()}
                       </td>
-                      <td className="py-2.5 text-center">
+                      <td className="py-2.5 text-center col-qty">
                         <div className="inline-flex items-center gap-1">
                           <button 
                             onClick={() => handleQtyChange(item.id, item.quantity - 1)}
@@ -520,7 +552,7 @@ export default function POSInvoiceGenerator() {
                           </button>
                         </div>
                       </td>
-                      <td className="py-2.5 text-right font-bold text-zinc-950 font-mono">
+                      <td className="py-2.5 text-right font-bold text-zinc-950 font-mono col-total">
                         Rs.{(item.price * item.quantity).toLocaleString()}
                       </td>
                       <td className="py-2.5 text-right pl-2 print:hidden w-8">
@@ -542,16 +574,16 @@ export default function POSInvoiceGenerator() {
           <hr className="border-zinc-200" />
 
           {/* Pricing breakdowns */}
-          <div className="flex justify-between items-start gap-4">
-            <div className="text-[9px] text-zinc-400 max-w-[200px] leading-relaxed">
+          <div className="flex justify-between items-start gap-4 flex-wrap sm:flex-nowrap summary-section">
+            <div className="text-[9px] text-zinc-400 max-w-[200px] leading-relaxed payment-info flex-grow">
               <span className="font-extrabold uppercase text-[8px] block tracking-wider mb-0.5">Payment Status:</span>
-              <div className="font-bold text-emerald-700 bg-emerald-50 px-2 py-1 rounded inline-block">
+              <div className="font-bold text-emerald-700 bg-emerald-50 px-2 py-1 rounded inline-block text-[9px]">
                 ✓ FULLY PAID &mdash; RECEIVED via {paymentMethod.toUpperCase()}
               </div>
-              <p className="mt-2">Products are checked &amp; verified. Please inspect goods before leaving checkout register.</p>
+              <p className="mt-2 verify-note">Products are checked &amp; verified. Please inspect goods before leaving checkout register.</p>
             </div>
             
-            <div className="w-48 text-[10px] space-y-1.5 font-mono text-zinc-650">
+            <div className="w-48 text-[10px] space-y-1.5 font-mono text-zinc-650 shrink-0 calculations-list">
               <div className="flex justify-between">
                 <span>Subtotal:</span>
                 <span className="font-bold text-zinc-800">Rs. {subtotal.toLocaleString()}</span>
@@ -583,11 +615,11 @@ export default function POSInvoiceGenerator() {
           <hr className="border-zinc-200" />
 
           {/* Invoice Footer */}
-          <div className="text-center space-y-2 pt-2">
-            <p className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest leading-none">
+          <div className="text-center space-y-2 pt-2 invoice-footer">
+            <p className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest leading-none footer-thanks">
               Thank you for printing with Bitium Technology!
             </p>
-            <p className="text-[8px] text-zinc-400 leading-normal max-w-sm mx-auto">
+            <p className="text-[8px] text-zinc-400 leading-normal max-w-sm mx-auto footer-legal">
               This is a computer generated invoice for store register purchases. No signature required. 
               Returns accepted within 7 days with original packaging intact.
             </p>
@@ -596,32 +628,139 @@ export default function POSInvoiceGenerator() {
 
       </div>
 
-      {/* ─── PRINT CUSTOM STYLING RULES (hidden in screen browser view) ─── */}
+      {/* ─── PRINT CUSTOM STYLING RULES (Robust Page Break & Thermal POS Compatibility) ─── */}
       <style jsx global>{`
         @media print {
-          /* Hide layout wrapper header, navbar, footer, admin sidebar tabs, etc. */
-          body * {
-            visibility: hidden;
-            background: none !important;
+          /* Force page margins and sizing defaults to fit thermal rolls or A4 paper nicely */
+          @page {
+            margin: 0mm !important;
+            size: auto;
+          }
+
+          /* Reset all potential display constraints of layouts, scroll views and sidebars */
+          html, body {
+            background-color: #fff !important;
             color: #000 !important;
+            height: auto !important;
+            overflow: visible !important;
+            margin: 0 !important;
+            padding: 0 !important;
           }
-          /* Show only the invoice print container element */
-          #invoice-print-area, #invoice-print-area * {
-            visibility: visible;
+
+          /* Strip down and hide Next.js layout wrappers, navbars and main layout containers */
+          #__next, main, nav, footer, header, #whatsapp-button, .print\\:hidden {
+            display: none !important;
+            height: 0 !important;
+            overflow: hidden !important;
           }
-          #invoice-print-area {
-            position: absolute;
-            left: 0;
-            top: 0;
+
+          /* Target parent containers of invoice sheet and force them to render as plain block wrappers without widths or constraints */
+          .min-h-screen, .max-w-7xl, .grid, .xl\\:col-span-12, .xl\\:col-span-5 {
+            display: block !important;
             width: 100% !important;
             max-width: 100% !important;
-            border: none !important;
-            padding: 0 !important;
             margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
             box-shadow: none !important;
+            transform: none !important;
+            height: auto !important;
           }
-          .print\\:hidden {
-            display: none !important;
+
+          /* Force invoice-print-area to fill page and be positioned at the top-left */
+          #invoice-print-area {
+            display: block !important;
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            height: auto !important;
+            background: #fff !important;
+            color: #000 !important;
+            border: none !important;
+            box-shadow: none !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
+          }
+
+          /* ─── A4 Print Specifics ─── */
+          .invoice-a4-layout {
+            padding: 15mm !important;
+          }
+
+          /* ─── POS 80mm Print Specifics (Thermal Printer Roll) ─── */
+          .invoice-pos-layout {
+            width: 80mm !important;
+            max-width: 80mm !important;
+            padding: 4mm !important;
+            margin: 0 auto !important;
+            font-size: 10px !important;
+            box-sizing: border-box !important;
+          }
+
+          .invoice-pos-layout .logo-wrapper {
+            transform: scale(0.8) !important;
+            transform-origin: left top !important;
+            margin-bottom: 2px !important;
+          }
+
+          .invoice-pos-layout .shop-details {
+            font-size: 8px !important;
+            max-w: 160px !important;
+            line-height: 1.2 !important;
+          }
+
+          .invoice-pos-layout .header-title {
+            font-size: 14px !important;
+          }
+
+          .invoice-pos-layout .details-list,
+          .invoice-pos-layout .customer-section {
+            font-size: 9px !important;
+            line-height: 1.3 !important;
+          }
+
+          .invoice-pos-layout .items-table th,
+          .invoice-pos-layout .items-table td {
+            padding: 1.5px 0 !important;
+            font-size: 9px !important;
+          }
+
+          .invoice-pos-layout .items-table th.col-size,
+          .invoice-pos-layout .items-table td.col-size {
+            display: none !important; /* Hide size column in POS roll to save horizontal space */
+          }
+
+          .invoice-pos-layout .summary-section {
+            flex-direction: column !important;
+            gap: 8px !important;
+          }
+
+          .invoice-pos-layout .summary-section .payment-info {
+            max-width: 100% !important;
+            font-size: 8.5px !important;
+          }
+
+          .invoice-pos-layout .summary-section .calculations-list {
+            width: 100% !important;
+            font-size: 9.5px !important;
+            border-top: 1px dashed #ccc !important;
+            padding-top: 6px !important;
+          }
+
+          .invoice-pos-layout .invoice-footer {
+            font-size: 8px !important;
+            border-top: 1px dashed #ccc !important;
+            padding-top: 6px !important;
+          }
+
+          .invoice-pos-layout .invoice-footer .footer-thanks {
+            font-size: 8px !important;
+          }
+
+          .invoice-pos-layout .invoice-footer .footer-legal {
+            font-size: 7px !important;
+            max-width: 100% !important;
           }
         }
       `}</style>
