@@ -466,20 +466,27 @@ export default function POSInvoiceGenerator() {
         >
           {/* Print Header */}
           <div className="flex items-start justify-between gap-4">
-            <div className="space-y-1">
-              <div className="flex items-center gap-2 logo-wrapper shrink-0">
-                <div className="w-8 h-8 rounded-lg bg-emerald-700 text-white font-black text-xs flex items-center justify-center tracking-tighter shadow-sm">
-                  B!T
-                </div>
-                <div>
-                  <div className="font-black text-sm tracking-wider text-zinc-950 uppercase leading-none">BITIUM</div>
-                  <div className="text-[7.5px] font-bold tracking-[0.2em] text-emerald-700 uppercase">TECHNOLOGY</div>
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2.5 logo-wrapper shrink-0">
+                <img 
+                  src="/images/bitium-logo.jpg" 
+                  alt="Bitium Technology Logo" 
+                  className="w-10 h-10 rounded-full object-cover border border-zinc-200 shadow-sm shrink-0" 
+                />
+                <div className="flex flex-col justify-center">
+                  <div className="font-black text-base tracking-wider text-zinc-950 uppercase leading-none flex items-center gap-0.5">
+                    B<span className="text-[#ff1a3c]">!</span>T<span className="text-[#ff1a3c]">!</span>UM
+                  </div>
+                  <div className="text-[8.5px] font-extrabold tracking-[0.22em] text-zinc-800 uppercase leading-tight mt-0.5">
+                    TECHNOLOGY
+                  </div>
                 </div>
               </div>
-              <p className="text-[9px] text-zinc-500 font-semibold leading-relaxed max-w-[180px] shop-details">
-                Bitium Technology (Pvt) Ltd.<br />
-                No. 123 Main Street, Colombo, LK.<br />
-                support@bitiumtechnology.com | +94 77 123 4567
+              <p className="text-[9px] text-zinc-600 font-medium leading-relaxed max-w-[240px] shop-details">
+                <strong className="text-zinc-900 font-bold block">Bitium Technology (Pvt) Ltd.</strong>
+                1391/1 New Town Digana Rajawella, Digana, Sri Lanka, 20180<br />
+                <span className="text-zinc-700">Email: hello@bitiumtechnology.com</span><br />
+                <span className="text-zinc-700">Phone: +94 77 973 1097 / +94 71 552 0897</span>
               </p>
             </div>
             <div className="text-right space-y-1">
