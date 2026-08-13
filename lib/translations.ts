@@ -82,13 +82,13 @@ export const translations: Record<Language, Translations> = {
       btnBrowse: "Browse Catalog",
       stats: {
         accuracyTitle: "99% Print Accuracy",
-        accuracySub: "Vibrant & Long Lasting",
+        accuracySub: "Vibrant & Durable",
         turnaroundTitle: "24h Turnaround",
-        turnaroundSub: "Rapid Production",
+        turnaroundSub: "Fast Production",
         ordersTitle: "10,000+ Orders",
-        ordersSub: "Satisfied Customers",
+        ordersSub: "Happy Customers",
         ratingTitle: "5★ Satisfaction",
-        ratingSub: "Top Customer Service"
+        ratingSub: "Top-Rated Support"
       },
       previewBadge: "3D Preview Ready",
       previewBtn: "View in 3D"

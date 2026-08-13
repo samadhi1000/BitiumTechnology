@@ -6,7 +6,7 @@ import Link from 'next/link';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import PromoBanner from '@/components/PromoBanner';
-import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, Flame, CheckCircle2, Scissors, FlaskConical, PlayCircle, MessageSquareHeart, Upload, Grid, Cuboid, Package, Shield, Zap, Phone, ThumbsUp, Activity, Shirt, Feather, Clock, Droplet, PenTool, Crown } from 'lucide-react';
+import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, Flame, CheckCircle2, Scissors, FlaskConical, PlayCircle, MessageSquareHeart, Upload, Grid, Cuboid, Package, Shield, Zap, Phone, ThumbsUp, Activity, Shirt, Feather, Clock, Droplet, PenTool, Crown, Target, Star } from 'lucide-react';
 import { HeroSearch } from '@/components/HeroSearch';
 import { HeroShowcaseCarousel } from '@/components/HeroShowcaseCarousel';
 import { useLanguage } from '@/lib/context/LanguageContext';
@@ -331,19 +331,67 @@ function HomeContent() {
               </Link>
             </div>
 
-            {/* Quality Bullets */}
-            <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-bold text-slate-900 dark:text-white dark:drop-shadow-[0_1px_6px_rgba(0,0,0,0.8)]">
-              <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> {t.hero.stats.accuracyTitle}
-              </span>
-              <span className="text-slate-400 dark:text-white/60">•</span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> {t.hero.stats.turnaroundTitle}
-              </span>
-              <span className="text-slate-400 dark:text-white/60">•</span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full border-2 border-emerald-500 dark:border-[#2CFF05] inline-block" /> {t.hero.stats.ordersTitle}
-              </span>
+            {/* Refactored Feature Items Row */}
+            <div className="pt-3 grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 w-full">
+              {/* Feature 1: Print Accuracy */}
+              <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/70 dark:bg-white/[0.06] border border-slate-200/80 dark:border-white/10 backdrop-blur-md shadow-sm">
+                <div className="w-8 h-8 rounded-lg bg-red-500/10 dark:bg-red-500/20 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0">
+                  <Target size={18} strokeWidth={2.2} />
+                </div>
+                <div className="min-w-0">
+                  <div className="font-heading font-extrabold text-xs sm:text-[13px] text-slate-950 dark:text-white truncate">
+                    {t.hero.stats.accuracyTitle}
+                  </div>
+                  <div className="text-[11px] text-slate-600 dark:text-slate-300 font-medium truncate">
+                    {t.hero.stats.accuracySub}
+                  </div>
+                </div>
+              </div>
+
+              {/* Feature 2: Turnaround */}
+              <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/70 dark:bg-white/[0.06] border border-slate-200/80 dark:border-white/10 backdrop-blur-md shadow-sm">
+                <div className="w-8 h-8 rounded-lg bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+                  <Zap size={18} strokeWidth={2.2} />
+                </div>
+                <div className="min-w-0">
+                  <div className="font-heading font-extrabold text-xs sm:text-[13px] text-slate-950 dark:text-white truncate">
+                    {t.hero.stats.turnaroundTitle}
+                  </div>
+                  <div className="text-[11px] text-slate-600 dark:text-slate-300 font-medium truncate">
+                    {t.hero.stats.turnaroundSub}
+                  </div>
+                </div>
+              </div>
+
+              {/* Feature 3: Orders */}
+              <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/70 dark:bg-white/[0.06] border border-slate-200/80 dark:border-white/10 backdrop-blur-md shadow-sm">
+                <div className="w-8 h-8 rounded-lg bg-orange-500/10 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0">
+                  <Package size={18} strokeWidth={2.2} />
+                </div>
+                <div className="min-w-0">
+                  <div className="font-heading font-extrabold text-xs sm:text-[13px] text-slate-950 dark:text-white truncate">
+                    {t.hero.stats.ordersTitle}
+                  </div>
+                  <div className="text-[11px] text-slate-600 dark:text-slate-300 font-medium truncate">
+                    {t.hero.stats.ordersSub}
+                  </div>
+                </div>
+              </div>
+
+              {/* Feature 4: Satisfaction */}
+              <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/70 dark:bg-white/[0.06] border border-slate-200/80 dark:border-white/10 backdrop-blur-md shadow-sm">
+                <div className="w-8 h-8 rounded-lg bg-yellow-500/10 dark:bg-yellow-500/20 text-yellow-600 dark:text-yellow-400 flex items-center justify-center shrink-0">
+                  <Star size={18} strokeWidth={2.2} className="fill-yellow-500 text-yellow-500" />
+                </div>
+                <div className="min-w-0">
+                  <div className="font-heading font-extrabold text-xs sm:text-[13px] text-slate-950 dark:text-white truncate">
+                    {t.hero.stats.ratingTitle}
+                  </div>
+                  <div className="text-[11px] text-slate-600 dark:text-slate-300 font-medium truncate">
+                    {t.hero.stats.ratingSub}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -354,23 +402,23 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* 02. Trust & Partner Brands Strip - Modern Static Bento Grid with Live Proof Metrics */}
+      {/* 02. Trust & Partner Brands Strip - Modern Static Bento Grid */}
       <section className="bg-slate-100/70 dark:bg-[#060b18] border-b border-border/80 py-10 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         {/* Subtle background glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-24 bg-emerald-500/5 dark:bg-[#2CFF05]/5 blur-3xl pointer-events-none rounded-full" />
 
-        <div className="max-w-7xl mx-auto flex flex-col gap-8 relative z-10">
+        <div className="max-w-7xl mx-auto flex flex-col gap-8 relative z-10 text-center">
           
-          {/* Header Row: Title */}
-          <div className="flex items-center justify-center sm:justify-start gap-3 border-b border-slate-200/80 dark:border-white/5 pb-4">
+          {/* Header Row: Title - Center Aligned */}
+          <div className="flex items-center justify-center gap-3 border-b border-slate-200/80 dark:border-white/5 pb-4">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 dark:bg-[#2CFF05] animate-ping" />
-            <p className="font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase text-slate-800 dark:text-slate-200">
+            <p className="font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase text-slate-800 dark:text-slate-200 text-center">
               Trusted by 1,000+ Apparel Brands, Studios &amp; Manufacturers
             </p>
           </div>
 
-          {/* Clean Interactive Logo Matrix */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4">
+          {/* Clean Interactive Logo Matrix - Center Aligned */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4 justify-center items-center">
             {[
               { name: 'Sneaker Lab', tag: 'Footwear', icon: Activity },
               { name: 'Urban Threads', tag: 'Streetwear', icon: Shirt },
@@ -399,39 +447,6 @@ function HomeContent() {
               );
             })}
           </div>
-
-          {/* Quick Key Performance Proof Strip */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2">
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-white/60 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/5">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#2CFF05]" />
-              <div className="text-xs">
-                <span className="font-bold text-slate-900 dark:text-white">{t.hero.stats.accuracyTitle}</span>
-                <span className="text-muted-foreground block text-[11px]">{t.hero.stats.accuracySub}</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-white/60 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/5">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#2CFF05]" />
-              <div className="text-xs">
-                <span className="font-bold text-slate-900 dark:text-white">{t.hero.stats.turnaroundTitle}</span>
-                <span className="text-muted-foreground block text-[11px]">{t.hero.stats.turnaroundSub}</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-white/60 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/5">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#2CFF05]" />
-              <div className="text-xs">
-                <span className="font-bold text-slate-900 dark:text-white">{t.hero.stats.ordersTitle}</span>
-                <span className="text-muted-foreground block text-[11px]">{t.hero.stats.ordersSub}</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-white/60 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/5">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#2CFF05]" />
-              <div className="text-xs">
-                <span className="font-bold text-slate-900 dark:text-white">{t.hero.stats.ratingTitle}</span>
-                <span className="text-muted-foreground block text-[11px]">{t.hero.stats.ratingSub}</span>
-              </div>
-            </div>
-          </div>
-
         </div>
       </section>
 
