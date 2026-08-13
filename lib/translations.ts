@@ -14,6 +14,7 @@ export interface Translations {
     downloads: string;
     materials: string;
     toolkit: string;
+    community: string;
     allStencils: string;
     handPainting: string;
     saree: string;
@@ -84,6 +85,7 @@ export const translations: Record<Language, Translations> = {
       downloads: "Downloads",
       materials: "Materials / Consumables",
       toolkit: "Toolkit",
+      community: "Community Hub",
       allStencils: "All Stencils",
       handPainting: "Hand Painting",
       saree: "Saree Border",
@@ -152,6 +154,7 @@ export const translations: Record<Language, Translations> = {
       downloads: "බාගත කිරීම්",
       materials: "ද්‍රව්‍ය හා අමුද්‍රව්‍ය",
       toolkit: "මෙවලම් කට්ටලය",
+      community: "ප්‍රජා පුවරුව",
       allStencils: "සියලුම ස්ටෙන්සිල්",
       handPainting: "හෑන්ඩ්",
       saree: "සාරි මෝස්තර",

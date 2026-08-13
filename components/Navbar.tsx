@@ -28,7 +28,8 @@ import {
   Stamp,
   PackageCheck,
   Download,
-  Scissors
+  Scissors,
+  Users
 } from 'lucide-react';
 
 export default function Navbar() {
@@ -300,6 +301,11 @@ export default function Navbar() {
             {/* 08. Materials / Consumables */}
             <Link href={adminLink('/materials')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
               {t.nav.materials || 'Materials / Consumables'}
+            </Link>
+
+            {/* 09. Community Hub */}
+            <Link href={adminLink('/community')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
+              {t.nav.community || 'Community Hub'}
             </Link>
           </div>
 
@@ -693,6 +699,19 @@ export default function Navbar() {
               <div className="flex items-center gap-2">
                 <PackageCheck size={16} className="text-primary" />
                 <span>{t.nav.materials || 'Materials / Consumables'}</span>
+              </div>
+              <ChevronRight size={16} className="text-muted-foreground" />
+            </Link>
+
+            {/* 7. Community Hub */}
+            <Link
+              href={adminLink('/community')}
+              onClick={closeMobileMenu}
+              className="flex items-center justify-between px-4 py-3 rounded-xl bg-card/50 hover:bg-card border border-border text-sm font-bold text-foreground"
+            >
+              <div className="flex items-center gap-2">
+                <Users size={16} className="text-primary" />
+                <span>{t.nav.community || 'Community Hub'}</span>
               </div>
               <ChevronRight size={16} className="text-muted-foreground" />
             </Link>
