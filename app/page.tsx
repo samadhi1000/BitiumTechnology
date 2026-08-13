@@ -283,14 +283,14 @@ function HomeContent() {
         <div className="max-w-7xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           {/* Left Column: Headline, Search, Actions */}
           <div className="lg:col-span-6 xl:col-span-6 space-y-6 flex flex-col items-start text-left relative z-30">
-            <h1 
+            <div 
               className="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 dark:bg-[#2CFF05]/15 border border-emerald-600/30 dark:border-[#2CFF05]/40 text-emerald-900 dark:text-[#2CFF05] text-xs font-bold backdrop-blur-md shadow-sm"
             >
               <Sparkles size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
               <span>{t.hero.badge}</span>
-            </h1>
+            </div>
             
-            <h2 
+            <h1 
               className="hero-title font-heading font-black text-[clamp(28px,4.2vw,52px)] tracking-tight leading-[1.12] text-slate-950 dark:text-white"
             >
               {t.hero.titlePrefix}
@@ -298,7 +298,7 @@ function HomeContent() {
                 {t.hero.titleHighlight}
               </span>
               {t.hero.titleSuffix}
-            </h2>
+            </h1>
             
             <p 
               className="hero-text text-base sm:text-lg text-slate-800 dark:text-white max-w-xl leading-relaxed font-medium dark:drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]"
