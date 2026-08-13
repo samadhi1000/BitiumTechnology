@@ -164,7 +164,8 @@ export default function Navbar() {
                   {[
                     { sub: 'screen-exposed', label: t.nav.screenExposed },
                     { sub: 'tracing-printouts', label: t.nav.tracingPrintouts },
-                    { sub: 'positive-printouts', label: t.nav.positivePrintouts }
+                    { sub: 'positive-printouts', label: t.nav.positivePrintouts },
+                    { sub: 'cmyk-halftone', label: t.nav.cmykHalftone }
                   ].map((item) => (
                     <Link 
                       key={item.sub} 
@@ -488,7 +489,8 @@ export default function Navbar() {
                   {[
                     { sub: 'screen-exposed', label: t.nav.screenExposed },
                     { sub: 'tracing-printouts', label: t.nav.tracingPrintouts },
-                    { sub: 'positive-printouts', label: t.nav.positivePrintouts }
+                    { sub: 'positive-printouts', label: t.nav.positivePrintouts },
+                    { sub: 'cmyk-halftone', label: t.nav.cmykHalftone }
                   ].map((item) => (
                     <Link
                       key={item.sub}

@@ -25,6 +25,7 @@ export interface Translations {
     screenExposed: string;
     tracingPrintouts: string;
     positivePrintouts: string;
+    cmykHalftone: string;
     allDtfPrinting: string;
     tshirtDesign: string;
     dtfSticker: string;
@@ -94,6 +95,7 @@ export const translations: Record<Language, Translations> = {
       screenExposed: "Screen Exposed",
       tracingPrintouts: "Tracing Printouts",
       positivePrintouts: "Positive Printouts",
+      cmykHalftone: "CMYK Halftone",
       allDtfPrinting: "All DTF Printing",
       tshirtDesign: "T-Shirt Design",
       dtfSticker: "DTF Sticker",
@@ -161,6 +163,7 @@ export const translations: Record<Language, Translations> = {
       screenExposed: "එක්ස්පෝස් කළ ස්ක්‍රීන්",
       tracingPrintouts: "ට්‍රේසිං ප්‍රින්ට්-අවුට්",
       positivePrintouts: "පොසිටිව් ප්‍රින්ට්-අවුට්",
+      cmykHalftone: "CMYK හාෆ්ටෝන්",
       allDtfPrinting: "සියලුම DTF මුද්‍රණ",
       tshirtDesign: "ටී-ෂර්ට් නිර්මාණ",
       dtfSticker: "DTF ස්ටිකර්",

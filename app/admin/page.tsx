@@ -8,7 +8,8 @@ import {
   createProduct, 
   updateProduct, 
   deleteProduct, 
-  Product 
+  Product,
+  SizeVariantInput
 } from '@/lib/products';
 import { 
   getDigitalArtworks, 
@@ -45,12 +46,40 @@ import Image from 'next/image';
 import { sanitizeText } from '@/lib/security/sanitize';
 import AdminBatchPrint from '@/components/AdminBatchPrint';
 import OrderFormComponent from '@/components/OrderFormComponent';
+import POSInvoiceGenerator from '@/components/POSInvoiceGenerator';
+
+// ─── Size presets per category ─────────────────────────────────────────────
+const CATEGORY_SIZES: Record<string, string[]> = {
+  'stencil':        ['A4', 'A3', 'A2', 'A1'],
+  'screen-printing':['A4', 'A3', 'A2', 'A1'],
+  'dtf_sheet':      ['A6', 'A5', 'A4', 'A3', 'A2', 'A1', 'Meters'],
+  'batik-stamp':    [],
+  'materials':      [],
+  'laser-cutting':  [],
+};
+
+// Price scaling per size index (multiplier over base price)
+const SIZE_PRICE_MULTIPLIERS: Record<string, number[]> = {
+  'stencil':        [1.0, 1.7, 2.8, 4.2],
+  'screen-printing':[1.0, 1.7, 2.8, 4.2],
+  'dtf_sheet':      [0.5, 0.7, 1.0, 1.7, 2.8, 4.2, 1.2],
+};
+
+function getDefaultSizeVariants(category: string, basePrice: number): SizeVariantInput[] {
+  const sizes = CATEGORY_SIZES[category] ?? [];
+  const mults = SIZE_PRICE_MULTIPLIERS[category] ?? [];
+  return sizes.map((size, i) => ({
+    size,
+    price: Math.round((basePrice || 500) * (mults[i] ?? 1.0)),
+    stock: 100,
+  }));
+}
 
 export default function AdminPanelPage() {
   const { user, profile, loading: authLoading, signOut } = useAuth();
   
-  // Tab states: 'products' | 'digital' | 'batch-print' | 'order-form'
-  const [activeTab, setActiveTab] = useState<'products' | 'digital' | 'batch-print' | 'order-form'>('products');
+  // Tab states: 'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice'
+  const [activeTab, setActiveTab] = useState<'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice'>('products');
   
   const [products, setProducts] = useState<Product[]>([]);
   const [digitalArtworks, setDigitalArtworks] = useState<DigitalArtwork[]>([]);
@@ -76,7 +105,7 @@ export default function AdminPanelPage() {
   const [prodPrice, setProdPrice] = useState(0);
   const [prodOriginalPrice, setProdOriginalPrice] = useState<number | undefined>(undefined);
   const [prodImageUrl, setProdImageUrl] = useState('');
-  const [prodStock, setProdStock] = useState(100);
+  const [prodSizeVariants, setProdSizeVariants] = useState<SizeVariantInput[]>([]);
   const [prodIsActive, setProdIsActive] = useState(true);
   const [prodImageFile, setProdImageFile] = useState<File | null>(null);
   
@@ -185,7 +214,8 @@ export default function AdminPanelPage() {
     setProdPrice(0);
     setProdOriginalPrice(undefined);
     setProdImageUrl('');
-    setProdStock(100);
+    // Pre-fill standard DTF size tiers as a helpful default
+    setProdSizeVariants(getDefaultSizeVariants('dtf_sheet', 500));
     setProdIsActive(true);
     setProdImageFile(null);
     setErrorMsg('');
@@ -201,7 +231,22 @@ export default function AdminPanelPage() {
     setProdPrice(product.price);
     setProdOriginalPrice(product.original_price);
     setProdImageUrl(product.image_url);
-    setProdStock(product.variants?.[0]?.stock_quantity ?? 100);
+    // Populate size tiers from existing variants (skip "Default" single-variant products)
+    const existingVariants = product.variants ?? [];
+    const hasRealSizes = existingVariants.some(v => v.attributes.size && v.attributes.size !== 'Default');
+    if (hasRealSizes) {
+      setProdSizeVariants(
+        existingVariants
+          .filter(v => v.attributes.size)
+          .map(v => ({
+            size: v.attributes.size as string,
+            price: v.price_override ?? product.price,
+            stock: v.stock_quantity,
+          }))
+      );
+    } else {
+      setProdSizeVariants([]);
+    }
     setProdIsActive(product.is_active);
     setProdImageFile(null);
     setErrorMsg('');
@@ -243,11 +288,20 @@ export default function AdminPanelPage() {
         is_active: prodIsActive
       };
 
+      // Build size variants: use the tier rows if any, else single Default
+      const sizeVariants: SizeVariantInput[] = prodSizeVariants.length > 0
+        ? prodSizeVariants.filter(sv => sv.size.trim() !== '').map(sv => ({
+            size: sv.size.trim(),
+            price: sv.price || Number(prodPrice),
+            stock: sv.stock || 100,
+          }))
+        : [];
+
       if (editingProduct) {
-        await updateProduct(editingProduct.id, pData, Number(prodStock));
+        await updateProduct(editingProduct.id, pData, sizeVariants.length > 0 ? sizeVariants : undefined);
         setSuccessMsg('Product updated successfully!');
       } else {
-        await createProduct(pData as Omit<Product, 'id' | 'is_active'>, Number(prodStock));
+        await createProduct(pData as Omit<Product, 'id' | 'is_active'>, sizeVariants);
         setSuccessMsg('Product added successfully!');
       }
 
@@ -582,7 +636,7 @@ export default function AdminPanelPage() {
                   <Printer size={16} />
                   <span>Print 4-in-1 A4</span>
                 </button>
-              ) : activeTab === 'order-form' ? null : (
+              ) : activeTab === 'order-form' || activeTab === 'pos-invoice' ? null : (
                 <button
                   onClick={() => {
                     if (activeTab === 'products') {
@@ -717,10 +771,25 @@ export default function AdminPanelPage() {
                 FORM
               </span>
             </button>
+
+            <button
+              onClick={() => { setActiveTab('pos-invoice'); }}
+              className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                activeTab === 'pos-invoice'
+                  ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
+                  : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
+              }`}
+            >
+              <FileText size={16} />
+              <span>POS Invoice</span>
+              <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'pos-invoice' ? 'bg-black text-[#2CFF05]' : 'bg-amber-500/20 text-amber-400'}`}>
+                BILL
+              </span>
+            </button>
           </div>
 
           {/* Secondary Filter & Search Row - Shown only for Store & Digital Catalogs */}
-          {activeTab !== 'batch-print' && activeTab !== 'order-form' && (
+          {activeTab !== 'batch-print' && activeTab !== 'order-form' && activeTab !== 'pos-invoice' && (
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between p-4 rounded-2xl border border-border bg-card/20 backdrop-blur-sm">
               <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
                 <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mr-2 flex items-center gap-1.5"><Filter size={12} /> Category:</span>
@@ -786,12 +855,15 @@ export default function AdminPanelPage() {
             </div>
           )}
 
-          {/* MAIN CONTENT CONTAINER */}
           {activeTab === 'batch-print' ? (
             <AdminBatchPrint />
           ) : activeTab === 'order-form' ? (
             <div className="p-4 sm:p-6 rounded-2xl border border-border bg-card/10 backdrop-blur-sm">
               <OrderFormComponent hideNavbar={true} />
+            </div>
+          ) : activeTab === 'pos-invoice' ? (
+            <div className="p-4 sm:p-6 rounded-2xl border border-border bg-card/10 backdrop-blur-sm">
+              <POSInvoiceGenerator />
             </div>
           ) : (
             <div className="rounded-2xl border border-border bg-card/10 backdrop-blur-sm overflow-hidden">
@@ -1145,9 +1217,98 @@ export default function AdminPanelPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {/* ── SIZE & PRICE TIERS ────────────────────────────────── */}
+              <div className="p-4 rounded-xl border border-[#2CFF05]/20 bg-[#2CFF05]/5 space-y-3">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <label className="text-[10px] font-bold text-[#2CFF05] uppercase tracking-wider flex items-center gap-1.5">
+                    <span>📐</span> Size &amp; Price Tiers
+                  </label>
+                  {(CATEGORY_SIZES[prodCategory]?.length ?? 0) > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setProdSizeVariants(getDefaultSizeVariants(prodCategory, prodPrice || 500))}
+                      className="text-[9px] font-bold text-[#2CFF05] hover:text-[#45ff24] border border-[#2CFF05]/30 hover:border-[#2CFF05]/60 px-2.5 py-1 rounded-lg transition-all"
+                    >
+                      ↺ Auto-fill {CATEGORY_SIZES[prodCategory]?.join(' / ')}
+                    </button>
+                  )}
+                </div>
+
+                {prodSizeVariants.length > 0 ? (
+                  <div className="space-y-2">
+                    {/* Header row */}
+                    <div className="grid grid-cols-[1fr_1fr_68px_32px] gap-2 text-[9px] font-bold text-muted-foreground uppercase tracking-wider px-1">
+                      <span>Size Name</span>
+                      <span>Price (Rs.)</span>
+                      <span>Stock</span>
+                      <span></span>
+                    </div>
+                    {prodSizeVariants.map((sv, idx) => (
+                      <div key={idx} className="grid grid-cols-[1fr_1fr_68px_32px] gap-2 items-center">
+                        <input
+                          type="text"
+                          value={sv.size}
+                          onChange={e => {
+                            const next = [...prodSizeVariants];
+                            next[idx] = { ...sv, size: e.target.value };
+                            setProdSizeVariants(next);
+                          }}
+                          placeholder="A4"
+                          className="bg-card border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
+                        />
+                        <input
+                          type="number"
+                          value={sv.price || ''}
+                          onChange={e => {
+                            const next = [...prodSizeVariants];
+                            next[idx] = { ...sv, price: Number(e.target.value) };
+                            setProdSizeVariants(next);
+                          }}
+                          placeholder="450"
+                          className="bg-card border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
+                        />
+                        <input
+                          type="number"
+                          value={sv.stock}
+                          onChange={e => {
+                            const next = [...prodSizeVariants];
+                            next[idx] = { ...sv, stock: Number(e.target.value) };
+                            setProdSizeVariants(next);
+                          }}
+                          className="bg-card border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setProdSizeVariants(prodSizeVariants.filter((_, i) => i !== idx))}
+                          className="w-8 h-8 flex items-center justify-center rounded-lg border border-rose-900/30 text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                        >
+                          <X size={12} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-[10px] text-muted-foreground italic">
+                    No size tiers — product will use single base price. Click &ldquo;Auto-fill&rdquo; or add rows manually.
+                  </p>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => setProdSizeVariants([...prodSizeVariants, { size: '', price: prodPrice || 0, stock: 100 }])}
+                  className="flex items-center gap-1.5 text-[10px] font-bold text-[#2CFF05] hover:text-[#45ff24] transition-colors mt-1 cursor-pointer"
+                >
+                  <Plus size={12} /> Add Size Row
+                </button>
+              </div>
+
+              {/* Base price + original price (reference / fallback when no size tiers) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Price (Rs.) *</label>
+                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                    Base Price (Rs.) *
+                    <span className="ml-1 font-normal text-muted-foreground normal-case">(fallback / reference)</span>
+                  </label>
                   <input
                     type="number"
                     required
@@ -1164,17 +1325,6 @@ export default function AdminPanelPage() {
                     value={prodOriginalPrice || ''}
                     onChange={(e) => setProdOriginalPrice(e.target.value ? Number(e.target.value) : undefined)}
                     placeholder="3000"
-                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Stock Count *</label>
-                  <input
-                    type="number"
-                    required
-                    value={prodStock}
-                    onChange={(e) => setProdStock(Number(e.target.value))}
-                    placeholder="100"
                     className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                   />
                 </div>

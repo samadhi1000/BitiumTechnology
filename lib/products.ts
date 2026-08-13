@@ -23,6 +23,13 @@ export interface Variant {
   attributes: Record<string, any>;
 }
 
+/** One row from the admin "Size & Price Tiers" table */
+export interface SizeVariantInput {
+  size: string;   // e.g. "A4", "A3", "Meters"
+  price: number;  // selling price for this size
+  stock: number;  // stock qty for this size
+}
+
 // Subcategory definitions (15 subcategories, 9 items each = 135 products total)
 const SUBCAT_DATA = [
   // Stencil
@@ -38,6 +45,7 @@ const SUBCAT_DATA = [
   { cat: 'screen-printing', sub: 'artwork', names: ['Viper Streetwear Artwork Design', 'Retro Wave Cyberpunk Artwork', 'Vintage Botanical Artwork Pack', 'Anime Hero Portrait Artwork', 'Classic Typographic Quote Artwork', 'Geometric Mandala Vector Artwork', 'Spooky Skull Custom Artwork', 'Abstract Brushstroke Art Pack', 'Urban Graffiti Vector Artwork'], image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80', price: 950, orig: 1500 },
   { cat: 'screen-printing', sub: 'tracing-printouts', names: ['Tracing Film A4 Printout Set', 'Tracing Film A3 Printout Pack', 'Tracing Paper Half-Tone Printout', 'High-Translucent Tracing Roll 12x23', 'Tracing Sheet Vector Pocket Logo', 'Tracing Sheet Large Front Banner', 'Tracing Printout Custom Vector Set', 'Precision Detail Tracing Sheet', 'Fine Text Tracing Film A4'], image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80', price: 150, orig: 250 },
   { cat: 'screen-printing', sub: 'positive-printouts', names: ['Positive Film A4 Screen Laser Set', 'Positive Film A3 Screen Laser Set', 'High-Density Inkjet Positive Sheet', 'Custom Positive Printout 12x23 Roll', 'Positive Printout Multi-Color Layer Set', 'Halftone Screen Positive Sheet A3', 'Micro-Line Detail Positive Film A4', 'Heavyweight Block Positive Sheet', 'Professional Output Positive Film Roll'], image: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=600&q=80', price: 300, orig: 500 },
+  { cat: 'screen-printing', sub: 'cmyk-halftone', names: ['CMYK Color Separation Film Set (4-Page A4)', 'CMYK Color Separation Film Set (4-Page A3)', 'CMYK Cyan Layer High-Density Film A3', 'CMYK Magenta Layer High-Density Film A3', 'CMYK Yellow Layer High-Density Film A3', 'CMYK Black Layer High-Density Film A3', 'Custom CMYK Halftone Screen 12x12 A3 size', 'Exposed Screen Set for CMYK Printing (4 Frames)', 'Process CMYK Ink Trial Pack (C, M, Y, K - 250ml each)'], image: 'https://images.unsplash.com/photo-1525909002-1b057f39ff82?auto=format&fit=crop&w=600&q=80', price: 1200, orig: 1600 },
 
   // DTF Printing
   { cat: 'dtf_sheet', sub: 'tshirt-design', names: ['Vintage Mountain Adventure Tee Design', 'Demon Slayer Anime T-Shirt Design', 'Cute Labubu Family T-Shirt Design', 'Stitch Cartoon Character Tee Design', 'Streetwear Bear T-Shirt Print Sheet', 'I\'d Hike That Mountain Tee Design', 'I\'d Hike That Mountain Tee (Back) Design', 'Half Mile Hiking Quote Tee Design', 'Premium Heavyweight Blank Tee'], image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80', price: 850, orig: 1200 },
@@ -354,59 +362,63 @@ export async function getProductById(id: string): Promise<Product | null> {
   return mockProduct || null;
 }
 
-export async function createProduct(productData: Omit<Product, 'id' | 'is_active'>, stock: number): Promise<Product> {
+export async function createProduct(
+  productData: Omit<Product, 'id' | 'is_active'>,
+  sizeVariants: SizeVariantInput[]
+): Promise<Product> {
   const id = generateUUID();
-  const variantId = generateUUID();
-  const newProduct: Product = {
-    ...productData,
-    id,
-    is_active: true,
-    variants: [
-      {
-        id: variantId,
-        product_id: id,
-        name: 'Standard Option',
-        sku: `${productData.category.substring(0,3).toUpperCase()}-CUSTOM-${Date.now().toString().slice(-4)}`,
-        price_override: null,
-        stock_quantity: stock,
-        attributes: { size: 'Default' }
-      }
-    ]
-  };
+  const catPrefix = productData.category.substring(0, 3).toUpperCase();
+  const stamp = Date.now().toString().slice(-4);
+
+  // Build one Variant per size entry (fallback: single Default variant)
+  const inputs = sizeVariants.length > 0
+    ? sizeVariants
+    : [{ size: 'Default', price: productData.price, stock: 100 }];
+
+  const newVariants: Variant[] = inputs.map((sv, idx) => {
+    const skuTag = sv.size.replace(/[^a-zA-Z0-9]/g, '').toUpperCase() || `V${idx + 1}`;
+    return {
+      id: generateUUID(),
+      product_id: id,
+      name: sv.size,
+      sku: `${catPrefix}-CUSTOM-${stamp}-${skuTag}`,
+      price_override: sv.price !== productData.price ? sv.price : null,
+      stock_quantity: sv.stock,
+      attributes: { size: sv.size },
+    };
+  });
+
+  const newProduct: Product = { ...productData, id, is_active: true, variants: newVariants };
 
   if (isSupabaseConfigured()) {
     try {
-      const { error: prodError } = await supabase
-        .from('products')
-        .insert({
-          id,
-          name: productData.name,
-          description: productData.description,
-          price: productData.price,
-          original_price: productData.original_price,
-          image_url: productData.image_url,
-          category: productData.category,
-          sub_category: productData.sub_category,
-          is_active: true
-        });
+      const { error: prodError } = await supabase.from('products').insert({
+        id,
+        name: productData.name,
+        description: productData.description,
+        price: productData.price,
+        original_price: productData.original_price,
+        image_url: productData.image_url,
+        category: productData.category,
+        sub_category: productData.sub_category,
+        is_active: true,
+      });
 
-      if (prodError) {
-        console.error('Supabase product insert failed:', prodError);
-      } else {
-        const { error: varError } = await supabase
-          .from('product_variants')
-          .insert({
-            id: variantId,
+      if (!prodError) {
+        for (const v of newVariants) {
+          const { error: varError } = await supabase.from('product_variants').insert({
+            id: v.id,
             product_id: id,
-            name: 'Standard Option',
-            sku: newProduct.variants![0].sku,
-            price_override: null,
-            stock_quantity: stock,
-            attributes: { size: 'Default' }
+            name: v.name,
+            sku: v.sku,
+            price_override: v.price_override,
+            stock_quantity: v.stock_quantity,
+            attributes: v.attributes,
           });
-        if (varError) {
-          console.error('Supabase variant insert failed:', varError);
+          if (varError) console.error('Supabase variant insert failed:', varError);
         }
+      } else {
+        console.error('Supabase product insert failed:', prodError);
       }
     } catch (err) {
       console.error('Supabase insert failed:', err);
@@ -416,51 +428,71 @@ export async function createProduct(productData: Omit<Product, 'id' | 'is_active
   const localProducts = getLocalStorageProducts();
   localProducts.unshift(newProduct);
   setLocalStorageProducts(localProducts);
-
-  // Sync to API JSON file
   await syncToApiCatalog(localProducts);
-
   return newProduct;
 }
 
-export async function updateProduct(id: string, productData: Partial<Product>, stock?: number): Promise<Product | null> {
+export async function updateProduct(
+  id: string,
+  productData: Partial<Product>,
+  sizeVariants?: SizeVariantInput[]
+): Promise<Product | null> {
   const existing = await getProductById(id);
   if (!existing) return null;
 
-  const updated: Product = {
-    ...existing,
-    ...productData,
-    variants: existing.variants ? existing.variants.map((v, i) => {
-      if (i === 0 && stock !== undefined) {
-        return { ...v, stock_quantity: stock };
-      }
-      return v;
-    }) : []
-  };
+  const basePrice = productData.price ?? existing.price;
+  const catPrefix = (productData.category ?? existing.category).substring(0, 3).toUpperCase();
+  const stamp = Date.now().toString().slice(-4);
+
+  // Rebuild variants array when size tiers are provided
+  let updatedVariants: Variant[];
+  if (sizeVariants && sizeVariants.length > 0) {
+    updatedVariants = sizeVariants.map((sv, idx) => {
+      // Reuse existing variant id if same size already existed (preserves SKU stability)
+      const prior = existing.variants?.find(v => v.attributes.size === sv.size);
+      const skuTag = sv.size.replace(/[^a-zA-Z0-9]/g, '').toUpperCase() || `V${idx + 1}`;
+      return {
+        id: prior?.id ?? generateUUID(),
+        product_id: id,
+        name: sv.size,
+        sku: prior?.sku ?? `${catPrefix}-CUSTOM-${stamp}-${skuTag}`,
+        price_override: sv.price !== basePrice ? sv.price : null,
+        stock_quantity: sv.stock,
+        attributes: { size: sv.size },
+      };
+    });
+  } else {
+    // No size change — keep existing variants as-is
+    updatedVariants = existing.variants ?? [];
+  }
+
+  const updated: Product = { ...existing, ...productData, variants: updatedVariants };
 
   if (isSupabaseConfigured()) {
     const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
     if (isUUID) {
       try {
-        const { error: prodError } = await supabase
-          .from('products')
-          .update({
-            name: updated.name,
-            description: updated.description,
-            price: updated.price,
-            original_price: updated.original_price,
-            image_url: updated.image_url,
-            category: updated.category,
-            sub_category: updated.sub_category,
-            is_active: updated.is_active
-          })
-          .eq('id', id);
+        await supabase.from('products').update({
+          name: updated.name,
+          description: updated.description,
+          price: updated.price,
+          original_price: updated.original_price,
+          image_url: updated.image_url,
+          category: updated.category,
+          sub_category: updated.sub_category,
+          is_active: updated.is_active,
+        }).eq('id', id);
 
-        if (!prodError && stock !== undefined) {
-          await supabase
-            .from('product_variants')
-            .update({ stock_quantity: stock })
-            .eq('product_id', id);
+        if (sizeVariants && sizeVariants.length > 0) {
+          // Replace all variants for this product
+          await supabase.from('product_variants').delete().eq('product_id', id);
+          for (const v of updatedVariants) {
+            await supabase.from('product_variants').insert({
+              id: v.id, product_id: id, name: v.name, sku: v.sku,
+              price_override: v.price_override, stock_quantity: v.stock_quantity,
+              attributes: v.attributes,
+            });
+          }
         }
       } catch (err) {
         console.error('Supabase update failed:', err);
@@ -476,10 +508,7 @@ export async function updateProduct(id: string, productData: Partial<Product>, s
     localProducts.push(updated);
   }
   setLocalStorageProducts(localProducts);
-
-  // Sync to API JSON file
   await syncToApiCatalog(localProducts);
-
   return updated;
 }
 
