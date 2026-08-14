@@ -193,6 +193,30 @@ export interface Translations {
     ctaDesc: string;
     ctaBtn: string;
   };
+  footer?: {
+    brandDesc: string;
+    servicesTitle: string;
+    toolkitTitle: string;
+    contactTitle: string;
+    stencil: string;
+    screenPrinting: string;
+    dtfPrinting: string;
+    batikStamp: string;
+    laserCutting: string;
+    blog: string;
+    downloads: string;
+    community: string;
+    materials: string;
+    about: string;
+    contact: string;
+    mobileLabel: string;
+    whatsappLabel: string;
+    address: string;
+    rights: string;
+    poweredBy: string;
+    privacy: string;
+    terms: string;
+  };
 }
 
 export const translations: Record<Language, Translations> = {
@@ -415,6 +439,30 @@ export const translations: Record<Language, Translations> = {
       ctaTitle2: "Your Design?",
       ctaDesc: "Create your DTF sheet now and see your design come to life before printing. No minimums, 24-hour turnaround.",
       ctaBtn: "Start Your Design Now"
+    },
+    footer: {
+      brandDesc: "Sri Lanka's leading custom printing partner. Saturated DTF transfers, stencils, and custom apparel prints delivered in 24 hours.",
+      servicesTitle: "Services",
+      toolkitTitle: "Toolkit & Community",
+      contactTitle: "Contact info",
+      stencil: "Stencil",
+      screenPrinting: "Screen Printing",
+      dtfPrinting: "DTF Printing",
+      batikStamp: "Batik Stamp",
+      laserCutting: "Laser Cutting",
+      blog: "Blog & Master Guides",
+      downloads: "Digital downloads",
+      community: "Community Hub",
+      materials: "Materials / Consumables",
+      about: "About Us",
+      contact: "Contact Us",
+      mobileLabel: "(Mobile)",
+      whatsappLabel: "(WhatsApp)",
+      address: "1391/1 New Town Digana Rajawella, Digana, Sri Lanka, 20180",
+      rights: "Bitium Technology. All rights reserved.",
+      poweredBy: "POWERED BY -",
+      privacy: "Privacy Policy",
+      terms: "Terms of Service"
     }
   },
   si: {
@@ -636,6 +684,30 @@ export const translations: Record<Language, Translations> = {
       ctaTitle2: "මුද්‍රණය කරගමුද?",
       ctaDesc: "දැනම ඔබේ DTF ෂීට් එක සකස් කර 3D තාක්ෂණයෙන් බලන්න. අවම ඇණවුම් සීමා නැත, පැය 24ක් ඇතුළත නිමාව.",
       ctaBtn: "දැනම ඔබේ නිර්මාණය අරඹන්න"
+    },
+    footer: {
+      brandDesc: "ශ්‍රී ලංකාවේ ප්‍රමුඛතම මුද්‍රණ සහකරු. DTF Transfers, ස්ටෙන්සිල් සහ රෙදිපිළි මුද්‍රණ පැය 24ක් ඇතුළත.",
+      servicesTitle: "සේවාවන්",
+      toolkitTitle: "උපාංග සහ ප්‍රජාව",
+      contactTitle: "සම්බන්ධ කර ගැනීමට",
+      stencil: "ස්ටෙන්සිල්",
+      screenPrinting: "ස්ක්‍රීන් මුද්‍රණය",
+      dtfPrinting: "DTF මුද්‍රණය",
+      batikStamp: "බතික් මුද්‍රා",
+      laserCutting: "ලේසර් කැපීම",
+      blog: "බ්ලොග් ලිපි සහ මගපෙන්වීම්",
+      downloads: "ඩිජිටල් ඩවුන්ලෝඩ්ස්",
+      community: "ප්‍රජා කේන්ද්‍රය (Community)",
+      materials: "අමුද්‍රව්‍ය සහ උපකරණ",
+      about: "අප ගැන",
+      contact: "අපව අමතන්න",
+      mobileLabel: "(ජංගම)",
+      whatsappLabel: "(වට්ස්ඇප්)",
+      address: "1391/1 නිව් ටවුන් දිගන රජවැල්ල, දිගන, ශ්‍රී ලංකාව, 20180",
+      rights: "Bitium Technology. සියලුම හිමිකම් ඇවිරිණි.",
+      poweredBy: "POWERED BY -",
+      privacy: "රහස්‍යතා ප්‍රතිපත්තිය",
+      terms: "සේවා කොන්දේසි"
     }
   }
 };

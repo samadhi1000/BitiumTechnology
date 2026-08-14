@@ -4,27 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
-
-const footerLinks = {
-  services: [
-    { label: "Stencil", href: "/stencil" },
-    { label: "Screen Printing", href: "/screen-printing" },
-    { label: "DTF Printing", href: "/dtf-printing" },
-    { label: "Batik Stamp", href: "/batik-stamp" },
-    { label: "Laser Cutting", href: "/laser-cutting" },
-  ],
-  toolkit: [
-    { label: "Blog & Master Guides", href: "/blog" },
-    { label: "Digital downloads", href: "/downloads" },
-    { label: "Materials / Consumables", href: "/materials" },
-    { label: "About Us", href: "/about" },
-    { label: "Contact Us", href: "/contact" },
-  ],
-  legal: [
-    { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Service", href: "/terms" },
-  ],
-};
+import { useLanguage } from "@/lib/context/LanguageContext";
 
 function FacebookIcon({ className }: { className?: string }) {
   return (
@@ -43,15 +23,40 @@ function TiktokIcon({ className }: { className?: string }) {
 }
 
 export default function Footer() {
+  const { t } = useLanguage();
+  const f = t.footer;
+
+  const servicesLinks = [
+    { label: f?.stencil || "Stencil", href: "/stencil" },
+    { label: f?.screenPrinting || "Screen Printing", href: "/screen-printing" },
+    { label: f?.dtfPrinting || "DTF Printing", href: "/dtf-printing" },
+    { label: f?.batikStamp || "Batik Stamp", href: "/batik-stamp" },
+    { label: f?.laserCutting || "Laser Cutting", href: "/laser-cutting" },
+  ];
+
+  const toolkitLinks = [
+    { label: f?.blog || "Blog & Master Guides", href: "/blog" },
+    { label: f?.downloads || "Digital downloads", href: "/downloads" },
+    { label: f?.community || "Community Hub", href: "/community" },
+    { label: f?.materials || "Materials / Consumables", href: "/materials" },
+    { label: f?.about || "About Us", href: "/about" },
+    { label: f?.contact || "Contact Us", href: "/contact" },
+  ];
+
+  const legalLinks = [
+    { label: f?.privacy || "Privacy Policy", href: "/privacy" },
+    { label: f?.terms || "Terms of Service", href: "/terms" },
+  ];
+
   return (
     <footer className="relative border-t border-border bg-[#0F172A] text-white" role="contentinfo">
-      {/* Main Columns */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+      {/* Main Columns - Compact padding */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-7 sm:py-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-6">
           {/* Logo / Brand Column */}
-          <div className="sm:col-span-2 lg:col-span-1 space-y-4">
-            <Link href="/" className="flex items-center space-x-2.5 sm:space-x-3 group relative py-1 hover:opacity-90 transition-opacity">
-              <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-white/20 shadow-[0_0_15px_rgba(255,26,60,0.25)] group-hover:scale-105 transition-transform shrink-0">
+          <div className="sm:col-span-2 lg:col-span-1 space-y-2.5">
+            <Link href="/" className="flex items-center space-x-2.5 sm:space-x-3 group relative py-0.5 hover:opacity-90 transition-opacity">
+              <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-white/20 shadow-[0_0_15px_rgba(255,26,60,0.25)] group-hover:scale-105 transition-transform shrink-0">
                 <Image
                   src="/images/bitium-logo.webp"
                   alt="Bitium Technology"
@@ -60,47 +65,47 @@ export default function Footer() {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-2xl sm:text-3xl font-black tracking-wider text-white flex items-center gap-0.5 leading-none font-heading">
+                <span className="text-xl sm:text-2xl font-black tracking-wider text-white flex items-center gap-0.5 leading-none font-heading">
                   B<span className="text-[#ff1a3c] drop-shadow-[0_0_12px_#ff1a3c]">!</span>T<span className="text-[#ff1a3c] drop-shadow-[0_0_12px_#ff1a3c]">!</span>UM
                 </span>
-                <span className="text-xs sm:text-[13px] font-extrabold tracking-[0.25em] text-white uppercase leading-tight mt-0.5 sm:mt-1">
+                <span className="text-[10px] sm:text-[11px] font-extrabold tracking-[0.25em] text-white uppercase leading-tight mt-0.5">
                   Technology
                 </span>
               </div>
             </Link>
             
-            <p className="text-sm text-slate-400 leading-relaxed max-w-xs" style={{ fontFamily: "var(--font-body)" }}>
-              Sri Lanka's leading custom printing partner. Saturated DTF transfers, stencils, and custom apparel prints delivered in 24 hours.
+            <p className="text-xs text-slate-400 leading-relaxed max-w-xs" style={{ fontFamily: "var(--font-body)" }}>
+              {f?.brandDesc || "Sri Lanka's leading custom printing partner. Saturated DTF transfers, stencils, and custom apparel prints delivered in 24 hours."}
             </p>
           </div>
 
           {/* Links: Services */}
           <div>
-            <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-widest mb-4" style={{ fontFamily: "var(--font-heading)" }}>
-              Services
+            <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-widest mb-2" style={{ fontFamily: "var(--font-heading)" }}>
+              {f?.servicesTitle || "Services"}
             </h4>
-            <ul className="space-y-3">
-              {footerLinks.services.map((link) => (
+            <ul className="space-y-1.5">
+              {servicesLinks.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} className="text-sm text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
+                  <Link href={link.href} className="text-xs text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Links: Toolkit */}
+          {/* Links: Toolkit & Community */}
           <div>
-            <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-widest mb-4" style={{ fontFamily: "var(--font-heading)" }}>
-              Toolkit
+            <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-widest mb-2" style={{ fontFamily: "var(--font-heading)" }}>
+              {f?.toolkitTitle || "Toolkit & Community"}
             </h4>
-            <ul className="space-y-3">
-              {footerLinks.toolkit.map((link) => (
+            <ul className="space-y-1.5">
+              {toolkitLinks.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} className="text-sm text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
+                  <Link href={link.href} className="text-xs text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -108,39 +113,38 @@ export default function Footer() {
 
           {/* Links: Contact & Socials */}
           <div>
-            <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-widest mb-4" style={{ fontFamily: "var(--font-heading)" }}>
-              Contact info
+            <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-widest mb-2" style={{ fontFamily: "var(--font-heading)" }}>
+              {f?.contactTitle || "Contact info"}
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-1.5">
               <li>
-                <a href="mailto:hello@bitiumtechnology.com" className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
-                  <Mail className="w-4 h-4" />
+                <a href="mailto:hello@bitiumtechnology.com" className="flex items-center gap-2 text-xs text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
+                  <Mail className="w-3.5 h-3.5 shrink-0" />
                   hello@bitiumtechnology.com
                 </a>
               </li>
               <li>
-                <a href="tel:+94715520897" className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
-                  <Phone className="w-4 h-4" />
-                  +94 71 552 0897 (Mobile)
+                <a href="tel:+94715520897" className="flex items-center gap-2 text-xs text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
+                  <Phone className="w-3.5 h-3.5 shrink-0" />
+                  +94 71 552 0897 {f?.mobileLabel || "(Mobile)"}
                 </a>
               </li>
               <li>
-                <a href="https://wa.me/94779731097" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
-                  <Phone className="w-4 h-4" />
-                  +94 77 973 1097 (WhatsApp)
+                <a href="https://wa.me/94779731097" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
+                  <Phone className="w-3.5 h-3.5 shrink-0" />
+                  +94 77 973 1097 {f?.whatsappLabel || "(WhatsApp)"}
                 </a>
               </li>
-              <li className="flex items-start gap-2 text-sm text-slate-400">
-                <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                <span className="leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
-                  1391/1 New Town Digana Rajawella, <br />
-                  Digana, Sri Lanka, 20180
+              <li className="flex items-start gap-2 text-xs text-slate-400">
+                <MapPin className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+                <span className="leading-snug" style={{ fontFamily: "var(--font-body)" }}>
+                  {f?.address || "1391/1 New Town Digana Rajawella, Digana, Sri Lanka, 20180"}
                 </span>
               </li>
             </ul>
 
             {/* Social Buttons */}
-            <div className="flex items-center gap-3 mt-6">
+            <div className="flex items-center gap-2.5 mt-3">
               {[
                 { icon: TiktokIcon, label: "Tiktok", href: "https://www.tiktok.com/@bitiumtechnology" },
                 { icon: FacebookIcon, label: "Facebook", href: "https://web.facebook.com/bitiumtechnology" },
@@ -152,10 +156,10 @@ export default function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/[0.08] hover:border-white/20 transition-all duration-300"
+                    className="w-7 h-7 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/[0.08] hover:border-white/20 transition-all duration-300"
                     aria-label={social.label}
                   >
-                    <Icon className="w-4 h-4" />
+                    <Icon className="w-3.5 h-3.5" />
                   </a>
                 );
               })}
@@ -163,17 +167,17 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* 3. Bottom Credits */}
-        <div className="mt-14 pt-8 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-6">
-          <p className="text-xs text-slate-400" style={{ fontFamily: "var(--font-body)" }}>
-            © {new Date().getFullYear()} Bitium Technology. All rights reserved.
+        {/* 3. Bottom Credits - Compact Sleek Layout */}
+        <div className="mt-5 pt-4 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-[11px] text-slate-400" style={{ fontFamily: "var(--font-body)" }}>
+            © {new Date().getFullYear()} {f?.rights || "Bitium Technology. All rights reserved."}
           </p>
           
           {/* Animated Agency Logo - Powered By Stack Unleash */}
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-5">
             <div className="flex items-center gap-2">
-              <span className="text-[10px] uppercase tracking-widest text-slate-500 font-semibold" style={{ fontFamily: "var(--font-heading)" }}>
-                Powered By -
+              <span className="text-[9px] uppercase tracking-widest text-slate-500 font-semibold" style={{ fontFamily: "var(--font-heading)" }}>
+                {f?.poweredBy || "POWERED BY -"}
               </span>
               <a href="https://stackunleash.com" target="_blank" rel="noopener noreferrer" className="flex items-center group">
                 {/* Metallic Shine Masked Container */}
@@ -181,7 +185,7 @@ export default function Footer() {
                   <img
                     src="/images/stack-unleash-logo.webp"
                     alt="StackUnleash Icon"
-                    className="h-[28px] w-auto object-contain logo-fire-glow"
+                    className="h-[20px] w-auto object-contain logo-fire-glow"
                   />
                 </div>
                 
@@ -189,13 +193,13 @@ export default function Footer() {
                 <div className="flex flex-col items-start justify-center">
                   <div className="flex items-center leading-none">
                     <span
-                      className="font-black text-[12px] tracking-wider leading-none orange-gradient-text mr-0.5"
+                      className="font-black text-[10px] tracking-wider leading-none orange-gradient-text mr-0.5"
                       style={{ fontFamily: "var(--font-heading)" }}
                     >
                       STACK
                     </span>
                     <span
-                      className="font-black text-[12px] tracking-wider leading-none gradient-text"
+                      className="font-black text-[10px] tracking-wider leading-none gradient-text"
                       style={{ fontFamily: "var(--font-heading)" }}
                     >
                       UNLEASH
@@ -203,7 +207,7 @@ export default function Footer() {
                   </div>
                   {/* Tagline */}
                   <div
-                    className="w-full flex justify-between text-[4px] font-black uppercase mt-0.5 shine-text"
+                    className="w-full flex justify-between text-[3.5px] font-black uppercase mt-0.5 shine-text"
                     style={{ fontFamily: "var(--font-heading)" }}
                   >
                     <span>BUILD</span>
@@ -216,11 +220,11 @@ export default function Footer() {
               </a>
             </div>
 
-            <div className="flex items-center gap-6 border-l border-white/[0.08] pl-6">
-              {footerLinks.legal.map((link) => (
-                <a key={link.label} href={link.href} className="text-xs text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
+            <div className="flex items-center gap-4 border-l border-white/[0.08] pl-4">
+              {legalLinks.map((link) => (
+                <Link key={link.label} href={link.href} className="text-[11px] text-slate-400 hover:text-white transition-colors duration-300" style={{ fontFamily: "var(--font-body)" }}>
                   {link.label}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
