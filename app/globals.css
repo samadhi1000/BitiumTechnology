@@ -120,61 +120,61 @@ html.light-mode {
   --ring: #2CFF05;
 }
 
-/* Global styling for #2CFF05 in Light Mode */
+/* Global styling for #2CFF05 in Light Mode - High Contrast Deep Emerald Green */
 html.light-mode .text-\[\#2CFF05\] {
-  color: #2CFF05 !important;
+  color: #15803d !important;
 }
 html.light-mode .bg-\[\#2CFF05\] {
   background-color: #2CFF05 !important;
   color: #0a0a0a !important;
 }
 html.light-mode .border-\[\#2CFF05\] {
-  border-color: #2CFF05 !important;
+  border-color: #16a34a !important;
 }
 html.light-mode .bg-\[\#2CFF05\]\/10 {
-  background-color: rgba(44, 255, 5, 0.10) !important;
+  background-color: rgba(22, 163, 74, 0.12) !important;
 }
 html.light-mode .bg-\[\#2CFF05\]\/15 {
-  background-color: rgba(44, 255, 5, 0.15) !important;
+  background-color: rgba(22, 163, 74, 0.16) !important;
 }
 html.light-mode .bg-\[\#2CFF05\]\/20 {
-  background-color: rgba(44, 255, 5, 0.20) !important;
+  background-color: rgba(22, 163, 74, 0.20) !important;
 }
 html.light-mode .bg-\[\#2CFF05\]\/25 {
-  background-color: rgba(44, 255, 5, 0.25) !important;
+  background-color: rgba(22, 163, 74, 0.25) !important;
 }
 html.light-mode .border-\[\#2CFF05\]\/20 {
-  border-color: rgba(44, 255, 5, 0.20) !important;
+  border-color: rgba(22, 163, 74, 0.25) !important;
 }
 html.light-mode .border-\[\#2CFF05\]\/30 {
-  border-color: rgba(44, 255, 5, 0.30) !important;
+  border-color: rgba(22, 163, 74, 0.35) !important;
 }
 html.light-mode .border-\[\#2CFF05\]\/40 {
-  border-color: rgba(44, 255, 5, 0.40) !important;
+  border-color: rgba(22, 163, 74, 0.45) !important;
 }
 html.light-mode .border-\[\#2CFF05\]\/50 {
-  border-color: rgba(44, 255, 5, 0.50) !important;
+  border-color: rgba(22, 163, 74, 0.55) !important;
 }
 html.light-mode .focus-within\:border-\[\#2CFF05\]:focus-within {
-  border-color: #2CFF05 !important;
+  border-color: #16a34a !important;
 }
 html.light-mode .focus\:border-\[\#2CFF05\]:focus {
-  border-color: #2CFF05 !important;
+  border-color: #16a34a !important;
 }
 html.light-mode .text-primary {
-  color: #2CFF05 !important;
+  color: #15803d !important;
 }
 html.light-mode .hover\:text-primary:hover {
-  color: #2CFF05 !important;
+  color: #15803d !important;
 }
 html.light-mode .group-hover\:text-primary:hover {
-  color: #2CFF05 !important;
+  color: #15803d !important;
 }
 html.light-mode .hero-title span,
 html.light-mode h1 span,
 html.light-mode h2 span,
 html.light-mode h3 span {
-  color: #2CFF05;
+  color: #15803d;
 }
 
 html.light-mode body {
