@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Inter, Gemunu_Libre } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/context/AuthContext";
 import { ThemeProvider } from "@/lib/context/ThemeContext";
@@ -11,7 +11,11 @@ import CartDrawer from "@/components/CartDrawer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const outfit = Outfit({ subsets: ["latin"], variable: "--font-heading" });
+const gemunuLibre = Gemunu_Libre({
+  subsets: ["latin", "sinhala"],
+  weight: ["800"],
+  variable: "--font-heading",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.bitiumtechnology.com"),
@@ -54,7 +58,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`h-full antialiased dark ${inter.variable} ${outfit.variable}`}
+      className={`h-full antialiased dark ${inter.variable} ${gemunuLibre.variable}`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans selection:bg-primary/40 selection:text-primary-foreground">
         <ThemeProvider>
