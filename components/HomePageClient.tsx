@@ -409,7 +409,7 @@ function HomeContent() {
           <div className="flex items-center justify-center gap-3 border-b border-slate-200/80 dark:border-white/5 pb-4">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 dark:bg-[#2CFF05] animate-ping" />
             <p className="font-heading font-extrabold text-xs sm:text-[13px] tracking-wider uppercase text-slate-800 dark:text-slate-200 text-center">
-              Trusted by 1,000+ Apparel Brands, Studios &amp; Manufacturers
+              {t.homeSections?.trustedStrip || 'Trusted by 1,000+ Apparel Brands, Studios & Manufacturers'}
             </p>
           </div>
 
@@ -450,8 +450,12 @@ function HomeContent() {
       <section className="py-20 px-6 bg-background border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
-            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">Process</span>
-            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">How It Works</h2>
+            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">
+              {t.homeSections?.howBadge || 'Process'}
+            </span>
+            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">
+              {t.homeSections?.howTitle || 'How It Works'}
+            </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 relative hiw-grid">
             {steps.map((step, i) => (
