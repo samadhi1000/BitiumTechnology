@@ -3,10 +3,16 @@ import { createDigitalPurchase, getDigitalArtworkById } from '@/lib/digital';
 
 export async function POST(request: Request) {
   try {
-    const { items, email } = await request.json();
+    const body = await request.json().catch(() => ({}));
+    const email = body.email || body.customerEmail;
+    let items = body.items;
 
-    if (!items || items.length === 0) {
-      return NextResponse.json({ error: 'Cart is empty' }, { status: 400 });
+    if (!items && body.artwork_id) {
+      items = [{ id: body.artwork_id }];
+    }
+
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return NextResponse.json({ error: 'No items selected for checkout' }, { status: 400 });
     }
 
     if (!email) {

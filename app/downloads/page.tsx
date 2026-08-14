@@ -188,12 +188,18 @@ export default function DownloadsPage() {
         return;
       }
 
-      const res = await fetch('/api/checkout/digital', {
+      const res = await fetch('/api/payhere/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          artwork_id: checkoutArt.id,
-          email: email.trim(),
+          items: [{
+            id: checkoutArt.id,
+            title: checkoutArt.title,
+            price: checkoutArt.price,
+            quantity: 1
+          }],
+          customerEmail: email.trim(),
+          customerName: 'Digital Customer',
         }),
       });
 
@@ -204,7 +210,7 @@ export default function DownloadsPage() {
 
         (window as any).payhere.onCompleted = function onCompleted(orderId: string) {
           console.log('Payment completed. OrderID:' + orderId);
-          window.location.href = data.return_url;
+          window.location.href = data.return_url || `/downloads?status=success&order_id=${orderId}`;
         };
 
         (window as any).payhere.onDismissed = function onDismissed() {
