@@ -61,7 +61,9 @@ export async function POST(req: NextRequest) {
           ...item,
           order_id: order.id
         }));
-        await supabaseAdmin.from('order_items').insert(itemsWithOrderId).catch(() => {});
+        try {
+          await supabaseAdmin.from('order_items').insert(itemsWithOrderId);
+        } catch (_) {}
       }
     } else {
       // Fallback mode — use statically imported catalog or payload fallback
