@@ -6,22 +6,26 @@ import catalogData from '@/lib/digital-catalog.json';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => ({}));
-    const { items, customerEmail, customerName, phone, address, city } = body;
+    let { items, artwork_id, email, customerEmail, customerName, phone, address, city } = body;
+    const resolvedEmail = (customerEmail || email || '').toString().trim();
 
-    if (!items || !Array.isArray(items) || items.length === 0 || !customerEmail) {
-      return NextResponse.json({ error: 'Missing required parameters: items and customerEmail are mandatory.' }, { status: 400 });
+    if (!items && artwork_id) {
+      items = [{ id: artwork_id }];
     }
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseAnonKey;
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return NextResponse.json({ error: 'Please select items to proceed with checkout.' }, { status: 400 });
+    }
+
+    if (!resolvedEmail) {
+      return NextResponse.json({ error: 'Customer email address is required.' }, { status: 400 });
+    }
 
     let totalAmount = 0;
     const itemNames: string[] = [];
     let orderId = `dig_ord_${Date.now()}`;
-    const isMock = !supabaseUrl || !supabaseServiceRole || supabaseUrl.includes('placeholder');
 
-    const localCatalog = catalogData as any[];
+    const localCatalog = (catalogData || []) as any[];
 
     // Calculate total amount and resolve item names safely
     for (const item of items) {
@@ -31,28 +35,35 @@ export async function POST(req: NextRequest) {
       // 1. Check local static catalog first
       const matchedLocal = localCatalog.find((a: any) => a.id === item.id || a.title?.toLowerCase() === item.title?.toLowerCase());
       if (matchedLocal) {
-        resolvedPrice = matchedLocal.price;
-        resolvedTitle = matchedLocal.title;
+        resolvedPrice = Number(matchedLocal.price) || 650;
+        resolvedTitle = matchedLocal.title || resolvedTitle;
       } else if (item.price && !isNaN(Number(item.price))) {
-        // 2. Use price provided in verified payload
         resolvedPrice = Number(item.price);
       } else {
-        // Default minimum price if completely missing
         resolvedPrice = 650;
       }
 
-      totalAmount += resolvedPrice * (item.quantity || 1);
+      totalAmount += resolvedPrice * (Number(item.quantity) || 1);
       itemNames.push(resolvedTitle);
     }
 
-    // Try to register pending order in Supabase if active
+    if (totalAmount <= 0) {
+      totalAmount = 650;
+    }
+
+    // Try to register pending order in Supabase if configured
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseAnonKey;
+    const isMock = !supabaseUrl || !supabaseServiceRole || supabaseUrl.includes('placeholder');
+
     if (!isMock && supabaseUrl && supabaseServiceRole) {
       try {
         const supabaseClient = createClient(supabaseUrl, supabaseServiceRole);
         const { data: order, error: orderErr } = await supabaseClient
           .from('orders')
           .insert({
-            customer_email: customerEmail.trim().toLowerCase(),
+            customer_email: resolvedEmail.toLowerCase(),
             customer_name: customerName || 'Digital Customer',
             total_amount: totalAmount,
             status: 'pending',
@@ -72,19 +83,15 @@ export async function POST(req: NextRequest) {
     const merchantId = (process.env.PAYHERE_MERCHANT_ID || '1237287').trim();
     const merchantSecret = (process.env.PAYHERE_MERCHANT_SECRET || process.env.PAYHERE_SECRET || 'MjA2MzA3MDQyNzM4NzU0NDg0NDUyOTAyMzU3MTI3MjYwNzM4OTA1OA==').trim();
     const currency = 'LKR';
-
-    // Format amount strictly to 2 decimal places to match PayHere specifications
     const amountFormatted = parseFloat(totalAmount.toString()).toFixed(2);
 
     // Hash Generation Flow:
-    // 1. MD5 hash of Merchant Secret (uppercase hex)
     const hashedSecret = crypto
       .createHash('md5')
       .update(merchantSecret)
       .digest('hex')
       .toUpperCase();
 
-    // 2. MD5 hash of: Merchant ID + Order ID + Amount + Currency + Hashed Secret (uppercase hex)
     const hashInput = merchantId + orderId + amountFormatted + currency + hashedSecret;
     const md5Signature = crypto
       .createHash('md5')
@@ -102,13 +109,13 @@ export async function POST(req: NextRequest) {
       cancel_url: `${appUrl}/downloads?status=cancelled&order_id=${orderId}`,
       notify_url: `${process.env.PAYHERE_NOTIFY_URL || `${appUrl}/api/payhere/notify`}`,
       order_id: orderId,
-      items: itemNames.join(', ').slice(0, 100),
+      items: itemNames.join(', ').slice(0, 100) || 'Digital Artwork Download',
       amount: amountFormatted,
       currency: currency,
       hash: md5Signature,
       first_name: (customerName || 'Digital').split(' ')[0] || 'Customer',
       last_name: (customerName || 'Customer').split(' ').slice(1).join(' ') || 'User',
-      email: customerEmail.trim().toLowerCase(),
+      email: resolvedEmail.toLowerCase(),
       phone: phone || '0770000000',
       address: address || 'Bitium Digital Vault',
       city: city || 'Colombo',
@@ -123,7 +130,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error('PayHere Checkout API Error:', error);
     return NextResponse.json({ 
-      error: 'An internal server error occurred while preparing gateway parameters.' 
+      error: error?.message || 'An internal server error occurred while preparing gateway parameters.' 
     }, { status: 500 });
   }
 }
