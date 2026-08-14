@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Gemunu_Libre } from "next/font/google";
+import { Noto_Sans_Sinhala } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/context/AuthContext";
 import { ThemeProvider } from "@/lib/context/ThemeContext";
@@ -10,10 +10,15 @@ import PreloaderWrapper from "@/components/PreloaderWrapper";
 import CartDrawer from "@/components/CartDrawer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const gemunuLibre = Gemunu_Libre({
-  subsets: ["latin", "sinhala"],
-  weight: ["800"],
+const notoSansBody = Noto_Sans_Sinhala({
+  subsets: ["sinhala", "latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-sans",
+});
+
+const notoSansHeading = Noto_Sans_Sinhala({
+  subsets: ["sinhala", "latin"],
+  weight: ["900"],
   variable: "--font-heading",
 });
 
@@ -58,7 +63,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`h-full antialiased dark ${inter.variable} ${gemunuLibre.variable}`}
+      className={`h-full antialiased dark ${notoSansBody.variable} ${notoSansHeading.variable}`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans selection:bg-primary/40 selection:text-primary-foreground">
         <ThemeProvider>
