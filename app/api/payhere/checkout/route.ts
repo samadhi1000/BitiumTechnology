@@ -100,6 +100,7 @@ export async function POST(req: NextRequest) {
       .toUpperCase();
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.bitiumtechnology.com';
+    const logoUrl = `${appUrl}/images/bitium-logo.webp`;
 
     // Construct PayHere checkout configuration payload
     const payherePayload = {
@@ -113,6 +114,8 @@ export async function POST(req: NextRequest) {
       amount: amountFormatted,
       currency: currency,
       hash: md5Signature,
+      logo_url: logoUrl,
+      logo: logoUrl,
       first_name: (customerName || 'Digital').split(' ')[0] || 'Customer',
       last_name: (customerName || 'Customer').split(' ').slice(1).join(' ') || 'User',
       email: resolvedEmail.toLowerCase(),

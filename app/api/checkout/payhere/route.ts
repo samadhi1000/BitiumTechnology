@@ -105,18 +105,23 @@ export async function POST(req: NextRequest) {
       .digest('hex')
       .toUpperCase();
 
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.bitiumtechnology.com';
+    const logoUrl = `${appUrl}/images/bitium-logo.webp`;
+
     const payherePayload = {
       // PAYHERE_SANDBOX=true forces sandbox mode even on Vercel production
       // Falls back to: true in development/mock mode, false in production with DB
       sandbox: process.env.PAYHERE_SANDBOX === 'true' || process.env.NODE_ENV !== 'production' || isMock,
       merchant_id: merchantId,
-      return_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/checkout/success?order_id=${orderId}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/checkout/cancel?order_id=${orderId}`,
-      notify_url: `${process.env.NEXT_PUBLIC_SUPABASE_FUNCTIONS_URL || 'http://localhost:3000'}/payhere-ipn`,
+      return_url: `${appUrl}/checkout/success?order_id=${orderId}`,
+      cancel_url: `${appUrl}/checkout/cancel?order_id=${orderId}`,
+      notify_url: `${process.env.NEXT_PUBLIC_SUPABASE_FUNCTIONS_URL || `${appUrl}/api/payhere/notify`}`,
       order_id: orderId,
       items: itemNames.join(', '),
       amount: amountFormatted,
       currency: currency,
+      logo_url: logoUrl,
+      logo: logoUrl,
       first_name: customerName?.split(' ')[0] || 'Guest',
       last_name: customerName?.split(' ').slice(1).join(' ') || 'User',
       email: customerEmail,
