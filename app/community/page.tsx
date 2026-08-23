@@ -20,8 +20,8 @@ import {
   Sparkles,
   Shield,
   Smile,
-  X,
-  Pin
+  Pin,
+  Trash2
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -358,6 +358,27 @@ export default function CommunityForumPage() {
       setTimeout(() => setToastMessage(''), 2500);
     } catch (err) {
       console.error('Error toggling pin status:', err);
+    }
+  };
+
+  const handleDeleteComment = async (commentId: string, postId: string) => {
+    // Optimistic UI update - filter out the deleted comment locally
+    setPosts(prev => prev.map(p => p.id === postId ? {
+      ...p,
+      comments: p.comments.filter(c => c.id !== commentId)
+    } : p));
+    
+    try {
+      await fetch('/api/community', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete_comment', commentId }),
+      });
+      fetchCommunityPosts();
+      setToastMessage('Comment deleted successfully!');
+      setTimeout(() => setToastMessage(''), 2500);
+    } catch (err) {
+      console.error('Error deleting comment:', err);
     }
   };
 
@@ -743,7 +764,18 @@ export default function CommunityForumPage() {
                                           </span>
                                         )}
                                       </div>
-                                      <span className="text-[8px] text-muted-foreground">{c.createdAt}</span>
+                                      <div className="flex items-center gap-2">
+                                        <span className="text-[8px] text-muted-foreground">{c.createdAt}</span>
+                                        {(profile?.role === 'admin' || (profile && (profile.full_name === c.authorName || profile.email === c.authorName))) && (
+                                          <button
+                                            onClick={() => handleDeleteComment(c.id, post.id)}
+                                            className="text-muted-foreground hover:text-red-500 transition-colors p-0.5"
+                                            title="Delete Comment"
+                                          >
+                                            <Trash2 size={10} />
+                                          </button>
+                                        )}
+                                      </div>
                                     </div>
                                     <p className="text-muted-foreground leading-relaxed">
                                       {c.content}
