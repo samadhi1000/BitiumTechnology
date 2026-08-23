@@ -577,6 +577,12 @@ html.dark .filter-btn.active, html.dark .filter-btn:hover {
 
 /* Global Print Styles */
 @media print {
+  /* ── Page margins ── */
+  @page {
+    margin: 8mm;
+  }
+
+  /* ── Base document reset ── */
   html, body, main {
     background: #ffffff !important;
     color: #000000 !important;
@@ -590,37 +596,14 @@ html.dark .filter-btn.active, html.dark .filter-btn:hover {
     print-color-adjust: exact !important;
   }
 
-  /* Reset layout, padding, and alignment of all wrapper containers outside the invoice print sheet */
-  div:not(#invoice-print-area):not(#invoice-print-area *) {
-    position: static !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    min-height: 0 !important;
-    height: auto !important;
-    display: block !important;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+  /* ── Hide ALL page elements that are not the invoice, not inside the invoice, and not an ancestor of the invoice ── */
+  body *:not(:has(#invoice-print-area)):not(#invoice-print-area):not(#invoice-print-area *) {
+    display: none !important;
   }
 
-  /* Extract and align the invoice sheet cleanly in the normal flow at the top of the printed paper page */
-  #invoice-print-area {
-    position: relative !important;
-    top: auto !important;
-    left: auto !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 10px !important;
-    border: none !important;
-    box-shadow: none !important;
-    background: #ffffff !important;
-    color: #000000 !important;
-    display: block !important;
-  }
-
+  /* ── Explicitly hide Tailwind print:hidden elements and other non-print UI ── */
   .no-print,
+  .print\:hidden,
   header,
   footer,
   nav,
@@ -630,6 +613,39 @@ html.dark .filter-btn.active, html.dark .filter-btn:hover {
   [id*="chat"],
   [class*="floating"] {
     display: none !important;
+  }
+
+  /* ── Reset ancestor wrapper containers that lead to the invoice (strip spacing, backgrounds, layout constraints) ── */
+  *:has(#invoice-print-area) {
+    display: block !important;
+    position: static !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* ── The invoice print area itself ── */
+  #invoice-print-area {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    display: block !important;
   }
 }
 
