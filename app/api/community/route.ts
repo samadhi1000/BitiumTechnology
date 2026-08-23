@@ -27,80 +27,61 @@ export interface Post {
   isBookmarkedByUser?: boolean;
 }
 
-const INITIAL_POSTS: Post[] = [
-  {
-    id: 'post-1',
-    authorName: 'Nimna Wijesinghe',
-    authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
-    authorRole: 'Master Designer',
-    authorBadge: 'Industry Pro',
-    title: 'How to avoid cracking in DTF transfers on 100% heavy cotton hoodies?',
-    content: 'Hi everyone! I am running a batch of custom heavy hoodies and noticing some microscopic cracks after the first wash test. I am printing on double matte hot peel film. Any recommendations for temperature and pressure tuning? Should I do a post-press seal?',
-    category: 'dtf',
-    likes: 42,
-    imageUrl: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=80',
-    createdAt: '2 hours ago',
-    comments: [
-      {
-        id: 'comment-1-1',
-        authorName: 'Kamal Perera',
-        authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
-        authorBadge: 'DTF Specialist',
-        content: 'Try pressing at 145°C for 12 seconds with medium-heavy pressure. Crucially, let it cool completely for hot-peel, then do a second press for 5 seconds using a teflon sheet. That completely binds the ink fibers into the cotton grain!',
-        createdAt: '1 hour ago'
-      }
-    ]
-  },
-  {
-    id: 'post-2',
-    authorName: 'Priyantha De Silva',
-    authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
-    authorRole: 'Screen Workshop Owner',
-    authorBadge: 'Screen Master',
-    title: 'Halftone mesh count suggestions for vintage CMYK separations?',
-    content: 'We are printing a detailed 4-color raster layout onto white cotton tees. We have 120T and 140T aluminum frames ready. What mesh count will produce the cleanest halftone dots without clogging with plastisol ink?',
-    category: 'screen',
-    likes: 28,
-    imageUrl: 'https://images.unsplash.com/photo-1606159068539-43f36b99d1b2?auto=format&fit=crop&w=600&q=80',
-    createdAt: '5 hours ago',
-    comments: [
-      {
-        id: 'comment-2-1',
-        authorName: 'Ruwan Kumara',
-        authorAvatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=150&q=80',
-        content: 'Definitely use the 140T (355 mesh) screen for the yellow/cyan details, and print wet-on-wet. Make sure your squeegee is sharp (75 durometer) and angle it around 80 degrees to avoid flooding the dots.',
-        createdAt: '3 hours ago'
-      }
-    ]
-  }
-];
-
-// Global in-memory storage for real-time central sync across all connections
-let globalPosts: Post[] = [...INITIAL_POSTS];
+/** Converts a UTC timestamp into a human-readable "X minutes ago" label */
+function timeAgo(dateStr: string): string {
+  const now = new Date();
+  const date = new Date(dateStr);
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  if (diffMins < 1) return 'Just now';
+  if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays < 30) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+  return date.toLocaleDateString();
+}
 
 export async function GET() {
   try {
-    const { data, error } = await supabase.from('community_posts').select('*').order('created_at', { ascending: false });
-    if (!error && data && data.length > 0) {
-      const dbPosts: Post[] = data.map((row: any) => ({
-        id: row.id,
-        authorName: row.author_name,
-        authorAvatar: row.author_avatar,
-        authorRole: row.author_role || 'Member',
-        authorBadge: row.author_badge,
-        title: row.title,
-        content: row.content,
-        imageUrl: row.image_url,
-        category: row.category,
-        likes: row.likes || 0,
-        comments: row.comments || [],
-        createdAt: row.created_at_label || 'Just now',
-      }));
-      return NextResponse.json({ posts: dbPosts });
-    }
-  } catch {}
+    // Fetch posts with their comments in a single joined query
+    const { data, error } = await supabase
+      .from('community_posts')
+      .select(`*, community_comments (*)`)
+      .order('is_pinned', { ascending: false })
+      .order('created_at', { ascending: false });
 
-  return NextResponse.json({ posts: globalPosts });
+    if (error) throw error;
+
+    const posts: Post[] = (data || []).map((row: any) => ({
+      id: row.id,
+      authorName: row.author_name,
+      authorAvatar: row.author_avatar,
+      authorRole: row.author_role || 'Member',
+      authorBadge: row.author_badge,
+      title: row.title,
+      content: row.content,
+      imageUrl: row.image_url,
+      category: row.category,
+      likes: row.likes || 0,
+      createdAt: timeAgo(row.created_at),
+      comments: (row.community_comments || [])
+        .sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+        .map((c: any) => ({
+          id: c.id,
+          authorName: c.author_name,
+          authorAvatar: c.author_avatar,
+          authorBadge: c.author_badge,
+          content: c.content,
+          createdAt: timeAgo(c.created_at),
+        })),
+    }));
+
+    return NextResponse.json({ posts });
+  } catch (err: any) {
+    console.error('Community GET error:', err);
+    return NextResponse.json({ posts: [] }, { status: 200 });
+  }
 }
 
 export async function POST(req: Request) {
@@ -108,76 +89,66 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { action } = body;
 
+    // ── Create a new post ─────────────────────────────────────────────────────
     if (action === 'create_post') {
-      const newPost: Post = body.post;
-      globalPosts = [newPost, ...globalPosts];
-
-      try {
-        await supabase.from('community_posts').insert([{
-          id: newPost.id,
-          author_name: newPost.authorName,
-          author_avatar: newPost.authorAvatar,
-          author_role: newPost.authorRole,
-          author_badge: newPost.authorBadge,
-          title: newPost.title,
-          content: newPost.content,
-          image_url: newPost.imageUrl,
-          category: newPost.category,
-          likes: newPost.likes,
-          comments: newPost.comments,
-          created_at_label: newPost.createdAt
-        }]);
-      } catch {}
-
-      return NextResponse.json({ success: true, posts: globalPosts });
+      const newPost = body.post;
+      const { error } = await supabase.from('community_posts').insert([{
+        id: newPost.id,
+        author_name: newPost.authorName,
+        author_avatar: newPost.authorAvatar,
+        author_role: newPost.authorRole,
+        author_badge: newPost.authorBadge,
+        title: newPost.title,
+        content: newPost.content,
+        image_url: newPost.imageUrl,
+        category: newPost.category,
+        likes: 0,
+        is_pinned: false,
+      }]);
+      if (error) throw error;
+      return NextResponse.json({ success: true });
     }
 
+    // ── Like / unlike a post ──────────────────────────────────────────────────
     if (action === 'like_post') {
       const { postId, isLiked } = body;
-      globalPosts = globalPosts.map(p => {
-        if (p.id === postId) {
-          return {
-            ...p,
-            likes: isLiked ? p.likes + 1 : Math.max(0, p.likes - 1)
-          };
-        }
-        return p;
-      });
 
-      try {
-        const target = globalPosts.find(p => p.id === postId);
-        if (target) {
-          await supabase.from('community_posts').update({ likes: target.likes }).eq('id', postId);
-        }
-      } catch {}
+      // Fetch current likes count, then increment or decrement
+      const { data: current, error: fetchErr } = await supabase
+        .from('community_posts')
+        .select('likes')
+        .eq('id', postId)
+        .single();
+      if (fetchErr) throw fetchErr;
 
-      return NextResponse.json({ success: true, posts: globalPosts });
+      const newLikes = Math.max(0, (current?.likes || 0) + (isLiked ? 1 : -1));
+      const { error: updateErr } = await supabase
+        .from('community_posts')
+        .update({ likes: newLikes })
+        .eq('id', postId);
+      if (updateErr) throw updateErr;
+
+      return NextResponse.json({ success: true, likes: newLikes });
     }
 
+    // ── Add a comment ─────────────────────────────────────────────────────────
     if (action === 'add_comment') {
       const { postId, comment } = body;
-      globalPosts = globalPosts.map(p => {
-        if (p.id === postId) {
-          return {
-            ...p,
-            comments: [...p.comments, comment]
-          };
-        }
-        return p;
-      });
-
-      try {
-        const target = globalPosts.find(p => p.id === postId);
-        if (target) {
-          await supabase.from('community_posts').update({ comments: target.comments }).eq('id', postId);
-        }
-      } catch {}
-
-      return NextResponse.json({ success: true, posts: globalPosts });
+      const { error } = await supabase.from('community_comments').insert([{
+        id: comment.id,
+        post_id: postId,
+        author_name: comment.authorName,
+        author_avatar: comment.authorAvatar,
+        author_badge: comment.authorBadge,
+        content: comment.content,
+      }]);
+      if (error) throw error;
+      return NextResponse.json({ success: true });
     }
 
     return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
   } catch (err: any) {
+    console.error('Community POST error:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

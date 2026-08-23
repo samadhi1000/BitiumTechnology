@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/context/AuthContext';
 import { useLanguage } from '@/lib/context/LanguageContext';
+import { supabase } from '@/lib/supabase';
 import { 
   MessageSquare, 
   ThumbsUp, 
@@ -199,8 +200,29 @@ export default function CommunityForumPage() {
 
   useEffect(() => {
     fetchCommunityPosts();
-    const interval = setInterval(fetchCommunityPosts, 3000);
-    return () => clearInterval(interval);
+
+    // Subscribe to realtime database changes for posts and comments
+    const channel = supabase
+      .channel('community_realtime_changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'community_posts' },
+        () => {
+          fetchCommunityPosts();
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'community_comments' },
+        () => {
+          fetchCommunityPosts();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const handleCreatePost = async (e: React.FormEvent) => {
