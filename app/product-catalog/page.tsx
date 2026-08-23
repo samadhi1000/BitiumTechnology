@@ -33,7 +33,7 @@ export default function ProductCatalogPage() {
 
       {/* Main content area */}
       <div className="flex-grow w-full flex flex-col items-center justify-center relative">
-        <FlipbookIndex pdfUrl="/dummy-catalog.pdf" />
+        <FlipbookIndex pdfUrl="/api/catalog/signed-url" />
       </div>
     </div>
   );

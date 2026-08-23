@@ -37,25 +37,43 @@ export default function FlipbookViewer({ pdfUrl }: FlipbookViewerProps) {
     setLoading(true);
     setError(null);
     setLoadProgress(0);
-    setLoadingMessage('Fetching digital publishing assets...');
+    setLoadingMessage('Securing temporary access tokens...');
 
     // Clear cache on mount
     pageCache.clear();
 
-    const loadingTask = pdfjs.getDocument({ url: pdfUrl });
-    
-    // Monitor progress
-    loadingTask.onProgress = (progressData: any) => {
-      if (active && progressData.total > 0) {
-        const percent = progressData.loaded / progressData.total;
-        setLoadProgress(percent);
-        setLoadingMessage(`Downloading catalog pages (${Math.round(percent * 100)}%)...`);
-      }
-    };
-
-    loadingTask.promise
-      .then((pdf) => {
+    const loadPdf = async () => {
+      try {
+        let finalUrl = pdfUrl;
+        
+        // If it's an API route, fetch the signed URL first
+        if (pdfUrl.startsWith('/api/')) {
+          const res = await fetch(pdfUrl);
+          const data = await res.json();
+          if (data.url) {
+            finalUrl = data.url;
+          } else {
+            throw new Error('Failed to retrieve secure URL');
+          }
+        }
+        
         if (!active) return;
+        setLoadingMessage('Fetching digital publishing assets...');
+        
+        const loadingTask = pdfjs.getDocument({ url: finalUrl });
+        
+        // Monitor progress
+        loadingTask.onProgress = (progressData: any) => {
+          if (active && progressData.total > 0) {
+            const percent = progressData.loaded / progressData.total;
+            setLoadProgress(percent);
+            setLoadingMessage(`Downloading catalog pages (${Math.round(percent * 100)}%)...`);
+          }
+        };
+
+        const pdf = await loadingTask.promise;
+        if (!active) return;
+        
         setPdfDoc(pdf);
         setTotalPages(pdf.numPages);
         setLoadingMessage('Initializing realistic canvas layers...');
@@ -66,14 +84,15 @@ export default function FlipbookViewer({ pdfUrl }: FlipbookViewerProps) {
             setLoading(false);
           }
         }, 800);
-      })
-      .catch((err) => {
+      } catch (err) {
+        if (!active) return;
         console.error('Error loading PDF:', err);
-        if (active) {
-          setError(err.message || 'Could not load PDF document.');
-          setLoading(false);
-        }
-      });
+        setError('Failed to load the product catalog. Please check your connection and try again.');
+        setLoading(false);
+      }
+    };
+
+    loadPdf();
 
     return () => {
       active = false;
