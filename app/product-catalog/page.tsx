@@ -24,8 +24,9 @@ export default async function ProductCatalogPage({
   const isStencil = params?.type === 'stencil';
   const currentFile = isStencil ? STENCIL_FILE : TRACING_FILE;
   
-  // Must URL-encode the filename for the API query parameter to handle spaces
-  const apiUrl = `/api/catalog/signed-url?file=${encodeURIComponent(currentFile)}`;
+  // Use the PDF proxy route — Vercel server fetches from R2, browser never touches R2 directly
+  // This completely avoids CORS issues with Cloudflare R2
+  const apiUrl = `/api/catalog/pdf?type=${isStencil ? 'stencil' : 'tracing'}`;
 
   return (
     <div className="w-full min-h-screen bg-slate-950 text-foreground flex flex-col relative pb-10">

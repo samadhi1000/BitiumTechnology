@@ -37,32 +37,20 @@ export default function FlipbookViewer({ pdfUrl }: FlipbookViewerProps) {
     setLoading(true);
     setError(null);
     setLoadProgress(0);
-    setLoadingMessage('Securing temporary access tokens...');
+    setLoadingMessage('Fetching digital publishing assets...');
 
     // Clear cache on mount
     pageCache.clear();
 
     const loadPdf = async () => {
       try {
-        let finalUrl = pdfUrl;
-        
-        // If it's an API route, fetch the signed URL first
-        if (pdfUrl.startsWith('/api/')) {
-          const res = await fetch(pdfUrl);
-          const data = await res.json();
-          if (data.url) {
-            finalUrl = data.url;
-          } else {
-            throw new Error('Failed to retrieve secure URL');
-          }
-        }
-        
         if (!active) return;
-        setLoadingMessage('Fetching digital publishing assets...');
-        
-        const loadingTask = pdfjs.getDocument({ url: finalUrl });
-        
-        // Monitor progress
+
+        // Pass the URL directly to PDF.js
+        // Works for: local paths (/dummy.pdf), proxy routes (/api/catalog/pdf), or any direct URL
+        const loadingTask = pdfjs.getDocument({ url: pdfUrl });
+
+        // Monitor download progress
         loadingTask.onProgress = (progressData: any) => {
           if (active && progressData.total > 0) {
             const percent = progressData.loaded / progressData.total;
@@ -73,11 +61,11 @@ export default function FlipbookViewer({ pdfUrl }: FlipbookViewerProps) {
 
         const pdf = await loadingTask.promise;
         if (!active) return;
-        
+
         setPdfDoc(pdf);
         setTotalPages(pdf.numPages);
         setLoadingMessage('Initializing realistic canvas layers...');
-        
+
         // Short delay to allow animations to settle
         setTimeout(() => {
           if (active) {
