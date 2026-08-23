@@ -69,8 +69,8 @@ export default async function ProductCatalogPage({
 
       {/* Main content area */}
       <div className="flex-grow w-full flex flex-col items-center justify-center relative">
-        {/* We add a key to force FlipbookIndex to fully re-mount when the URL changes for a clean transition */}
-        <FlipbookIndex key={apiUrl} pdfUrl={apiUrl} />
+        {/* No key prop — component stays mounted when switching catalogs so the PDF cache works */}
+        <FlipbookIndex pdfUrl={apiUrl} />
       </div>
     </div>
   );

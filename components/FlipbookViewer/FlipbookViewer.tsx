@@ -11,6 +11,10 @@ import { pageCache } from './PageCache';
 // Serve PDF.js worker from local /public folder to avoid CDN CORS/MIME module errors
 pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
+// Module-level PDF document cache — persists across tab switches without re-downloading
+// Key: pdfUrl string, Value: loaded PDFDocumentProxy object
+const pdfDocCache = new Map<string, any>();
+
 interface FlipbookViewerProps {
   pdfUrl: string;
 }
@@ -31,16 +35,29 @@ export default function FlipbookViewer({ pdfUrl }: FlipbookViewerProps) {
   
   const viewerRef = useRef<HTMLDivElement>(null);
 
-  // Load PDF document on mount
+  // Load PDF document on mount or when URL changes
   useEffect(() => {
     let active = true;
-    setLoading(true);
+
+    // Reset viewer state for the new catalog
+    setCurrentPage(1);
+    setZoom(1.0);
     setError(null);
     setLoadProgress(0);
-    setLoadingMessage('Fetching digital publishing assets...');
-
-    // Clear cache on mount
     pageCache.clear();
+
+    // ── CACHE HIT: already downloaded this PDF ──────────────────────────────
+    if (pdfDocCache.has(pdfUrl)) {
+      const cached = pdfDocCache.get(pdfUrl);
+      setPdfDoc(cached);
+      setTotalPages(cached.numPages);
+      setLoading(false);
+      return;
+    }
+
+    // ── CACHE MISS: fetch from server ───────────────────────────────────────
+    setLoading(true);
+    setLoadingMessage('Fetching digital publishing assets...');
 
     const loadPdf = async () => {
       try {
@@ -61,6 +78,9 @@ export default function FlipbookViewer({ pdfUrl }: FlipbookViewerProps) {
 
         const pdf = await loadingTask.promise;
         if (!active) return;
+
+        // Store in module-level cache for instant retrieval next time
+        pdfDocCache.set(pdfUrl, pdf);
 
         setPdfDoc(pdf);
         setTotalPages(pdf.numPages);
@@ -86,6 +106,8 @@ export default function FlipbookViewer({ pdfUrl }: FlipbookViewerProps) {
       active = false;
     };
   }, [pdfUrl]);
+
+
 
   // Keyboard zoom controls (+ / -)
   useEffect(() => {
