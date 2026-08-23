@@ -25,6 +25,7 @@ export interface Post {
   createdAt: string;
   isLikedByUser?: boolean;
   isBookmarkedByUser?: boolean;
+  isPinned?: boolean;
 }
 
 /** Converts a UTC timestamp into a human-readable "X minutes ago" label */
@@ -64,6 +65,7 @@ export async function GET() {
       imageUrl: row.image_url,
       category: row.category,
       likes: row.likes || 0,
+      isPinned: row.is_pinned || false,
       createdAt: timeAgo(row.created_at),
       comments: (row.community_comments || [])
         .sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
@@ -142,6 +144,17 @@ export async function POST(req: Request) {
         author_badge: comment.authorBadge,
         content: comment.content,
       }]);
+      if (error) throw error;
+      return NextResponse.json({ success: true });
+    }
+
+    // ── Pin / unpin a post ────────────────────────────────────────────────────
+    if (action === 'pin_post') {
+      const { postId, isPinned } = body;
+      const { error } = await supabase
+        .from('community_posts')
+        .update({ is_pinned: isPinned })
+        .eq('id', postId);
       if (error) throw error;
       return NextResponse.json({ success: true });
     }

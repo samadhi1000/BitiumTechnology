@@ -20,7 +20,8 @@ import {
   Sparkles,
   Shield,
   Smile,
-  X
+  X,
+  Pin
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -48,6 +49,7 @@ interface Post {
   createdAt: string;
   isLikedByUser?: boolean;
   isBookmarkedByUser?: boolean;
+  isPinned?: boolean;
 }
 
 const CATEGORY_TAGS = [
@@ -59,53 +61,6 @@ const CATEGORY_TAGS = [
   { id: 'showcase', label: 'Project Showcase', labelSi: 'නිර්මාණ ප්‍රදර්ශනය' },
 ];
 
-const INITIAL_POSTS: Post[] = [
-  {
-    id: 'post-1',
-    authorName: 'Nimna Wijesinghe',
-    authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
-    authorRole: 'Master Designer',
-    authorBadge: 'Industry Pro',
-    title: 'How to avoid cracking in DTF transfers on 100% heavy cotton hoodies?',
-    content: 'Hi everyone! I am running a batch of custom heavy hoodies and noticing some microscopic cracks after the first wash test. I am printing on double matte hot peel film. Any recommendations for temperature and pressure tuning? Should I do a post-press seal?',
-    category: 'dtf',
-    likes: 42,
-    imageUrl: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=80',
-    createdAt: '2 hours ago',
-    comments: [
-      {
-        id: 'comment-1-1',
-        authorName: 'Kamal Perera',
-        authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
-        authorBadge: 'DTF Specialist',
-        content: 'Try pressing at 145°C for 12 seconds with medium-heavy pressure. Crucially, let it cool completely for hot-peel, then do a second press for 5 seconds using a teflon sheet. That completely binds the ink fibers into the cotton grain!',
-        createdAt: '1 hour ago'
-      }
-    ]
-  },
-  {
-    id: 'post-2',
-    authorName: 'Priyantha De Silva',
-    authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
-    authorRole: 'Screen Workshop Owner',
-    authorBadge: 'Screen Master',
-    title: 'Halftone mesh count suggestions for vintage CMYK separations?',
-    content: 'We are printing a detailed 4-color raster layout onto white cotton tees. We have 120T and 140T aluminum frames ready. What mesh count will produce the cleanest halftone dots without clogging with plastisol ink?',
-    category: 'screen',
-    likes: 28,
-    imageUrl: 'https://images.unsplash.com/photo-1606159068539-43f36b99d1b2?auto=format&fit=crop&w=600&q=80',
-    createdAt: '5 hours ago',
-    comments: [
-      {
-        id: 'comment-2-1',
-        authorName: 'Ruwan Kumara',
-        authorAvatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=150&q=80',
-        content: 'Definitely use the 140T (355 mesh) screen for the yellow/cyan details, and print wet-on-wet. Make sure your squeegee is sharp (75 durometer) and angle it around 80 degrees to avoid flooding the dots.',
-        createdAt: '3 hours ago'
-      }
-    ]
-  }
-];
 
 const EXPERT_RESPONSES = [
   "Wow, that is an awesome project! From my experience in the workshop, making sure your drying oven maintains a stable temperature profile is absolutely vital. If the ink is under-cured, it cracks easily; if over-cured, the fabric gets scorched. Let us know how it works out!",
@@ -378,6 +333,25 @@ export default function CommunityForumPage() {
     }
   };
 
+  const handlePinPost = async (postId: string, currentPinState: boolean) => {
+    const isPinned = !currentPinState;
+    // Optimistic UI update
+    setPosts(prev => prev.map(p => p.id === postId ? { ...p, isPinned } : p));
+    
+    try {
+      await fetch('/api/community', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'pin_post', postId, isPinned }),
+      });
+      fetchCommunityPosts();
+      setToastMessage(isPinned ? 'Post pinned successfully!' : 'Post unpinned successfully!');
+      setTimeout(() => setToastMessage(''), 2500);
+    } catch (err) {
+      console.error('Error toggling pin status:', err);
+    }
+  };
+
   const handleShare = (postId: string) => {
     navigator.clipboard.writeText(`${window.location.origin}/community#${postId}`);
     setToastMessage(t.copySuccess);
@@ -614,9 +588,17 @@ export default function CommunityForumPage() {
                           </div>
                         </div>
 
-                        <span className="px-2 py-0.5 rounded-md bg-card border border-border text-[9px] font-extrabold text-emerald-700 dark:text-[#2CFF05] uppercase tracking-widest">
-                          #{post.category}
-                        </span>
+                        <div className="flex items-center gap-2">
+                          {post.isPinned && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/35 text-[9px] font-black text-amber-500 uppercase tracking-widest animate-pulse">
+                              <Pin size={9} className="fill-current" />
+                              <span>Pinned</span>
+                            </span>
+                          )}
+                          <span className="px-2 py-0.5 rounded-md bg-card border border-border text-[9px] font-extrabold text-emerald-700 dark:text-[#2CFF05] uppercase tracking-widest">
+                            #{post.category}
+                          </span>
+                        </div>
                       </div>
 
                       {/* Post content body */}
@@ -667,6 +649,19 @@ export default function CommunityForumPage() {
                         </div>
 
                         <div className="flex items-center gap-2">
+                          {profile?.role === 'admin' && (
+                            <button
+                              onClick={() => handlePinPost(post.id, !!post.isPinned)}
+                              className={`p-1.5 rounded-lg border transition-all cursor-pointer ${
+                                post.isPinned
+                                  ? 'bg-amber-500/10 border-amber-500/20 text-amber-500'
+                                  : 'border-border bg-card/25 hover:bg-card hover:text-foreground'
+                              }`}
+                              title={post.isPinned ? "Unpin Post" : "Pin Post"}
+                            >
+                              <Pin size={11} className={post.isPinned ? 'fill-current' : ''} />
+                            </button>
+                          )}
                           <button
                             onClick={() => handleShare(post.id)}
                             className="p-1.5 rounded-lg border border-border bg-card/25 hover:bg-card hover:text-foreground transition-all cursor-pointer"
