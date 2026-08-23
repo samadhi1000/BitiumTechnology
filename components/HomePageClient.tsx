@@ -204,7 +204,7 @@ function HomeContent() {
     { name: 'Design Studio X', role: 'Interior Designers', rating: 5, text: '"The custom laser cut stencils for our mural project were flawless. Exceeded expectations!"', avatar: 'DS' },
     { name: 'Sahan M.', role: 'Local Screen Printer', rating: 5, text: '"Fastest screen exposing service in the city. Really appreciate the quick turnarounds."', avatar: 'SM' },
   ];
-  const avatarColors = ['#2CFF05', '#7c3aed', '#0284c7'];
+  const avatarColors = ['var(--primary)', '#7c3aed', '#0284c7'];
   
   const faqs = t.homeSections?.faqs || [
     { q: 'What is DTF printing?', a: 'DTF (Direct-to-Film) printing is a modern transfer method where designs are printed onto a special film and then heat-pressed onto garments. It produces vibrant, full-color prints on virtually any fabric.' },
@@ -768,7 +768,7 @@ function HomeContent() {
                 </div>
                 <p className="text-[15px] text-muted-foreground dark:text-foreground leading-[1.7] mb-6 italic">{tItem.text}</p>
                 <div className="flex items-center gap-3">
-                  <div className="w-[42px] h-[42px] rounded-full flex items-center justify-center font-heading font-extrabold text-[14px] text-[#0a0a0a] shrink-0" style={{ background: avatarColors[i] }}>
+                  <div className={`w-[42px] h-[42px] rounded-full flex items-center justify-center font-heading font-extrabold text-[14px] text-white shrink-0 ${i === 0 ? 'dark:text-[#0a0a0a]' : ''}`} style={{ background: avatarColors[i] }}>
                     {tItem.avatar}
                   </div>
                   <div>

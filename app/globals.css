@@ -131,6 +131,30 @@ html.light-mode .bg-\[\#2CFF05\] {
 html.light-mode .border-\[\#2CFF05\] {
   border-color: #059669 !important;
 }
+html.light-mode .hover\:bg-\[\#45ff24\]:hover,
+html.light-mode .hover\:bg-\[\#7acc00\]:hover,
+html.light-mode .hover\:bg-\[\#3af816\]:hover,
+html.light-mode .hover\:bg-\[\#7ce000\]:hover,
+html.light-mode .hover\:bg-\[\#2CFF05\]\/95:hover {
+  background-color: #047857 !important;
+  color: #ffffff !important;
+}
+html.light-mode .shadow-\[\#2CFF05\]\/10,
+html.light-mode .shadow-\[\#2CFF05\]\/15,
+html.light-mode .shadow-\[\#2CFF05\]\/20,
+html.light-mode .shadow-\[\#2CFF05\]\/35 {
+  --tw-shadow-color: rgba(5, 150, 105, 0.25) !important;
+  box-shadow: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color) !important;
+}
+html.light-mode .lime-btn {
+  background: #059669 !important;
+  color: #ffffff !important;
+}
+html.light-mode .lime-btn:hover {
+  background: #047857 !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
 html.light-mode .bg-\[\#2CFF05\]\/10 {
   background-color: rgba(5, 150, 105, 0.12) !important;
 }
