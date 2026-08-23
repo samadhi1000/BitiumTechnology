@@ -70,8 +70,8 @@
   --color-lime: #2CFF05;
   --color-lime-dark: #24d603;
 
-  --font-sans: var(--font-sans), system-ui, sans-serif;
-  --font-heading: var(--font-heading), system-ui, sans-serif;
+  --font-sans: var(--font-sans), var(--font-sinhala), system-ui, sans-serif;
+  --font-heading: var(--font-heading), var(--font-sinhala), system-ui, sans-serif;
 
   /* Aliasing legacy zinc/amber colors used across the site to the new system tokens to prevent mass refactoring */
   --color-zinc-950: var(--background);
@@ -103,7 +103,7 @@ html.light-mode {
   --popover: #FFFFFF;
   --popover-foreground: #0F172A;
   
-  --primary: #2CFF05;
+  --primary: #059669; /* Emerald 600 instead of Neon Green */
   --primary-foreground: #FFFFFF;
   
   --secondary: #F1F5F9;
@@ -112,69 +112,69 @@ html.light-mode {
   --muted: #F1F5F9;
   --muted-foreground: #475569;
   
-  --accent: #2CFF05;
+  --accent: #059669; /* Emerald 600 instead of Neon Green */
   --accent-foreground: #FFFFFF;
   
   --border: #E2E8F0;
   --input: #E2E8F0;
-  --ring: #2CFF05;
+  --ring: #059669; /* Emerald 600 instead of Neon Green */
 }
 
-/* Global styling for #2CFF05 in Light Mode - High Contrast Deep Emerald Green */
+/* Global styling for #2CFF05 in Light Mode - High Contrast Deep Emerald Green (#059669) */
 html.light-mode .text-\[\#2CFF05\] {
-  color: #15803d !important;
+  color: #059669 !important;
 }
 html.light-mode .bg-\[\#2CFF05\] {
-  background-color: #2CFF05 !important;
-  color: #0a0a0a !important;
+  background-color: #059669 !important;
+  color: #ffffff !important;
 }
 html.light-mode .border-\[\#2CFF05\] {
-  border-color: #16a34a !important;
+  border-color: #059669 !important;
 }
 html.light-mode .bg-\[\#2CFF05\]\/10 {
-  background-color: rgba(22, 163, 74, 0.12) !important;
+  background-color: rgba(5, 150, 105, 0.12) !important;
 }
 html.light-mode .bg-\[\#2CFF05\]\/15 {
-  background-color: rgba(22, 163, 74, 0.16) !important;
+  background-color: rgba(5, 150, 105, 0.16) !important;
 }
 html.light-mode .bg-\[\#2CFF05\]\/20 {
-  background-color: rgba(22, 163, 74, 0.20) !important;
+  background-color: rgba(5, 150, 105, 0.20) !important;
 }
 html.light-mode .bg-\[\#2CFF05\]\/25 {
-  background-color: rgba(22, 163, 74, 0.25) !important;
+  background-color: rgba(5, 150, 105, 0.25) !important;
 }
 html.light-mode .border-\[\#2CFF05\]\/20 {
-  border-color: rgba(22, 163, 74, 0.25) !important;
+  border-color: rgba(5, 150, 105, 0.25) !important;
 }
 html.light-mode .border-\[\#2CFF05\]\/30 {
-  border-color: rgba(22, 163, 74, 0.35) !important;
+  border-color: rgba(5, 150, 105, 0.35) !important;
 }
 html.light-mode .border-\[\#2CFF05\]\/40 {
-  border-color: rgba(22, 163, 74, 0.45) !important;
+  border-color: rgba(5, 150, 105, 0.45) !important;
 }
 html.light-mode .border-\[\#2CFF05\]\/50 {
-  border-color: rgba(22, 163, 74, 0.55) !important;
+  border-color: rgba(5, 150, 105, 0.55) !important;
 }
 html.light-mode .focus-within\:border-\[\#2CFF05\]:focus-within {
-  border-color: #16a34a !important;
+  border-color: #059669 !important;
 }
 html.light-mode .focus\:border-\[\#2CFF05\]:focus {
-  border-color: #16a34a !important;
+  border-color: #059669 !important;
 }
 html.light-mode .text-primary {
-  color: #15803d !important;
+  color: #059669 !important;
 }
 html.light-mode .hover\:text-primary:hover {
-  color: #15803d !important;
+  color: #059669 !important;
 }
 html.light-mode .group-hover\:text-primary:hover {
-  color: #15803d !important;
+  color: #059669 !important;
 }
 html.light-mode .hero-title span,
 html.light-mode h1 span,
 html.light-mode h2 span,
 html.light-mode h3 span {
-  color: #15803d;
+  color: #059669 !important;
 }
 
 html.light-mode body {

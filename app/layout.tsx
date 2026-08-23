@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Sans_Sinhala } from "next/font/google";
+import { Noto_Sans_Sinhala, Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/context/AuthContext";
 import { ThemeProvider } from "@/lib/context/ThemeContext";
@@ -10,15 +10,21 @@ import PreloaderWrapper from "@/components/PreloaderWrapper";
 import CartDrawer from "@/components/CartDrawer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
-const notoSansBody = Noto_Sans_Sinhala({
+const notoSansSinhala = Noto_Sans_Sinhala({
   subsets: ["sinhala", "latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "900"],
+  variable: "--font-sinhala",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
   variable: "--font-sans",
 });
 
-const notoSansHeading = Noto_Sans_Sinhala({
-  subsets: ["sinhala", "latin"],
-  weight: ["900"],
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   variable: "--font-heading",
 });
 
@@ -63,7 +69,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`h-full antialiased dark ${notoSansBody.variable} ${notoSansHeading.variable}`}
+      className={`h-full antialiased dark ${inter.variable} ${outfit.variable} ${notoSansSinhala.variable}`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans selection:bg-primary/40 selection:text-primary-foreground">
         <ThemeProvider>
