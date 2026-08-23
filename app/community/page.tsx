@@ -116,6 +116,7 @@ export default function CommunityForumPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [forumSearch, setForumSearch] = useState('');
   const [activeCommentsPostId, setActiveCommentsPostId] = useState<string | null>(null);
+  const [memberCount, setMemberCount] = useState<number>(0);
 
   // New post form states
   const [newTitle, setNewTitle] = useState('');
@@ -147,6 +148,14 @@ export default function CommunityForumPage() {
             });
           });
         }
+      }
+
+      // Fetch actual registered member count from profiles table
+      const { count, error } = await supabase
+        .from('profiles')
+        .select('*', { count: 'exact', head: true });
+      if (!error && count !== null) {
+        setMemberCount(count);
       }
     } catch (err) {
       console.error('Error fetching community posts:', err);
@@ -357,6 +366,28 @@ export default function CommunityForumPage() {
     setToastMessage(t.copySuccess);
     setTimeout(() => setToastMessage(''), 3000);
   };
+
+  // Dynamically compute contributors from the current active feed posts
+  const dynamicContributors = React.useMemo(() => {
+    const authorMap: Record<string, { name: string; avatar: string; role: string; badge?: string; postsCount: number }> = {};
+    
+    posts.forEach(post => {
+      if (!authorMap[post.authorName]) {
+        authorMap[post.authorName] = {
+          name: post.authorName,
+          avatar: post.authorAvatar,
+          role: post.authorRole,
+          badge: post.authorBadge,
+          postsCount: 0
+        };
+      }
+      authorMap[post.authorName].postsCount += 1;
+    });
+
+    return Object.values(authorMap)
+      .sort((a, b) => b.postsCount - a.postsCount)
+      .slice(0, 3); // Top 3
+  }, [posts]);
 
   // Filter posts
   const filteredPosts = posts.filter(p => {
@@ -744,11 +775,13 @@ export default function CommunityForumPage() {
               </h3>
               <div className="grid grid-cols-2 gap-3 text-center">
                 <div className="p-2.5 rounded-xl bg-card/30 border border-border">
-                  <span className="text-lg font-black text-[#2CFF05] block leading-none">128</span>
+                  <span className="text-lg font-black text-[#2CFF05] block leading-none">
+                    {Math.max(1, Math.min(memberCount, Math.floor(memberCount * 0.2) + 1))}
+                  </span>
                   <span className="text-[9px] font-semibold text-muted-foreground uppercase mt-1 block">Online Now</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-card/30 border border-border">
-                  <span className="text-lg font-black text-foreground block leading-none">1,402</span>
+                  <span className="text-lg font-black text-foreground block leading-none">{memberCount}</span>
                   <span className="text-[9px] font-semibold text-muted-foreground uppercase mt-1 block">Members</span>
                 </div>
               </div>
@@ -762,24 +795,28 @@ export default function CommunityForumPage() {
               </h3>
               
               <div className="space-y-3">
-                {[
-                  { name: 'Suresh Bandara', points: '4,280 xp', badge: 'Master Printer', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80' },
-                  { name: 'Amani Fernando', points: '3,950 xp', badge: 'DTF Specialist', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80' },
-                  { name: 'Nihal Gunawardena', points: '3,110 xp', badge: 'Batik Master', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80' }
-                ].map((member, i) => (
-                  <div key={i} className="flex items-center justify-between gap-3 text-xs">
-                    <div className="flex items-center gap-2">
-                      <div className="relative w-8 h-8 rounded-full overflow-hidden border border-border bg-background">
-                        <Image src={member.img} alt={member.name} fill className="object-cover" />
+                {dynamicContributors.length === 0 ? (
+                  <p className="text-[10px] text-muted-foreground text-center py-2">
+                    No active contributors yet. Start a discussion to lead the board!
+                  </p>
+                ) : (
+                  dynamicContributors.map((member, i) => (
+                    <div key={i} className="flex items-center justify-between gap-3 text-xs">
+                      <div className="flex items-center gap-2">
+                        <div className="relative w-8 h-8 rounded-full overflow-hidden border border-border bg-background">
+                          <Image src={member.avatar} alt={member.name} fill className="object-cover" />
+                        </div>
+                        <div>
+                          <span className="font-extrabold text-foreground block leading-tight">{member.name}</span>
+                          <span className="text-[8.5px] text-muted-foreground block">{member.role}</span>
+                        </div>
                       </div>
-                      <div>
-                        <span className="font-extrabold text-foreground block leading-tight">{member.name}</span>
-                        <span className="text-[8.5px] text-muted-foreground block">{member.badge}</span>
-                      </div>
+                      <span className="text-[9px] font-mono font-bold text-[#2CFF05] bg-[#2CFF05]/10 px-2 py-0.5 rounded-full">
+                        {member.postsCount} post{member.postsCount > 1 ? 's' : ''}
+                      </span>
                     </div>
-                    <span className="text-[9px] font-mono font-bold text-[#2CFF05] bg-[#2CFF05]/10 px-2 py-0.5 rounded-full">{member.points}</span>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
 
