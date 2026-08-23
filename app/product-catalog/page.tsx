@@ -1,5 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
+import Link from 'next/link';
 import FlipbookIndex from '@/components/FlipbookViewer';
 
 export const metadata: Metadata = {
@@ -11,9 +12,23 @@ export const metadata: Metadata = {
   }
 };
 
-export default function ProductCatalogPage() {
+const TRACING_FILE = 'Tracing Catlog.pdf';
+const STENCIL_FILE = 'Stencil Catlog New pdf CUSTOMER File with water mark.pdf';
+
+export default async function ProductCatalogPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ type?: string }>;
+}) {
+  const params = await searchParams;
+  const isStencil = params?.type === 'stencil';
+  const currentFile = isStencil ? STENCIL_FILE : TRACING_FILE;
+  
+  // Must URL-encode the filename for the API query parameter to handle spaces
+  const apiUrl = `/api/catalog/signed-url?file=${encodeURIComponent(currentFile)}`;
+
   return (
-    <div className="w-full min-h-screen bg-slate-950 text-foreground flex flex-col relative">
+    <div className="w-full min-h-screen bg-slate-950 text-foreground flex flex-col relative pb-10">
       {/* WebPage Schema */}
       <script
         type="application/ld+json"
@@ -22,7 +37,7 @@ export default function ProductCatalogPage() {
             "@context": "https://schema.org",
             "@type": "WebPage",
             "name": "Interactive Product & Print Catalog | Bitium Technology",
-            "description": "Browse our 120-page premium printed sample book featuring stencils, screen printing, DTF transfers, and laser cuts.",
+            "description": "Browse our premium printed sample books featuring stencils, screen printing, DTF transfers, and laser cuts.",
             "url": "https://www.bitiumtechnology.com/product-catalog"
           })
         }}
@@ -31,9 +46,30 @@ export default function ProductCatalogPage() {
       {/* Decorative top border glow */}
       <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[#2CFF05]/30 to-transparent" />
 
+      {/* Catalog Switcher Tabs */}
+      <div className="w-full flex justify-center pt-8 pb-2 relative z-10">
+        <div className="bg-slate-900/60 backdrop-blur-md p-1.5 rounded-full border border-slate-800 flex gap-2 shadow-xl">
+          <Link 
+            href="/product-catalog?type=tracing"
+            scroll={false}
+            className={`px-6 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all duration-300 ${!isStencil ? 'bg-[#2CFF05] text-slate-950 shadow-[0_0_20px_rgba(44,255,5,0.4)]' : 'text-slate-300 hover:text-white hover:bg-slate-800/80'}`}
+          >
+            TRACING CATALOG
+          </Link>
+          <Link 
+            href="/product-catalog?type=stencil"
+            scroll={false}
+            className={`px-6 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all duration-300 ${isStencil ? 'bg-[#2CFF05] text-slate-950 shadow-[0_0_20px_rgba(44,255,5,0.4)]' : 'text-slate-300 hover:text-white hover:bg-slate-800/80'}`}
+          >
+            STENCIL CATALOG
+          </Link>
+        </div>
+      </div>
+
       {/* Main content area */}
       <div className="flex-grow w-full flex flex-col items-center justify-center relative">
-        <FlipbookIndex pdfUrl="/api/catalog/signed-url" />
+        {/* We add a key to force FlipbookIndex to fully re-mount when the URL changes for a clean transition */}
+        <FlipbookIndex key={apiUrl} pdfUrl={apiUrl} />
       </div>
     </div>
   );
