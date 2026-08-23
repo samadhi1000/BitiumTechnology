@@ -8,9 +8,9 @@ import ThumbnailPanel from './ThumbnailPanel';
 import Book from './Book';
 import { pageCache } from './PageCache';
 
-// Set up PDF.js worker dynamically matching the package version from unpkg CDN
+// Set up PDF.js worker dynamically matching the package version from jsDelivr CDN
 const pdfVersion = pdfjs.version || '6.2.108';
-pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfVersion}/build/pdf.worker.min.mjs`;
+pdfjs.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfVersion}/build/pdf.worker.min.mjs`;
 
 interface FlipbookViewerProps {
   pdfUrl: string;
