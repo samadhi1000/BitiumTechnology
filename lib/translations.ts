@@ -46,6 +46,7 @@ export interface Translations {
     canvasBuilder: string;
     mockupStudio: string;
     sizeGuide: string;
+    productCatalog: string;
   };
   hero: {
     badge: string;
@@ -265,7 +266,8 @@ export const translations: Record<Language, Translations> = {
       engraving: "Engraving",
       canvasBuilder: "Canvas Builder",
       mockupStudio: "3D Mockup Studio",
-      sizeGuide: "Size Guide"
+      sizeGuide: "Size Guide",
+      productCatalog: "Product Catalog"
     },
     hero: {
       badge: "Professional Grade Stencil, Screen & DTF Printing",
@@ -510,7 +512,8 @@ export const translations: Record<Language, Translations> = {
       engraving: "කැටයම් කිරීම්",
       canvasBuilder: "කැන්වස් නිර්මාණකරණය",
       mockupStudio: "3D මොකප් ස්ටුඩියෝ",
-      sizeGuide: "ප්‍රමාණ මඟපෙන්වීම"
+      sizeGuide: "ප්‍රමාණ මඟපෙන්වීම",
+      productCatalog: "නිෂ්පාදන නාමාවලිය"
     },
     hero: {
       badge: "වෘත්තීය මට්ටමේ ස්ටෙන්සිල්, ස්ක්‍රීන් සහ DTF මුද්‍රණය",

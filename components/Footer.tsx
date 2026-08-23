@@ -39,6 +39,7 @@ export default function Footer() {
     { label: f?.downloads || "Digital downloads", href: "/downloads" },
     { label: f?.community || "Community Hub", href: "/community" },
     { label: f?.materials || "Materials / Consumables", href: "/materials" },
+    { label: t.subNav.productCatalog || "Product Catalog", href: "/product-catalog" },
     { label: f?.about || "About Us", href: "/about" },
     { label: f?.contact || "Contact Us", href: "/contact" },
   ];

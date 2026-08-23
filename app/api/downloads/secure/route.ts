@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { verifyDownloadToken, incrementDownloadCount } from '@/lib/digital';
+import { getSecureR2DownloadUrl } from '@/lib/cloudflareR2';
 
 export async function GET(request: Request) {
   try {
@@ -34,25 +35,31 @@ export async function GET(request: Request) {
       }, { status: 403 });
     }
 
-    // 4. Secure signed URL generation or direct external URL retrieval (e.g. Google Drive link)
+    // 4. Secure signed URL generation or direct external URL retrieval
     let signedUrl = '';
 
     if (artwork.file_key.startsWith('http://') || artwork.file_key.startsWith('https://')) {
-      // Direct external link (Google Drive, Cloudinary, AWS S3 etc.)
+      // Direct external link (e.g. Google Drive custom redirect)
       signedUrl = artwork.file_key;
     } else {
-      // Retrieve signed URL from Supabase storage
-      const { data, error: storageError } = await supabase
-        .storage
-        .from('digital-artworks-secure')
-        .createSignedUrl(artwork.file_key, 60);
+      // Retrieve signed URL from Cloudflare R2 storage (expires in 15 mins)
+      try {
+        signedUrl = await getSecureR2DownloadUrl(artwork.file_key, 900);
+      } catch (r2Error) {
+        console.warn('Cloudflare R2 signed URL generation failed. Trying Supabase Storage fallback.');
+        
+        // Supabase storage fallback
+        const { data, error: storageError } = await supabase
+          .storage
+          .from('digital-artworks-secure')
+          .createSignedUrl(artwork.file_key, 60);
 
-      signedUrl = data?.signedUrl || '';
+        signedUrl = data?.signedUrl || '';
 
-      if (storageError || !signedUrl) {
-        console.warn('Supabase storage signed URL generation failed. Providing mock signed URL for demonstration.');
-        // Local fallback url for demonstration (points to a placeholder download file)
-        signedUrl = `https://placeholder-storage.local/${artwork.file_key}?token=${token}&expires=${Math.floor(Date.now() / 1000) + 60}`;
+        if (storageError || !signedUrl) {
+          console.error('Supabase fallback also failed.');
+          signedUrl = `https://placeholder-storage.local/${artwork.file_key}?token=${token}&expires=${Math.floor(Date.now() / 1000) + 60}`;
+        }
       }
     }
 

@@ -13,6 +13,7 @@ import {
   ShoppingBag, 
   User, 
   LayoutGrid, 
+  BookOpen,
   LogOut, 
   Shirt, 
   ChevronDown, 
@@ -288,6 +289,9 @@ export default function Navbar() {
                   </Link>
                   <Link href={adminLink('/size-guide')} className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-emerald-400 hover:bg-card transition-colors flex items-center gap-1">
                     <Layers size={11} /> {t.subNav.sizeGuide}
+                  </Link>
+                  <Link href={adminLink('/product-catalog')} className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-[#2CFF05] hover:bg-card transition-colors flex items-center gap-1">
+                    <BookOpen size={11} /> {t.subNav.productCatalog}
                   </Link>
                 </div>
               )}
@@ -667,6 +671,13 @@ export default function Navbar() {
                     className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-300 hover:bg-card hover:text-foreground"
                   >
                     {t.subNav.sizeGuide}
+                  </Link>
+                  <Link
+                    href={adminLink('/product-catalog')}
+                    onClick={closeMobileMenu}
+                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-[#45ff24] hover:bg-card hover:text-foreground"
+                  >
+                    {t.subNav.productCatalog}
                   </Link>
                 </div>
               )}
