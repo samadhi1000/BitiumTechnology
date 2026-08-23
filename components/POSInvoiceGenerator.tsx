@@ -221,13 +221,13 @@ export default function POSInvoiceGenerator() {
         </div>
 
         {/* Step 2: Catalog Selector */}
-        <div className="p-5 rounded-2xl border border-border bg-card/15 backdrop-blur-md space-y-4">
+        <div className="relative z-[40] p-5 rounded-2xl border border-border bg-card/15 backdrop-blur-md space-y-4">
           <h3 className="text-xs font-black uppercase tracking-wider text-[#2CFF05] flex items-center gap-2">
             <ShoppingBag size={14} />
             <span>02. Select Products from Catalog</span>
           </h3>
           
-          <div className="relative">
+          <div className="relative z-[50]">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" size={15} />
             <input 
               type="text"
@@ -237,7 +237,7 @@ export default function POSInvoiceGenerator() {
               className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border bg-background text-xs focus:outline-none focus:border-[#2CFF05] transition-colors"
             />
             {filteredProducts.length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-1 border border-border bg-slate-950 rounded-xl shadow-2xl overflow-hidden z-[50]">
+              <div className="absolute top-full left-0 right-0 mt-1 border border-border bg-slate-950 rounded-xl shadow-2xl overflow-hidden z-[60]">
                 {filteredProducts.map(p => (
                   <button
                     key={p.id}
@@ -295,7 +295,7 @@ export default function POSInvoiceGenerator() {
         </div>
 
         {/* Step 3: Manual Custom Item Adder */}
-        <form onSubmit={handleAddManualItem} className="p-5 rounded-2xl border border-border bg-card/15 backdrop-blur-md space-y-4">
+        <form onSubmit={handleAddManualItem} className="relative z-10 p-5 rounded-2xl border border-border bg-card/15 backdrop-blur-md space-y-4">
           <h3 className="text-xs font-black uppercase tracking-wider text-[#2CFF05] flex items-center gap-2">
             <Plus size={14} />
             <span>03. Add Custom / Manual Work</span>
