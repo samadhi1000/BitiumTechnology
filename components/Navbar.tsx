@@ -347,7 +347,7 @@ export default function Navbar() {
               )}
             </button>
 
-            {/* Language Toggle — desktop only, far right after cart */}
+            {/* Language Toggle - desktop only, far right after cart */}
             <div className="hidden lg:flex items-center">
               <LanguageToggle />
             </div>

@@ -270,12 +270,12 @@ export default function CanvasBuilder() {
     }
   };
 
-  // Add sheet to cart (async — uploads preview to Cloudinary first)
+  // Add sheet to cart (async - uploads preview to Cloudinary first)
   const handleAddToCart = async () => {
     if (!canvas) return;
     setUploadError(null);
 
-    // Export canvas Data URL (only used locally for upload — not stored in cart)
+    // Export canvas Data URL (only used locally for upload - not stored in cart)
     const previewDataUrl = canvas.toDataURL({
       format: 'png',
       quality: 0.9,
@@ -295,8 +295,8 @@ export default function CanvasBuilder() {
       sheetPreviewCloudinaryUrl = uploadResult.secureUrl;
     } catch (err) {
       console.error('[Canvas Builder] Cloudinary upload failed:', err);
-      // Graceful fallback — item still gets added without a CDN preview image
-      setUploadError('Preview upload failed — your sheet was still added to cart.');
+      // Graceful fallback - item still gets added without a CDN preview image
+      setUploadError('Preview upload failed - your sheet was still added to cart.');
     } finally {
       setIsUploading(false);
     }
@@ -308,7 +308,7 @@ export default function CanvasBuilder() {
         id: 'b2a8d3e9-4e7a-4e2b-b6c8-2f1a3b4c5d6e',
         name: 'Custom DTF Sheet Builder',
         description: `Custom ${selectedPreset.width}" x ${selectedPreset.height}" DTF Transfer Sheet`,
-        image_url: sheetPreviewCloudinaryUrl, // CDN URL — or undefined if upload failed
+        image_url: sheetPreviewCloudinaryUrl, // CDN URL - or undefined if upload failed
       },
       customSheet: {
         width: selectedPreset.width,

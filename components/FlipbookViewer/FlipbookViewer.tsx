@@ -11,7 +11,7 @@ import { pageCache } from './PageCache';
 // Serve PDF.js worker from local /public folder to avoid CDN CORS/MIME module errors
 pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
-// Module-level PDF document cache — persists across tab switches without re-downloading
+// Module-level PDF document cache - persists across tab switches without re-downloading
 // Key: pdfUrl string, Value: loaded PDFDocumentProxy object
 const pdfDocCache = new Map<string, any>();
 

@@ -5,7 +5,7 @@
  *   https://www.payhere.lk/lib/payhere.js
  *
  * Sandbox vs. Live mode is controlled by the `sandbox: true/false` flag
- * in the payment payload object — NOT by a different script URL.
+ * in the payment payload object - NOT by a different script URL.
  */
 
 const PAYHERE_SCRIPT_SRC = 'https://www.payhere.lk/lib/payhere.js';
@@ -18,13 +18,13 @@ export const loadPayHereScript = (): Promise<any> => {
       return;
     }
 
-    // Already loaded — resolve immediately
+    // Already loaded - resolve immediately
     if ((window as any).payhere) {
       resolve((window as any).payhere);
       return;
     }
 
-    // Script tag already injected but still loading — attach listeners
+    // Script tag already injected but still loading - attach listeners
     const existingScript = document.getElementById(PAYHERE_SCRIPT_ID) as HTMLScriptElement | null;
     if (existingScript) {
       const handleLoad = () => {

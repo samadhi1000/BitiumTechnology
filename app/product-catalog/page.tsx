@@ -24,7 +24,7 @@ export default async function ProductCatalogPage({
   const isStencil = params?.type === 'stencil';
   const currentFile = isStencil ? STENCIL_FILE : TRACING_FILE;
   
-  // Use the PDF proxy route — Vercel server fetches from R2, browser never touches R2 directly
+  // Use the PDF proxy route - Vercel server fetches from R2, browser never touches R2 directly
   // This completely avoids CORS issues with Cloudflare R2
   const apiUrl = `/api/catalog/pdf?type=${isStencil ? 'stencil' : 'tracing'}`;
 
@@ -69,7 +69,7 @@ export default async function ProductCatalogPage({
 
       {/* Main content area */}
       <div className="flex-grow w-full flex flex-col items-center justify-center relative">
-        {/* No key prop — component stays mounted when switching catalogs so the PDF cache works */}
+        {/* No key prop - component stays mounted when switching catalogs so the PDF cache works */}
         <FlipbookIndex pdfUrl={apiUrl} />
       </div>
     </div>

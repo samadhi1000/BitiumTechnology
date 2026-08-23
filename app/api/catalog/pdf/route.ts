@@ -23,7 +23,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const type = searchParams.get('type') || 'tracing';
 
-  // Whitelist check — never allow arbitrary file access
+  // Whitelist check - never allow arbitrary file access
   const fileKey = ALLOWED_FILES[type];
   if (!fileKey) {
     return NextResponse.json({ error: 'Invalid catalog type' }, { status: 400 });

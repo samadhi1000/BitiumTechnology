@@ -12,7 +12,7 @@
  *   // 2. Upload to Cloudinary BEFORE dispatching addItem()
  *   const result = await uploadCanvasToCloudinary(dataUrl, 'bitium/mockups');
  *
- *   // 3. Use the permanent CDN URL in cart metadata — never store base64
+ *   // 3. Use the permanent CDN URL in cart metadata - never store base64
  *   addItem({ customization: { frontPreviewCloudinaryUrl: result.secureUrl, source: 'mockup_studio' } });
  *
  * Required .env.local keys:
@@ -33,7 +33,7 @@ import { validateDataUrl, sanitizeCloudName } from '@/lib/security/sanitize';
 export interface CloudinaryUploadResult {
   /** Cloudinary public ID, e.g. "bitium/mockups/abc123" */
   publicId: string;
-  /** Full HTTPS CDN URL — store this in the cart, not the base64 blob */
+  /** Full HTTPS CDN URL - store this in the cart, not the base64 blob */
   secureUrl: string;
   /** Image pixel width */
   width: number;
@@ -54,9 +54,9 @@ export interface CloudinaryUploadResult {
  *
  * Why Unsigned?  Signed uploads require a server-side API route to generate a
  * signature, adding a round-trip. For customer-facing mockup previews, unsigned
- * is the right tradeoff — images are public-read CDN assets anyway.
+ * is the right tradeoff - images are public-read CDN assets anyway.
  *
- * @param dataUrl - Output of canvas.toDataURL() — must start with "data:"
+ * @param dataUrl - Output of canvas.toDataURL() - must start with "data:"
  * @param folder  - Cloudinary folder to organise uploads, e.g. 'bitium/mockups'
  *                  or 'bitium/canvas-sheets'. Defaults to 'bitium/uploads'.
  * @returns CloudinaryUploadResult containing the permanent secureUrl
@@ -89,7 +89,7 @@ export async function uploadCanvasToCloudinary(
   }
 
   // ── Build FormData ─────────────────────────────────────────────────────────
-  // Cloudinary accepts base64 Data URIs directly in the "file" field — no
+  // Cloudinary accepts base64 Data URIs directly in the "file" field - no
   // manual Blob conversion needed.
   const formData = new FormData();
   formData.append('file', dataUrl);
@@ -110,7 +110,7 @@ export async function uploadCanvasToCloudinary(
     });
   } catch (networkError) {
     throw new Error(
-      `[Cloudinary] Network error — could not reach Cloudinary. ` +
+      `[Cloudinary] Network error - could not reach Cloudinary. ` +
       `Check your internet connection. Original error: ${String(networkError)}`
     );
   }

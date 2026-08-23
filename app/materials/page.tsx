@@ -13,7 +13,7 @@ const MATERIALS_CONFIG_EN: CategoryPageConfig = {
   titlePrimary: 'Printing',
   titleHighlight: 'Materials & Inks',
   badgeText: 'Industrial Printing Supplies',
-  description: 'Everything your print floor runs on — DTF inks and film, hot-melt powder, screen-printing emulsions, sensitizers, and wash chemicals — in stock and ready to ship.',
+  description: 'Everything your print floor runs on - DTF inks and film, hot-melt powder, screen-printing emulsions, sensitizers, and wash chemicals - in stock and ready to ship.',
   heroImage: '/images/hero-cards/materials.webp',
   searchPlaceholder: 'Search inks, powders, films & consumables...',
   itemSingular: 'Material / Supply',
@@ -76,7 +76,7 @@ const MATERIALS_CONFIG_EN: CategoryPageConfig = {
       },
       {
         title: 'Buying in bulk',
-        content: 'Running a shop day to day? Ask us about standing orders — we can set up a recurring delivery so consumables show up before you run low, instead of after.',
+        content: 'Running a shop day to day? Ask us about standing orders - we can set up a recurring delivery so consumables show up before you run low, instead of after.',
       },
     ],
   },
@@ -157,7 +157,7 @@ const MATERIALS_CONFIG_SI: CategoryPageConfig = {
       },
       {
         title: 'තොග වශයෙන් මිලදී ගැනීම්',
-        content: 'දිනපතා ව්‍යාපාරයක් පවත්වාගෙන යන්නේද? ස්ටෑන්ඩින් ඕඩර්ස් (standing orders) පිළිබඳව අපෙන් විමසන්න — ද්‍රව්‍ය අවසන් වීමට පෙර, ස්වයංක්‍රීයව නියමිත කාලයට අමුද්‍රව්‍ය ලැබෙන පරිදි ක්‍රමවේදයක් අපට සකස් කර දිය හැකිය.',
+        content: 'දිනපතා ව්‍යාපාරයක් පවත්වාගෙන යන්නේද? ස්ටෑන්ඩින් ඕඩර්ස් (standing orders) පිළිබඳව අපෙන් විමසන්න - ද්‍රව්‍ය අවසන් වීමට පෙර, ස්වයංක්‍රීයව නියමිත කාලයට අමුද්‍රව්‍ය ලැබෙන පරිදි ක්‍රමවේදයක් අපට සකස් කර දිය හැකිය.',
       },
     ],
   },

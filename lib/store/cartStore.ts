@@ -34,7 +34,7 @@ export interface GarmentColor {
  * overflow localStorage (5 MB hard cap). Always upload via lib/cloudinary.ts first.
  */
 export interface CustomPrintMetadata {
-  // ── Preview URLs (Cloudinary CDN — permanent, fast, tiny string) ──────────
+  // ── Preview URLs (Cloudinary CDN - permanent, fast, tiny string) ──────────
   frontPreviewCloudinaryUrl?: string;
   backPreviewCloudinaryUrl?: string;
 
@@ -47,7 +47,7 @@ export interface CustomPrintMetadata {
   // ── DTF / Canvas sheet configuration ─────────────────────────────────────
   sheetWidth?: number;   // inches
   sheetHeight?: number;  // inches
-  /** Fabric.js serialized JSON — allows re-editing from the cart */
+  /** Fabric.js serialized JSON - allows re-editing from the cart */
   canvasJson?: Record<string, unknown>;
 
   // ── Design metadata ───────────────────────────────────────────────────────
@@ -67,7 +67,7 @@ export interface CartItemProduct {
   id: string;
   name: string;
   description?: string;
-  /** Use a Cloudinary URL or Unsplash URL here — never a raw base64 blob */
+  /** Use a Cloudinary URL or Unsplash URL here - never a raw base64 blob */
   image_url?: string;
 }
 
@@ -86,7 +86,7 @@ export interface CartItemCustomSheet {
 }
 
 export interface CartItem {
-  /** UUID — uniquely identifies this cart line */
+  /** UUID - uniquely identifies this cart line */
   id: string;
   /**
    * Determines merge behaviour:
@@ -156,7 +156,7 @@ interface CartState {
   toggleCart: () => void;
 
   // ── Checkout Detail Actions ───────────────────────────────────────────────
-  /** Partial update — only provided keys are changed */
+  /** Partial update - only provided keys are changed */
   setCheckoutDetails: (details: Partial<CheckoutDetails>) => void;
   /** Resets all checkout fields to empty strings (call after successful WhatsApp order) */
   clearCheckoutDetails: () => void;
@@ -252,7 +252,7 @@ export const useCartStore = create<CartState>()(
       name: 'bitium-cart-storage',
       /**
        * Persist items and checkout details only.
-       * isCartOpen is intentionally excluded — drawer always starts closed
+       * isCartOpen is intentionally excluded - drawer always starts closed
        * to prevent a flash of an open drawer on page load/hydration.
        */
       partialize: (state) => ({

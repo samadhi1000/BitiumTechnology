@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
         } catch (_) {}
       }
     } else {
-      // Fallback mode — use statically imported catalog or payload fallback
+      // Fallback mode - use statically imported catalog or payload fallback
       const localCatalog = (catalogData || []) as any[];
 
       for (const item of items) {

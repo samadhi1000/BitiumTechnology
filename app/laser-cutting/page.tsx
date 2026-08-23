@@ -13,7 +13,7 @@ const LASER_CUTTING_CONFIG_EN: CategoryPageConfig = {
   titlePrimary: 'Laser Cutting',
   titleHighlight: 'Collection',
   badgeText: 'Precision Laser Cut & Engraving',
-  description: 'Precision CO2 laser cutting for acrylic, wood, and custom profiles — cut and engraved straight from your file, no tooling required.',
+  description: 'Precision CO2 laser cutting for acrylic, wood, and custom profiles - cut and engraved straight from your file, no tooling required.',
   heroImage: '/images/hero-cards/laser.webp',
   searchPlaceholder: 'Search laser cut products & materials...',
   itemSingular: 'Laser Product',
@@ -64,25 +64,25 @@ const LASER_CUTTING_CONFIG_EN: CategoryPageConfig = {
     sections: [
       {
         title: 'How this is different from our stencil cutting',
-        content: 'Our Stencil page is about laser-cut Mylar for painting and fabric work. This page is about cutting and engraving the material itself — acrylic signage, wooden nameplates, keychains, panels, and custom-shaped profiles you\'d otherwise need a die or mold for.',
+        content: 'Our Stencil page is about laser-cut Mylar for painting and fabric work. This page is about cutting and engraving the material itself - acrylic signage, wooden nameplates, keychains, panels, and custom-shaped profiles you\'d otherwise need a die or mold for.',
       },
       {
         title: 'What you can order',
         content: 'We handle a wide range of custom laser work across multiple materials.',
         bullets: [
           'Custom-shaped acrylic pieces (signs, stands, awards, decor)',
-          'Wood engraving — nameplates, coasters, gift pieces',
+          'Wood engraving - nameplates, coasters, gift pieces',
           'Cut-to-shape profiles from your own outline or logo',
           'Layered or multi-piece designs that assemble after cutting',
         ],
       },
       {
         title: 'Getting your file ready',
-        content: 'A vector file (SVG or AI) gives the cleanest result, since the laser follows the outline exactly. If you only have a photo or a rough sketch, send it anyway — we\'ll trace it into a cuttable file and confirm the outline with you before cutting.',
+        content: 'A vector file (SVG or AI) gives the cleanest result, since the laser follows the outline exactly. If you only have a photo or a rough sketch, send it anyway - we\'ll trace it into a cuttable file and confirm the outline with you before cutting.',
       },
       {
         title: 'Material thickness matters',
-        content: 'Send us the thickness you\'re working with (or ask us to recommend one) — it changes cutting speed, how fine a detail can hold its shape, and whether engraving or a full cut-through is the better call for your design.',
+        content: 'Send us the thickness you\'re working with (or ask us to recommend one) - it changes cutting speed, how fine a detail can hold its shape, and whether engraving or a full cut-through is the better call for your design.',
       },
       {
         title: 'Who this is for',
@@ -162,18 +162,18 @@ const LASER_CUTTING_CONFIG_SI: CategoryPageConfig = {
         content: 'විවිධ ද්‍රව්‍ය රැසක් මත ඔබට අවශ්‍ය පරිදි කැපීම් සිදු කරගත හැක.',
         bullets: [
           'විශේෂිත හැඩතල සහිත ඇක්‍රිලික් නිර්මාණ (නාමපුවරු, ස්ටෑන්ඩ්, සම්මාන, සැරසිලි ද්‍රව්‍ය)',
-          'ලී කැටයම් — නාමපුවරු, කෝස්ටර් (coasters), තෑගි භාණ්ඩ',
+          'ලී කැටයම් - නාමපුවරු, කෝස්ටර් (coasters), තෑගි භාණ්ඩ',
           'ඔබේම ලාංඡනයක් (logo) හෝ දළ සටහනකට අනුව හැඩයට කපාගත් කොටස්',
           'කැපීමෙන් පසු එකට එකතු කර සකස් කළ හැකි ස්ථර කිහිපයකින් යුතු (layered) නිර්මාණ',
         ],
       },
       {
         title: 'ඔබේ ගොනුව (file) සූදානම් කරගන්නා ආකාරය',
-        content: 'ලේසර් කටර් එක අදාළ මායිම් නිවැරදිව අනුගමනය කරන බැවින්, වෙක්ටර් ගොනුවක් (SVG හෝ AI) මඟින් වඩාත් පැහැදිලි නිමාවක් ලබාගත හැක. ඔබට ඇත්තේ ඡායාරූපයක් හෝ දළ සටහනක් පමණක් වුවද එය අප වෙත එවන්න — කැපීමට පෙර අපි එය පරිගණක මෝස්තරයක් බවට පත් කර මායිම් ඔබ සමඟ තහවුරු කරන්නෙමු.',
+        content: 'ලේසර් කටර් එක අදාළ මායිම් නිවැරදිව අනුගමනය කරන බැවින්, වෙක්ටර් ගොනුවක් (SVG හෝ AI) මඟින් වඩාත් පැහැදිලි නිමාවක් ලබාගත හැක. ඔබට ඇත්තේ ඡායාරූපයක් හෝ දළ සටහනක් පමණක් වුවද එය අප වෙත එවන්න - කැපීමට පෙර අපි එය පරිගණක මෝස්තරයක් බවට පත් කර මායිම් ඔබ සමඟ තහවුරු කරන්නෙමු.',
       },
       {
         title: 'ද්‍රව්‍යයේ ඝනකම (thickness) වැදගත් වේ',
-        content: 'ඔබ භාවිත කරන ද්‍රව්‍යයේ ඝනකම අප වෙත දන්වන්න (නැතහොත් සුදුසු ඝනකමක් අපෙන් විමසන්න) — ද්‍රව්‍යයේ ඝනකම අනුව ලේසර් කැපීමේ වේගය, සියුම් මෝස්තරවල හැඩය රඳවා ගැනීමේ शक्यता සහ ඔබේ සැලසුමට වඩාත් සුදුසු වන්නේ කැටයම් කිරීම (engraving) ද නැතහොත් සම්පූර්ණ ලෙස කපා වෙන් කිරීම ද යන්න තීරණය වේ.',
+        content: 'ඔබ භාවිත කරන ද්‍රව්‍යයේ ඝනකම අප වෙත දන්වන්න (නැතහොත් සුදුසු ඝනකමක් අපෙන් විමසන්න) - ද්‍රව්‍යයේ ඝනකම අනුව ලේසර් කැපීමේ වේගය, සියුම් මෝස්තරවල හැඩය රඳවා ගැනීමේ शक्यता සහ ඔබේ සැලසුමට වඩාත් සුදුසු වන්නේ කැටයම් කිරීම (engraving) ද නැතහොත් සම්පූර්ණ ලෙස කපා වෙන් කිරීම ද යන්න තීරණය වේ.',
       },
       {
         title: 'මෙය කා සඳහාද?',

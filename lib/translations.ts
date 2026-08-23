@@ -388,12 +388,12 @@ export const translations: Record<Language, Translations> = {
       catalogTitle: "Shop Our Printing Solutions",
       catalogDesc: "Explore our full range of custom stencils, industrial DTF transfers, traditional Cap Batik stamps, precision cutting, and print consumables.",
       categories: {
-        stencilsTitle: "Stencils", stencilsDesc: "Laser-cut Mylar stencils for saree work, hand painting, and wall art — cut clean, every time.", stencilsBadge: "6 Categories",
+        stencilsTitle: "Stencils", stencilsDesc: "Laser-cut Mylar stencils for saree work, hand painting, and wall art - cut clean, every time.", stencilsBadge: "6 Categories",
         screenTitle: "Screen Printing", screenDesc: "Exposed screens, vectorized artwork, and positive tracing films, made to your exact specs.", screenBadge: "Professional Grade",
-        dtfTitle: "DTF Printing", dtfDesc: "Custom sheet layouts, anime sticker packs, and cloth transfers — our most popular category.", dtfBadge: "Hot Seller",
+        dtfTitle: "DTF Printing", dtfDesc: "Custom sheet layouts, anime sticker packs, and cloth transfers - our most popular category.", dtfBadge: "Hot Seller",
         batikTitle: "Batik Stamps", batikDesc: "Traditional copper and hand-carved wood Cap Batik stamps, made the way they've always been made.", batikBadge: "Traditional Art",
-        laserTitle: "Laser Cutting", laserDesc: "Precision CO2 laser cutting for acrylic, wood, and custom profiles — built to your file, not a template.", laserBadge: "CNC Precision",
-        consumablesTitle: "Consumables", consumablesDesc: "Inks, hot melt powder, film rolls, emulsions, and wash chemicals — the supplies that keep your shop running.", consumablesBadge: "Industrial Grade",
+        laserTitle: "Laser Cutting", laserDesc: "Precision CO2 laser cutting for acrylic, wood, and custom profiles - built to your file, not a template.", laserBadge: "CNC Precision",
+        consumablesTitle: "Consumables", consumablesDesc: "Inks, hot melt powder, film rolls, emulsions, and wash chemicals - the supplies that keep your shop running.", consumablesBadge: "Industrial Grade",
         tutorialsTitle: "Video Tutorials", tutorialsDesc: "Learn how to master Screen & DTF printing with our step-by-step video guides.", tutorialsBadge: "Learn & Master",
         feedbacksTitle: "Customer Feedbacks", feedbacksDesc: "See what our existing customers have to say about Bitium Technology Products.", feedbacksBadge: "Real Stories",
         browseBtn: "Browse Products"
@@ -403,7 +403,7 @@ export const translations: Record<Language, Translations> = {
       benefits: {
         b1Title: "Premium Quality", b1Desc: "Top-grade materials and advanced printing technology for lasting results.",
         b2Title: "Vibrant Colors", b2Desc: "High-opacity, ultra-vibrant inks that stand out on any fabric color.",
-        b3Title: "No Minimum Order", b3Desc: "Order one sheet or thousands — no minimums, ever.",
+        b3Title: "No Minimum Order", b3Desc: "Order one sheet or thousands - no minimums, ever.",
         b4Title: "Expert Support", b4Desc: "Our team is here to help at every step of your order.",
         b5Title: "Satisfaction Guarantee", b5Desc: "If you're not happy, we make it right. No questions asked."
       },

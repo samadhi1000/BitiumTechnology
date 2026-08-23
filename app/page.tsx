@@ -1,5 +1,5 @@
 /**
- * app/page.tsx — Server Component (no 'use client')
+ * app/page.tsx - Server Component (no 'use client')
  *
  * This file renders the landing page as a Next.js Server Component so that:
  *  1. The <h1> heading is present in the raw HTML SSR payload (curl / view-source),
@@ -26,7 +26,7 @@ export default function Home() {
        * ─────────────────────────────────────────────────────────────────────────
        */}
       <h1 className="sr-only">
-        High-Definition Print Solutions &amp; Equipment — Bitium Technology
+        High-Definition Print Solutions &amp; Equipment - Bitium Technology
       </h1>
 
       {/* Client-side interactive content */}

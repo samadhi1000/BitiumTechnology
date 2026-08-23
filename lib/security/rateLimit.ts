@@ -35,7 +35,7 @@ export interface RateLimitState {
 }
 
 /**
- * useRateLimit — React hook that wraps any async/sync handler and prevents
+ * useRateLimit - React hook that wraps any async/sync handler and prevents
  * it from being called more than `maxCalls` times within `windowMs` ms.
  *
  * Returns the guarded handler plus live limit state for UI feedback.
@@ -78,7 +78,7 @@ export function useRateLimit(options: RateLimitOptions): RateLimitState & {
         const now = Date.now();
 
         if (timestamps.current.length >= maxCalls) {
-          // Still rate-limited — compute remaining cooldown
+          // Still rate-limited - compute remaining cooldown
           const oldest = timestamps.current[0];
           const resetMs = windowMs - (now - oldest);
           const resetSec = Math.ceil(resetMs / 1000);
@@ -125,7 +125,7 @@ export function useRateLimit(options: RateLimitOptions): RateLimitState & {
 // ─── Debounce Hook ────────────────────────────────────────────────────────────
 
 /**
- * useDebounce — delays propagating a value until `delay` ms after the last change.
+ * useDebounce - delays propagating a value until `delay` ms after the last change.
  *
  * Ideal for search inputs: prevents a product filter or API query from firing
  * on every keystroke, reducing CPU load and preventing search-based API flooding.

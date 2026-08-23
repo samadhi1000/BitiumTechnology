@@ -13,7 +13,7 @@ const DTF_PRINTING_CONFIG_EN: CategoryPageConfig = {
   titlePrimary: 'DTF Printing',
   titleHighlight: 'Collection',
   badgeText: 'Direct-to-Film Transfers',
-  description: 'Custom gang sheet layouts, anime sticker packs, and cloth transfers — build your sheet online, preview it, and we print and ship it.',
+  description: 'Custom gang sheet layouts, anime sticker packs, and cloth transfers - build your sheet online, preview it, and we print and ship it.',
   heroImage: '/images/hero-cards/dtf.webp',
   searchPlaceholder: 'Search DTF designs, rolls & sheets...',
   itemSingular: 'DTF Transfer',
@@ -64,7 +64,7 @@ const DTF_PRINTING_CONFIG_EN: CategoryPageConfig = {
     sections: [
       {
         title: 'How a DTF order works',
-        content: 'Your design gets printed onto film, layered with a white base so colors stay bright on any fabric color, then coated with a hot-melt powder. When it arrives, you heat-press it onto the garment — no screens, no setup, no minimum order.',
+        content: 'Your design gets printed onto film, layered with a white base so colors stay bright on any fabric color, then coated with a hot-melt powder. When it arrives, you heat-press it onto the garment - no screens, no setup, no minimum order.',
       },
       {
         title: 'Why people choose DTF over screen printing',
@@ -78,7 +78,7 @@ const DTF_PRINTING_CONFIG_EN: CategoryPageConfig = {
       },
       {
         title: 'Build your own sheet',
-        content: 'Use the DTF Sheet Builder to lay out your designs, see exact spacing, and check the finished size before you pay — what you see in the builder is what gets printed.',
+        content: 'Use the DTF Sheet Builder to lay out your designs, see exact spacing, and check the finished size before you pay - what you see in the builder is what gets printed.',
       },
       {
         title: 'Turnaround',

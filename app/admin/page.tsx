@@ -931,7 +931,7 @@ export default function AdminPanelPage() {
                                     </span>
                                   </div>
                                 ) : (
-                                  <span className="text-zinc-650">—</span>
+                                  <span className="text-zinc-650">-</span>
                                 )}
                               </td>
                               <td className="p-4 text-center">
@@ -1289,7 +1289,7 @@ export default function AdminPanelPage() {
                   </div>
                 ) : (
                   <p className="text-[10px] text-muted-foreground italic">
-                    No size tiers — product will use single base price. Click &ldquo;Auto-fill&rdquo; or add rows manually.
+                    No size tiers - product will use single base price. Click &ldquo;Auto-fill&rdquo; or add rows manually.
                   </p>
                 )}
 

@@ -2,7 +2,7 @@
  * lib/security/sanitize.ts
  *
  * OWASP-compliant input sanitization utilities for Bitium Technology.
- * All functions are pure string operations — 100% SSR-safe (no DOM/window access).
+ * All functions are pure string operations - 100% SSR-safe (no DOM/window access).
  *
  * Coverage:
  *  - A01 Broken Access Control: validate URL/image sources
@@ -70,7 +70,7 @@ export function sanitizeName(input: unknown): string {
 /**
  * Sanitizes a phone number.
  * Only allows: digits, +, -, spaces, parentheses.
- * Strips everything else — prevents script injection via phone field.
+ * Strips everything else - prevents script injection via phone field.
  */
 export function sanitizePhone(input: unknown): string {
   if (typeof input !== 'string') return '';
@@ -168,7 +168,7 @@ export function validateDataUrl(
   }
 
   if (!dataUrl.startsWith('data:')) {
-    return { valid: false, error: 'Not a valid Data URL — must start with "data:".' };
+    return { valid: false, error: 'Not a valid Data URL - must start with "data:".' };
   }
 
   // Extract MIME type: "data:image/png;base64,..." → "image/png"

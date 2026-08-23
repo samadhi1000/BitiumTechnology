@@ -21,9 +21,9 @@ export default function PromoBanner() {
 
   const fabricTypes = [
     { id: 'cotton', label: t.homeSections?.whyBadge === 'විශේෂත්වයන්' ? '100% කපු (Cotton)' : 'Cotton', result: t.homeSections?.whyBadge === 'විශේෂත්වයන්' ? 'දීප්තිමත් වර්ණ සහ මෘදු නිමාව. සේදීමෙන් පසු වර්ණ ඉවත් නොවේ.' : "Rich, saturated color that won't crack or fade after washing." },
-    { id: 'polyester', label: t.homeSections?.whyBadge === 'විශේෂත්වයන්' ? 'පෝලියෙස්ටර් & ස්පෝර්ට්ස්' : 'Polyester', result: t.homeSections?.whyBadge === 'විශේෂත්වයන්' ? 'ඉහළ නම්‍යශීලීබව. ක්‍රීඩා ඇඳුම් සඳහා වඩාත් සුදුසුයි.' : "No dye migration or scorching — a common problem with other print methods on poly." },
+    { id: 'polyester', label: t.homeSections?.whyBadge === 'විශේෂත්වයන්' ? 'පෝලියෙස්ටර් & ස්පෝර්ට්ස්' : 'Polyester', result: t.homeSections?.whyBadge === 'විශේෂත්වයන්' ? 'ඉහළ නම්‍යශීලීබව. ක්‍රීඩා ඇඳුම් සඳහා වඩාත් සුදුසුයි.' : "No dye migration or scorching - a common problem with other print methods on poly." },
     { id: 'blends', label: t.homeSections?.whyBadge === 'විශේෂත්වයන්' ? 'මිශ්‍ර රෙදි (Blends)' : 'Blends', result: t.homeSections?.whyBadge === 'විශේෂත්වයන්' ? 'සුමට ඇලීම සහ පැහැදිලි සූක්ෂ්ම විස්තර.' : "Handles mixed fabrics without needing a different process for each one." },
-    { id: 'dark', label: t.homeSections?.whyBadge === 'විශේෂත්වයන්' ? 'තද පැහැ රෙදි' : 'Dark Fabrics', result: t.homeSections?.whyBadge === 'විශේෂත්වයන්' ? 'කළු හෝ තද පැහැ රෙදි මත පවා 100% ක්ෂණික කැපී පෙනෙන වර්ණ.' : "Full opacity and true color, even on black — no dulled-down prints." },
+    { id: 'dark', label: t.homeSections?.whyBadge === 'විශේෂත්වයන්' ? 'තද පැහැ රෙදි' : 'Dark Fabrics', result: t.homeSections?.whyBadge === 'විශේෂත්වයන්' ? 'කළු හෝ තද පැහැ රෙදි මත පවා 100% ක්ෂණික කැපී පෙනෙන වර්ණ.' : "Full opacity and true color, even on black - no dulled-down prints." },
     { id: 'light', label: t.homeSections?.whyBadge === 'විශේෂත්වයන්' ? 'ලා පැහැ රෙදි' : 'Light Fabrics', result: t.homeSections?.whyBadge === 'විශේෂත්වයන්' ? 'මෘදු ස්පර්ශය සහ අතිශය පැහැදිලි නිමාව.' : "Crisp, vibrant results with none of the stiffness some transfers leave behind." }
   ];
 
@@ -66,8 +66,8 @@ export default function PromoBanner() {
         <div className="w-full bg-card border-b border-border text-foreground py-3 px-4 text-xs font-bold text-center flex items-center justify-center gap-2 relative z-20 transition-all duration-300">
           <span className="tracking-wide">
             {t.homeSections?.whyBadge === 'විශේෂත්වයන්'
-              ? '⚡ උසස් තත්ත්වයේ DTF මුද්‍රණ & විශේෂිත ඇඳුම් මුද්‍රණ සේවාව — පැය 24ක් තුළ දිවයින පුරා බෙදාහැරීම'
-              : '⚡ PREMIUM DTF TRANSFERS & CUSTOM APPAREL PRINTING — 24H ISLANDWIDE DISPATCH'}
+              ? '⚡ උසස් තත්ත්වයේ DTF මුද්‍රණ & විශේෂිත ඇඳුම් මුද්‍රණ සේවාව - පැය 24ක් තුළ දිවයින පුරා බෙදාහැරීම'
+              : '⚡ PREMIUM DTF TRANSFERS & CUSTOM APPAREL PRINTING - 24H ISLANDWIDE DISPATCH'}
           </span>
           <button 
             onClick={() => setShowPromo(false)}
@@ -144,7 +144,7 @@ export default function PromoBanner() {
               <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
                 {t.homeSections?.whyBadge === 'විශේෂත්වයන්'
                   ? 'සෑම විටම එකම උසස් ගුණාත්මකභාවය සහ පැය 24ක වේගවත් නිමාව.'
-                  : "Same process, same turnaround, every time — no matter what's on the rack."}
+                  : "Same process, same turnaround, every time - no matter what's on the rack."}
               </p>
             </div>
           </div>

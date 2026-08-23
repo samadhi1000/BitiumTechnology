@@ -69,7 +69,7 @@ function HomeContent() {
   const categories = [
     {
       title: t.homeSections?.categories?.stencilsTitle || 'Stencils',
-      description: t.homeSections?.categories?.stencilsDesc || 'Laser-cut Mylar stencils for saree work, hand painting, and wall art — cut clean, every time.',
+      description: t.homeSections?.categories?.stencilsDesc || 'Laser-cut Mylar stencils for saree work, hand painting, and wall art - cut clean, every time.',
       href: '/stencil',
       image: '/images/catalog/stencils.webp',
       icon: Palette,
@@ -85,7 +85,7 @@ function HomeContent() {
     },
     {
       title: t.homeSections?.categories?.dtfTitle || 'DTF Printing',
-      description: t.homeSections?.categories?.dtfDesc || 'Custom sheet layouts, anime sticker packs, and cloth transfers — our most popular category.',
+      description: t.homeSections?.categories?.dtfDesc || 'Custom sheet layouts, anime sticker packs, and cloth transfers - our most popular category.',
       href: '/dtf-printing',
       image: '/images/catalog/dtf-printing.webp',
       icon: Layers,
@@ -101,7 +101,7 @@ function HomeContent() {
     },
     {
       title: t.homeSections?.categories?.laserTitle || 'Laser Cutting',
-      description: t.homeSections?.categories?.laserDesc || 'Precision CO2 laser cutting for acrylic, wood, and custom profiles — built to your file, not a template.',
+      description: t.homeSections?.categories?.laserDesc || 'Precision CO2 laser cutting for acrylic, wood, and custom profiles - built to your file, not a template.',
       href: '/laser-cutting',
       image: '/images/catalog/laser-cutting.webp',
       icon: Scissors,
@@ -109,7 +109,7 @@ function HomeContent() {
     },
     {
       title: t.homeSections?.categories?.consumablesTitle || 'Consumables',
-      description: t.homeSections?.categories?.consumablesDesc || 'Inks, hot melt powder, film rolls, emulsions, and wash chemicals — the supplies that keep your shop running.',
+      description: t.homeSections?.categories?.consumablesDesc || 'Inks, hot melt powder, film rolls, emulsions, and wash chemicals - the supplies that keep your shop running.',
       href: '/materials',
       image: '/images/catalog/consumables.webp',
       icon: FlaskConical,
@@ -143,7 +143,7 @@ function HomeContent() {
   const benefits = [
     { icon: <ShieldIcon />, title: t.homeSections?.benefits?.b1Title || 'Premium Quality', desc: t.homeSections?.benefits?.b1Desc || 'Top-grade materials and advanced printing technology for lasting results.' },
     { icon: <DropletIcon />, title: t.homeSections?.benefits?.b2Title || 'Vibrant Colors', desc: t.homeSections?.benefits?.b2Desc || 'High-opacity, ultra-vibrant inks that stand out on any fabric color.' },
-    { icon: <LayersIcon />, title: t.homeSections?.benefits?.b3Title || 'No Minimum Order', desc: t.homeSections?.benefits?.b3Desc || 'Order one sheet or thousands — no minimums, ever.' },
+    { icon: <LayersIcon />, title: t.homeSections?.benefits?.b3Title || 'No Minimum Order', desc: t.homeSections?.benefits?.b3Desc || 'Order one sheet or thousands - no minimums, ever.' },
     { icon: <HeadphonesIcon />, title: t.homeSections?.benefits?.b4Title || 'Expert Support', desc: t.homeSections?.benefits?.b4Desc || 'Our team is here to help at every step of your order.' },
     { icon: <ThumbsUpIcon />, title: t.homeSections?.benefits?.b5Title || 'Satisfaction Guarantee', desc: t.homeSections?.benefits?.b5Desc || "If you're not happy, we make it right. No questions asked." },
   ];

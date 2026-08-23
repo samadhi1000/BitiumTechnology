@@ -492,7 +492,7 @@ export async function updateProduct(
       };
     });
   } else {
-    // No size change — keep existing variants as-is
+    // No size change - keep existing variants as-is
     updatedVariants = existing.variants ?? [];
   }
 

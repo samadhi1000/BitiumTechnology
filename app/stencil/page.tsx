@@ -68,7 +68,7 @@ const STENCIL_CONFIG_EN: CategoryPageConfig = {
     sections: [
       {
         title: 'Why laser-cut stencils?',
-        content: 'Hand-cut stencils shift a little every time — a curve here, a corner there. A laser follows your file exactly, so if you\'re repeating a pattern across ten sarees or a whole wall mural, every cut matches the last one.',
+        content: 'Hand-cut stencils shift a little every time - a curve here, a corner there. A laser follows your file exactly, so if you\'re repeating a pattern across ten sarees or a whole wall mural, every cut matches the last one.',
       },
       {
         title: 'What you can use them for',
@@ -82,7 +82,7 @@ const STENCIL_CONFIG_EN: CategoryPageConfig = {
       },
       {
         title: 'Getting your design ready',
-        content: 'You can send us a photo of a sketch, a vector file, or just describe what you want — we\'ll clean it up and turn it into a cuttable design before anything goes near the laser. If a detail is too fine to hold its shape once cut, we\'ll flag it and suggest a fix rather than print it as-is.',
+        content: 'You can send us a photo of a sketch, a vector file, or just describe what you want - we\'ll clean it up and turn it into a cuttable design before anything goes near the laser. If a detail is too fine to hold its shape once cut, we\'ll flag it and suggest a fix rather than print it as-is.',
       },
       {
         title: 'Turnaround',
@@ -158,7 +158,7 @@ const STENCIL_CONFIG_SI: CategoryPageConfig = {
     sections: [
       {
         title: 'ලේසර් මඟින් කපන ලද ස්ටෙන්සිල් භාවිත කරන්නේ ඇයි?',
-        content: 'අතින් කපන ලද ස්ටෙන්සිල් භාවිත කරන සෑම අවස්ථාවකදීම සුළු වශයෙන් වෙනස් විය හැක — මෙතැනින් වක්‍රයක්, එතැනින් කොනක් ආදී වශයෙන්. නමුත් ලේසර් කටර් එකක් ඔබ ලබාදෙන පරිගණක ගොනුව (file) ඒ අයුරින්ම අනුගමනය කරයි. එබැවින් ඔබ සාරි දහයක් පුරා හෝ සම්පූර්ණ බිත්ති සිතුවමක් පුරා එකම රටාවක් නැවත නැවතත් සිදු කළද, සෑම කැපීමක්ම එකිනෙකට පරිපූර්ණ ලෙස ගැලපේ.',
+        content: 'අතින් කපන ලද ස්ටෙන්සිල් භාවිත කරන සෑම අවස්ථාවකදීම සුළු වශයෙන් වෙනස් විය හැක - මෙතැනින් වක්‍රයක්, එතැනින් කොනක් ආදී වශයෙන්. නමුත් ලේසර් කටර් එකක් ඔබ ලබාදෙන පරිගණක ගොනුව (file) ඒ අයුරින්ම අනුගමනය කරයි. එබැවින් ඔබ සාරි දහයක් පුරා හෝ සම්පූර්ණ බිත්ති සිතුවමක් පුරා එකම රටාවක් නැවත නැවතත් සිදු කළද, සෑම කැපීමක්ම එකිනෙකට පරිපූර්ණ ලෙස ගැලපේ.',
       },
       {
         title: 'මේවා ඔබට කුමන දේ සඳහා භාවිත කළ හැකිද?',
@@ -172,7 +172,7 @@ const STENCIL_CONFIG_SI: CategoryPageConfig = {
       },
       {
         title: 'ඔබේ සැලසුම සූදානම් කරගන්නා ආකාරය',
-        content: 'ඔබට ඇඳි චිත්‍රයක ඡායාරූපයක්, වෙක්ටර් ගොනුවක් (vector file) අප වෙත එවිය හැක, නැතහොත් ඔබට අවශ්‍ය දේ විස්තර කළ හැක — ලේසර් කැපීමට ප්‍රථම අපි එය පිරිසිදු කර කැපීමට සුදුසු මෝස්තරයක් බවට පත් කරන්නෙමු. කැපීමෙන් පසු හැඩය රඳවා ගැනීමට නොහැකි තරම් සියුම් විස්තරයක් ඇත්නම්, අපි එය එලෙසම මුද්‍රණය නොකර, එය පෙන්වා දී නිවැරදි කිරීමක් යෝජනා කරන්නෙමු.',
+        content: 'ඔබට ඇඳි චිත්‍රයක ඡායාරූපයක්, වෙක්ටර් ගොනුවක් (vector file) අප වෙත එවිය හැක, නැතහොත් ඔබට අවශ්‍ය දේ විස්තර කළ හැක - ලේසර් කැපීමට ප්‍රථම අපි එය පිරිසිදු කර කැපීමට සුදුසු මෝස්තරයක් බවට පත් කරන්නෙමු. කැපීමෙන් පසු හැඩය රඳවා ගැනීමට නොහැකි තරම් සියුම් විස්තරයක් ඇත්නම්, අපි එය එලෙසම මුද්‍රණය නොකර, එය පෙන්වා දී නිවැරදි කිරීමක් යෝජනා කරන්නෙමු.',
       },
       {
         title: 'නිම කිරීමට ගතවන කාලය',

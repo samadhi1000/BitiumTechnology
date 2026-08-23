@@ -13,7 +13,7 @@ const SCREEN_PRINTING_CONFIG_EN: CategoryPageConfig = {
   titlePrimary: 'Screen Printing',
   titleHighlight: 'Collection',
   badgeText: 'Trade Screen Printing Supplies',
-  description: 'Custom exposed screens, vectorized artwork, and positive tracing films — made to your exact design, ready to print with.',
+  description: 'Custom exposed screens, vectorized artwork, and positive tracing films - made to your exact design, ready to print with.',
   heroImage: '/images/hero-cards/screenprint.webp',
   searchPlaceholder: 'Search screens, films & supplies...',
   itemSingular: 'Screen / Supply',
@@ -72,9 +72,9 @@ const SCREEN_PRINTING_CONFIG_EN: CategoryPageConfig = {
         title: 'Good to know before you order',
         content: 'A few things that help us get your screen right the first time.',
         bullets: [
-          'Fine detail and small text need a finer mesh — we\'ll tell you if your design needs adjusting to print cleanly.',
+          'Fine detail and small text need a finer mesh - we\'ll tell you if your design needs adjusting to print cleanly.',
           'Multi-color designs need a separate screen per color; we can help you figure out the breakdown if you\'re not sure.',
-          'Screens are reusable — with basic care, one screen can print hundreds of shirts.',
+          'Screens are reusable - with basic care, one screen can print hundreds of shirts.',
         ],
       },
       {

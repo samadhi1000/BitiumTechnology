@@ -378,7 +378,7 @@ export default function DynamicMockupCustomizer() {
   };
 
 
-  // Add customized tee to cart (async — uploads previews to Cloudinary first)
+  // Add customized tee to cart (async - uploads previews to Cloudinary first)
   const handleAddToCart = async () => {
     if (!canvas) return;
     setUploadError(null);
@@ -387,7 +387,7 @@ export default function DynamicMockupCustomizer() {
     canvas.discardActiveObject();
     canvas.renderAll();
 
-    // Export canvas Data URLs (only used locally — not stored in cart)
+    // Export canvas Data URLs (only used locally - not stored in cart)
     const frontDataUrl = canvas.toDataURL({ format: 'png', multiplier: 1.5 });
 
     let backDataUrl: string | undefined;
@@ -403,7 +403,7 @@ export default function DynamicMockupCustomizer() {
 
     // ── Upload previews to Cloudinary ──────────────────────────────────────
     // We upload BEFORE dispatching to the store so that only tiny CDN URLs
-    // land in localStorage — never raw base64 blobs.
+    // land in localStorage - never raw base64 blobs.
     setIsUploading(true);
     let frontPreviewCloudinaryUrl: string | undefined;
     let backPreviewCloudinaryUrl: string | undefined;
@@ -422,7 +422,7 @@ export default function DynamicMockupCustomizer() {
       console.error('[3D Customizer] Cloudinary upload failed:', err);
       // Graceful fallback: proceed without CDN URLs so the customer isn't blocked.
       // The cart item will show a placeholder image instead of the preview.
-      setUploadError('Preview upload failed — your item was still added to cart.');
+      setUploadError('Preview upload failed - your item was still added to cart.');
     } finally {
       setIsUploading(false);
     }

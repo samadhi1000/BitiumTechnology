@@ -62,7 +62,7 @@ const BATIK_STAMP_CONFIG_EN: CategoryPageConfig = {
     sections: [
       {
         title: 'Copper vs. wood stamps',
-        content: 'Copper stamps (cap) hold fine, repeating detail well and last through heavy daily use — the standard choice for production batik. Wood stamps carve more freely, so they suit bolder, one-off, or hand-carved motifs where a little natural variation is part of the look.',
+        content: 'Copper stamps (cap) hold fine, repeating detail well and last through heavy daily use - the standard choice for production batik. Wood stamps carve more freely, so they suit bolder, one-off, or hand-carved motifs where a little natural variation is part of the look.',
       },
       {
         title: 'What we need from you',
