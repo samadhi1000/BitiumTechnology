@@ -237,7 +237,7 @@ export default function POSInvoiceGenerator() {
               className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border bg-background text-xs focus:outline-none focus:border-[#2CFF05] transition-colors"
             />
             {filteredProducts.length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-1 border border-border bg-background/95 rounded-xl shadow-2xl overflow-hidden z-25">
+              <div className="absolute top-full left-0 right-0 mt-1 border border-border bg-slate-950 rounded-xl shadow-2xl overflow-hidden z-[50]">
                 {filteredProducts.map(p => (
                   <button
                     key={p.id}
