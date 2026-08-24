@@ -256,12 +256,12 @@ export const HeroShowcaseCarousel: React.FC = () => {
       {/* Header inside frame */}
       <div className="mb-3.5 flex items-center justify-between relative z-10">
         <h3 className="font-heading font-extrabold text-sm sm:text-[15px] tracking-tight flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full animate-pulse shrink-0" style={{ backgroundColor: "#2CFF05" }} />
+          <span className="w-2 h-2 rounded-full animate-pulse shrink-0 hero-carousel-dot bg-[#2CFF05] shadow-[0_0_8px_rgba(44,255,5,0.8)]" />
           <span>
-            <span className="font-black text-white" style={{ color: "#ffffff" }}>
+            <span className="font-black text-white hero-carousel-title-white" style={{ color: "#ffffff" }}>
               Everything You Need to
             </span>{" "}
-            <span className="font-black drop-shadow-[0_0_10px_rgba(44,255,5,0.5)]" style={{ color: "#2CFF05" }}>
+            <span className="font-black text-[#2CFF05] hero-carousel-highlight drop-shadow-[0_0_10px_rgba(44,255,5,0.7)] [text-shadow:0_0_12px_rgba(44,255,5,0.75),0_1px_2px_rgba(0,0,0,0.8)]" style={{ color: "#2CFF05" }}>
               Create, Print &amp; Deliver
             </span>
           </span>

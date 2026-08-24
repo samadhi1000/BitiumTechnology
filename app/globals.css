@@ -197,8 +197,28 @@ html.light-mode .group-hover\:text-primary:hover {
 html.light-mode .hero-title span,
 html.light-mode h1 span,
 html.light-mode h2 span,
-html.light-mode h3 span {
+html.light-mode h3:not(.hero-carousel-header) span:not(.hero-carousel-title-white):not(.hero-carousel-highlight) {
   color: #059669 !important;
+}
+
+/* Ensure Hero Showcase Carousel header text maintains high visibility and crisp contrast in all modes */
+html.light-mode .hero-carousel-title-white,
+.hero-carousel-title-white {
+  color: #ffffff !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+html.light-mode .hero-carousel-highlight,
+.hero-carousel-highlight {
+  color: #2CFF05 !important;
+  text-shadow: 0 0 14px rgba(44, 255, 5, 0.8), 0 0 24px rgba(44, 255, 5, 0.4), 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+  filter: drop-shadow(0 0 8px rgba(44, 255, 5, 0.6));
+}
+
+html.light-mode .hero-carousel-dot,
+.hero-carousel-dot {
+  background-color: #2CFF05 !important;
+  box-shadow: 0 0 10px rgba(44, 255, 5, 0.8) !important;
 }
 
 html.light-mode body {
@@ -350,14 +370,49 @@ html.dark .filter-btn {
   border-color: #334155;
   color: #cbd5e1;
 }
-.filter-btn.active, .filter-btn:hover {
+.filter-btn.active {
+  background: #059669;
+  border-color: #059669;
+  color: #ffffff;
+}
+.filter-btn:hover:not(.active) {
+  background: #f0fdf4;
+  border-color: #059669;
+  color: #059669;
+}
+.filter-btn.active:hover {
+  background: #047857;
+  border-color: #047857;
+  color: #ffffff;
+}
+html.light-mode .filter-btn.active {
+  background: #059669 !important;
+  border-color: #059669 !important;
+  color: #ffffff !important;
+}
+html.light-mode .filter-btn:hover:not(.active) {
+  background: #f0fdf4 !important;
+  border-color: #059669 !important;
+  color: #059669 !important;
+}
+html.light-mode .filter-btn.active:hover {
+  background: #047857 !important;
+  border-color: #047857 !important;
+  color: #ffffff !important;
+}
+html.dark .filter-btn.active {
   background: #2CFF05;
   border-color: #2CFF05;
   color: #0a0a0a;
 }
-html.dark .filter-btn.active, html.dark .filter-btn:hover {
-  background: #2CFF05;
+html.dark .filter-btn:hover:not(.active) {
+  background: rgba(44, 255, 5, 0.1);
   border-color: #2CFF05;
+  color: #2CFF05;
+}
+html.dark .filter-btn.active:hover {
+  background: #45ff24;
+  border-color: #45ff24;
   color: #0a0a0a;
 }
 

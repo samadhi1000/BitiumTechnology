@@ -581,7 +581,7 @@ function HomeContent() {
       <section className="py-20 px-6 bg-zinc-50 dark:bg-card/40 border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-9">
-            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">
+            <span className="font-heading font-bold text-[13px] text-emerald-600 dark:text-[#2CFF05] uppercase tracking-widest">
               {t.homeSections?.galleryBadge || 'Gallery'}
             </span>
             <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">
