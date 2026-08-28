@@ -233,8 +233,9 @@ function HomeContent() {
             "email": "info@bitium.lk",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "102 Galle Road",
-              "addressLocality": "Colombo 03",
+              "streetAddress": "391/1 New Town Digana Rajawella",
+              "addressLocality": "Digana",
+              "postalCode": "20180",
               "addressCountry": "LK"
             },
             "geo": {

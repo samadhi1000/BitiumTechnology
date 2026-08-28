@@ -32,7 +32,7 @@ export default function ContactPage() {
             "@context": "https://schema.org",
             "@type": "ContactPage",
             "name": "Contact Bitium Technology",
-            "description": "Get in touch with Bitium Technology for custom DTF printing, stencils, and screen printing services in Colombo, Sri Lanka.",
+            "description": "Get in touch with Bitium Technology for custom DTF printing, stencils, and screen printing services in Digana, Sri Lanka.",
             "url": "https://www.bitiumtechnology.com/contact",
             "mainEntity": {
               "@type": "LocalBusiness",
@@ -41,8 +41,9 @@ export default function ContactPage() {
               "email": "hello@bitiumtechnology.com",
               "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "102 Galle Road",
-                "addressLocality": "Colombo 03",
+                "streetAddress": "391/1 New Town Digana Rajawella",
+                "addressLocality": "Digana",
+                "postalCode": "20180",
                 "addressCountry": "LK"
               }
             }
@@ -98,7 +99,7 @@ export default function ContactPage() {
                   <MapPin size={18} className="text-[#2CFF05] mt-0.5" />
                   <div>
                     <p className="font-semibold text-foreground">Main Office & Factory</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">102 Galle Road, Colombo 03, Sri Lanka</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">391/1 New Town Digana Rajawella, Digana, Sri Lanka, 20180</p>
                   </div>
                 </div>
 
