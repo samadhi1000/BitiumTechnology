@@ -143,6 +143,8 @@ export default function Controls({
             <LayoutGrid size={16} />
           </button>
 
+          {/* Download button - disabled/hidden for now; uncomment when required to enable */}
+          {/*
           <a
             href={pdfUrl}
             download="Bitium-Technology-Product-Catalog.pdf"
@@ -151,6 +153,7 @@ export default function Controls({
           >
             <Download size={16} />
           </a>
+          */}
 
           <button
             onClick={onToggleFullscreen}
