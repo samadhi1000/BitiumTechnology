@@ -103,7 +103,16 @@ export default function Page({
   };
 
   return (
-    <div className="w-full h-full relative select-none overflow-hidden bg-slate-900 rounded-sm shadow-2xl flex items-center justify-center">
+    <div 
+      className="w-full h-full relative select-none overflow-hidden bg-slate-900 rounded-sm shadow-2xl flex items-center justify-center"
+      onContextMenu={(e) => e.preventDefault()}
+      onDragStart={(e) => e.preventDefault()}
+      style={{
+        WebkitUserSelect: 'none',
+        userSelect: 'none',
+        WebkitTouchCallout: 'none',
+      }}
+    >
       {/* Hidden canvas for rendering */}
       {!imgUrl && (
         <canvas 
@@ -117,9 +126,20 @@ export default function Page({
         <img
           src={imgUrl}
           alt={`Catalog Page ${pageNum}`}
-          className="w-full h-full object-contain pointer-events-none"
+          draggable={false}
+          onContextMenu={(e) => e.preventDefault()}
+          onDragStart={(e) => e.preventDefault()}
+          className="w-full h-full object-contain pointer-events-none select-none"
         />
       )}
+
+      {/* Transparent protection shield layer: prevents direct image right-click or tap-to-save */}
+      <div 
+        className="absolute inset-0 z-10 select-none bg-transparent"
+        onContextMenu={(e) => e.preventDefault()}
+        onDragStart={(e) => e.preventDefault()}
+        style={{ pointerEvents: 'none' }}
+      />
 
       {/* Loading state indicator */}
       {loading && !imgUrl && (

@@ -29,6 +29,14 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Invalid catalog type' }, { status: 400 });
   }
 
+  // Prevent direct browser URL navigation / saving (redirect to viewer)
+  const secFetchDest = request.headers.get('sec-fetch-dest');
+  const secFetchMode = request.headers.get('sec-fetch-mode');
+  if (secFetchDest === 'document' && secFetchMode === 'navigate') {
+    const origin = new URL(request.url).origin;
+    return NextResponse.redirect(`${origin}/product-catalog?type=${type}`);
+  }
+
   const s3 = new S3Client({
     region: 'auto',
     endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
@@ -58,8 +66,10 @@ export async function GET(request: Request) {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Length': pdfBuffer.length.toString(),
-        // Allow PDF.js (same origin) to read the response
-        'Cache-Control': 'private, max-age=3600',
+        'Content-Disposition': 'inline',
+        'X-Content-Type-Options': 'nosniff',
+        'X-Frame-Options': 'SAMEORIGIN',
+        'Cache-Control': 'private, no-cache, no-store, must-revalidate',
       },
     });
   } catch (error) {

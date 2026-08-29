@@ -109,9 +109,25 @@ export default function FlipbookViewer({ pdfUrl }: FlipbookViewerProps) {
 
 
 
-  // Keyboard zoom controls (+ / -)
+  // Keyboard controls (+ / -, fullscreen, and protection against Ctrl+P, Ctrl+S, Ctrl+U)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Prevent Print (Ctrl+P / Cmd+P)
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')) {
+        e.preventDefault();
+        return;
+      }
+      // Prevent Save Page / Asset (Ctrl+S / Cmd+S)
+      if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+        e.preventDefault();
+        return;
+      }
+      // Prevent View Source (Ctrl+U / Cmd+U)
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'u' || e.key === 'U')) {
+        e.preventDefault();
+        return;
+      }
+
       if (e.key === '=' || e.key === '+') {
         e.preventDefault();
         zoomIn();
@@ -202,10 +218,32 @@ export default function FlipbookViewer({ pdfUrl }: FlipbookViewerProps) {
   return (
     <div 
       ref={viewerRef}
+      onContextMenu={(e) => e.preventDefault()}
+      onDragStart={(e) => e.preventDefault()}
       className={`relative w-full min-h-screen bg-gradient-to-b from-[#0f172a] via-[#090d16] to-[#020617] flex flex-col items-center justify-center overflow-hidden py-10 px-4 md:px-8 select-none z-30 ${
         isFullscreen ? 'fixed inset-0 py-16' : ''
       }`}
+      style={{
+        WebkitUserSelect: 'none',
+        userSelect: 'none',
+        WebkitTouchCallout: 'none',
+      }}
     >
+      {/* CSS to suppress printing & saving through browser print preview */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            @media print {
+              html, body, div, #__next {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+                overflow: hidden !important;
+              }
+            }
+          `,
+        }}
+      />
       
       {/* Background glow lighting effect */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-[#2CFF05]/5 rounded-full blur-[150px] pointer-events-none z-0" />
