@@ -146,13 +146,6 @@ const CATEGORY_TAGS = [
 ];
 
 
-const EXPERT_RESPONSES = [
-  "Wow, that is an awesome project! From my experience in the workshop, making sure your drying oven maintains a stable temperature profile is absolutely vital. If the ink is under-cured, it cracks easily; if over-cured, the fabric gets scorched. Let us know how it works out!",
-  "Highly recommend checking the mesh tension before exposing the emulsion. If the mesh is too loose, the dots shift during printing. Keep rocking the high-quality designs!",
-  "Great question. For premium fabric stamps, seasoned jackwood is the gold standard because it handles water-based dye pastes without twisting. Make sure to sand the relief flat after hand-carving.",
-  "Excellent choice! When running custom laser outlines on acrylic, always peel the paper masking AFTER cutting to avoid burn marks, but keep it on during engraving to prevent fogging from vaporized plastic."
-];
-
 export default function CommunityForumPage() {
   const { user, profile } = useAuth();
   const { language } = useLanguage();
@@ -332,37 +325,6 @@ export default function CommunityForumPage() {
     setNewContent('');
     setNewImageUrl('');
     setIsPosting(false);
-
-    setTimeout(() => {
-      const randomExpert = ['Suresh Bandara', 'Amani Fernando', 'Nihal Gunawardena', 'Dilani Silva'][Math.floor(Math.random() * 4)];
-      const randomAvatar = [
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80',
-        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
-        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80'
-      ][Math.floor(Math.random() * 4)];
-      
-      const responseText = EXPERT_RESPONSES[Math.floor(Math.random() * EXPERT_RESPONSES.length)];
-      
-      const simulatedComment: Comment = {
-        id: `comment-${Date.now()}`,
-        authorName: randomExpert,
-        authorAvatar: randomAvatar,
-        authorBadge: 'Industry Expert',
-        content: responseText,
-        createdAt: 'Just now'
-      };
-
-      fetch('/api/community', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'add_comment', postId: newPost.id, comment: simulatedComment }),
-      }).then(() => {
-        fetchCommunityPosts();
-        setToastMessage(`New reply from ${randomExpert}!`);
-        setTimeout(() => setToastMessage(''), 3000);
-      });
-    }, 4000);
   };
 
   const handleLikePost = async (postId: string) => {
