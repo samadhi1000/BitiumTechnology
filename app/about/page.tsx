@@ -14,7 +14,8 @@ import {
   Cpu, 
   CheckCircle2, 
   ArrowRight,
-  Sparkle
+  Sparkle,
+  Quote
 } from 'lucide-react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/context/LanguageContext';
@@ -93,13 +94,13 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             
             {/* ── VISION CARD ── */}
-            <div className="relative group rounded-3xl p-8 sm:p-10 bg-gradient-to-b from-card/80 to-card/30 border border-border/80 hover:border-[#2CFF05]/50 transition-all duration-300 shadow-xl backdrop-blur-sm flex flex-col justify-between overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[#2CFF05]/10 rounded-full blur-3xl group-hover:bg-[#2CFF05]/20 transition-all duration-500 pointer-events-none" />
+            <div className="relative group rounded-3xl p-8 sm:p-10 bg-gradient-to-b from-card/85 via-card/50 to-card/30 border border-border/80 hover:border-[#2CFF05]/50 transition-all duration-300 shadow-xl backdrop-blur-sm flex flex-col justify-between overflow-hidden">
+              <div className="absolute top-0 right-0 w-36 h-36 bg-[#2CFF05]/10 rounded-full blur-3xl group-hover:bg-[#2CFF05]/20 transition-all duration-500 pointer-events-none" />
               
               <div className="space-y-6">
                 {/* Header Badge & Icon */}
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3.5">
                     <div className="w-12 h-12 rounded-2xl bg-[#2CFF05]/10 border border-[#2CFF05]/30 flex items-center justify-center text-[#2CFF05] shadow-inner group-hover:scale-105 transition-transform">
                       <Eye size={24} />
                     </div>
@@ -107,60 +108,64 @@ export default function AboutPage() {
                       <span className="text-[11px] font-bold uppercase tracking-wider text-[#2CFF05]">
                         {isSinhala ? 'අනාගත දිශානතිය' : 'Future Horizon'}
                       </span>
-                      <h3 className="text-2xl font-black text-foreground font-heading flex items-center gap-2">
-                        Vision <span className="text-muted-foreground font-normal text-lg">| දැක්ම</span>
+                      <h3 className="text-2xl sm:text-3xl font-black text-foreground font-heading">
+                        {isSinhala ? 'දැක්ම (Vision)' : 'Our Vision'}
                       </h3>
                     </div>
                   </div>
                   <Globe2 size={28} className="text-[#2CFF05]/30 group-hover:text-[#2CFF05]/60 transition-colors" />
                 </div>
 
-                {/* Vision Sinhala Statement */}
-                <div className="p-5 rounded-2xl bg-background/60 border border-border/60 relative">
-                  <span className="text-xs font-semibold text-[#2CFF05] uppercase tracking-wider block mb-2">
-                    සිංහල මාධ්‍යයෙන්
-                  </span>
-                  <p className="text-sm sm:text-base text-foreground/90 font-medium leading-relaxed">
-                    &ldquo;දේශීය හා ජාත්‍යන්තර ඇඳුම්, මුද්‍රණ හා නිර්මාණ ක්ෂේත්‍රයේ නවීන තාක්ෂණය, නිර්මාණශීලීත්වය සහ ගුණාත්මකභාවය එකට ගෙන එමින්, සාර්ථක හා ස්වාධීන ව්‍යවසායකයන් බිහිකරන ශ්‍රී ලංකාවේ සහ ලෝකයේ විශ්වාසනීය ප්‍රමුඛතම ආයතනයක් බවට පත්වීම&rdquo;
-                  </p>
-                </div>
-
-                {/* Vision English Statement */}
-                <div className="p-5 rounded-2xl bg-background/40 border border-border/40">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-2">
-                    English Translation
-                  </span>
-                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed italic">
-                    &ldquo;To become a trusted global leader in apparel, printing, and creative design solutions by integrating modern technology, innovation, and quality craftsmanship while empowering a successful and independent generation of entrepreneurs.&rdquo;
+                {/* Vision Statement */}
+                <div className="p-6 sm:p-7 rounded-2xl bg-background/65 border border-border/70 relative shadow-inner">
+                  <Quote size={24} className="text-[#2CFF05]/25 absolute top-4 right-4 pointer-events-none" />
+                  <p className="text-sm sm:text-[15px] text-foreground/95 font-medium leading-relaxed pr-6">
+                    {isSinhala ? (
+                      '“දේශීය හා ජාත්‍යන්තර ඇඳුම්, මුද්‍රණ හා නිර්මාණ ක්ෂේත්‍රයේ නවීන තාක්ෂණය, නිර්මාණශීලීත්වය සහ ගුණාත්මකභාවය එකට ගෙන එමින්, සාර්ථක හා ස්වාධීන ව්‍යවසායකයන් බිහිකරන ශ්‍රී ලංකාවේ සහ ලෝකයේ විශ්වාසනීය ප්‍රමුඛතම ආයතනයක් බවට පත්වීම”'
+                    ) : (
+                      '“To become a trusted global leader in apparel, printing, and creative design solutions by integrating modern technology, innovation, and quality craftsmanship while empowering a successful and independent generation of entrepreneurs.”'
+                    )}
                   </p>
                 </div>
               </div>
 
               {/* Vision Pillars */}
-              <div className="pt-6 mt-6 border-t border-border/60 grid grid-cols-3 gap-2 text-center">
-                <div className="p-2.5 rounded-xl bg-background/30 border border-border/40">
-                  <div className="text-[11px] font-bold text-foreground">Global Leadership</div>
-                  <div className="text-[9px] text-[#2CFF05] mt-0.5">ප්‍රමුඛතම ආයතනය</div>
+              <div className="pt-6 mt-6 border-t border-border/60 grid grid-cols-3 gap-2.5 text-center">
+                <div className="p-3 rounded-xl bg-background/40 border border-border/50 hover:border-[#2CFF05]/30 transition-colors">
+                  <div className="text-[11px] font-bold text-foreground">
+                    {isSinhala ? 'ගෝලීය ප්‍රමුඛතාව' : 'Global Leadership'}
+                  </div>
+                  <div className="text-[9px] text-[#2CFF05] mt-0.5">
+                    {isSinhala ? 'විශ්වාසනීය නායකත්වය' : 'Industry Forefront'}
+                  </div>
                 </div>
-                <div className="p-2.5 rounded-xl bg-background/30 border border-border/40">
-                  <div className="text-[11px] font-bold text-foreground">Tech & Innovation</div>
-                  <div className="text-[9px] text-[#2CFF05] mt-0.5">නවීන තාක්ෂණය</div>
+                <div className="p-3 rounded-xl bg-background/40 border border-border/50 hover:border-[#2CFF05]/30 transition-colors">
+                  <div className="text-[11px] font-bold text-foreground">
+                    {isSinhala ? 'නවීන තාක්ෂණය' : 'Tech & Innovation'}
+                  </div>
+                  <div className="text-[9px] text-[#2CFF05] mt-0.5">
+                    {isSinhala ? 'නිර්මාණශීලී විසඳුම්' : 'Modern Craftsmanship'}
+                  </div>
                 </div>
-                <div className="p-2.5 rounded-xl bg-background/30 border border-border/40">
-                  <div className="text-[11px] font-bold text-foreground">Empowered Future</div>
-                  <div className="text-[9px] text-[#2CFF05] mt-0.5">ස්වාධීන ව්‍යවසායකයින්</div>
+                <div className="p-3 rounded-xl bg-background/40 border border-border/50 hover:border-[#2CFF05]/30 transition-colors">
+                  <div className="text-[11px] font-bold text-foreground">
+                    {isSinhala ? 'ව්‍යවසායක සවිය' : 'Empowered Future'}
+                  </div>
+                  <div className="text-[9px] text-[#2CFF05] mt-0.5">
+                    {isSinhala ? 'ස්වාධීන පරපුරක්' : 'Independent Creators'}
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* ── MISSION CARD ── */}
-            <div className="relative group rounded-3xl p-8 sm:p-10 bg-gradient-to-b from-card/80 to-card/30 border border-border/80 hover:border-[#2CFF05]/50 transition-all duration-300 shadow-xl backdrop-blur-sm flex flex-col justify-between overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[#2CFF05]/10 rounded-full blur-3xl group-hover:bg-[#2CFF05]/20 transition-all duration-500 pointer-events-none" />
+            <div className="relative group rounded-3xl p-8 sm:p-10 bg-gradient-to-b from-card/85 via-card/50 to-card/30 border border-border/80 hover:border-[#2CFF05]/50 transition-all duration-300 shadow-xl backdrop-blur-sm flex flex-col justify-between overflow-hidden">
+              <div className="absolute top-0 right-0 w-36 h-36 bg-[#2CFF05]/10 rounded-full blur-3xl group-hover:bg-[#2CFF05]/20 transition-all duration-500 pointer-events-none" />
               
               <div className="space-y-6">
                 {/* Header Badge & Icon */}
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3.5">
                     <div className="w-12 h-12 rounded-2xl bg-[#2CFF05]/10 border border-[#2CFF05]/30 flex items-center justify-center text-[#2CFF05] shadow-inner group-hover:scale-105 transition-transform">
                       <Target size={24} />
                     </div>
@@ -168,48 +173,52 @@ export default function AboutPage() {
                       <span className="text-[11px] font-bold uppercase tracking-wider text-[#2CFF05]">
                         {isSinhala ? 'ක්‍රියාකාරී මෙහෙයුම' : 'Core Mission'}
                       </span>
-                      <h3 className="text-2xl font-black text-foreground font-heading flex items-center gap-2">
-                        Mission <span className="text-muted-foreground font-normal text-lg">| මෙහෙවර</span>
+                      <h3 className="text-2xl sm:text-3xl font-black text-foreground font-heading">
+                        {isSinhala ? 'මෙහෙවර (Mission)' : 'Our Mission'}
                       </h3>
                     </div>
                   </div>
                   <Rocket size={28} className="text-[#2CFF05]/30 group-hover:text-[#2CFF05]/60 transition-colors" />
                 </div>
 
-                {/* Mission Sinhala Statement */}
-                <div className="p-5 rounded-2xl bg-background/60 border border-border/60 relative">
-                  <span className="text-xs font-semibold text-[#2CFF05] uppercase tracking-wider block mb-2">
-                    සිංහල මාධ්‍යයෙන්
-                  </span>
-                  <p className="text-sm sm:text-base text-foreground/90 font-medium leading-relaxed">
-                    &ldquo;දැනට ව්‍යාපාරවල නිරත සහ නව ව්‍යාපාර ආරම්භ කිරීමට බලාපොරොත්තු වන ව්‍යවසායකයන්ට උසස් තත්ත්වයේ මුද්‍රණ සේවා, නිර්මාණ විසඳුම්, අමුද්‍රව්‍ය සහ නවීන තාක්ෂණික සහාය එකම වහලක් යටින් සපයමින්, ඔවුන්ගේ ව්‍යාපාරික සිහින යථාර්ථයක් බවට පත් කිරීමට විශ්වාසනීය සහකරුවකු වීම.&rdquo;
-                  </p>
-                </div>
-
-                {/* Mission English Statement */}
-                <div className="p-5 rounded-2xl bg-background/40 border border-border/40">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-2">
-                    English Translation
-                  </span>
-                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed italic">
-                    &ldquo;To be a reliable partner for existing and aspiring entrepreneurs by providing high-quality printing services, creative design solutions, raw materials, and innovative technological support under one roof, helping transform business ideas into successful realities.&rdquo;
+                {/* Mission Statement */}
+                <div className="p-6 sm:p-7 rounded-2xl bg-background/65 border border-border/70 relative shadow-inner">
+                  <Quote size={24} className="text-[#2CFF05]/25 absolute top-4 right-4 pointer-events-none" />
+                  <p className="text-sm sm:text-[15px] text-foreground/95 font-medium leading-relaxed pr-6">
+                    {isSinhala ? (
+                      '“දැනට ව්‍යාපාරවල නිරත සහ නව ව්‍යාපාර ආරම්භ කිරීමට බලාපොරොත්තු වන ව්‍යවසායකයන්ට උසස් තත්ත්වයේ මුද්‍රණ සේවා, නිර්මාණ විසඳුම්, අමුද්‍රව්‍ය සහ නවීන තාක්ෂණික සහාය එකම වහලක් යටින් සපයමින්, ඔවුන්ගේ ව්‍යාපාරික සිහින යථාර්ථයක් බවට පත් කිරීමට විශ්වාසනීය සහකරුවකු වීම.”'
+                    ) : (
+                      '“To be a reliable partner for existing and aspiring entrepreneurs by providing high-quality printing services, creative design solutions, raw materials, and innovative technological support under one roof, helping transform business ideas into successful realities.”'
+                    )}
                   </p>
                 </div>
               </div>
 
               {/* Mission Pillars */}
-              <div className="pt-6 mt-6 border-t border-border/60 grid grid-cols-3 gap-2 text-center">
-                <div className="p-2.5 rounded-xl bg-background/30 border border-border/40">
-                  <div className="text-[11px] font-bold text-foreground">One-Stop Solution</div>
-                  <div className="text-[9px] text-[#2CFF05] mt-0.5">එකම වහලක් යටින්</div>
+              <div className="pt-6 mt-6 border-t border-border/60 grid grid-cols-3 gap-2.5 text-center">
+                <div className="p-3 rounded-xl bg-background/40 border border-border/50 hover:border-[#2CFF05]/30 transition-colors">
+                  <div className="text-[11px] font-bold text-foreground">
+                    {isSinhala ? 'එකම වහලක් යටින්' : 'One-Stop Hub'}
+                  </div>
+                  <div className="text-[9px] text-[#2CFF05] mt-0.5">
+                    {isSinhala ? 'සියලු මුද්‍රණ විසඳුම්' : 'Printing & Materials'}
+                  </div>
                 </div>
-                <div className="p-2.5 rounded-xl bg-background/30 border border-border/40">
-                  <div className="text-[11px] font-bold text-foreground">Reliable Partner</div>
-                  <div className="text-[9px] text-[#2CFF05] mt-0.5">විශ්වාසනීය සහකරු</div>
+                <div className="p-3 rounded-xl bg-background/40 border border-border/50 hover:border-[#2CFF05]/30 transition-colors">
+                  <div className="text-[11px] font-bold text-foreground">
+                    {isSinhala ? 'විශ්වාසනීය සහකරු' : 'Reliable Partner'}
+                  </div>
+                  <div className="text-[9px] text-[#2CFF05] mt-0.5">
+                    {isSinhala ? 'තාක්ෂණික මගපෙන්වීම' : 'End-to-End Support'}
+                  </div>
                 </div>
-                <div className="p-2.5 rounded-xl bg-background/30 border border-border/40">
-                  <div className="text-[11px] font-bold text-foreground">Real Results</div>
-                  <div className="text-[9px] text-[#2CFF05] mt-0.5">යථාර්ථයක් වූ සිහින</div>
+                <div className="p-3 rounded-xl bg-background/40 border border-border/50 hover:border-[#2CFF05]/30 transition-colors">
+                  <div className="text-[11px] font-bold text-foreground">
+                    {isSinhala ? 'යථාර්ථයක් වූ සිහින' : 'Realizing Dreams'}
+                  </div>
+                  <div className="text-[9px] text-[#2CFF05] mt-0.5">
+                    {isSinhala ? 'සාර්ථක ව්‍යාපාරිකයන්' : 'Business Growth'}
+                  </div>
                 </div>
               </div>
             </div>
