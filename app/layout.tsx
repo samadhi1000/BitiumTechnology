@@ -59,6 +59,9 @@ export const metadata: Metadata = {
     description: "Design your own DTF transfers online, preview them in 3D, and get vibrant, durable prints shipped in 24 hours. No minimum orders. Try Bitium today.",
     images: ["/images/og-bitium.webp"],
   },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({

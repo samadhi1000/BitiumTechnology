@@ -4,9 +4,9 @@ const cspHeader = `
   default-src 'self';
   script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.payhere.lk https://sandbox.payhere.lk;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-  img-src 'self' blob: data: https://res.cloudinary.com https://images.unsplash.com https://*.supabase.co;
+  img-src 'self' blob: data: https://res.cloudinary.com https://images.unsplash.com https://*.supabase.co https://*.r2.dev https://*.cloudflarestorage.com;
   font-src 'self' https://fonts.gstatic.com;
-  connect-src 'self' https://api.cloudinary.com https://*.supabase.co wss://*.supabase.co https://www.payhere.lk https://sandbox.payhere.lk;
+  connect-src 'self' https://api.cloudinary.com https://*.supabase.co wss://*.supabase.co https://www.payhere.lk https://sandbox.payhere.lk https://*.r2.dev https://*.cloudflarestorage.com;
   frame-src 'self' https://www.payhere.lk https://sandbox.payhere.lk;
   object-src 'none';
   base-uri 'self';
@@ -15,9 +15,13 @@ const cspHeader = `
   upgrade-insecure-requests;
 `.replace(/\s{2,}/g, ' ').trim();
 
+
 const nextConfig: NextConfig = {
   images: {
-    formats: ['image/avif', 'image/webp'],
+    // Disable Vercel image optimizer entirely — images are served directly from
+    // Cloudinary / Cloudflare CDN which handle their own optimized delivery.
+    // This eliminates image-related "Fast Origin Transfer" consumption on Vercel.
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -32,6 +36,16 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: '*.supabase.co',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.r2.dev',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.cloudflarestorage.com',
         pathname: '/**',
       },
     ],

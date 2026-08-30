@@ -23,10 +23,25 @@ export default async function ProductCatalogPage({
   const params = await searchParams;
   const isStencil = params?.type === 'stencil';
   const currentFile = isStencil ? STENCIL_FILE : TRACING_FILE;
-  
-  // Use the PDF proxy route - Vercel server fetches from R2, browser never touches R2 directly
-  // This completely avoids CORS issues with Cloudflare R2
-  const apiUrl = `/api/catalog/pdf?type=${isStencil ? 'stencil' : 'tracing'}`;
+
+  // Fetch a short-lived presigned R2 URL server-side.
+  // The browser will then download the PDF directly from Cloudflare R2 —
+  // Vercel never touches the PDF bytes, eliminating the bandwidth proxy bottleneck.
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+  let pdfUrl = '';
+  try {
+    const res = await fetch(
+      `${siteUrl}/api/catalog/signed-url?file=${encodeURIComponent(currentFile)}`,
+      { cache: 'no-store' } // Always fresh — presigned URLs expire
+    );
+    if (res.ok) {
+      const json = await res.json();
+      pdfUrl = json.url ?? '';
+    }
+  } catch (err) {
+    console.error('Failed to obtain presigned catalog URL:', err);
+  }
+
 
   return (
     <div className="w-full min-h-screen bg-slate-950 text-foreground flex flex-col relative pb-10">
@@ -69,8 +84,16 @@ export default async function ProductCatalogPage({
 
       {/* Main content area */}
       <div className="flex-grow w-full flex flex-col items-center justify-center relative">
-        {/* No key prop - component stays mounted when switching catalogs so the PDF cache works */}
-        <FlipbookIndex pdfUrl={apiUrl} />
+        {pdfUrl ? (
+          /* No key prop - component stays mounted when switching catalogs so the PDF cache works */
+          <FlipbookIndex pdfUrl={pdfUrl} />
+        ) : (
+          <div className="flex flex-col items-center justify-center gap-4 py-20 text-center px-4">
+            <p className="text-slate-400 text-sm">
+              Catalog is temporarily unavailable. Please try again in a moment.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

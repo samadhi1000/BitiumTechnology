@@ -28,10 +28,12 @@ if (accountId && accessKeyId && secretAccessKey) {
  * Generates a temporary secure presigned download link for an asset in Cloudflare R2.
  * @param fileKey The storage path/key of the asset in the R2 bucket.
  * @param expiresSeconds Expiry time of the download link. Defaults to 900 seconds (15 minutes).
+ * @param targetBucket Optional target bucket override (defaults to CLOUDFLARE_R2_BUCKET_NAME or 'bitiumcatalogs').
  */
 export async function getSecureR2DownloadUrl(
   fileKey: string,
-  expiresSeconds = 900
+  expiresSeconds = 900,
+  targetBucket = bucketName
 ): Promise<string> {
   if (!s3Client) {
     // Fallback if R2 credentials are not set up yet
@@ -41,7 +43,7 @@ export async function getSecureR2DownloadUrl(
 
   try {
     const command = new GetObjectCommand({
-      Bucket: bucketName,
+      Bucket: targetBucket,
       Key: fileKey,
     });
 
