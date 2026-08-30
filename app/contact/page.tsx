@@ -5,20 +5,20 @@ import { Mail, Phone, MapPin, Send, MessageSquare, Clock, RefreshCw } from 'luci
 import Link from 'next/link';
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [form, setForm] = useState({ name: '', whatsapp: '', address: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name || !form.email || !form.message) return;
+    if (!form.name || !form.whatsapp || !form.address || !form.message) return;
     
     setLoading(true);
     // Simulate submission
     setTimeout(() => {
       setSubmitted(true);
       setLoading(false);
-      setForm({ name: '', email: '', message: '' });
+      setForm({ name: '', whatsapp: '', address: '', message: '' });
     }, 800);
   };
 
@@ -156,16 +156,31 @@ export default function ContactPage() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label htmlFor="email" className="text-xs font-bold text-muted-foreground uppercase tracking-wide">
-                    Email Address
+                  <label htmlFor="whatsapp" className="text-xs font-bold text-muted-foreground uppercase tracking-wide">
+                    WhatsApp Number
                   </label>
                   <input
-                    type="email"
-                    id="email"
+                    type="tel"
+                    id="whatsapp"
                     required
-                    value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    placeholder="name@company.com"
+                    value={form.whatsapp}
+                    onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
+                    placeholder="+94 77 123 4567"
+                    className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-[#2CFF05] text-sm text-foreground placeholder-zinc-600 outline-none transition-colors"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label htmlFor="address" className="text-xs font-bold text-muted-foreground uppercase tracking-wide">
+                    Address
+                  </label>
+                  <input
+                    type="text"
+                    id="address"
+                    required
+                    value={form.address}
+                    onChange={(e) => setForm({ ...form, address: e.target.value })}
+                    placeholder="Enter your street address, city"
                     className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-[#2CFF05] text-sm text-foreground placeholder-zinc-600 outline-none transition-colors"
                   />
                 </div>
