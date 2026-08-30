@@ -4,7 +4,7 @@ const cspHeader = `
   default-src 'self';
   script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.payhere.lk https://sandbox.payhere.lk;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-  img-src 'self' blob: data: https://res.cloudinary.com https://images.unsplash.com https://*.supabase.co https://*.r2.dev https://*.cloudflarestorage.com;
+  img-src 'self' blob: data: https://res.cloudinary.com https://images.unsplash.com https://*.supabase.co https://*.r2.dev https://*.cloudflarestorage.com https://api.dicebear.com https://lh3.googleusercontent.com;
   font-src 'self' https://fonts.gstatic.com;
   connect-src 'self' https://api.cloudinary.com https://*.supabase.co wss://*.supabase.co https://www.payhere.lk https://sandbox.payhere.lk https://*.r2.dev https://*.cloudflarestorage.com;
   frame-src 'self' https://www.payhere.lk https://sandbox.payhere.lk;
@@ -46,6 +46,16 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: '*.cloudflarestorage.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.dicebear.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
         pathname: '/**',
       },
     ],

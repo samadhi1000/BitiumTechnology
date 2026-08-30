@@ -52,6 +52,90 @@ interface Post {
   isPinned?: boolean;
 }
 
+function getInitials(name: string): string {
+  if (!name) return 'U';
+  const clean = name.includes('@') ? name.split('@')[0] : name;
+  const parts = clean.trim().split(/[\s._-]+/).filter(Boolean);
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }
+  return clean.slice(0, 2).toUpperCase();
+}
+
+function CommunityAvatar({
+  src,
+  name,
+  role,
+  badge,
+  size = 'md',
+}: {
+  src?: string;
+  name: string;
+  role?: string;
+  badge?: string;
+  size?: 'sm' | 'md' | 'lg';
+}) {
+  const [imgError, setImgError] = useState(false);
+
+  const isAdmin = 
+    role === 'System Admin' || 
+    badge === 'Admin' || 
+    (name && (name.toLowerCase().includes('stackunleash') || name.toLowerCase().includes('bitium') || name.toLowerCase().includes('admin')));
+
+  const isStack = name && name.toLowerCase().includes('stack');
+
+  let resolvedSrc = src;
+  if (!resolvedSrc || resolvedSrc.includes('dicebear.com')) {
+    if (isAdmin) {
+      resolvedSrc = isStack ? '/images/stack-unleash-logo.webp' : '/images/bitium-logo.webp';
+    } else {
+      resolvedSrc = '';
+    }
+  }
+
+  const sizeClasses = {
+    sm: 'w-8 h-8 text-[10px]',
+    md: 'w-10 h-10 text-xs',
+    lg: 'w-12 h-12 text-sm',
+  }[size];
+
+  const iconSizes = {
+    sm: 14,
+    md: 18,
+    lg: 22,
+  }[size];
+
+  if (!resolvedSrc || imgError) {
+    if (isAdmin) {
+      return (
+        <div className={`relative ${sizeClasses} rounded-full overflow-hidden border border-[#2CFF05]/50 bg-black flex items-center justify-center shrink-0 shadow-[0_0_12px_rgba(44,255,5,0.2)]`}>
+          <Shield size={iconSizes} className="text-[#2CFF05]" />
+        </div>
+      );
+    }
+
+    const initials = getInitials(name);
+    return (
+      <div className={`relative ${sizeClasses} rounded-full flex items-center justify-center font-black select-none bg-gradient-to-br from-emerald-950 via-zinc-900 to-black text-[#2CFF05] border border-[#2CFF05]/30 shrink-0 shadow-inner`}>
+        {initials}
+      </div>
+    );
+  }
+
+  return (
+    <div className={`relative ${sizeClasses} rounded-full overflow-hidden border border-border/80 bg-zinc-900 shrink-0`}>
+      <Image
+        src={resolvedSrc}
+        alt={name}
+        fill
+        unoptimized
+        onError={() => setImgError(true)}
+        className="object-cover"
+      />
+    </div>
+  );
+}
+
 const CATEGORY_TAGS = [
   { id: 'all', label: 'All Discussions', labelSi: 'සියලුම සාකච්ඡා' },
   { id: 'general', label: 'General', labelSi: 'පොදු අදහස්' },
@@ -196,19 +280,24 @@ export default function CommunityForumPage() {
     setIsPosting(true);
 
     let authorName = 'Anonymous Printer';
-    let authorAvatar = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80';
+    let authorAvatar = '';
     let authorRole = 'Member';
     let authorBadge = 'Guest';
 
     if (profile) {
       authorName = profile.full_name || profile.email;
-      authorAvatar = profile.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${authorName}`;
       authorRole = profile.role === 'admin' ? 'System Admin' : 'Registered Printer';
       authorBadge = profile.role === 'admin' ? 'Admin' : 'Verified';
+      if (profile.role === 'admin' || profile.email?.toLowerCase().includes('admin') || profile.email?.toLowerCase().includes('stack')) {
+        authorAvatar = profile.avatar_url || (profile.email?.toLowerCase().includes('stack') ? '/images/stack-unleash-logo.webp' : '/images/bitium-logo.webp');
+      } else {
+        authorAvatar = profile.avatar_url || '';
+      }
     } else if (guestName.trim()) {
       authorName = guestName.trim();
-      authorAvatar = `https://api.dicebear.com/7.x/initials/svg?seed=${guestName}`;
       authorRole = 'Community guest';
+      authorBadge = 'Guest';
+      authorAvatar = '';
     }
 
     const newPost: Post = {
@@ -303,17 +392,21 @@ export default function CommunityForumPage() {
     if (!commentText.trim()) return;
 
     let commenterName = 'Anonymous Member';
-    let commenterAvatar = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80';
+    let commenterAvatar = '';
     let commenterBadge = 'Contributor';
 
     if (profile) {
       commenterName = profile.full_name || profile.email;
-      commenterAvatar = profile.avatar_url || `https://api.dicebear.com/7.x/initials/svg?seed=${commenterName}`;
       commenterBadge = profile.role === 'admin' ? 'Admin' : 'Verified';
+      if (profile.role === 'admin' || profile.email?.toLowerCase().includes('admin') || profile.email?.toLowerCase().includes('stack')) {
+        commenterAvatar = profile.avatar_url || (profile.email?.toLowerCase().includes('stack') ? '/images/stack-unleash-logo.webp' : '/images/bitium-logo.webp');
+      } else {
+        commenterAvatar = profile.avatar_url || '';
+      }
     } else if (guestName.trim()) {
       commenterName = guestName.trim();
-      commenterAvatar = `https://api.dicebear.com/7.x/initials/svg?seed=${guestName}`;
       commenterBadge = 'Guest';
+      commenterAvatar = '';
     }
 
     const newComment: Comment = {
@@ -623,9 +716,13 @@ export default function CommunityForumPage() {
                       {/* Post Header: User metadata */}
                       <div className="flex items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
-                          <div className="relative w-10 h-10 rounded-full overflow-hidden border border-border bg-background">
-                            <Image src={post.authorAvatar} alt={post.authorName} fill className="object-cover" />
-                          </div>
+                          <CommunityAvatar 
+                            src={post.authorAvatar} 
+                            name={post.authorName} 
+                            role={post.authorRole} 
+                            badge={post.authorBadge} 
+                            size="md" 
+                          />
                           <div>
                             <div className="flex items-center gap-1.5 flex-wrap">
                               <span className="font-extrabold text-xs text-foreground">{post.authorName}</span>
@@ -751,9 +848,12 @@ export default function CommunityForumPage() {
                             <div className="space-y-3.5 pl-2 sm:pl-4 border-l border-border/60">
                               {post.comments.map(c => (
                                 <div key={c.id} className="flex gap-2.5 items-start text-xs">
-                                  <div className="relative w-8 h-8 rounded-full overflow-hidden border border-border shrink-0 bg-background">
-                                    <Image src={c.authorAvatar} alt={c.authorName} fill className="object-cover" />
-                                  </div>
+                                  <CommunityAvatar 
+                                    src={c.authorAvatar} 
+                                    name={c.authorName} 
+                                    badge={c.authorBadge} 
+                                    size="sm" 
+                                  />
                                   <div className="flex-grow bg-card/25 rounded-2xl p-3 border border-border/60 space-y-1">
                                     <div className="flex items-center justify-between gap-2 flex-wrap">
                                       <div className="flex items-center gap-1.5">
@@ -835,9 +935,13 @@ export default function CommunityForumPage() {
                   dynamicContributors.map((member, i) => (
                     <div key={i} className="flex items-center justify-between gap-3 text-xs">
                       <div className="flex items-center gap-2">
-                        <div className="relative w-8 h-8 rounded-full overflow-hidden border border-border bg-background">
-                          <Image src={member.avatar} alt={member.name} fill className="object-cover" />
-                        </div>
+                        <CommunityAvatar 
+                          src={member.avatar} 
+                          name={member.name} 
+                          role={member.role} 
+                          badge={member.badge} 
+                          size="sm" 
+                        />
                         <div>
                           <span className="font-extrabold text-foreground block leading-tight">{member.name}</span>
                           <span className="text-[8.5px] text-muted-foreground block">{member.role}</span>

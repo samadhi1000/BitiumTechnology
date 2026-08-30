@@ -43,6 +43,27 @@ function timeAgo(dateStr: string): string {
   return date.toLocaleDateString();
 }
 
+function resolveAvatar(name: string, role?: string, badge?: string, avatarUrl?: string): string {
+  const isDicebear = !!avatarUrl && avatarUrl.includes('dicebear.com');
+  const isAdmin = 
+    role === 'System Admin' || 
+    badge === 'Admin' || 
+    (name && (name.toLowerCase().includes('stackunleash') || name.toLowerCase().includes('bitium') || name.toLowerCase().includes('admin')));
+  
+  if (isAdmin && (!avatarUrl || isDicebear)) {
+    if (name && name.toLowerCase().includes('stack')) {
+      return '/images/stack-unleash-logo.webp';
+    }
+    return '/images/bitium-logo.webp';
+  }
+
+  if (isDicebear) {
+    return '';
+  }
+
+  return avatarUrl || '';
+}
+
 export async function GET() {
   try {
     // Fetch posts with their comments in a single joined query
@@ -57,7 +78,7 @@ export async function GET() {
     const posts: Post[] = (data || []).map((row: any) => ({
       id: row.id,
       authorName: row.author_name,
-      authorAvatar: row.author_avatar,
+      authorAvatar: resolveAvatar(row.author_name, row.author_role, row.author_badge, row.author_avatar),
       authorRole: row.author_role || 'Member',
       authorBadge: row.author_badge,
       title: row.title,
@@ -72,7 +93,7 @@ export async function GET() {
         .map((c: any) => ({
           id: c.id,
           authorName: c.author_name,
-          authorAvatar: c.author_avatar,
+          authorAvatar: resolveAvatar(c.author_name, undefined, c.author_badge, c.author_avatar),
           authorBadge: c.author_badge,
           content: c.content,
           createdAt: timeAgo(c.created_at),
