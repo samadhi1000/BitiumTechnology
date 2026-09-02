@@ -19,7 +19,9 @@ const MATERIALS_CONFIG_EN: CategoryPageConfig = {
   itemSingular: 'Material / Supply',
   itemPlural: 'Supplies',
   subCategories: [
-    { id: 'printing-materials', label: 'DTF Consumables' },
+    { id: 'screen-printing-consumables', label: 'Screen Printing Consumables' },
+    { id: 'hand-painting-consumables', label: 'Hand Painting Consumables' },
+    { id: 'other-consumables', label: 'Other Consumables' },
   ],
   whyChooseUs: {
     title: 'Why choose our printing consumables?',
@@ -100,7 +102,9 @@ const MATERIALS_CONFIG_SI: CategoryPageConfig = {
   itemSingular: 'ද්‍රව්‍යය / අමුද්‍රව්‍යය',
   itemPlural: 'ද්‍රව්‍ය',
   subCategories: [
-    { id: 'printing-materials', label: 'DTF අමුද්‍රව්‍ය' },
+    { id: 'screen-printing-consumables', label: 'ස්ක්‍රීන් ප්‍රින්ටින් අමුද්‍රව්‍ය' },
+    { id: 'hand-painting-consumables', label: 'හෑන්ඩ් පේන්ටින් අමුද්‍රව්‍ය' },
+    { id: 'other-consumables', label: 'වෙනත් අමුද්‍රව්‍ය' },
   ],
   whyChooseUs: {
     title: 'අපගේ මුද්‍රණ පරිභෝජන ද්‍රව්‍ය තෝරාගත යුත්තේ ඇයි?',

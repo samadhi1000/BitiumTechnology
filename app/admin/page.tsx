@@ -1200,7 +1200,7 @@ export default function AdminPanelPage() {
                     type="text"
                     value={prodSubCategory}
                     onChange={(e) => setProdSubCategory(e.target.value)}
-                    placeholder="e.g. printing-materials, saree, acrylic"
+                    placeholder="e.g. screen-printing-consumables, saree, acrylic"
                     className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
                   />
                 </div>

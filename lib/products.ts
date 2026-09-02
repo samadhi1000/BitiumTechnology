@@ -60,10 +60,41 @@ const SUBCAT_DATA = [
   { cat: 'laser-cutting', sub: 'wood', names: ['Engraved Wood Coaster Set', 'Custom Plywood Wall Art', 'Bamboo Wood Menu Board', 'Laser Cut Wooden Nameplate', 'Wood Veneer Business Cards', 'Intricate Wood Mandala Panel', 'Custom Hardwood Cutting Board', 'Wooden Key Organizer Rack', 'Layered Wood Topography Map'], image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80', price: 1800, orig: 2400 },
   { cat: 'laser-cutting', sub: 'custom-profile', names: ['Custom Profile MDF Cutout', 'Bespoke Foam Insert Profile', 'Leather Engraved Patch Profile', 'Felt Acoustic Panel Cutout', 'Cardboard Prototyping Shape', 'Rubber Stamp Matrix Profile', 'Gasket and Seal Laser Cut', 'Fabric Template Profile Cut', 'Precision Shims Profile Cut'], image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=600&q=80', price: 1500, orig: 2000 },
 
-  // Printing Materials & Ink (DTF Printing Consumables)
+  // Materials & Consumables
   { 
     cat: 'materials', 
-    sub: 'printing-materials', 
+    sub: 'screen-printing-consumables', 
+    names: [
+      'Screen Printing Diazo Photo Emulsion 1KG',
+      'Screen Sensitizer Powder 100g',
+      'Screen Reclaimer & Wash Chemical 1L',
+      'Plastisol Screen Printing Ink 1KG - White & CMYK',
+      'Water-Based Textile Screen Printing Ink 1KG',
+      'Screen Degreaser & Mesh Prep 1L',
+      'Aluminum Frame Screen Squeegee Rubber 1M'
+    ], 
+    image: 'https://images.unsplash.com/photo-1606159068539-43f36b99d1b2?auto=format&fit=crop&w=600&q=80',
+    prices: [3200, 850, 1950, 4200, 3800, 1650, 1200],
+    origs: [3800, 1100, 2400, 4900, 4500, 2000, 1500]
+  },
+  {
+    cat: 'materials',
+    sub: 'hand-painting-consumables',
+    names: [
+      'Fabric Hand-Painting Ink Set (12 Colors)',
+      'Acrylic Fabric Painting Medium 500ml',
+      'Fabric Color Fixer & Binder 1L',
+      'Fine Detail Hand-Painting Brush Set (6 Pcs)',
+      'Metallic Fabric Outliner & Gutta 100ml',
+      'Fabric Softener Medium 500ml'
+    ],
+    image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=600&q=80',
+    prices: [2800, 1450, 1850, 950, 650, 1250],
+    origs: [3500, 1800, 2200, 1200, 800, 1500]
+  },
+  {
+    cat: 'materials',
+    sub: 'other-consumables',
     names: [
       'White Ink for DTF Printer', 
       'Color (C M Y K LC LM) Ink for DTF Printer', 
@@ -127,7 +158,7 @@ const UNIQUE_IMAGES: Record<string, string[]> = {
     '/images/products/half-mile-tee.webp',
     '/images/products/heavyweight-tee.webp'
   ],
-  'printing-materials': [
+  'other-consumables': [
     '/images/products/dtf-white-ink.webp',
     '/images/products/dtf-color-ink.webp',
     '/images/products/dtf-powder.webp',
