@@ -692,7 +692,7 @@ export default function AdminPanelPage() {
           {/* Quick Staff Member Selectors */}
           <div className="pt-2 border-t border-border/50">
             <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-2 text-center">
-              Quick Select Staff Account
+              Quick Select Staff Account (Enter Password to Log In)
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
               {staffProfiles.map((s) => (
@@ -701,10 +701,11 @@ export default function AdminPanelPage() {
                   type="button"
                   onClick={() => {
                     setEmailInput(s.email);
-                    setPasswordInput(s.defaultPassword);
+                    setPasswordInput(''); // Password must be entered manually for security
                     setLoginError('');
                   }}
                   className="flex items-center gap-2 p-2 rounded-xl border border-border/60 hover:border-[#2CFF05]/50 bg-secondary/30 hover:bg-[#2CFF05]/10 text-left transition-all cursor-pointer group"
+                  title={`Click to select ${s.name} (${s.title})`}
                 >
                   <div className={`w-6 h-6 rounded-lg ${s.avatarBg || 'bg-emerald-500'} text-white font-black text-[10px] flex items-center justify-center shrink-0`}>
                     {s.initials}
@@ -764,18 +765,20 @@ export default function AdminPanelPage() {
                     </span>
                   </div>
                 </div>
-                <select
-                  value={activeStaff.id}
-                  onChange={(e) => handleSwitchActiveStaff(e.target.value)}
-                  className="bg-secondary/70 text-[11px] font-bold text-foreground focus:outline-none border border-border rounded-lg px-2 py-1 cursor-pointer"
-                  title="Switch Active Team Member Operator"
-                >
-                  {staffProfiles.map((s) => (
-                    <option key={s.id} value={s.id} className="bg-card text-foreground">
-                      {s.name} ({s.title})
-                    </option>
-                  ))}
-                </select>
+                {activeStaff.role === 'ceo_admin' && (
+                  <select
+                    value={activeStaff.id}
+                    onChange={(e) => handleSwitchActiveStaff(e.target.value)}
+                    className="bg-secondary/70 text-[11px] font-bold text-foreground focus:outline-none border border-border rounded-lg px-2 py-1 cursor-pointer"
+                    title="Super Admin Operator Switcher"
+                  >
+                    {staffProfiles.map((s) => (
+                      <option key={s.id} value={s.id} className="bg-card text-foreground">
+                        {s.name} ({s.title})
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
 
               <button
