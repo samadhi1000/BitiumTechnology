@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Product } from '@/lib/products';
 import HoverZoomImage from '@/components/ui/HoverZoomImage';
+import InteractiveZoomViewer from '@/components/ui/InteractiveZoomViewer';
 import { 
   Search, 
   ChevronRight, 
@@ -402,9 +403,9 @@ export default function CategoryPageTemplate({
                         }}
                         aria-label={`Quick Zoom Preview for ${product.name}`}
                         title="Quick Zoom & Preview"
-                        className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-white/90 dark:bg-black/75 text-slate-700 dark:text-zinc-200 border border-slate-200/80 dark:border-white/15 backdrop-blur-md flex items-center justify-center transition-all shadow-sm z-10 hover:bg-[#2CFF05] hover:text-black hover:border-[#2CFF05] hover:scale-110 cursor-pointer"
+                        className="group/btn absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-white/95 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-600 shadow-md backdrop-blur-md flex items-center justify-center transition-all z-10 hover:bg-[#2CFF05] hover:text-black dark:hover:bg-[#2CFF05] dark:hover:text-black dark:hover:border-[#2CFF05] hover:scale-110 cursor-pointer"
                       >
-                        <Eye size={13} />
+                        <Eye size={13} className="text-slate-800 dark:text-white group-hover/btn:text-black transition-colors" />
                       </button>
                     </div>
 
@@ -623,19 +624,12 @@ export default function CategoryPageTemplate({
                 <X size={16} />
               </button>
 
-              {/* Product Image on Left / Top */}
-              <div className="relative w-full md:w-1/2 aspect-square rounded-2xl overflow-hidden bg-slate-50 dark:bg-zinc-900 border border-slate-100 dark:border-border/60 shrink-0">
-                <Image
+              {/* Interactive Pan & Zoom Image Viewer on Left */}
+              <div className="w-full md:w-1/2 shrink-0">
+                <InteractiveZoomViewer
                   src={previewProduct.image_url}
                   alt={previewProduct.name}
-                  fill
-                  className="object-contain p-2"
-                  sizes="(max-width: 768px) 100vw, 350px"
                 />
-                <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-sm text-[10px] text-white font-bold flex items-center gap-1">
-                  <ZoomIn size={12} className="text-[#2CFF05]" />
-                  <span>High-Res Detail</span>
-                </div>
               </div>
 
               {/* Product Details & Actions on Right */}

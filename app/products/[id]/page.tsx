@@ -143,7 +143,7 @@ export default function ProductPage({ params }: ProductPageProps) {
     openCart();
   };
 
-  // Category badge label
+  // Category badge label & slug routing map
   const categoryLabel: Record<string, string> = {
     stencil: 'Stencils',
     'screen-printing': 'Screen Printing',
@@ -153,14 +153,28 @@ export default function ProductPage({ params }: ProductPageProps) {
     'laser-cutting': 'Laser Cutting',
   };
 
+  const categoryRouteMap: Record<string, string> = {
+    stencil: '/stencil',
+    'screen-printing': '/screen-printing',
+    dtf_sheet: '/dtf-printing',
+    'batik-stamp': '/batik-stamp',
+    materials: '/materials',
+    'laser-cutting': '/laser-cutting',
+  };
+
+  const backHref = product?.category && categoryRouteMap[product.category]
+    ? categoryRouteMap[product.category]
+    : '/product-catalog';
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
       {/* Back Button */}
       <Link
-        href="/"
-        className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8 text-sm font-semibold"
+        href={backHref}
+        className="inline-flex items-center gap-2 text-muted-foreground hover:text-[#2CFF05] transition-colors mb-8 text-sm font-semibold group"
       >
-        <ArrowLeft size={16} /> Back to Catalog
+        <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> 
+        Back to {product?.category ? `${categoryLabel[product.category] || 'Category'} Catalog` : 'Catalog'}
       </Link>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
