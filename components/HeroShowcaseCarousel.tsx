@@ -261,7 +261,7 @@ export const HeroShowcaseCarousel: React.FC = () => {
             <span className="font-black text-white hero-carousel-title-white" style={{ color: "#ffffff" }}>
               Everything You Need to
             </span>{" "}
-            <span className="font-black text-[#2CFF05] hero-carousel-highlight drop-shadow-[0_0_10px_rgba(44,255,5,0.7)] [text-shadow:0_0_12px_rgba(44,255,5,0.75),0_1px_2px_rgba(0,0,0,0.8)]" style={{ color: "#2CFF05" }}>
+            <span className="font-black text-[#2CFF05] hero-carousel-highlight" style={{ color: "#2CFF05" }}>
               Create, Print &amp; Deliver
             </span>
           </span>

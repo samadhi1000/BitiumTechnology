@@ -211,8 +211,6 @@ html.light-mode .hero-carousel-title-white,
 html.light-mode .hero-carousel-highlight,
 .hero-carousel-highlight {
   color: #2CFF05 !important;
-  text-shadow: 0 0 14px rgba(44, 255, 5, 0.8), 0 0 24px rgba(44, 255, 5, 0.4), 0 1px 3px rgba(0, 0, 0, 0.8) !important;
-  filter: drop-shadow(0 0 8px rgba(44, 255, 5, 0.6));
 }
 
 html.light-mode .hero-carousel-dot,
