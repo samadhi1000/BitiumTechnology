@@ -95,6 +95,7 @@ export default function AdminPanelPage() {
   // Staff Profiles and Role State
   const [staffProfiles, setStaffProfiles] = useState<StaffProfile[]>(getSavedStaffProfiles());
   const [activeStaff, setActiveStaff] = useState<StaffProfile>(getActiveStaffProfile(staffProfiles));
+  const [isStaffAuthenticated, setIsStaffAuthenticated] = useState<boolean>(false);
 
   // Tab states: 'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'staff'
   const [activeTab, setActiveTab] = useState<'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'staff'>('products');
@@ -152,6 +153,21 @@ export default function AdminPanelPage() {
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
+  // Restore staff session from sessionStorage if present
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedStaffId = sessionStorage.getItem('bitium_admin_staff_id');
+      if (savedStaffId) {
+        const found = staffProfiles.find(s => s.id === savedStaffId && s.isActive);
+        if (found) {
+          setActiveStaff(found);
+          setActiveStaffProfileId(found.id);
+          setIsStaffAuthenticated(true);
+        }
+      }
+    }
+  }, [staffProfiles]);
+
   // Fetch catalogs if authenticated
   const fetchAllCatalogs = async () => {
     setLoading(true);
@@ -169,30 +185,70 @@ export default function AdminPanelPage() {
   };
 
   useEffect(() => {
-    if (user && profile?.role === 'admin') {
+    if (isStaffAuthenticated || (user && profile?.role === 'admin')) {
       fetchAllCatalogs();
     }
-  }, [user, profile]);
+  }, [user, profile, isStaffAuthenticated]);
 
-  // Handle Supabase Auth Login
+  // Handle Staff Profile or Supabase Auth Login
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError('');
     setLoginSubmitting(true);
+
+    const inputClean = emailInput.trim().toLowerCase();
+    const passClean = passwordInput.trim();
+
+    // 1. Authenticate against Staff Profiles
+    const matchedStaff = staffProfiles.find((s) => {
+      if (!s.isActive) return false;
+      const emailMatches = s.email.toLowerCase() === inputClean;
+      const usernameMatches = s.username.toLowerCase() === inputClean;
+      const passMatches = s.defaultPassword === passClean || (s as any).password === passClean;
+      return (emailMatches || usernameMatches) && passMatches;
+    });
+
+    if (matchedStaff) {
+      setActiveStaff(matchedStaff);
+      setActiveStaffProfileId(matchedStaff.id);
+      setIsStaffAuthenticated(true);
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('bitium_admin_staff_id', matchedStaff.id);
+      }
+      setLoginSubmitting(false);
+      fetchAllCatalogs();
+      return;
+    }
+
+    // 2. Fallback to Supabase Auth login
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: emailInput,
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: emailInput.trim(),
         password: passwordInput,
       });
 
       if (error) {
-        setLoginError(error.message);
+        setLoginError('Invalid login credentials. Please check your staff username/email and password.');
+      } else if (data.user) {
+        setIsStaffAuthenticated(true);
+        fetchAllCatalogs();
       }
     } catch (err: any) {
       setLoginError(err.message || 'An error occurred during login.');
     } finally {
       setLoginSubmitting(false);
     }
+  };
+
+  // Sign out handler
+  const handleAdminSignOut = async () => {
+    setIsStaffAuthenticated(false);
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('bitium_admin_staff_id');
+    }
+    try {
+      await signOut();
+    } catch {}
   };
 
   // Secure File Upload to Supabase Storage helper
@@ -562,14 +618,15 @@ export default function AdminPanelPage() {
   }
 
   // 2. UNAUTHENTICATED / NOT ADMIN SIGN IN PORTAL
-  if (!user || profile?.role !== 'admin') {
+  const isAuthorized = isStaffAuthenticated || (!!user && profile?.role === 'admin');
+  if (!isAuthorized) {
     return (
       <div className="w-full min-h-screen bg-background text-foreground flex items-center justify-center py-24 px-4 relative overflow-hidden">
         {/* Ambient background glows */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-[#2CFF05]/10 rounded-full blur-[100px] pointer-events-none"></div>
         <div className="absolute inset-0 bg-[radial-gradient(rgba(141,255,0,0.01)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
 
-        <div className="w-full max-w-md rounded-3xl border border-border bg-card/25 backdrop-blur-md p-8 space-y-6 shadow-2xl relative z-10">
+        <div className="w-full max-w-md rounded-3xl border border-border bg-card/40 backdrop-blur-xl p-8 space-y-6 shadow-2xl relative z-10">
           
           <div className="text-center space-y-2">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#2CFF05] to-[#7acc00] flex items-center justify-center text-foreground mx-auto shadow-lg shadow-[#2CFF05]/25 mb-4">
@@ -577,9 +634,7 @@ export default function AdminPanelPage() {
             </div>
             <h1 className="text-2xl font-black tracking-tight uppercase">Admin Console</h1>
             <p className="text-muted-foreground text-xs leading-relaxed">
-              {user && profile?.role !== 'admin' 
-                ? 'Your account profile does not possess administrator credentials.' 
-                : 'Authentication required. Enter your admin portal credentials below.'}
+              Authentication required. Enter your staff username or admin email below.
             </p>
           </div>
 
@@ -590,58 +645,78 @@ export default function AdminPanelPage() {
             </div>
           )}
 
-          {user && profile?.role !== 'admin' ? (
+          <form onSubmit={handleLoginSubmit} className="space-y-4">
+            {/* Username / Email Input */}
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Staff Username or Email</label>
+              <div className="relative">
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
+                <input
+                  type="text"
+                  required
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  placeholder="e.g. dinithi.batik or dinithi@bitiumtechnology.com"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-sm text-foreground focus:outline-none focus:border-[#2CFF05] focus:ring-1 focus:ring-[#2CFF05] transition-colors"
+                />
+              </div>
+            </div>
+
+            {/* Password Input */}
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Staff Password</label>
+              <div className="relative">
+                <Key className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
+                <input
+                  type="password"
+                  required
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-sm text-foreground focus:outline-none focus:border-[#2CFF05] focus:ring-1 focus:ring-[#2CFF05] transition-colors"
+                />
+              </div>
+            </div>
+
+            {/* Submit */}
             <button
-              onClick={signOut}
-              className="w-full py-3.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs uppercase tracking-wider transition-all"
+              type="submit"
+              disabled={loginSubmitting}
+              className="w-full py-3.5 px-6 rounded-xl bg-[#2CFF05] hover:bg-[#7acc00] disabled:bg-zinc-700 disabled:opacity-50 text-[#0a0a0a] font-black text-xs uppercase tracking-wider shadow-lg shadow-[#2CFF05]/15 hover:shadow-[#2CFF05]/30 transition-all hover:scale-[1.01] flex items-center justify-center gap-2 cursor-pointer"
             >
-              Sign Out & Switch Account
+              {loginSubmitting && <RefreshCw size={14} className="animate-spin" />}
+              <span>{loginSubmitting ? 'Verifying...' : 'Unlock Admin Panel'}</span>
             </button>
-          ) : (
-            <form onSubmit={handleLoginSubmit} className="space-y-4">
-              {/* Email Input */}
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Admin Email Address</label>
-                <div className="relative">
-                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                  <input
-                    type="email"
-                    required
-                    value={emailInput}
-                    onChange={(e) => setEmailInput(e.target.value)}
-                    placeholder="admin@bitiumtechnology.com"
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-sm text-foreground focus:outline-none focus:border-[#2CFF05] focus:ring-1 focus:ring-[#2CFF05] transition-colors"
-                  />
-                </div>
-              </div>
+          </form>
 
-              {/* Password Input */}
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Admin Password</label>
-                <div className="relative">
-                  <Key className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                  <input
-                    type="password"
-                    required
-                    value={passwordInput}
-                    onChange={(e) => setPasswordInput(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-sm text-foreground focus:outline-none focus:border-[#2CFF05] focus:ring-1 focus:ring-[#2CFF05] transition-colors"
-                  />
-                </div>
-              </div>
-
-              {/* Submit */}
-              <button
-                type="submit"
-                disabled={loginSubmitting}
-                className="w-full py-3.5 px-6 rounded-xl bg-[#2CFF05] hover:bg-[#7acc00] disabled:bg-zinc-700 disabled:opacity-50 text-[#0a0a0a] font-black text-xs uppercase tracking-wider shadow-lg shadow-[#2CFF05]/15 hover:shadow-[#2CFF05]/30 transition-all hover:scale-[1.01] flex items-center justify-center gap-2 cursor-pointer"
-              >
-                {loginSubmitting && <RefreshCw size={14} className="animate-spin" />}
-                <span>{loginSubmitting ? 'Verifying...' : 'Unlock Admin Panel'}</span>
-              </button>
-            </form>
-          )}
+          {/* Quick Staff Member Selectors */}
+          <div className="pt-2 border-t border-border/50">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-2 text-center">
+              Quick Select Staff Account
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+              {staffProfiles.map((s) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => {
+                    setEmailInput(s.email);
+                    setPasswordInput(s.defaultPassword);
+                    setLoginError('');
+                  }}
+                  className="flex items-center gap-2 p-2 rounded-xl border border-border/60 hover:border-[#2CFF05]/50 bg-secondary/30 hover:bg-[#2CFF05]/10 text-left transition-all cursor-pointer group"
+                >
+                  <div className={`w-6 h-6 rounded-lg ${s.avatarBg || 'bg-emerald-500'} text-white font-black text-[10px] flex items-center justify-center shrink-0`}>
+                    {s.initials}
+                  </div>
+                  <div className="truncate">
+                    <p className="text-[11px] font-bold text-foreground group-hover:text-[#2CFF05] truncate">{s.name}</p>
+                    <p className="text-[9px] text-muted-foreground truncate">{s.title.split('&')[0]}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
 
         </div>
       </div>
@@ -743,9 +818,9 @@ export default function AdminPanelPage() {
               )}
               
               <button
-                onClick={signOut}
+                onClick={handleAdminSignOut}
                 className="p-3 rounded-xl border border-rose-950/20 bg-rose-950/10 hover:bg-rose-950/30 text-rose-400 hover:text-rose-300 transition-colors cursor-pointer"
-                title="Lock Dashboard"
+                title="Lock Dashboard & Sign Out"
               >
                 <LogOut size={16} />
               </button>
