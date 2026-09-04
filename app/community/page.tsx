@@ -21,7 +21,11 @@ import {
   Shield,
   Smile,
   Pin,
-  Trash2
+  Trash2,
+  Phone,
+  PhoneCall,
+  MessageCircle,
+  Copy
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -143,6 +147,54 @@ const CATEGORY_TAGS = [
   { id: 'screen', label: 'Screen Printing', labelSi: 'ස්ක්‍රීන් මුද්‍රණය' },
   { id: 'stencil', label: 'Stencils & Stamps', labelSi: 'ස්ටෙන්සිල් සහ මුද්‍රා' },
   { id: 'showcase', label: 'Project Showcase', labelSi: 'නිර්මාණ ප්‍රදර්ශනය' },
+];
+
+const COMMUNITY_CONTACTS = [
+  {
+    name: 'Indrajith',
+    role: 'CEO',
+    roleSi: 'ප්‍රධාන විධායක නිලධාරී (CEO)',
+    phone: '0715520897',
+    cleanPhone: '94715520897',
+    badge: 'CEO',
+    badgeColor: 'bg-emerald-500/10 text-emerald-600 dark:text-[#2CFF05] border-emerald-500/30',
+  },
+  {
+    name: 'Dilrukshi',
+    role: 'Customer Inquiries & Complaints',
+    roleSi: 'පාරිභෝගික විමසීම් සහ පැමිණිලි',
+    phone: '0768370920',
+    cleanPhone: '94768370920',
+    badge: 'Inquiries',
+    badgeColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30',
+  },
+  {
+    name: 'Prasadari',
+    role: 'Screen Printing & Artwork',
+    roleSi: 'ස්ක්‍රීන් මුද්‍රණය සහ කලා නිර්මාණ',
+    phone: '0716352558',
+    cleanPhone: '94716352558',
+    badge: 'Screen Print',
+    badgeColor: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/30',
+  },
+  {
+    name: 'Nadeeka',
+    role: 'Stencils & Hand Painting',
+    roleSi: 'ස්ටෙන්සිල් සහ අත් පින්තාරු',
+    phone: '0772212369',
+    cleanPhone: '94772212369',
+    badge: 'Stencils',
+    badgeColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30',
+  },
+  {
+    name: 'Dinithi',
+    role: 'Cap Batik & Other',
+    roleSi: 'කැප් බැටික් සහ වෙනත්',
+    phone: '0779731097',
+    cleanPhone: '94779731097',
+    badge: 'Batik & Other',
+    badgeColor: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30',
+  },
 ];
 
 
@@ -465,6 +517,18 @@ export default function CommunityForumPage() {
       .slice(0, 3); // Top 3
   }, [posts]);
 
+  // Dynamically compute Hot Topics from real community discussions based on engagement (comments and likes)
+  const hotTopics = React.useMemo(() => {
+    if (!posts || posts.length === 0) return [];
+    return [...posts]
+      .sort((a, b) => {
+        const scoreA = (a.comments?.length || 0) * 3 + (a.likes || 0);
+        const scoreB = (b.comments?.length || 0) * 3 + (b.likes || 0);
+        return scoreB - scoreA;
+      })
+      .slice(0, 4);
+  }, [posts]);
+
   // Filter posts
   const filteredPosts = posts.filter(p => {
     const matchesCategory = selectedCategory === 'all' || p.category === selectedCategory;
@@ -531,25 +595,64 @@ export default function CommunityForumPage() {
               </div>
             </div>
 
-            {/* Trending topics */}
-            <div className="p-5 rounded-2xl border border-border bg-card/10 backdrop-blur-md space-y-4 hidden lg:block">
-              <h3 className="text-xs font-black uppercase tracking-wider text-foreground flex items-center gap-2">
-                <Flame size={13} className="text-amber-500" />
-                <span>Hot Topics</span>
-              </h3>
-              <div className="space-y-3 text-[11px] leading-relaxed">
-                <div className="space-y-0.5">
-                  <span className="text-amber-500 font-bold block">#1 Post Curing DTF</span>
-                  <span className="text-muted-foreground">42 active members discussing wash tests.</span>
-                </div>
-                <div className="space-y-0.5">
-                  <span className="text-amber-500 font-bold block">#2 Custom Screen Mesh</span>
-                  <span className="text-muted-foreground">Choosing screen counts for detailed graphics.</span>
-                </div>
-                <div className="space-y-0.5">
-                  <span className="text-amber-500 font-bold block">#3 Jackwood Carving</span>
-                  <span className="text-muted-foreground">Techniques for smooth wooden stamp patterns.</span>
-                </div>
+            {/* Real Trending / Hot Topics from Community */}
+            <div className="p-5 rounded-2xl border border-border bg-card/10 backdrop-blur-md space-y-3.5 hidden lg:block">
+              <div className="flex items-center justify-between border-b border-border/50 pb-2">
+                <h3 className="text-xs font-black uppercase tracking-wider text-foreground flex items-center gap-2">
+                  <Flame size={14} className="text-amber-500" />
+                  <span>{language === 'si' ? 'උණුසුම් මාතෘකා' : 'Hot Topics'}</span>
+                </h3>
+                <span className="text-[9px] font-black text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20 uppercase tracking-wider">
+                  Active
+                </span>
+              </div>
+              <div className="space-y-2 text-[11px] leading-relaxed">
+                {hotTopics.length === 0 ? (
+                  <p className="text-[10px] text-muted-foreground py-2 text-center">
+                    {language === 'si' 
+                      ? 'තවම සක්‍රීය සාකච්ඡා නොමැත. පළමු සාකච්ඡාව ඔබ ආරම්භ කරන්න!' 
+                      : 'No active discussions yet. Be the first to start a hot topic!'}
+                  </p>
+                ) : (
+                  hotTopics.map((topic, idx) => {
+                    const replyCount = topic.comments?.length || 0;
+                    const likeCount = topic.likes || 0;
+                    return (
+                      <button
+                        key={topic.id}
+                        onClick={() => {
+                          const el = document.getElementById(topic.id);
+                          if (el) {
+                            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            setActiveCommentsPostId(topic.id);
+                          } else {
+                            setForumSearch(topic.title);
+                          }
+                        }}
+                        className="w-full text-left p-2.5 rounded-xl border border-transparent hover:border-border/70 hover:bg-card/40 transition-all group cursor-pointer block space-y-1"
+                      >
+                        <div className="flex items-center justify-between gap-1">
+                          <span className="text-amber-500 font-bold block truncate text-xs group-hover:text-amber-400 transition-colors">
+                            #{idx + 1} {topic.title}
+                          </span>
+                        </div>
+                        <p className="text-muted-foreground text-[10.5px] line-clamp-2 leading-relaxed">
+                          {topic.content}
+                        </p>
+                        <div className="flex items-center gap-2.5 text-[9px] text-muted-foreground pt-0.5 font-semibold">
+                          <span className="flex items-center gap-1">
+                            <MessageSquare size={10} className="text-emerald-500" />
+                            <span>{replyCount} {replyCount === 1 ? 'reply' : 'replies'}</span>
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <ThumbsUp size={10} className="text-amber-500" />
+                            <span>{likeCount} {likeCount === 1 ? 'like' : 'likes'}</span>
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })
+                )}
               </div>
             </div>
           </div>
@@ -861,23 +964,77 @@ export default function CommunityForumPage() {
           {/* 3. RIGHT SIDEBAR: COMMUNITY MEMBER BOARD (3 cols) */}
           <div className="lg:col-span-3 space-y-4 hidden lg:block">
             
-            {/* Online Member count statistics */}
-            <div className="p-5 rounded-2xl border border-border bg-card/10 backdrop-blur-md space-y-4">
-              <h3 className="text-xs font-black uppercase tracking-wider text-foreground flex items-center gap-2">
-                <Users size={13} className="text-[#2CFF05]" />
-                <span>Forum Stats</span>
-              </h3>
-              <div className="grid grid-cols-2 gap-3 text-center">
-                <div className="p-2.5 rounded-xl bg-card/30 border border-border">
-                  <span className="text-lg font-black text-[#2CFF05] block leading-none">
-                    {Math.max(1, Math.min(memberCount, Math.floor(memberCount * 0.2) + 1))}
-                  </span>
-                  <span className="text-[9px] font-semibold text-muted-foreground uppercase mt-1 block">Online Now</span>
-                </div>
-                <div className="p-2.5 rounded-xl bg-card/30 border border-border">
-                  <span className="text-lg font-black text-foreground block leading-none">{memberCount}</span>
-                  <span className="text-[9px] font-semibold text-muted-foreground uppercase mt-1 block">Members</span>
-                </div>
+            {/* Direct Contacts & Specialized Support Team */}
+            <div className="p-5 rounded-2xl border border-border bg-card/10 backdrop-blur-md space-y-3.5">
+              <div className="flex items-center justify-between border-b border-border/50 pb-2.5">
+                <h3 className="text-xs font-black uppercase tracking-wider text-foreground flex items-center gap-2">
+                  <PhoneCall size={14} className="text-[#2CFF05]" />
+                  <span>{language === 'si' ? 'ක්ෂණික ඇමතුම් & සහාය' : 'Direct Support Contacts'}</span>
+                </h3>
+                <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-[#2CFF05]/15 text-emerald-700 dark:text-[#2CFF05] border border-emerald-500/30 uppercase tracking-widest">
+                  Team
+                </span>
+              </div>
+              <p className="text-[10px] text-muted-foreground leading-tight">
+                {language === 'si'
+                  ? 'අපගේ විශේෂඥ කාර්ය මණ්ඩලය සෘජුවම සම්බන්ධ කරගන්න:'
+                  : 'Directly reach out to our department leads for instant help:'}
+              </p>
+
+              <div className="space-y-2">
+                {COMMUNITY_CONTACTS.map((contact, idx) => (
+                  <div 
+                    key={idx} 
+                    className="p-2.5 rounded-xl border border-border/70 bg-card/25 hover:bg-card/45 hover:border-[#2CFF05]/40 transition-all space-y-1.5 group"
+                  >
+                    <div className="flex items-start justify-between gap-1.5">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="font-black text-xs text-foreground">{contact.name}</span>
+                          <span className={`text-[8px] font-black px-1.5 py-0.2 rounded border ${contact.badgeColor}`}>
+                            {contact.badge}
+                          </span>
+                        </div>
+                        <span className="text-[9.5px] font-medium text-muted-foreground block leading-tight mt-0.5 truncate">
+                          {language === 'si' ? contact.roleSi : contact.role}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-1 border-t border-border/40 text-xs">
+                      <a 
+                        href={`tel:${contact.phone}`}
+                        className="font-mono font-bold text-emerald-700 dark:text-[#2CFF05] text-[11px] hover:underline flex items-center gap-1.5"
+                        title={`Call ${contact.name}`}
+                      >
+                        <Phone size={11} className="shrink-0" />
+                        <span>{contact.phone}</span>
+                      </a>
+                      <div className="flex items-center gap-1">
+                        <a 
+                          href={`https://wa.me/${contact.cleanPhone}?text=${encodeURIComponent(`Hello ${contact.name}, I am contacting you regarding Bitium Technology inquiries.`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-1 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 transition-colors"
+                          title="Chat on WhatsApp"
+                        >
+                          <MessageCircle size={11} />
+                        </a>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(contact.phone);
+                            setToastMessage(`Copied ${contact.name}'s phone (${contact.phone})`);
+                            setTimeout(() => setToastMessage(''), 2500);
+                          }}
+                          className="p-1 rounded-lg bg-card/40 hover:bg-card text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                          title="Copy phone number"
+                        >
+                          <Copy size={11} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
