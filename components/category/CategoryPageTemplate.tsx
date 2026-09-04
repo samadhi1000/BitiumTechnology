@@ -10,7 +10,11 @@ import {
   Search, 
   ChevronRight, 
   Home, 
-  Heart, 
+  Eye,
+  ZoomIn,
+  X,
+  ExternalLink,
+  MessageCircle,
   ArrowRight, 
   SlidersHorizontal, 
   Sparkles,
@@ -82,7 +86,7 @@ export default function CategoryPageTemplate({
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'name' | 'newest'>('featured');
   const [currentPage, setCurrentPage] = useState(1);
-  const [wishlist, setWishlist] = useState<Record<string, boolean>>({});
+  const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
   const itemsPerPage = 20; // 20 items per page (4 columns x 5 rows)
 
   useEffect(() => {
@@ -93,12 +97,6 @@ export default function CategoryPageTemplate({
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, sortBy]);
-
-  const toggleWishlist = (id: string, e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setWishlist((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
 
   // Filter products
   const filteredProducts = useMemo(() => {
@@ -352,8 +350,6 @@ export default function CategoryPageTemplate({
             {/* 4-Column Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
               {paginatedProducts.map((product, idx) => {
-                const isFavorite = !!wishlist[product.id];
-                
                 // Determine Badge type
                 const isSale = !!product.original_price && product.original_price > product.price;
                 const isPopular = idx % 5 === 1;
@@ -396,18 +392,19 @@ export default function CategoryPageTemplate({
                         )}
                       </div>
 
-                      {/* Wishlist Heart Icon on Top-Right */}
+                      {/* Quick Zoom / Preview Eye Icon on Top-Right */}
                       <button
                         type="button"
-                        onClick={(e) => toggleWishlist(product.id, e)}
-                        aria-label="Add to Wishlist"
-                        className={`absolute top-2.5 right-2.5 w-7 h-7 rounded-full backdrop-blur-md flex items-center justify-center transition-all shadow-sm z-10 ${
-                          isFavorite
-                            ? 'bg-rose-50 dark:bg-rose-950/80 text-rose-500 border border-rose-200 dark:border-rose-800'
-                            : 'bg-white/85 dark:bg-black/60 text-slate-500 dark:text-zinc-300 border border-slate-200/80 dark:border-white/15 hover:text-rose-500 hover:scale-110'
-                        }`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setPreviewProduct(product);
+                        }}
+                        aria-label={`Quick Zoom Preview for ${product.name}`}
+                        title="Quick Zoom & Preview"
+                        className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-white/90 dark:bg-black/75 text-slate-700 dark:text-zinc-200 border border-slate-200/80 dark:border-white/15 backdrop-blur-md flex items-center justify-center transition-all shadow-sm z-10 hover:bg-[#2CFF05] hover:text-black hover:border-[#2CFF05] hover:scale-110 cursor-pointer"
                       >
-                        <Heart size={13} fill={isFavorite ? 'currentColor' : 'none'} />
+                        <Eye size={13} />
                       </button>
                     </div>
 
@@ -606,6 +603,99 @@ export default function CategoryPageTemplate({
             <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-emerald-500/10 dark:bg-[#2CFF05]/10 rounded-full blur-xl pointer-events-none" />
           </div>
         </section>
+
+        {/* ── QUICK ZOOM & PREVIEW MODAL ── */}
+        {previewProduct && (
+          <div 
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 overflow-y-auto animate-fade-in"
+            onClick={() => setPreviewProduct(null)}
+          >
+            <div 
+              className="bg-white dark:bg-[#0c1222] border border-slate-200 dark:border-white/10 rounded-3xl max-w-2xl w-full p-5 sm:p-7 shadow-2xl relative overflow-hidden flex flex-col md:flex-row gap-6 animate-scale-in"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setPreviewProduct(null)}
+                aria-label="Close Preview"
+                className="absolute top-4 right-4 z-20 p-2 rounded-full bg-slate-100 dark:bg-card border border-slate-200 dark:border-border text-slate-500 dark:text-muted-foreground hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+              >
+                <X size={16} />
+              </button>
+
+              {/* Product Image on Left / Top */}
+              <div className="relative w-full md:w-1/2 aspect-square rounded-2xl overflow-hidden bg-slate-50 dark:bg-zinc-900 border border-slate-100 dark:border-border/60 shrink-0">
+                <Image
+                  src={previewProduct.image_url}
+                  alt={previewProduct.name}
+                  fill
+                  className="object-contain p-2"
+                  sizes="(max-width: 768px) 100vw, 350px"
+                />
+                <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-sm text-[10px] text-white font-bold flex items-center gap-1">
+                  <ZoomIn size={12} className="text-[#2CFF05]" />
+                  <span>High-Res Detail</span>
+                </div>
+              </div>
+
+              {/* Product Details & Actions on Right */}
+              <div className="flex flex-col justify-between flex-grow space-y-4">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#2CFF05]/10 text-emerald-700 dark:text-[#2CFF05] border border-[#2CFF05]/25 text-[10px] font-black uppercase tracking-wider">
+                      {previewProduct.sub_category ? previewProduct.sub_category.replace(/-/g, ' ') : config.itemSingular}
+                    </span>
+                    {previewProduct.is_active && (
+                      <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                        <CheckCircle2 size={12} /> Available
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 className="font-heading font-extrabold text-lg sm:text-xl text-slate-900 dark:text-white leading-tight">
+                    {previewProduct.name}
+                  </h3>
+
+                  <p className="text-xs text-slate-600 dark:text-zinc-400 line-clamp-3 leading-relaxed">
+                    {previewProduct.description || 'Custom professional quality craftsmanship produced directly by Bitium Technology.'}
+                  </p>
+
+                  <div className="pt-2 flex items-baseline gap-2">
+                    {previewProduct.original_price && previewProduct.original_price > previewProduct.price && (
+                      <span className="text-xs text-slate-400 dark:text-zinc-500 line-through">
+                        Rs. {previewProduct.original_price.toLocaleString()}
+                      </span>
+                    )}
+                    <span className="font-heading font-black text-xl text-emerald-600 dark:text-[#2CFF05]">
+                      From Rs. {previewProduct.price.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Modal Action Buttons */}
+                <div className="space-y-2.5 pt-4 border-t border-slate-100 dark:border-border/60">
+                  <Link
+                    href={`/products/${previewProduct.id}`}
+                    className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-[#2CFF05] hover:bg-[#3af816] text-[#0a0a0a] text-xs font-black uppercase tracking-wider shadow-lg shadow-[#2CFF05]/20 transition-all hover:scale-[1.02] cursor-pointer"
+                  >
+                    <span>View Sizes & Customize Order</span>
+                    <ExternalLink size={14} />
+                  </Link>
+
+                  <a
+                    href={`https://wa.me/94770000000?text=${encodeURIComponent(`Hello Bitium Technology, I would like to inquire about ${previewProduct.name} (Rs. ${previewProduct.price})`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl border border-slate-200 dark:border-border hover:bg-slate-50 dark:hover:bg-card text-xs font-bold text-slate-700 dark:text-white transition-colors cursor-pointer"
+                  >
+                    <MessageCircle size={14} className="text-emerald-500" />
+                    <span>Quick WhatsApp Inquiry</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );

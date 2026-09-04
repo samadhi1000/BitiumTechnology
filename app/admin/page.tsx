@@ -19,6 +19,15 @@ import {
   DigitalArtwork 
 } from '@/lib/digital';
 import { 
+  StaffProfile, 
+  getSavedStaffProfiles, 
+  getActiveStaffProfile, 
+  saveStaffProfiles, 
+  setActiveStaffProfileId, 
+  canAccessProductCategory, 
+  canAccessDigitalCategory 
+} from '@/lib/permissions';
+import { 
   Plus, 
   Edit, 
   Trash2, 
@@ -40,13 +49,18 @@ import {
   Printer, 
   FileText,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Shield,
+  Users,
+  UserCheck,
+  Receipt
 } from 'lucide-react';
 import Image from 'next/image';
 import { sanitizeText } from '@/lib/security/sanitize';
 import AdminBatchPrint from '@/components/AdminBatchPrint';
 import OrderFormComponent from '@/components/OrderFormComponent';
 import POSInvoiceGenerator from '@/components/POSInvoiceGenerator';
+import AdminStaffManager from '@/components/AdminStaffManager';
 
 // ─── Size presets per category ─────────────────────────────────────────────
 const CATEGORY_SIZES: Record<string, string[]> = {
@@ -78,8 +92,12 @@ function getDefaultSizeVariants(category: string, basePrice: number): SizeVarian
 export default function AdminPanelPage() {
   const { user, profile, loading: authLoading, signOut } = useAuth();
   
-  // Tab states: 'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice'
-  const [activeTab, setActiveTab] = useState<'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice'>('products');
+  // Staff Profiles and Role State
+  const [staffProfiles, setStaffProfiles] = useState<StaffProfile[]>(getSavedStaffProfiles());
+  const [activeStaff, setActiveStaff] = useState<StaffProfile>(getActiveStaffProfile(staffProfiles));
+
+  // Tab states: 'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'staff'
+  const [activeTab, setActiveTab] = useState<'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'staff'>('products');
   
   const [products, setProducts] = useState<Product[]>([]);
   const [digitalArtworks, setDigitalArtworks] = useState<DigitalArtwork[]>([]);
@@ -450,8 +468,39 @@ export default function AdminPanelPage() {
     }
   };
 
-  // Filter systems
+  // Staff Switcher handler
+  const handleSwitchActiveStaff = (staffId: string) => {
+    setActiveStaffProfileId(staffId);
+    const found = staffProfiles.find(p => p.id === staffId);
+    if (found) {
+      setActiveStaff(found);
+      // Auto switch active tab if current active tab is not accessible
+      if (activeTab === 'products' && !found.permissions.canViewProducts) {
+        if (found.permissions.canViewDigital) setActiveTab('digital');
+        else if (found.permissions.canAccessOrderForm) setActiveTab('order-form');
+        else if (found.permissions.canAccessPOSInvoice) setActiveTab('pos-invoice');
+        else if (found.permissions.canAccessBatchPrint) setActiveTab('batch-print');
+        else setActiveTab('staff');
+      } else if (activeTab === 'digital' && !found.permissions.canViewDigital) {
+        if (found.permissions.canViewProducts) setActiveTab('products');
+        else if (found.permissions.canAccessOrderForm) setActiveTab('order-form');
+        else if (found.permissions.canAccessPOSInvoice) setActiveTab('pos-invoice');
+        else setActiveTab('staff');
+      } else if (activeTab === 'batch-print' && !found.permissions.canAccessBatchPrint) {
+        setActiveTab(found.permissions.canViewProducts ? 'products' : 'staff');
+      } else if (activeTab === 'order-form' && !found.permissions.canAccessOrderForm) {
+        setActiveTab(found.permissions.canViewProducts ? 'products' : 'staff');
+      } else if (activeTab === 'pos-invoice' && !found.permissions.canAccessPOSInvoice) {
+        setActiveTab(found.permissions.canViewProducts ? 'products' : 'staff');
+      }
+    }
+  };
+
+  // Filter systems with RBAC permissions
   const filteredProducts = products.filter((p) => {
+    const hasCategoryAccess = canAccessProductCategory(activeStaff, p.category);
+    if (!hasCategoryAccess) return false;
+
     const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           p.id.toLowerCase().includes(searchQuery.toLowerCase());
@@ -460,6 +509,9 @@ export default function AdminPanelPage() {
   });
 
   const filteredDigital = digitalArtworks.filter((d) => {
+    const hasCategoryAccess = canAccessDigitalCategory(activeStaff, d.category);
+    if (!hasCategoryAccess) return false;
+
     const matchesSearch = d.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           d.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           d.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -607,7 +659,7 @@ export default function AdminPanelPage() {
         <div className="max-w-7xl mx-auto relative z-10 space-y-8">
           
           {/* Top row heading */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-border/60 pb-6">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border-b border-border/60 pb-6">
             <div>
               <div className="inline-flex items-center gap-2 bg-[#2CFF05]/10 border border-[#2CFF05]/25 rounded-full px-3.5 py-1 mb-2">
                 <Sparkles size={11} className="text-[#2CFF05]" />
@@ -616,10 +668,41 @@ export default function AdminPanelPage() {
               <h1 className="text-3xl sm:text-4xl font-black tracking-tight flex items-center gap-2 uppercase">
                 Unified <span className="text-[#2CFF05]">Admin Panel</span>
               </h1>
-              <p className="text-muted-foreground text-xs sm:text-sm mt-0.5">Control both storefront inventory items and secure design artworks vault files.</p>
+              <p className="text-muted-foreground text-xs sm:text-sm mt-0.5">Control storefront items, design artworks, billing, and team staff permissions.</p>
             </div>
             
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
+              {/* Active Operator Switcher */}
+              <div className="flex items-center gap-2 bg-card/60 border border-border px-3 py-1.5 rounded-2xl backdrop-blur-md shadow-sm">
+                <div className={`w-8 h-8 rounded-xl ${activeStaff.avatarBg || 'bg-emerald-500'} flex items-center justify-center text-white font-black text-xs shrink-0 shadow-sm`}>
+                  {activeStaff.initials}
+                </div>
+                <div className="text-left pr-1">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-black text-foreground">{activeStaff.name}</span>
+                    <span className={`text-[8px] font-extrabold uppercase px-1.5 py-0.2 rounded border ${
+                      activeStaff.role === 'ceo_admin'
+                        ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
+                        : 'bg-[#2CFF05]/10 border-[#2CFF05]/30 text-[#2CFF05]'
+                    }`}>
+                      {activeStaff.role === 'ceo_admin' ? 'CEO & Admin' : activeStaff.title}
+                    </span>
+                  </div>
+                </div>
+                <select
+                  value={activeStaff.id}
+                  onChange={(e) => handleSwitchActiveStaff(e.target.value)}
+                  className="bg-secondary/70 text-[11px] font-bold text-foreground focus:outline-none border border-border rounded-lg px-2 py-1 cursor-pointer"
+                  title="Switch Active Team Member Operator"
+                >
+                  {staffProfiles.map((s) => (
+                    <option key={s.id} value={s.id} className="bg-card text-foreground">
+                      {s.name} ({s.title})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               <button
                 onClick={fetchAllCatalogs}
                 className="p-3 rounded-xl border border-border bg-card/25 hover:bg-card transition-colors text-muted-foreground hover:text-foreground cursor-pointer"
@@ -636,20 +719,27 @@ export default function AdminPanelPage() {
                   <Printer size={16} />
                   <span>Print 4-in-1 A4</span>
                 </button>
-              ) : activeTab === 'order-form' || activeTab === 'pos-invoice' ? null : (
-                <button
-                  onClick={() => {
-                    if (activeTab === 'products') {
-                      openAddProductModal();
-                    } else {
-                      openAddDigitalModal();
-                    }
-                  }}
-                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-[#2CFF05] hover:bg-[#7acc00] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#2CFF05]/20 transition-all hover:scale-105 cursor-pointer"
-                >
-                  <Plus size={16} />
-                  <span>{activeTab === 'products' ? 'Add Product' : 'Add Design'}</span>
-                </button>
+              ) : activeTab === 'order-form' || activeTab === 'pos-invoice' || activeTab === 'staff' ? null : (
+                <>
+                  {activeTab === 'products' && activeStaff.permissions.canAddProducts && (
+                    <button
+                      onClick={openAddProductModal}
+                      className="flex items-center gap-2 px-5 py-3 rounded-xl bg-[#2CFF05] hover:bg-[#7acc00] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#2CFF05]/20 transition-all hover:scale-105 cursor-pointer"
+                    >
+                      <Plus size={16} />
+                      <span>Add Product</span>
+                    </button>
+                  )}
+                  {activeTab === 'digital' && activeStaff.permissions.canAddDigital && (
+                    <button
+                      onClick={openAddDigitalModal}
+                      className="flex items-center gap-2 px-5 py-3 rounded-xl bg-[#2CFF05] hover:bg-[#7acc00] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#2CFF05]/20 transition-all hover:scale-105 cursor-pointer"
+                    >
+                      <Plus size={16} />
+                      <span>Add Design</span>
+                    </button>
+                  )}
+                </>
               )}
               
               <button
@@ -700,144 +790,174 @@ export default function AdminPanelPage() {
               </div>
             </div>
             <div className="p-5 rounded-2xl border border-border bg-card/10 backdrop-blur-md flex items-center gap-4">
-              <div className="w-10 h-10 rounded-xl bg-zinc-600/15 border border-border flex items-center justify-center text-muted-foreground shrink-0">
-                <XCircle size={20} />
+              <div className="w-10 h-10 rounded-xl bg-purple-600/15 border border-purple-500/20 flex items-center justify-center text-purple-400 shrink-0">
+                <Users size={20} />
               </div>
               <div>
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Archived / Hidden</span>
-                <span className="text-xl sm:text-2xl font-black text-muted-foreground">{inactiveCount} items</span>
+                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Staff Profiles</span>
+                <span className="text-xl sm:text-2xl font-black text-purple-400">{staffProfiles.length} Team Members</span>
               </div>
             </div>
           </div>
 
           {/* Top Level Segmented Navigation Tabs */}
           <div className="flex flex-wrap items-center gap-3 border-b border-border/60 pb-3">
-            <button
-              onClick={() => { setActiveTab('products'); setCategoryFilter('all'); }}
-              className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
-                activeTab === 'products'
-                  ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
-                  : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
-              }`}
-            >
-              <Package size={16} />
-              <span>Store Catalog</span>
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${activeTab === 'products' ? 'bg-black text-[#2CFF05]' : 'bg-muted text-muted-foreground'}`}>
-                {totalProductsCount}
-              </span>
-            </button>
+            {activeStaff.permissions.canViewProducts && (
+              <button
+                onClick={() => { setActiveTab('products'); setCategoryFilter('all'); }}
+                className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                  activeTab === 'products'
+                    ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
+                    : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
+                }`}
+              >
+                <Package size={16} />
+                <span>Store Catalog</span>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${activeTab === 'products' ? 'bg-black text-[#2CFF05]' : 'bg-muted text-muted-foreground'}`}>
+                  {totalProductsCount}
+                </span>
+              </button>
+            )}
 
-            <button
-              onClick={() => { setActiveTab('digital'); setCategoryFilter('all'); }}
-              className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
-                activeTab === 'digital'
-                  ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
-                  : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
-              }`}
-            >
-              <Folder size={16} />
-              <span>Digital Artworks</span>
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${activeTab === 'digital' ? 'bg-black text-[#2CFF05]' : 'bg-muted text-muted-foreground'}`}>
-                {totalDigitalCount}
-              </span>
-            </button>
+            {activeStaff.permissions.canViewDigital && (
+              <button
+                onClick={() => { setActiveTab('digital'); setCategoryFilter('all'); }}
+                className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                  activeTab === 'digital'
+                    ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
+                    : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
+                }`}
+              >
+                <Folder size={16} />
+                <span>Digital Artworks</span>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${activeTab === 'digital' ? 'bg-black text-[#2CFF05]' : 'bg-muted text-muted-foreground'}`}>
+                  {totalDigitalCount}
+                </span>
+              </button>
+            )}
 
-            <button
-              onClick={() => { setActiveTab('batch-print'); }}
-              className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
-                activeTab === 'batch-print'
-                  ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
-                  : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
-              }`}
-            >
-              <Printer size={16} />
-              <span>Batch Print (4-in-1 A4)</span>
-              <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'batch-print' ? 'bg-black text-[#2CFF05]' : 'bg-indigo-600/30 text-indigo-300'}`}>
-                PRINT A4
-              </span>
-            </button>
+            {activeStaff.permissions.canAccessBatchPrint && (
+              <button
+                onClick={() => { setActiveTab('batch-print'); }}
+                className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                  activeTab === 'batch-print'
+                    ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
+                    : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
+                }`}
+              >
+                <Printer size={16} />
+                <span>Batch Print (4-in-1 A4)</span>
+                <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'batch-print' ? 'bg-black text-[#2CFF05]' : 'bg-indigo-600/30 text-indigo-300'}`}>
+                  PRINT A4
+                </span>
+              </button>
+            )}
 
-            <button
-              onClick={() => { setActiveTab('order-form'); }}
-              className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
-                activeTab === 'order-form'
-                  ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
-                  : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
-              }`}
-            >
-              <FileText size={16} />
-              <span>Order Form</span>
-              <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'order-form' ? 'bg-black text-[#2CFF05]' : 'bg-lime-500/20 text-lime-400'}`}>
-                FORM
-              </span>
-            </button>
+            {activeStaff.permissions.canAccessOrderForm && (
+              <button
+                onClick={() => { setActiveTab('order-form'); }}
+                className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                  activeTab === 'order-form'
+                    ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
+                    : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
+                }`}
+              >
+                <FileText size={16} />
+                <span>Order Form</span>
+                <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'order-form' ? 'bg-black text-[#2CFF05]' : 'bg-lime-500/20 text-lime-400'}`}>
+                  FORM
+                </span>
+              </button>
+            )}
 
+            {activeStaff.permissions.canAccessPOSInvoice && (
+              <button
+                onClick={() => { setActiveTab('pos-invoice'); }}
+                className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                  activeTab === 'pos-invoice'
+                    ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
+                    : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
+                }`}
+              >
+                <Receipt size={16} />
+                <span>POS Invoice</span>
+                <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'pos-invoice' ? 'bg-black text-[#2CFF05]' : 'bg-amber-500/20 text-amber-400'}`}>
+                  BILL
+                </span>
+              </button>
+            )}
+
+            {/* Staff & Permissions Tab */}
             <button
-              onClick={() => { setActiveTab('pos-invoice'); }}
+              onClick={() => { setActiveTab('staff'); }}
               className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
-                activeTab === 'pos-invoice'
+                activeTab === 'staff'
                   ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
                   : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
               }`}
             >
-              <FileText size={16} />
-              <span>POS Invoice</span>
-              <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'pos-invoice' ? 'bg-black text-[#2CFF05]' : 'bg-amber-500/20 text-amber-400'}`}>
-                BILL
+              <Shield size={16} />
+              <span>Staff & Permissions</span>
+              <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'staff' ? 'bg-black text-[#2CFF05]' : 'bg-purple-500/20 text-purple-400'}`}>
+                {staffProfiles.length} PROFILES
               </span>
             </button>
           </div>
 
           {/* Secondary Filter & Search Row - Shown only for Store & Digital Catalogs */}
-          {activeTab !== 'batch-print' && activeTab !== 'order-form' && activeTab !== 'pos-invoice' && (
+          {activeTab !== 'batch-print' && activeTab !== 'order-form' && activeTab !== 'pos-invoice' && activeTab !== 'staff' && (
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between p-4 rounded-2xl border border-border bg-card/20 backdrop-blur-sm">
               <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
                 <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mr-2 flex items-center gap-1.5"><Filter size={12} /> Category:</span>
                 
                 {activeTab === 'products' ? (
-                  // Store categories
+                  // Store categories filtered by operator permissions
                   [
-                    { id: 'all', label: 'All' },
+                    { id: 'all', label: 'All Allowed' },
                     { id: 'stencil', label: 'Stencils' },
                     { id: 'screen-printing', label: 'Screen Print' },
                     { id: 'dtf_sheet', label: 'DTF Printing' },
                     { id: 'batik-stamp', label: 'Batik Stamps' },
                     { id: 'materials', label: 'Consumables' },
                     { id: 'laser-cutting', label: 'Laser Cut' }
-                  ].map((cat) => (
-                    <button
-                      key={cat.id}
-                      onClick={() => setCategoryFilter(cat.id)}
-                      className={`px-3 py-1.5 rounded-lg text-[9px] font-bold transition-all cursor-pointer ${
-                        categoryFilter === cat.id 
-                          ? 'bg-[#2CFF05]/25 border border-[#2CFF05]/40 text-[#2CFF05]' 
-                          : 'bg-card border border-border text-muted-foreground hover:text-[#0a0a0a]'
-                      }`}
-                    >
-                      {cat.label}
-                    </button>
-                  ))
+                  ]
+                    .filter((cat) => cat.id === 'all' || canAccessProductCategory(activeStaff, cat.id))
+                    .map((cat) => (
+                      <button
+                        key={cat.id}
+                        onClick={() => setCategoryFilter(cat.id)}
+                        className={`px-3 py-1.5 rounded-lg text-[9px] font-bold transition-all cursor-pointer ${
+                          categoryFilter === cat.id 
+                            ? 'bg-[#2CFF05]/25 border border-[#2CFF05]/40 text-[#2CFF05]' 
+                            : 'bg-card border border-border text-muted-foreground hover:text-[#0a0a0a]'
+                        }`}
+                      >
+                        {cat.label}
+                      </button>
+                    ))
                 ) : (
-                  // Digital Artwork categories
+                  // Digital Artwork categories filtered by operator permissions
                   [
-                    { id: 'all', label: 'All' },
+                    { id: 'all', label: 'All Allowed' },
                     { id: 'batik', label: 'Batik Designs' },
                     { id: 'vector', label: 'Vector Artwork' },
                     { id: 'dtf', label: 'DTF Layouts' },
                     { id: 'wall-art', label: 'Wall Art' }
-                  ].map((cat) => (
-                    <button
-                      key={cat.id}
-                      onClick={() => setCategoryFilter(cat.id)}
-                      className={`px-3 py-1.5 rounded-lg text-[9px] font-bold transition-all cursor-pointer ${
-                        categoryFilter === cat.id 
-                          ? 'bg-[#2CFF05]/25 border border-[#2CFF05]/40 text-[#2CFF05]' 
-                          : 'bg-card border border-border text-muted-foreground hover:text-[#0a0a0a]'
-                      }`}
-                    >
-                      {cat.label}
-                    </button>
-                  ))
+                  ]
+                    .filter((cat) => cat.id === 'all' || canAccessDigitalCategory(activeStaff, cat.id))
+                    .map((cat) => (
+                      <button
+                        key={cat.id}
+                        onClick={() => setCategoryFilter(cat.id)}
+                        className={`px-3 py-1.5 rounded-lg text-[9px] font-bold transition-all cursor-pointer ${
+                          categoryFilter === cat.id 
+                            ? 'bg-[#2CFF05]/25 border border-[#2CFF05]/40 text-[#2CFF05]' 
+                            : 'bg-card border border-border text-muted-foreground hover:text-[#0a0a0a]'
+                        }`}
+                      >
+                        {cat.label}
+                      </button>
+                    ))
                 )}
               </div>
 
@@ -855,7 +975,18 @@ export default function AdminPanelPage() {
             </div>
           )}
 
-          {activeTab === 'batch-print' ? (
+          {activeTab === 'staff' ? (
+            <AdminStaffManager
+              staffProfiles={staffProfiles}
+              activeStaffId={activeStaff.id}
+              onUpdateProfiles={(updated) => {
+                setStaffProfiles(updated);
+                const current = updated.find((p) => p.id === activeStaff.id) || updated[0];
+                setActiveStaff(current);
+              }}
+              onSwitchActiveStaff={handleSwitchActiveStaff}
+            />
+          ) : activeTab === 'batch-print' ? (
             <AdminBatchPrint />
           ) : activeTab === 'order-form' ? (
             <div className="p-4 sm:p-6 rounded-2xl border border-border bg-card/10 backdrop-blur-sm">
@@ -952,18 +1083,27 @@ export default function AdminPanelPage() {
                               </td>
                               <td className="p-4 text-right">
                                 <div className="flex justify-end gap-2">
-                                  <button
-                                    onClick={() => openEditProductModal(p)}
-                                    className="p-2 rounded-lg bg-card border border-border hover:border-[#2CFF05]/40 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                                  >
-                                    <Edit size={13} />
-                                  </button>
-                                  <button
-                                    onClick={() => handleDeleteProduct(p.id)}
-                                    className="p-2 rounded-lg bg-card border border-border hover:border-rose-500/40 text-muted-foreground hover:text-rose-400 transition-colors cursor-pointer"
-                                  >
-                                    <Trash2 size={13} />
-                                  </button>
+                                  {activeStaff.permissions.canEditProducts && (
+                                    <button
+                                      onClick={() => openEditProductModal(p)}
+                                      className="p-2 rounded-lg bg-card border border-border hover:border-[#2CFF05]/40 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                                      title="Edit Product"
+                                    >
+                                      <Edit size={13} />
+                                    </button>
+                                  )}
+                                  {activeStaff.permissions.canDeleteProducts && (
+                                    <button
+                                      onClick={() => handleDeleteProduct(p.id)}
+                                      className="p-2 rounded-lg bg-card border border-border hover:border-rose-500/40 text-muted-foreground hover:text-rose-400 transition-colors cursor-pointer"
+                                      title="Delete Product"
+                                    >
+                                      <Trash2 size={13} />
+                                    </button>
+                                  )}
+                                  {!activeStaff.permissions.canEditProducts && !activeStaff.permissions.canDeleteProducts && (
+                                    <span className="text-[10px] text-muted-foreground italic px-2">Read-only</span>
+                                  )}
                                 </div>
                               </td>
                             </tr>
@@ -1071,18 +1211,27 @@ export default function AdminPanelPage() {
                             </td>
                             <td className="p-4 text-right">
                               <div className="flex justify-end gap-2">
-                                <button
-                                  onClick={() => openEditDigitalModal(d)}
-                                  className="p-2 rounded-lg bg-card border border-border hover:border-[#2CFF05]/40 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                                >
-                                  <Edit size={13} />
-                                </button>
-                                <button
-                                  onClick={() => handleDeleteDigital(d.id)}
-                                  className="p-2 rounded-lg bg-card border border-border hover:border-rose-500/40 text-muted-foreground hover:text-rose-400 transition-colors cursor-pointer"
-                                >
-                                  <Trash2 size={13} />
-                                </button>
+                                {activeStaff.permissions.canEditDigital && (
+                                  <button
+                                    onClick={() => openEditDigitalModal(d)}
+                                    className="p-2 rounded-lg bg-card border border-border hover:border-[#2CFF05]/40 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                                    title="Edit Artwork"
+                                  >
+                                    <Edit size={13} />
+                                  </button>
+                                )}
+                                {activeStaff.permissions.canDeleteDigital && (
+                                  <button
+                                    onClick={() => handleDeleteDigital(d.id)}
+                                    className="p-2 rounded-lg bg-card border border-border hover:border-rose-500/40 text-muted-foreground hover:text-rose-400 transition-colors cursor-pointer"
+                                    title="Delete Artwork"
+                                  >
+                                    <Trash2 size={13} />
+                                  </button>
+                                )}
+                                {!activeStaff.permissions.canEditDigital && !activeStaff.permissions.canDeleteDigital && (
+                                  <span className="text-[10px] text-muted-foreground italic px-2">Read-only</span>
+                                )}
                               </div>
                             </td>
                           </tr>
