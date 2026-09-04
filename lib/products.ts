@@ -336,6 +336,23 @@ async function syncToApiCatalog(products: Product[]) {
 }
 
 export async function getProducts(): Promise<Product[]> {
+  // If running on client, fetch directly from /api/products which serves live Supabase data
+  if (typeof window !== 'undefined') {
+    const apiProducts = await getApiCatalogProducts();
+    if (apiProducts.length > 0) {
+      // Merge with any optimistic un-synced local storage items if needed
+      const localProducts = getLocalStorageProducts();
+      const merged = [...apiProducts];
+      localProducts.forEach((localP) => {
+        if (!merged.some((p) => p.id === localP.id)) {
+          merged.unshift(localP);
+        }
+      });
+      return merged.filter((p) => p.is_active);
+    }
+  }
+
+  // Server-side or fallback path
   let dbProducts: Product[] = [];
   if (isSupabaseConfigured()) {
     try {
@@ -345,10 +362,30 @@ export async function getProducts(): Promise<Product[]> {
           *,
           variants:product_variants(*)
         `)
-        .eq('is_active', true);
+        .eq('is_active', true)
+        .order('created_at', { ascending: false });
 
       if (!error && data && data.length > 0) {
-        dbProducts = data as Product[];
+        dbProducts = data.map((row: any) => ({
+          id: row.id,
+          name: row.name,
+          description: row.description || '',
+          price: Number(row.price) || 0,
+          original_price: row.original_price ? Number(row.original_price) : undefined,
+          image_url: row.image_url || '',
+          category: row.category,
+          sub_category: row.sub_category || undefined,
+          is_active: row.is_active !== false,
+          variants: (row.variants || []).map((v: any) => ({
+            id: v.id,
+            product_id: v.product_id,
+            name: v.name,
+            sku: v.sku,
+            price_override: v.price_override != null ? Number(v.price_override) : null,
+            stock_quantity: Number(v.stock_quantity) || 0,
+            attributes: v.attributes || { size: v.name },
+          })),
+        }));
       }
     } catch (err) {
       console.error('Error fetching products from DB:', err);
@@ -359,10 +396,7 @@ export async function getProducts(): Promise<Product[]> {
   if (typeof window === 'undefined') {
     customProducts = getFileCatalogProducts();
   } else {
-    customProducts = await getApiCatalogProducts();
-    if (customProducts.length === 0) {
-      customProducts = getLocalStorageProducts();
-    }
+    customProducts = getLocalStorageProducts();
   }
 
   // Merge datasets: DB items take precedence and override custom catalog items with the same ID
@@ -384,11 +418,17 @@ export async function getProducts(): Promise<Product[]> {
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
+  if (typeof window !== 'undefined') {
+    const products = await getProducts();
+    const found = products.find((p) => p.id === id);
+    if (found) return found;
+  }
+
   if (isSupabaseConfigured()) {
     const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
     if (isUUID) {
       try {
-        const { data: product, error } = await supabase
+        const { data: row, error } = await supabase
           .from('products')
           .select(`
             *,
@@ -397,8 +437,27 @@ export async function getProductById(id: string): Promise<Product | null> {
           .eq('id', id)
           .single();
 
-        if (!error && product) {
-          return product as Product;
+        if (!error && row) {
+          return {
+            id: row.id,
+            name: row.name,
+            description: row.description || '',
+            price: Number(row.price) || 0,
+            original_price: row.original_price ? Number(row.original_price) : undefined,
+            image_url: row.image_url || '',
+            category: row.category,
+            sub_category: row.sub_category || undefined,
+            is_active: row.is_active !== false,
+            variants: (row.variants || []).map((v: any) => ({
+              id: v.id,
+              product_id: v.product_id,
+              name: v.name,
+              sku: v.sku,
+              price_override: v.price_override != null ? Number(v.price_override) : null,
+              stock_quantity: Number(v.stock_quantity) || 0,
+              attributes: v.attributes || { size: v.name },
+            })),
+          };
         }
       } catch (err) {
         console.error('Error fetching product from DB:', err);
@@ -410,10 +469,7 @@ export async function getProductById(id: string): Promise<Product | null> {
   if (typeof window === 'undefined') {
     customProducts = getFileCatalogProducts();
   } else {
-    customProducts = await getApiCatalogProducts();
-    if (customProducts.length === 0) {
-      customProducts = getLocalStorageProducts();
-    }
+    customProducts = getLocalStorageProducts();
   }
 
   const foundCustom = customProducts.find((p) => p.id === id);
@@ -451,23 +507,41 @@ export async function createProduct(
 
   const newProduct: Product = { ...productData, id, is_active: true, variants: newVariants };
 
+  // 1. Sync to API route (which handles Supabase server-side persistence)
+  try {
+    if (typeof window !== 'undefined') {
+      await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'create',
+          product: newProduct,
+          variants: newVariants,
+        }),
+      });
+    }
+  } catch (apiErr) {
+    console.error('Failed to call /api/products create:', apiErr);
+  }
+
+  // 2. Direct Supabase Client fallback
   if (isSupabaseConfigured()) {
     try {
-      const { error: prodError } = await supabase.from('products').insert({
+      const { error: prodError } = await supabase.from('products').upsert({
         id,
         name: productData.name,
         description: productData.description,
         price: productData.price,
-        original_price: productData.original_price,
+        original_price: productData.original_price || null,
         image_url: productData.image_url,
         category: productData.category,
-        sub_category: productData.sub_category,
+        sub_category: productData.sub_category || null,
         is_active: true,
       });
 
       if (!prodError) {
         for (const v of newVariants) {
-          const { error: varError } = await supabase.from('product_variants').insert({
+          const { error: varError } = await supabase.from('product_variants').upsert({
             id: v.id,
             product_id: id,
             name: v.name,
@@ -476,20 +550,20 @@ export async function createProduct(
             stock_quantity: v.stock_quantity,
             attributes: v.attributes,
           });
-          if (varError) console.error('Supabase variant insert failed:', varError);
+          if (varError) console.error('Supabase variant upsert failed:', varError);
         }
       } else {
-        console.error('Supabase product insert failed:', prodError);
+        console.error('Supabase product upsert failed:', prodError);
       }
     } catch (err) {
       console.error('Supabase insert failed:', err);
     }
   }
 
+  // 3. Optimistic local cache
   const localProducts = getLocalStorageProducts();
   localProducts.unshift(newProduct);
   setLocalStorageProducts(localProducts);
-  await syncToApiCatalog(localProducts);
   return newProduct;
 }
 
@@ -529,6 +603,25 @@ export async function updateProduct(
 
   const updated: Product = { ...existing, ...productData, variants: updatedVariants };
 
+  // 1. Sync to API route
+  try {
+    if (typeof window !== 'undefined') {
+      await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'update',
+          id,
+          productData,
+          variants: updatedVariants,
+        }),
+      });
+    }
+  } catch (apiErr) {
+    console.error('Failed to call /api/products update:', apiErr);
+  }
+
+  // 2. Direct Supabase Client fallback
   if (isSupabaseConfigured()) {
     const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
     if (isUUID) {
@@ -537,18 +630,17 @@ export async function updateProduct(
           name: updated.name,
           description: updated.description,
           price: updated.price,
-          original_price: updated.original_price,
+          original_price: updated.original_price || null,
           image_url: updated.image_url,
           category: updated.category,
-          sub_category: updated.sub_category,
+          sub_category: updated.sub_category || null,
           is_active: updated.is_active,
         }).eq('id', id);
 
         if (sizeVariants && sizeVariants.length > 0) {
-          // Replace all variants for this product
           await supabase.from('product_variants').delete().eq('product_id', id);
           for (const v of updatedVariants) {
-            await supabase.from('product_variants').insert({
+            await supabase.from('product_variants').upsert({
               id: v.id, product_id: id, name: v.name, sku: v.sku,
               price_override: v.price_override, stock_quantity: v.stock_quantity,
               attributes: v.attributes,
@@ -561,6 +653,7 @@ export async function updateProduct(
     }
   }
 
+  // 3. Optimistic local cache
   const localProducts = getLocalStorageProducts();
   const index = localProducts.findIndex((p) => p.id === id);
   if (index !== -1) {
@@ -569,11 +662,27 @@ export async function updateProduct(
     localProducts.push(updated);
   }
   setLocalStorageProducts(localProducts);
-  await syncToApiCatalog(localProducts);
   return updated;
 }
 
 export async function deleteProduct(id: string): Promise<boolean> {
+  // 1. Sync to API route
+  try {
+    if (typeof window !== 'undefined') {
+      await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'delete',
+          id,
+        }),
+      });
+    }
+  } catch (apiErr) {
+    console.error('Failed to call /api/products delete:', apiErr);
+  }
+
+  // 2. Direct Supabase Client fallback
   if (isSupabaseConfigured()) {
     const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
     if (isUUID) {
@@ -588,6 +697,7 @@ export async function deleteProduct(id: string): Promise<boolean> {
     }
   }
 
+  // 3. Optimistic local cache
   const localProducts = getLocalStorageProducts();
   const index = localProducts.findIndex((p) => p.id === id);
   if (index !== -1) {
@@ -599,9 +709,6 @@ export async function deleteProduct(id: string): Promise<boolean> {
     }
   }
   setLocalStorageProducts(localProducts);
-
-  // Sync to API JSON file
-  await syncToApiCatalog(localProducts);
 
   return true;
 }
