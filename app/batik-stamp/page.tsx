@@ -20,6 +20,7 @@ const BATIK_STAMP_CONFIG_EN: CategoryPageConfig = {
   itemPlural: 'Stamps',
   subCategories: [
     { id: 'cap-batik', label: 'Cap Batik Stamps' },
+    { id: 'other', label: 'Other' },
   ],
   whyChooseUs: {
     title: 'Why choose our handcrafted batik stamps?',
@@ -95,6 +96,7 @@ const BATIK_STAMP_CONFIG_SI: CategoryPageConfig = {
   itemPlural: 'මුද්‍රා',
   subCategories: [
     { id: 'cap-batik', label: 'කැප් බතික් මුද්‍රා' },
+    { id: 'other', label: 'වෙනත්' },
   ],
   whyChooseUs: {
     title: 'අපගේ අතින් සාදන ලද බතික් මුද්‍රා තෝරාගත යුත්තේ ඇයි?',

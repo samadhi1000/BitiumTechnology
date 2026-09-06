@@ -22,6 +22,7 @@ const DTF_PRINTING_CONFIG_EN: CategoryPageConfig = {
     { id: 'tshirt-design', label: 'T-Shirt Designs' },
     { id: 'dtf-sticker', label: 'DTF Stickers' },
     { id: 'dtf-cloth', label: 'Cloth Transfers' },
+    { id: 'other', label: 'Other' },
   ],
   whyChooseUs: {
     title: 'Why choose our DTF transfers?',
@@ -109,6 +110,7 @@ const DTF_PRINTING_CONFIG_SI: CategoryPageConfig = {
     { id: 'tshirt-design', label: 'ටී-ෂර්ට් මෝස්තර' },
     { id: 'dtf-sticker', label: 'DTF ස්ටිකර්ස්' },
     { id: 'dtf-cloth', label: 'ඇඳුම් ට්‍රාන්ස්ෆර්ස්' },
+    { id: 'other', label: 'වෙනත්' },
   ],
   whyChooseUs: {
     title: 'අපගේ DTF ට්‍රාන්ස්ෆර්ස් තෝරාගත යුත්තේ ඇයි?',

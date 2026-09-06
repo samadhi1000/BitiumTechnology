@@ -24,6 +24,7 @@ const SCREEN_PRINTING_CONFIG_EN: CategoryPageConfig = {
     { id: 'tracing-printouts', label: 'Tracing Printouts' },
     { id: 'positive-printouts', label: 'Positive Film' },
     { id: 'cmyk-halftone', label: 'CMYK Halftone' },
+    { id: 'other', label: 'Other' },
   ],
   whyChooseUs: {
     title: 'Why choose our screen printing supplies?',
@@ -108,6 +109,7 @@ const SCREEN_PRINTING_CONFIG_SI: CategoryPageConfig = {
     { id: 'tracing-printouts', label: 'ට්‍රේසිං ප්‍රින්ට්-අවුට්' },
     { id: 'positive-printouts', label: 'පොසිටිව් ප්‍රින්ට්-අවුට්' },
     { id: 'cmyk-halftone', label: 'CMYK හාෆ්ටෝන්' },
+    { id: 'other', label: 'වෙනත්' },
   ],
   whyChooseUs: {
     title: 'අපගේ ස්ක්‍රීන් මුද්‍රණ උපාංග තෝරාගත යුත්තේ ඇයි?',

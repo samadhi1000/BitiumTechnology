@@ -37,6 +37,7 @@ export interface Translations {
     acrylicCutEngrave: string;
     woodEngraving: string;
     customProfiles: string;
+    other: string;
   };
   subNav: {
     dtfPrinting: string;
@@ -257,7 +258,8 @@ export const translations: Record<Language, Translations> = {
       allLaserCutting: "All Laser Cutting",
       acrylicCutEngrave: "Acrylic Cut & Engrave",
       woodEngraving: "Wood Engraving",
-      customProfiles: "Custom Profiles"
+      customProfiles: "Custom Profiles",
+      other: "Other"
     },
     subNav: {
       dtfPrinting: "DTF Printing",
@@ -503,7 +505,8 @@ export const translations: Record<Language, Translations> = {
       allLaserCutting: "සියලුම ලේසර් කැපුම්",
       acrylicCutEngrave: "ඇක්‍රිලික් කැපුම් සහ කැටයම්",
       woodEngraving: "ලී කැටයම්",
-      customProfiles: "විශේෂ ඇණවුම් කැපුම්"
+      customProfiles: "විශේෂ ඇණවුම් කැපුම්",
+      other: "වෙනත්"
     },
     subNav: {
       dtfPrinting: "DTF මුද්‍රණය",

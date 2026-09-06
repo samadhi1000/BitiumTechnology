@@ -26,6 +26,7 @@ const STENCIL_CONFIG_EN: CategoryPageConfig = {
     { id: 'batik', label: 'Batik Patterns' },
     { id: 'wall-decoration', label: 'Wall Decor' },
     { id: 'titanium', label: 'Titanium' },
+    { id: 'other', label: 'Other' },
   ],
   whyChooseUs: {
     title: 'Why choose our laser-cut stencils?',
@@ -116,6 +117,7 @@ const STENCIL_CONFIG_SI: CategoryPageConfig = {
     { id: 'batik', label: 'බතික් රටා' },
     { id: 'wall-decoration', label: 'බිත්ති අලංකරණ' },
     { id: 'titanium', label: 'ටයිටේනියම්' },
+    { id: 'other', label: 'වෙනත්' },
   ],
   whyChooseUs: {
     title: 'අපගේ ලේසර් කැපූ ස්ටෙන්සිල් තෝරාගත යුත්තේ ඇයි?',

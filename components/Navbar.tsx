@@ -133,7 +133,8 @@ export default function Navbar() {
                     { sub: 'tote-bags', label: t.nav.toteBags },
                     { sub: 'batik', label: t.nav.batik },
                     { sub: 'wall-decoration', label: t.nav.wallDecoration },
-                    { sub: 'titanium', label: t.nav.titanium }
+                    { sub: 'titanium', label: t.nav.titanium },
+                    { sub: 'other', label: t.nav.other || 'Other' }
                   ].map((item) => (
                     <Link 
                       key={item.sub} 
@@ -167,7 +168,8 @@ export default function Navbar() {
                     { sub: 'screen-exposed', label: t.nav.screenExposed },
                     { sub: 'tracing-printouts', label: t.nav.tracingPrintouts },
                     { sub: 'positive-printouts', label: t.nav.positivePrintouts },
-                    { sub: 'cmyk-halftone', label: t.nav.cmykHalftone }
+                    { sub: 'cmyk-halftone', label: t.nav.cmykHalftone },
+                    { sub: 'other', label: t.nav.other || 'Other' }
                   ].map((item) => (
                     <Link 
                       key={item.sub} 
@@ -193,14 +195,15 @@ export default function Navbar() {
               </Link>
               {dtfPrintingHovered && (
                 <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
-                  <Link href={adminLink('/dtf-printing')} className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-emerald-600 dark:text-[#2CFF05] hover:bg-card transition-colors">
+                  <Link href={adminLink('/dtf-printing')} className="px-3 py-2 rounded-lg text-[11px] font-bold text-emerald-600 dark:text-[#2CFF05] hover:bg-card transition-colors">
                     {t.nav.allDtfPrinting}
                   </Link>
                   <hr className="border-border my-0.5" />
                   {[
                     { sub: 'tshirt-design', label: t.nav.tshirtDesign },
                     { sub: 'dtf-sticker', label: t.nav.dtfSticker },
-                    { sub: 'dtf-cloth', label: t.nav.dtfCloth }
+                    { sub: 'dtf-cloth', label: t.nav.dtfCloth },
+                    { sub: 'other', label: t.nav.other || 'Other' }
                   ].map((item) => (
                     <Link 
                       key={item.sub} 
@@ -225,13 +228,26 @@ export default function Navbar() {
                 <ChevronDown size={11} className={`transition-transform duration-200 ${batikStampHovered ? 'rotate-180' : ''}`} />
               </Link>
               {batikStampHovered && (
-                <div className="absolute top-[60px] left-0 w-44 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
+                <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
                   <Link 
                     href={adminLink('/batik-stamp')} 
-                    className="px-3 py-2 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-foreground hover:text-emerald-600 dark:hover:text-[#2CFF05]"
+                    className="px-3 py-2 rounded-lg text-[11px] font-bold text-emerald-600 dark:text-[#2CFF05] hover:bg-card transition-colors"
                   >
-                    {t.nav.capBatik}
+                    {t.nav.allBatikStamps}
                   </Link>
+                  <hr className="border-border my-0.5" />
+                  {[
+                    { sub: 'cap-batik', label: t.nav.capBatik },
+                    { sub: 'other', label: t.nav.other || 'Other' }
+                  ].map((item) => (
+                    <Link 
+                      key={item.sub} 
+                      href={adminLink(`/batik-stamp?sub=${item.sub}`)} 
+                      className="px-3 py-1.5 rounded-lg text-[11px] font-semibold hover:bg-card transition-colors text-foreground hover:text-emerald-600 dark:hover:text-[#2CFF05]"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>
@@ -255,7 +271,8 @@ export default function Navbar() {
                   {[
                     { sub: 'acrylic', label: t.nav.acrylicCutEngrave },
                     { sub: 'wood', label: t.nav.woodEngraving },
-                    { sub: 'custom-profile', label: t.nav.customProfiles }
+                    { sub: 'custom-profile', label: t.nav.customProfiles },
+                    { sub: 'other', label: t.nav.other || 'Other' }
                   ].map((item) => (
                     <Link 
                       key={item.sub} 
@@ -447,7 +464,8 @@ export default function Navbar() {
                     { sub: 'tote-bags', label: t.nav.toteBags },
                     { sub: 'batik', label: t.nav.batik },
                     { sub: 'wall-decoration', label: t.nav.wallDecoration },
-                    { sub: 'titanium', label: t.nav.titanium }
+                    { sub: 'titanium', label: t.nav.titanium },
+                    { sub: 'other', label: t.nav.other || 'Other' }
                   ].map((item) => (
                     <Link
                       key={item.sub}
@@ -493,7 +511,8 @@ export default function Navbar() {
                     { sub: 'screen-exposed', label: t.nav.screenExposed },
                     { sub: 'tracing-printouts', label: t.nav.tracingPrintouts },
                     { sub: 'positive-printouts', label: t.nav.positivePrintouts },
-                    { sub: 'cmyk-halftone', label: t.nav.cmykHalftone }
+                    { sub: 'cmyk-halftone', label: t.nav.cmykHalftone },
+                    { sub: 'other', label: t.nav.other || 'Other' }
                   ].map((item) => (
                     <Link
                       key={item.sub}
@@ -538,7 +557,8 @@ export default function Navbar() {
                   {[
                     { sub: 'tshirt-design', label: t.nav.tshirtDesign },
                     { sub: 'dtf-sticker', label: t.nav.dtfSticker },
-                    { sub: 'dtf-cloth', label: t.nav.dtfCloth }
+                    { sub: 'dtf-cloth', label: t.nav.dtfCloth },
+                    { sub: 'other', label: t.nav.other || 'Other' }
                   ].map((item) => (
                     <Link
                       key={item.sub}
@@ -580,6 +600,19 @@ export default function Navbar() {
                   >
                     {t.nav.allBatikStamps} →
                   </Link>
+                  {[
+                    { sub: 'cap-batik', label: t.nav.capBatik },
+                    { sub: 'other', label: t.nav.other || 'Other' }
+                  ].map((item) => (
+                    <Link
+                      key={item.sub}
+                      href={adminLink(`/batik-stamp?sub=${item.sub}`)}
+                      onClick={closeMobileMenu}
+                      className="block px-3 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-card hover:text-emerald-600 dark:hover:text-[#2CFF05]"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>
@@ -614,7 +647,8 @@ export default function Navbar() {
                   {[
                     { sub: 'acrylic', label: t.nav.acrylicCutEngrave },
                     { sub: 'wood', label: t.nav.woodEngraving },
-                    { sub: 'custom-profile', label: t.nav.customProfiles }
+                    { sub: 'custom-profile', label: t.nav.customProfiles },
+                    { sub: 'other', label: t.nav.other || 'Other' }
                   ].map((item) => (
                     <Link
                       key={item.sub}

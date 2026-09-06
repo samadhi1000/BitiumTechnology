@@ -22,6 +22,7 @@ const LASER_CUTTING_CONFIG_EN: CategoryPageConfig = {
     { id: 'acrylic', label: 'Acrylic Cut & Signs' },
     { id: 'wood', label: 'Wood Engraving' },
     { id: 'custom-profile', label: 'Custom Profiles' },
+    { id: 'other', label: 'Other' },
   ],
   whyChooseUs: {
     title: 'Why choose our precision laser cutting?',
@@ -113,6 +114,7 @@ const LASER_CUTTING_CONFIG_SI: CategoryPageConfig = {
     { id: 'acrylic', label: 'ඇක්‍රිලික් කැපුම් සහ කැටයම්' },
     { id: 'wood', label: 'ලී කැටයම්' },
     { id: 'custom-profile', label: 'විශේෂ ඇණවුම් කැපුම්' },
+    { id: 'other', label: 'වෙනත්' },
   ],
   whyChooseUs: {
     title: 'අපගේ නිරවද්‍ය ලේසර් කැපුම් සේවා තෝරාගත යුත්තේ ඇයි?',
