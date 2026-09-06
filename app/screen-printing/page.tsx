@@ -24,6 +24,10 @@ const SCREEN_PRINTING_CONFIG_EN: CategoryPageConfig = {
     { id: 'tracing-printouts', label: 'Tracing Printouts' },
     { id: 'positive-printouts', label: 'Positive Film' },
     { id: 'cmyk-halftone', label: 'CMYK Halftone' },
+    { id: 'one-color', label: 'One Color' },
+    { id: 'two-color', label: 'Two Color' },
+    { id: 'three-color', label: 'Three Color' },
+    { id: 'four-color', label: 'Four Color' },
     { id: 'other', label: 'Other' },
   ],
   whyChooseUs: {
@@ -109,6 +113,10 @@ const SCREEN_PRINTING_CONFIG_SI: CategoryPageConfig = {
     { id: 'tracing-printouts', label: 'ට්‍රේසිං ප්‍රින්ට්-අවුට්' },
     { id: 'positive-printouts', label: 'පොසිටිව් ප්‍රින්ට්-අවුට්' },
     { id: 'cmyk-halftone', label: 'CMYK හාෆ්ටෝන්' },
+    { id: 'one-color', label: 'තනි වර්ණ (One Color)' },
+    { id: 'two-color', label: 'වර්ණ 2 (Two Color)' },
+    { id: 'three-color', label: 'වර්ණ 3 (Three Color)' },
+    { id: 'four-color', label: 'වර්ණ 4 (Four Color)' },
     { id: 'other', label: 'වෙනත්' },
   ],
   whyChooseUs: {

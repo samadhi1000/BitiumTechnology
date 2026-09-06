@@ -169,6 +169,10 @@ export default function Navbar() {
                     { sub: 'tracing-printouts', label: t.nav.tracingPrintouts },
                     { sub: 'positive-printouts', label: t.nav.positivePrintouts },
                     { sub: 'cmyk-halftone', label: t.nav.cmykHalftone },
+                    { sub: 'one-color', label: t.nav.oneColor || 'One Color' },
+                    { sub: 'two-color', label: t.nav.twoColor || 'Two Color' },
+                    { sub: 'three-color', label: t.nav.threeColor || 'Three Color' },
+                    { sub: 'four-color', label: t.nav.fourColor || 'Four Color' },
                     { sub: 'other', label: t.nav.other || 'Other' }
                   ].map((item) => (
                     <Link 
@@ -512,6 +516,10 @@ export default function Navbar() {
                     { sub: 'tracing-printouts', label: t.nav.tracingPrintouts },
                     { sub: 'positive-printouts', label: t.nav.positivePrintouts },
                     { sub: 'cmyk-halftone', label: t.nav.cmykHalftone },
+                    { sub: 'one-color', label: t.nav.oneColor || 'One Color' },
+                    { sub: 'two-color', label: t.nav.twoColor || 'Two Color' },
+                    { sub: 'three-color', label: t.nav.threeColor || 'Three Color' },
+                    { sub: 'four-color', label: t.nav.fourColor || 'Four Color' },
                     { sub: 'other', label: t.nav.other || 'Other' }
                   ].map((item) => (
                     <Link

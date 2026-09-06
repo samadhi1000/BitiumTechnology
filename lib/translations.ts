@@ -27,6 +27,10 @@ export interface Translations {
     tracingPrintouts: string;
     positivePrintouts: string;
     cmykHalftone: string;
+    oneColor: string;
+    twoColor: string;
+    threeColor: string;
+    fourColor: string;
     allDtfPrinting: string;
     tshirtDesign: string;
     dtfSticker: string;
@@ -249,6 +253,10 @@ export const translations: Record<Language, Translations> = {
       tracingPrintouts: "Tracing Printouts",
       positivePrintouts: "Positive Printouts",
       cmykHalftone: "CMYK Halftone",
+      oneColor: "One Color",
+      twoColor: "Two Color",
+      threeColor: "Three Color",
+      fourColor: "Four Color",
       allDtfPrinting: "All DTF Printing",
       tshirtDesign: "T-Shirt Design",
       dtfSticker: "DTF Sticker",
@@ -496,6 +504,10 @@ export const translations: Record<Language, Translations> = {
       tracingPrintouts: "ට්‍රේසිං ප්‍රින්ට්-අවුට්",
       positivePrintouts: "පොසිටිව් ප්‍රින්ට්-අවුට්",
       cmykHalftone: "CMYK හාෆ්ටෝන්",
+      oneColor: "තනි වර්ණ (One Color)",
+      twoColor: "වර්ණ 2 (Two Color)",
+      threeColor: "වර්ණ 3 (Three Color)",
+      fourColor: "වර්ණ 4 (Four Color)",
       allDtfPrinting: "සියලුම DTF මුද්‍රණ",
       tshirtDesign: "ටී-ෂර්ට් නිර්මාණ",
       dtfSticker: "DTF ස්ටිකර්",
