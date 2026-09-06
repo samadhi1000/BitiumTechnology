@@ -241,67 +241,67 @@ export default function CategoryPageTemplate({
               )}
             </div>
 
-            {/* Sort Dropdown */}
-            <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
-              <span className="text-xs font-medium text-slate-500 dark:text-zinc-400">Sort by:</span>
-              <div className="relative">
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as any)}
-                  className="appearance-none bg-slate-50 dark:bg-card/70 border border-slate-200/90 dark:border-white/15 text-xs font-semibold text-slate-900 dark:text-white py-2 pl-3.5 pr-8 rounded-full focus:outline-none focus:border-emerald-500 dark:focus:border-[#2CFF05] cursor-pointer shadow-sm"
-                >
-                  <option value="featured">Featured</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="name">Alphabetical (A-Z)</option>
-                  <option value="newest">Newest First</option>
-                </select>
-                <ChevronDown
-                  size={14}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-zinc-400 pointer-events-none"
-                />
+            {/* Sort Dropdown & Total Items Counter */}
+            <div className="flex items-center gap-3 self-end sm:self-auto shrink-0">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-medium text-slate-500 dark:text-zinc-400">Sort by:</span>
+                <div className="relative">
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value as any)}
+                    className="appearance-none bg-slate-50 dark:bg-card/70 border border-slate-200/90 dark:border-white/15 text-xs font-semibold text-slate-900 dark:text-white py-2 pl-3.5 pr-8 rounded-full focus:outline-none focus:border-emerald-500 dark:focus:border-[#2CFF05] cursor-pointer shadow-sm"
+                  >
+                    <option value="featured">Featured</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="name">Alphabetical (A-Z)</option>
+                    <option value="newest">Newest First</option>
+                  </select>
+                  <ChevronDown
+                    size={14}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-zinc-400 pointer-events-none"
+                  />
+                </div>
+              </div>
+
+              {/* Total Items Counter */}
+              <div className="text-xs font-semibold text-slate-600 dark:text-zinc-300 shrink-0 bg-slate-50 dark:bg-card/70 border border-slate-200/90 dark:border-white/15 py-2 px-3.5 rounded-full shadow-sm">
+                {filteredProducts.length} {filteredProducts.length === 1 ? config.itemSingular : config.itemPlural}
               </div>
             </div>
           </div>
 
           {/* Subcategory Filter Pills Row */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-            <div className="flex flex-wrap items-center gap-2">
-              {/* All Pill */}
-              <button
-                onClick={() => handleSubSelect(null)}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm ${
-                  activeSub === null
-                    ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-md shadow-[#2CFF05]/20 scale-105'
-                    : 'bg-slate-50 dark:bg-card/70 border border-slate-200/90 dark:border-white/15 text-slate-700 dark:text-zinc-300 hover:border-slate-300 dark:hover:border-white/30 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                All
-              </button>
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            {/* All Pill */}
+            <button
+              onClick={() => handleSubSelect(null)}
+              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm ${
+                activeSub === null
+                  ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-md shadow-[#2CFF05]/20 scale-105'
+                  : 'bg-slate-50 dark:bg-card/70 border border-slate-200/90 dark:border-white/15 text-slate-700 dark:text-zinc-300 hover:border-slate-300 dark:hover:border-white/30 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              All
+            </button>
 
-              {/* Subcategories */}
-              {config.subCategories.map((sub) => {
-                const isSelected = activeSub === sub.id;
-                return (
-                  <button
-                    key={sub.id}
-                    onClick={() => handleSubSelect(sub.id)}
-                    className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all shadow-sm ${
-                      isSelected
-                        ? 'bg-[#2CFF05] text-[#0a0a0a] font-bold shadow-md shadow-[#2CFF05]/20 scale-105'
-                        : 'bg-slate-50 dark:bg-card/70 border border-slate-200/90 dark:border-white/15 text-slate-700 dark:text-zinc-300 hover:border-slate-300 dark:hover:border-white/30 hover:text-slate-900 dark:hover:text-white'
-                    }`}
-                  >
-                    {sub.label}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Total Items Counter */}
-            <div className="text-xs font-semibold text-slate-500 dark:text-zinc-400 shrink-0 ml-auto sm:ml-0">
-              {filteredProducts.length} {filteredProducts.length === 1 ? config.itemSingular : config.itemPlural}
-            </div>
+            {/* Subcategories */}
+            {config.subCategories.map((sub) => {
+              const isSelected = activeSub === sub.id;
+              return (
+                <button
+                  key={sub.id}
+                  onClick={() => handleSubSelect(sub.id)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all shadow-sm ${
+                    isSelected
+                      ? 'bg-[#2CFF05] text-[#0a0a0a] font-bold shadow-md shadow-[#2CFF05]/20 scale-105'
+                      : 'bg-slate-50 dark:bg-card/70 border border-slate-200/90 dark:border-white/15 text-slate-700 dark:text-zinc-300 hover:border-slate-300 dark:hover:border-white/30 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  {sub.label}
+                </button>
+              );
+            })}
           </div>
         </div>
       </header>
