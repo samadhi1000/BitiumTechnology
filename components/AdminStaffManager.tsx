@@ -6,7 +6,8 @@ import {
   StaffPermissions, 
   DEFAULT_FULL_PERMISSIONS, 
   saveStaffProfiles, 
-  setActiveStaffProfileId 
+  setActiveStaffProfileId,
+  hashPassword 
 } from '@/lib/permissions';
 import { 
   Shield, 
@@ -126,11 +127,16 @@ export default function AdminStaffManager({
     setTempDepartment(staff.department);
     setTempEmail(staff.email);
     setTempUsername(staff.username || staff.email.split('@')[0]);
-    setTempPassword(staff.defaultPassword || 'Bitium#2026');
+    setTempPassword('');
   };
 
-  const handleSavePermissions = () => {
+  const handleSavePermissions = async () => {
     if (!editingPermissionsStaff || !tempPermissions) return;
+
+    let newHash: string | undefined = editingPermissionsStaff.passwordHash;
+    if (tempPassword.trim()) {
+      newHash = await hashPassword(tempPassword.trim());
+    }
 
     const updated = profiles.map((p) => {
       if (p.id === editingPermissionsStaff.id) {
@@ -141,7 +147,7 @@ export default function AdminStaffManager({
           department: tempDepartment.trim() || p.department,
           email: tempEmail.trim() || p.email,
           username: tempUsername.trim() || p.username,
-          defaultPassword: tempPassword.trim() || p.defaultPassword,
+          passwordHash: newHash || p.passwordHash,
           permissions: tempPermissions,
         };
       }
@@ -176,7 +182,7 @@ export default function AdminStaffManager({
     }
   };
 
-  const handleCreateNewStaff = (e: React.FormEvent) => {
+  const handleCreateNewStaff = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newStaffName.trim() || !newStaffTitle.trim()) {
       alert('Please fill in both Name and Job Title.');
@@ -193,7 +199,8 @@ export default function AdminStaffManager({
 
     const newId = `staff-${Date.now()}`;
     const username = newStaffUsername.trim() || newStaffName.toLowerCase().replace(/\s+/g, '.');
-    const password = newStaffPassword.trim() || `Bitium#${newStaffName.replace(/\s+/g, '')}@2026`;
+    const rawPass = newStaffPassword.trim() || 'Bitium#2026';
+    const passwordHash = await hashPassword(rawPass);
 
     // Base initial permissions according to role
     let basePermissions: StaffPermissions = {
@@ -223,7 +230,7 @@ export default function AdminStaffManager({
       id: newId,
       name: newStaffName.trim(),
       username,
-      defaultPassword: password,
+      passwordHash,
       title: newStaffTitle.trim(),
       department: newStaffDepartment.trim() || 'General Operations',
       email: newStaffEmail.trim() || `${username}@bitiumtechnology.com`,
@@ -421,28 +428,21 @@ export default function AdminStaffManager({
                     </button>
                   </div>
 
-                  {/* Password */}
+                  {/* Password / Security */}
                   <div className="flex items-center justify-between bg-card/60 px-2.5 py-1.5 rounded-xl border border-border/60">
                     <div className="flex items-center gap-1.5 overflow-hidden">
-                      <span className="text-[10px] text-muted-foreground font-semibold">Pass:</span>
-                      <span className="font-mono font-bold text-foreground text-[11px] truncate">
-                        {isPasswordVisible ? staff.defaultPassword : '••••••••••••'}
+                      <span className="text-[10px] text-muted-foreground font-semibold">Security:</span>
+                      <span className="font-mono text-emerald-500 font-bold text-[10px] truncate flex items-center gap-1">
+                        <Lock size={10} /> SHA-256 Protected
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
                       <button
-                        onClick={() => togglePasswordVisibility(staff.id)}
-                        className="p-1 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
-                        title={isPasswordVisible ? 'Hide Password' : 'Show Password'}
+                        onClick={() => handleOpenPermissionsModal(staff)}
+                        className="text-[10px] font-bold text-emerald-600 dark:text-[#2CFF05] hover:underline px-1 py-0.5"
+                        title="Change Password"
                       >
-                        {isPasswordVisible ? <EyeOff size={12} /> : <Eye size={12} />}
-                      </button>
-                      <button
-                        onClick={() => copyToClipboard(staff.defaultPassword || 'Bitium#2026', 'Password')}
-                        className="p-1 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
-                        title="Copy Password"
-                      >
-                        <Copy size={12} />
+                        Change
                       </button>
                     </div>
                   </div>

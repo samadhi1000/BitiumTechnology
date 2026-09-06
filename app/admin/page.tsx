@@ -25,7 +25,8 @@ import {
   saveStaffProfiles, 
   setActiveStaffProfileId, 
   canAccessProductCategory, 
-  canAccessDigitalCategory 
+  canAccessDigitalCategory,
+  hashPassword 
 } from '@/lib/permissions';
 import { 
   Plus, 
@@ -198,13 +199,16 @@ export default function AdminPanelPage() {
 
     const inputClean = emailInput.trim().toLowerCase();
     const passClean = passwordInput.trim();
+    const passHash = await hashPassword(passClean);
 
     // 1. Authenticate against Staff Profiles
     const matchedStaff = staffProfiles.find((s) => {
       if (!s.isActive) return false;
       const emailMatches = s.email.toLowerCase() === inputClean;
       const usernameMatches = s.username.toLowerCase() === inputClean;
-      const passMatches = s.defaultPassword === passClean || (s as any).password === passClean;
+      const passMatches = s.passwordHash 
+        ? s.passwordHash === passHash 
+        : (s.defaultPassword === passClean || (s as any).password === passClean);
       return (emailMatches || usernameMatches) && passMatches;
     });
 

@@ -28,7 +28,8 @@ export interface StaffProfile {
   id: string;
   name: string;
   username: string;
-  defaultPassword: string;
+  passwordHash?: string;
+  defaultPassword?: string;
   title: string;
   department: string;
   email: string;
@@ -39,6 +40,17 @@ export interface StaffProfile {
   permissions: StaffPermissions;
   phone?: string;
   joinedDate?: string;
+}
+
+export async function hashPassword(password: string): Promise<string> {
+  if (!password) return '';
+  if (typeof window !== 'undefined' && window.crypto?.subtle) {
+    const msgBuffer = new TextEncoder().encode(password);
+    const hashBuffer = await window.crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  return password;
 }
 
 export const DEFAULT_FULL_PERMISSIONS: StaffPermissions = {
@@ -60,13 +72,13 @@ export const DEFAULT_FULL_PERMISSIONS: StaffPermissions = {
   canExportData: true,
 };
 
-// Initial Pre-configured Team Profiles
+// Initial Pre-configured Team Profiles (Passwords secured via SHA-256 hash)
 export const INITIAL_STAFF_PROFILES: StaffProfile[] = [
   {
     id: 'staff-indrajith',
     name: 'Indrajith',
     username: 'indrajith.admin',
-    defaultPassword: 'Bitium#Admin@2026',
+    passwordHash: '44f3cfee53b1cf58eefb45badcb562ab6f39805b2883ca74d5aed8315543df85',
     title: 'CEO & Admin',
     department: 'Executive & Administration',
     email: 'indrajith@bitiumtechnology.com',
@@ -83,7 +95,7 @@ export const INITIAL_STAFF_PROFILES: StaffProfile[] = [
     id: 'staff-prasadari',
     name: 'Prasadari',
     username: 'prasadari.print',
-    defaultPassword: 'Bitium#Screen@2026',
+    passwordHash: 'abd7a7db820ca63666eb92e910c9dff2d1f3cd6b577913fc7da6055b857695e7',
     title: 'Screen Printing & Artwork',
     department: 'Screen Printing Department',
     email: 'prasadari@bitiumtechnology.com',
@@ -115,7 +127,7 @@ export const INITIAL_STAFF_PROFILES: StaffProfile[] = [
     id: 'staff-nadeeka',
     name: 'Nadeeka',
     username: 'nadeeka.stencil',
-    defaultPassword: 'Bitium#Stencil@2026',
+    passwordHash: '87728dc433d57c9578cae0559e464c26a9815a0a424c1a0f4ca8c55b1d07b6f5',
     title: 'Stencils & Hand Painting',
     department: 'Stencils & Handcraft Department',
     email: 'nadeeka@bitiumtechnology.com',
@@ -147,7 +159,7 @@ export const INITIAL_STAFF_PROFILES: StaffProfile[] = [
     id: 'staff-dinithi',
     name: 'Dinithi',
     username: 'dinithi.batik',
-    defaultPassword: 'Bitium#Batik@2026',
+    passwordHash: '7409d0eb7de84ea35828dc3ce575e6ce7d885a50a3e85f7d33c471e1e3cdb1ed',
     title: 'Cap Batik & Other',
     department: 'Batik & Custom Crafts',
     email: 'dinithi@bitiumtechnology.com',
@@ -179,7 +191,7 @@ export const INITIAL_STAFF_PROFILES: StaffProfile[] = [
     id: 'staff-dilrukshi',
     name: 'Dilrukshi',
     username: 'dilrukshi.support',
-    defaultPassword: 'Bitium#Support@2026',
+    passwordHash: '211cb301262dbc8e022f11895565536b6b31a34da29a19f051eb76f32888c105',
     title: 'Customer Complaints & Inquiries',
     department: 'Customer Service & Resolution',
     email: 'dilrukshi@bitiumtechnology.com',

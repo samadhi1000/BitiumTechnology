@@ -80,8 +80,8 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const merchantId = (process.env.PAYHERE_MERCHANT_ID || '1237287').trim();
-    const merchantSecret = (process.env.PAYHERE_MERCHANT_SECRET || process.env.PAYHERE_SECRET || 'MjA2MzA3MDQyNzM4NzU0NDg0NDUyOTAyMzU3MTI3MjYwNzM4OTA1OA==').trim();
+    const merchantId = (process.env.PAYHERE_MERCHANT_ID || '').trim();
+    const merchantSecret = (process.env.PAYHERE_MERCHANT_SECRET || process.env.PAYHERE_SECRET || '').trim();
     const currency = 'LKR';
     const amountFormatted = parseFloat(totalAmount.toString()).toFixed(2);
 
