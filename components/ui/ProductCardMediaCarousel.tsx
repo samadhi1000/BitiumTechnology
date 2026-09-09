@@ -109,7 +109,7 @@ export default function ProductCardMediaCarousel({
 
       {/* ── Overlay Shield to prevent direct image grabbing ── */}
       <div
-        className="absolute inset-0 z-20 select-none bg-transparent pointer-events-auto"
+        className="absolute inset-0 z-20 select-none bg-transparent pointer-events-none"
         onContextMenu={preventTheft}
         onDragStart={preventTheft}
         onDrop={preventTheft}

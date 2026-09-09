@@ -381,7 +381,7 @@ export default function CategoryPageTemplate({
                       />
 
                       {/* Badges on Top-Left */}
-                      <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10">
+                      <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-30 pointer-events-none">
                         {isSale && (
                           <span className="px-2 py-0.5 rounded bg-[#ff1a3c] text-white font-black text-[9px] uppercase tracking-wide shadow-sm">
                             SALE
@@ -410,7 +410,7 @@ export default function CategoryPageTemplate({
                         }}
                         aria-label={`Quick Zoom Preview for ${product.name}`}
                         title="Quick Zoom & Preview"
-                        className="group/btn absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-white/95 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-600 shadow-md backdrop-blur-md flex items-center justify-center transition-all z-10 hover:bg-[#2CFF05] hover:text-black dark:hover:bg-[#2CFF05] dark:hover:text-black dark:hover:border-[#2CFF05] hover:scale-110 cursor-pointer"
+                        className="group/btn absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-white/95 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-600 shadow-md backdrop-blur-md flex items-center justify-center transition-all z-30 hover:bg-[#2CFF05] hover:text-black dark:hover:bg-[#2CFF05] dark:hover:text-black dark:hover:border-[#2CFF05] hover:scale-110 cursor-pointer pointer-events-auto"
                       >
                         <Eye size={13} className="text-slate-800 dark:text-white group-hover/btn:text-black transition-colors" />
                       </button>
