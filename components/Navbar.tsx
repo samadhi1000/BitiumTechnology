@@ -8,6 +8,7 @@ import { useCartStore } from '@/lib/store/cartStore';
 import { useAuth } from '@/lib/context/AuthContext';
 import { useTheme } from '@/lib/context/ThemeContext';
 import { useLanguage } from '@/lib/context/LanguageContext';
+import { StaffProfile, getSavedStaffProfiles } from '@/lib/permissions';
 import LanguageToggle from '@/components/LanguageToggle';
 import { 
   ShoppingBag, 
@@ -30,7 +31,9 @@ import {
   PackageCheck,
   Download,
   Scissors,
-  Users
+  Users,
+  LayoutDashboard,
+  Shield
 } from 'lucide-react';
 
 export default function Navbar() {
@@ -41,6 +44,45 @@ export default function Navbar() {
   const { t } = useLanguage();
   const pathname = usePathname();
   const [fromAdmin, setFromAdmin] = useState(false);
+  const [activeStaffSession, setActiveStaffSession] = useState<StaffProfile | null>(null);
+
+  // Sync active staff session from sessionStorage
+  useEffect(() => {
+    const checkStaffSession = () => {
+      if (typeof window !== 'undefined') {
+        const savedStaffId = sessionStorage.getItem('bitium_admin_staff_id');
+        if (savedStaffId) {
+          const profiles = getSavedStaffProfiles();
+          const found = profiles.find((s) => s.id === savedStaffId && s.isActive);
+          setActiveStaffSession(found || null);
+        } else {
+          setActiveStaffSession(null);
+        }
+      }
+    };
+
+    checkStaffSession();
+    window.addEventListener('storage', checkStaffSession);
+    return () => window.removeEventListener('storage', checkStaffSession);
+  }, [pathname]);
+
+  const isLoggedIn = !!activeStaffSession || !!user;
+  const displayName = activeStaffSession 
+    ? activeStaffSession.name 
+    : (profile?.full_name || user?.email?.split('@')[0] || 'Admin');
+  const roleLabel = activeStaffSession
+    ? (activeStaffSession.role === 'ceo_admin' ? 'ADMIN' : (activeStaffSession.title.includes('&') ? activeStaffSession.title.split('&')[0].trim() : 'STAFF'))
+    : (profile?.role === 'admin' ? 'ADMIN' : 'USER');
+
+  const handleNavbarSignOut = async () => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('bitium_admin_staff_id');
+    }
+    setActiveStaffSession(null);
+    try {
+      await signOut();
+    } catch {}
+  };
 
   // Detect if currently on admin page, or if user navigated here from admin panel.
   useEffect(() => {
@@ -361,30 +403,34 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Auth */}
-            {user && (
-              <div className="hidden lg:flex items-center space-x-3">
+            {isLoggedIn ? (
+              <div className="hidden lg:flex items-center space-x-2">
                 <Link
                   href="/admin"
-                  title="Admin Panel"
-                  className="flex items-center space-x-2 text-sm font-medium hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-colors"
+                  title="Return to Admin Panel"
+                  className="flex items-center space-x-2 px-3 py-1.5 rounded-xl border border-emerald-500/30 dark:border-[#2CFF05]/30 bg-emerald-500/10 dark:bg-[#2CFF05]/10 hover:bg-emerald-500/20 dark:hover:bg-[#2CFF05]/20 text-sm font-medium hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-all group shadow-sm"
                 >
-                  <User size={18} className="text-emerald-600 dark:text-[#2CFF05]" />
-                  <span className="max-w-[100px] truncate font-semibold">
-                    {profile?.full_name || user.email}
+                  <User size={16} className="text-emerald-600 dark:text-[#2CFF05] shrink-0" />
+                  <span className="max-w-[120px] truncate font-bold text-xs text-foreground group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05]">
+                    {displayName}
                   </span>
-                  <span className="text-[10px] font-bold text-emerald-700 dark:text-[#2CFF05] bg-emerald-500/15 dark:bg-[#2CFF05]/10 border border-emerald-600/30 dark:border-[#2CFF05]/30 px-1.5 py-0.5 rounded-full leading-none">
-                    ADMIN
+                  <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none border uppercase ${
+                    roleLabel === 'ADMIN'
+                      ? 'text-emerald-700 dark:text-[#2CFF05] bg-emerald-500/20 dark:bg-[#2CFF05]/20 border-emerald-600/30 dark:border-[#2CFF05]/30'
+                      : 'text-sky-700 dark:text-sky-400 bg-sky-500/20 dark:bg-sky-500/20 border-sky-600/30 dark:border-sky-500/30'
+                  }`}>
+                    {roleLabel}
                   </span>
                 </Link>
                 <button
-                  onClick={() => signOut()}
-                  className="p-2 rounded-full hover:bg-red-950/30 text-muted-foreground hover:text-red-400 transition-colors"
-                  title="Sign Out"
+                  onClick={handleNavbarSignOut}
+                  className="p-2 rounded-xl hover:bg-red-500/10 text-muted-foreground hover:text-red-500 border border-transparent hover:border-red-500/20 transition-colors cursor-pointer"
+                  title="Sign Out of Admin"
                 >
-                  <LogOut size={18} />
+                  <LogOut size={16} />
                 </button>
               </div>
-            )}
+            ) : null}
 
             {/* Mobile Hamburger Toggle Button */}
             <button
@@ -709,9 +755,9 @@ export default function Navbar() {
             </Link>
 
             {/* User Auth Footer in Mobile Menu */}
-            {user && (
+            {isLoggedIn && (
               <div className="pt-4 border-t border-border mt-4">
-                <div className="flex items-center justify-between bg-card p-3 rounded-xl border border-border">
+                <div className="flex items-center justify-between bg-card p-3 rounded-xl border border-emerald-500/30 dark:border-[#2CFF05]/30">
                   <Link
                     href="/admin"
                     onClick={closeMobileMenu}
@@ -719,15 +765,19 @@ export default function Navbar() {
                   >
                     <User size={18} className="text-emerald-600 dark:text-[#2CFF05]" />
                     <span className="max-w-[150px] truncate font-semibold">
-                      {profile?.full_name || user.email}
+                      {displayName}
                     </span>
-                    <span className="text-[10px] font-bold text-emerald-700 dark:text-[#2CFF05] bg-emerald-500/15 dark:bg-[#2CFF05]/10 border border-emerald-600/30 dark:border-[#2CFF05]/30 px-1.5 py-0.5 rounded-full leading-none">
-                      ADMIN
+                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none border uppercase ${
+                      roleLabel === 'ADMIN'
+                        ? 'text-emerald-700 dark:text-[#2CFF05] bg-emerald-500/15 dark:bg-[#2CFF05]/10 border-emerald-600/30 dark:border-[#2CFF05]/30'
+                        : 'text-sky-700 dark:text-sky-400 bg-sky-500/15 dark:bg-sky-500/10 border-sky-600/30 dark:border-sky-500/30'
+                    }`}>
+                      {roleLabel}
                     </span>
                   </Link>
                   <button
                     onClick={() => {
-                      signOut();
+                      handleNavbarSignOut();
                       closeMobileMenu();
                     }}
                     className="p-2 rounded-lg bg-red-950/40 text-red-400 hover:bg-red-900/50 transition-colors flex items-center gap-1 text-xs font-bold"
@@ -740,6 +790,19 @@ export default function Navbar() {
             )}
 
           </div>
+        </div>
+      )}
+
+      {/* Floating Quick Action: Return to Admin Panel when browsing non-admin pages */}
+      {isLoggedIn && pathname !== '/admin' && (
+        <div className="fixed bottom-6 right-6 z-40">
+          <Link
+            href="/admin"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-zinc-950/90 dark:bg-zinc-900/90 border border-emerald-500/50 dark:border-[#2CFF05]/50 text-emerald-400 dark:text-[#2CFF05] font-black text-xs uppercase tracking-wider shadow-2xl backdrop-blur-md hover:scale-105 transition-all hover:shadow-[0_0_25px_rgba(44,255,5,0.35)] cursor-pointer group"
+          >
+            <LayoutDashboard size={16} className="text-emerald-500 dark:text-[#2CFF05] group-hover:rotate-12 transition-transform" />
+            <span>Admin Panel ({displayName})</span>
+          </Link>
         </div>
       )}
     </nav>
