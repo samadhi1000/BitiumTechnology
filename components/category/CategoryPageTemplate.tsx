@@ -116,7 +116,8 @@ const SUBCATEGORY_ALIASES: Record<string, string[]> = {
 
   // Stencil aliases
   'hand-painting': ['hand-painting', 'hand_painting', 'handpainting', 'hand', 'hand painting'],
-  'saree': ['saree', 'saree-border', 'saree_border', 'sari', 'saree border'],
+  // Stencil & DTF Saree aliases
+  'saree': ['saree', 'sarees', 'saree-border', 'saree_border', 'saree-design', 'saree design', 'sari', 'saree border', 'saree-dtf'],
   'tote-bags': ['tote-bags', 'tote_bags', 'tote-bag', 'totebag', 'tote', 'tote bags'],
   'batik': ['batik', 'batik-patterns', 'batik_patterns', 'batik patterns'],
   'wall-decoration': ['wall-decoration', 'wall_decoration', 'wall-decor', 'walldecor', 'wall', 'wall decor', 'wall decoration'],
@@ -152,36 +153,27 @@ const SUBCATEGORY_ALIASES: Record<string, string[]> = {
   'other-consumables': ['other-consumables', 'dtf-consumables', 'dtf-ink', 'consumables'],
 };
 
-function matchesSubCategory(productSub: string | undefined, activeSub: string, allKnownSubIds: string[]): boolean {
-  if (!productSub) {
-    return activeSub === 'other';
-  }
-  
-  const normProduct = productSub.trim().toLowerCase().replace(/[\s_]+/g, '-');
+function matchesSingleSub(singleProductSub: string, activeSub: string, allKnownSubIds: string[]): boolean {
+  const normProduct = singleProductSub.trim().toLowerCase().replace(/[\s_]+/g, '-');
   const normActive = activeSub.trim().toLowerCase().replace(/[\s_]+/g, '-');
 
-  // Exact or normalized match
   if (normProduct === normActive) return true;
 
-  // Check aliases for activeSub
   const activeAliases = SUBCATEGORY_ALIASES[normActive];
-  if (activeAliases && (activeAliases.includes(normProduct) || activeAliases.includes(productSub.trim().toLowerCase()))) {
+  if (activeAliases && (activeAliases.includes(normProduct) || activeAliases.includes(singleProductSub.trim().toLowerCase()))) {
     return true;
   }
 
-  // Reverse alias check (if product is keyed by standard ID)
   for (const [key, aliases] of Object.entries(SUBCATEGORY_ALIASES)) {
-    if ((aliases.includes(normProduct) || aliases.includes(productSub.trim().toLowerCase())) && (key === normActive || aliases.includes(normActive))) {
+    if ((aliases.includes(normProduct) || aliases.includes(singleProductSub.trim().toLowerCase())) && (key === normActive || aliases.includes(normActive))) {
       return true;
     }
   }
 
-  // General slug contains check (e.g. "vector-design" contains "vector" or "artwork" contains "art")
   if (normActive !== 'other') {
     if (normProduct.includes(normActive) || normActive.includes(normProduct)) {
       return true;
     }
-    // Check if parts match (e.g. "vector" in "vector-design" and "vector-artwork")
     const productWords = normProduct.split('-');
     const activeWords = normActive.split('-');
     const hasCommonNonGenericWord = productWords.some(pw => 
@@ -190,17 +182,33 @@ function matchesSubCategory(productSub: string | undefined, activeSub: string, a
     if (hasCommonNonGenericWord) return true;
   }
 
-  // If active is 'other', match any product that doesn't match any of the other defined subcategories on this page
-  if (normActive === 'other') {
-    const matchesAnySpecific = allKnownSubIds.some(subId => {
-      if (subId === 'other') return false;
-      const aliases = SUBCATEGORY_ALIASES[subId] || [subId];
-      return aliases.includes(normProduct) || normProduct.includes(subId);
-    });
-    return !matchesAnySpecific || normProduct === 'other';
+  return false;
+}
+
+function matchesSubCategory(productSub: string | undefined, activeSub: string, allKnownSubIds: string[]): boolean {
+  if (!productSub) {
+    return activeSub === 'other';
   }
 
-  return false;
+  // Split multiple comma or semicolon separated subcategories
+  const subItems = productSub.split(/[,;/]+/).map(s => s.trim()).filter(Boolean);
+  if (subItems.length === 0) {
+    return activeSub === 'other';
+  }
+
+  // If specific sub is active, check if any of the product's subcategories matches
+  if (activeSub !== 'other') {
+    return subItems.some(subItem => matchesSingleSub(subItem, activeSub, allKnownSubIds));
+  }
+
+  // If active is 'other', match if none of the product's subcategories matches any specific known subIds
+  const matchesAnySpecific = subItems.some(subItem => {
+    return allKnownSubIds.some(subId => {
+      if (subId === 'other') return false;
+      return matchesSingleSub(subItem, subId, allKnownSubIds);
+    });
+  });
+  return !matchesAnySpecific || subItems.some(s => s.toLowerCase() === 'other');
 }
 
   // Filter products

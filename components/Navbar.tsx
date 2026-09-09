@@ -246,6 +246,7 @@ export default function Navbar() {
                   <hr className="border-border my-0.5" />
                   {[
                     { sub: 'tshirt-design', label: t.nav.tshirtDesign },
+                    { sub: 'saree', label: t.nav.saree || 'Saree' },
                     { sub: 'dtf-sticker', label: t.nav.dtfSticker },
                     { sub: 'dtf-cloth', label: t.nav.dtfCloth },
                     { sub: 'men', label: t.nav.men },
@@ -597,6 +598,7 @@ export default function Navbar() {
                   </Link>
                   {[
                     { sub: 'tshirt-design', label: t.nav.tshirtDesign },
+                    { sub: 'saree', label: t.nav.saree || 'Saree' },
                     { sub: 'dtf-sticker', label: t.nav.dtfSticker },
                     { sub: 'dtf-cloth', label: t.nav.dtfCloth },
                     { sub: 'men', label: t.nav.men },

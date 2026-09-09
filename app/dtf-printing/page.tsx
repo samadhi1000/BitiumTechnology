@@ -20,6 +20,7 @@ const DTF_PRINTING_CONFIG_EN: CategoryPageConfig = {
   itemPlural: 'Transfers',
   subCategories: [
     { id: 'tshirt-design', label: 'T-Shirt Designs' },
+    { id: 'saree', label: 'Saree' },
     { id: 'dtf-sticker', label: 'DTF Stickers' },
     { id: 'dtf-cloth', label: 'Cloth Transfers' },
     { id: 'men', label: 'Men' },
@@ -118,6 +119,7 @@ const DTF_PRINTING_CONFIG_SI: CategoryPageConfig = {
   itemPlural: 'ට්‍රාන්ස්ෆර්ස්',
   subCategories: [
     { id: 'tshirt-design', label: 'ටී-ෂර්ට් මෝස්තර' },
+    { id: 'saree', label: 'සාරි (Saree)' },
     { id: 'dtf-sticker', label: 'DTF ස්ටිකර්ස්' },
     { id: 'dtf-cloth', label: 'ඇඳුම් ට්‍රාන්ස්ෆර්ස්' },
     { id: 'men', label: 'පිරිමි (Men)' },

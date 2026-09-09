@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useAuth } from '@/lib/context/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { 
@@ -51,6 +51,8 @@ import {
   FileText,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
+  Check,
   Shield,
   Users,
   UserCheck,
@@ -98,6 +100,7 @@ export const CATEGORY_SUBCATEGORIES: Record<string, { id: string; label: string 
   ],
   'dtf_sheet': [
     { id: 'tshirt-design', label: 'T-Shirt Designs' },
+    { id: 'saree', label: 'Saree' },
     { id: 'dtf-sticker', label: 'DTF Stickers' },
     { id: 'dtf-cloth', label: 'Cloth Transfers' },
     { id: 'men', label: 'Men' },
@@ -192,6 +195,10 @@ export default function AdminPanelPage() {
   const [prodName, setProdName] = useState('');
   const [prodCategory, setProdCategory] = useState<'stencil' | 'screen-printing' | 'dtf_sheet' | 'batik-stamp' | 'materials' | 'laser-cutting' | 'other'>('dtf_sheet');
   const [prodSubCategory, setProdSubCategory] = useState('');
+  const [isSubCatDropdownOpen, setIsSubCatDropdownOpen] = useState(false);
+  const [subCatSearchQuery, setSubCatSearchQuery] = useState('');
+  const [customSubCatInput, setCustomSubCatInput] = useState('');
+  const subCatDropdownRef = useRef<HTMLDivElement>(null);
   const [prodDescription, setProdDescription] = useState('');
   const [prodPrice, setProdPrice] = useState(0);
   const [prodOriginalPrice, setProdOriginalPrice] = useState<number | undefined>(undefined);
@@ -357,12 +364,61 @@ export default function AdminPanelPage() {
     return filePath;
   };
 
+  // Close sub-category dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (subCatDropdownRef.current && !subCatDropdownRef.current.contains(event.target as Node)) {
+        setIsSubCatDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Multi-select subcategory helpers
+  const selectedSubCategories = useMemo(() => {
+    if (!prodSubCategory) return [];
+    return prodSubCategory
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
+  }, [prodSubCategory]);
+
+  const handleToggleSubCategory = (subCatId: string) => {
+    const current = selectedSubCategories;
+    let updated: string[];
+    if (current.includes(subCatId)) {
+      updated = current.filter((id) => id !== subCatId);
+    } else {
+      updated = [...current, subCatId];
+    }
+    setProdSubCategory(updated.join(', '));
+  };
+
+  const handleRemoveSubCategory = (subCatId: string) => {
+    const updated = selectedSubCategories.filter((id) => id !== subCatId);
+    setProdSubCategory(updated.join(', '));
+  };
+
+  const handleAddCustomSubCategory = () => {
+    const clean = customSubCatInput.trim().toLowerCase().replace(/\s+/g, '-');
+    if (!clean) return;
+    if (!selectedSubCategories.includes(clean)) {
+      const updated = [...selectedSubCategories, clean];
+      setProdSubCategory(updated.join(', '));
+    }
+    setCustomSubCatInput('');
+  };
+
   // ──── PHYSICAL PRODUCT ACTION HANDLERS ────
   const openAddProductModal = () => {
     setEditingProduct(null);
     setProdName('');
     setProdCategory('dtf_sheet');
     setProdSubCategory('');
+    setIsSubCatDropdownOpen(false);
+    setSubCatSearchQuery('');
+    setCustomSubCatInput('');
     setProdDescription('');
     setProdPrice(0);
     setProdOriginalPrice(undefined);
@@ -384,6 +440,9 @@ export default function AdminPanelPage() {
     setProdName(product.name);
     setProdCategory(product.category);
     setProdSubCategory(product.sub_category || '');
+    setIsSubCatDropdownOpen(false);
+    setSubCatSearchQuery('');
+    setCustomSubCatInput('');
     setProdDescription(product.description || '');
     setProdPrice(product.price);
     setProdOriginalPrice(product.original_price);
@@ -456,7 +515,7 @@ export default function AdminPanelPage() {
       const pData: Partial<Product> = {
         name: sanitizedName,
         category: prodCategory,
-        sub_category: prodSubCategory ? sanitizeText(prodSubCategory, 50) : undefined,
+        sub_category: prodSubCategory ? sanitizeText(prodSubCategory, 200) : undefined,
         description: sanitizeText(prodDescription, 1000),
         price: Number(prodPrice),
         original_price: prodOriginalPrice ? Number(prodOriginalPrice) : undefined,
@@ -1532,39 +1591,146 @@ export default function AdminPanelPage() {
                     <option value="other">Other Products</option>
                   </select>
                 </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Sub-category *</label>
-                  <div className="space-y-2">
-                    <select
-                      value={prodSubCategory}
-                      onChange={(e) => setProdSubCategory(e.target.value)}
-                      className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
-                    >
-                      <option value="">-- Select Sub-category --</option>
-                      {(CATEGORY_SUBCATEGORIES[prodCategory] || []).map((sc) => (
-                        <option key={sc.id} value={sc.id}>
-                          {sc.label} ({sc.id})
-                        </option>
-                      ))}
-                      {prodSubCategory && !(CATEGORY_SUBCATEGORIES[prodCategory] || []).some(sc => sc.id === prodSubCategory) && (
-                        <option value={prodSubCategory}>Custom: {prodSubCategory}</option>
-                      )}
-                      <option value="__custom__">+ Enter Custom Sub-category</option>
-                    </select>
-                    {prodSubCategory === '__custom__' && (
-                      <input
-                        type="text"
-                        autoFocus
-                        placeholder="Enter custom sub-category ID (e.g. vector-art)"
-                        onBlur={(e) => {
-                          if (e.target.value.trim()) {
-                            setProdSubCategory(e.target.value.trim());
-                          }
-                        }}
-                        className="w-full bg-card border border-[#2CFF05]/40 rounded-xl px-4 py-2 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
-                      />
+                <div className="space-y-1 relative" ref={subCatDropdownRef}>
+                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider flex items-center justify-between">
+                    <span>Sub-categories (Multi-select) *</span>
+                    {selectedSubCategories.length > 0 && (
+                      <span className="text-[9px] text-[#2CFF05] font-semibold">
+                        {selectedSubCategories.length} selected
+                      </span>
                     )}
-                  </div>
+                  </label>
+
+                  {/* Selected Tags / Badges */}
+                  {selectedSubCategories.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 p-2 bg-secondary/40 border border-border rounded-xl mb-1.5">
+                      {selectedSubCategories.map((subId) => {
+                        const found = (CATEGORY_SUBCATEGORIES[prodCategory] || []).find((sc) => sc.id === subId);
+                        const label = found ? found.label : subId;
+                        return (
+                          <span
+                            key={subId}
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-[#2CFF05]/15 text-[#2CFF05] text-[11px] font-medium border border-[#2CFF05]/30 animate-fadeIn"
+                          >
+                            <span>{label}</span>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveSubCategory(subId)}
+                              className="hover:text-red-400 hover:bg-red-500/20 rounded p-0.5 transition-colors"
+                              title={`Remove ${label}`}
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </span>
+                        );
+                      })}
+                      <button
+                        type="button"
+                        onClick={() => setProdSubCategory('')}
+                        className="text-[10px] text-muted-foreground hover:text-red-400 underline ml-auto self-center px-1"
+                      >
+                        Clear all
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Dropdown trigger button */}
+                  <button
+                    type="button"
+                    onClick={() => setIsSubCatDropdownOpen(!isSubCatDropdownOpen)}
+                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground flex items-center justify-between hover:border-[#2CFF05]/60 focus:outline-none focus:border-[#2CFF05] transition-colors"
+                  >
+                    <span className="truncate text-left">
+                      {selectedSubCategories.length === 0
+                        ? '-- Select Sub-categories (Checkboxes) --'
+                        : `${selectedSubCategories.length} Sub-categor${selectedSubCategories.length > 1 ? 'ies' : 'y'} Selected`}
+                    </span>
+                    <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform shrink-0 ml-2 ${isSubCatDropdownOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {/* Popover / Dropdown Menu */}
+                  {isSubCatDropdownOpen && (
+                    <div className="absolute z-50 left-0 right-0 top-full mt-1 bg-popover/95 backdrop-blur-md border border-border shadow-2xl rounded-2xl p-3 space-y-2.5 max-h-72 overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-150">
+                      {/* Search bar inside dropdown */}
+                      <div className="relative">
+                        <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-muted-foreground" />
+                        <input
+                          type="text"
+                          value={subCatSearchQuery}
+                          onChange={(e) => setSubCatSearchQuery(e.target.value)}
+                          placeholder="Search sub-categories..."
+                          className="w-full bg-card border border-border rounded-xl pl-8 pr-7 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#2CFF05]"
+                        />
+                        {subCatSearchQuery && (
+                          <button
+                            type="button"
+                            onClick={() => setSubCatSearchQuery('')}
+                            className="absolute right-2.5 top-2 text-muted-foreground hover:text-foreground"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        )}
+                      </div>
+
+                      {/* Sub-categories Checkbox list */}
+                      <div className="overflow-y-auto space-y-1 flex-1 pr-1 custom-scrollbar max-h-40">
+                        {(CATEGORY_SUBCATEGORIES[prodCategory] || [])
+                          .filter((sc) =>
+                            sc.label.toLowerCase().includes(subCatSearchQuery.toLowerCase()) ||
+                            sc.id.toLowerCase().includes(subCatSearchQuery.toLowerCase())
+                          )
+                          .map((sc) => {
+                            const isChecked = selectedSubCategories.includes(sc.id);
+                            return (
+                              <div
+                                key={sc.id}
+                                onClick={() => handleToggleSubCategory(sc.id)}
+                                className={`flex items-center justify-between px-3 py-1.5 rounded-lg text-xs cursor-pointer select-none transition-all ${
+                                  isChecked
+                                    ? 'bg-[#2CFF05]/15 text-[#2CFF05] font-semibold border border-[#2CFF05]/30'
+                                    : 'hover:bg-secondary text-foreground'
+                                }`}
+                              >
+                                <div className="flex items-center gap-2">
+                                  <input
+                                    type="checkbox"
+                                    checked={isChecked}
+                                    onChange={() => {}} // Handled by container click
+                                    className="rounded border-border text-[#2CFF05] focus:ring-[#2CFF05] h-3.5 w-3.5 cursor-pointer accent-[#2CFF05]"
+                                  />
+                                  <span>{sc.label}</span>
+                                </div>
+                                <span className="text-[10px] text-muted-foreground font-mono">({sc.id})</span>
+                              </div>
+                            );
+                          })}
+                      </div>
+
+                      {/* Custom Subcategory Adder */}
+                      <div className="pt-2 border-t border-border/60 flex items-center gap-1.5">
+                        <input
+                          type="text"
+                          value={customSubCatInput}
+                          onChange={(e) => setCustomSubCatInput(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              handleAddCustomSubCategory();
+                            }
+                          }}
+                          placeholder="+ Custom tag (e.g. saree-pallu)"
+                          className="flex-1 bg-card border border-border rounded-lg px-2.5 py-1 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#2CFF05]"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleAddCustomSubCategory}
+                          className="px-2.5 py-1 bg-[#2CFF05] text-black text-xs font-bold rounded-lg hover:brightness-110 active:scale-95 transition-all"
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
