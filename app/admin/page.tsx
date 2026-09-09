@@ -479,12 +479,16 @@ export default function AdminPanelPage() {
 
   const handleTogglePinProduct = async (product: Product) => {
     const newPinState = !product.is_pinned;
+    // Optimistic UI update
+    setProducts(prev => prev.map(p => p.id === product.id ? { ...p, is_pinned: newPinState } : p));
     try {
       await updateProduct(product.id, { is_pinned: newPinState });
       setSuccessMsg(newPinState ? `📌 "${product.name}" pinned to top spotlight!` : `"${product.name}" unpinned from top.`);
-      fetchAllCatalogs();
+      await fetchAllCatalogs();
       setTimeout(() => setSuccessMsg(''), 3000);
     } catch (err: any) {
+      // Revert if error
+      setProducts(prev => prev.map(p => p.id === product.id ? { ...p, is_pinned: product.is_pinned } : p));
       setErrorMsg(err.message || 'Failed to update pin state');
     }
   };

@@ -178,15 +178,23 @@ export async function POST(request: NextRequest) {
       if (p.category !== undefined) updatePayload.category = p.category;
       if (p.sub_category !== undefined) updatePayload.sub_category = p.sub_category;
       if (p.is_active !== undefined) updatePayload.is_active = p.is_active;
-      if (p.is_pinned !== undefined) updatePayload.is_pinned = p.is_pinned;
 
-      const { error: updateErr } = await supabase
-        .from('products')
-        .update(updatePayload)
-        .eq('id', id);
+      if (Object.keys(updatePayload).length > 0 || p.is_pinned !== undefined) {
+        const payloadWithPin = p.is_pinned !== undefined ? { ...updatePayload, is_pinned: p.is_pinned } : updatePayload;
+        const { error: updateErr } = await supabase
+          .from('products')
+          .update(payloadWithPin)
+          .eq('id', id);
 
-      if (updateErr) {
-        console.error('Supabase product update error in API:', updateErr);
+        if (updateErr && p.is_pinned !== undefined && Object.keys(updatePayload).length > 0) {
+          const { error: retryErr } = await supabase
+            .from('products')
+            .update(updatePayload)
+            .eq('id', id);
+          if (retryErr) {
+            console.error('Supabase product update retry error in API:', retryErr);
+          }
+        }
       }
 
       if (vars && vars.length > 0) {

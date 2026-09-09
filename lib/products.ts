@@ -350,6 +350,40 @@ function isSupabaseConfigured(): boolean {
   return true;
 }
 
+const PINNED_PRODUCTS_KEY = 'bitium_pinned_product_ids';
+
+export function getPinnedProductIds(): string[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem(PINNED_PRODUCTS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function setPinnedProductIds(ids: string[]) {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(PINNED_PRODUCTS_KEY, JSON.stringify(ids));
+  } catch {}
+}
+
+export function togglePinnedProductId(id: string, pinState?: boolean): boolean {
+  const ids = getPinnedProductIds();
+  const currentlyPinned = ids.includes(id);
+  const shouldPin = pinState !== undefined ? pinState : !currentlyPinned;
+  
+  let newIds: string[];
+  if (shouldPin) {
+    newIds = [id, ...ids.filter(i => i !== id)];
+  } else {
+    newIds = ids.filter(i => i !== id);
+  }
+  setPinnedProductIds(newIds);
+  return shouldPin;
+}
+
 function getLocalStorageProducts(): Product[] {
   if (typeof window === 'undefined') return [];
   try {
@@ -416,6 +450,8 @@ async function syncToApiCatalog(products: Product[]) {
 }
 
 export async function getProducts(): Promise<Product[]> {
+  const pinnedIds = getPinnedProductIds();
+
   // If running on client, fetch directly from /api/products which serves live Supabase data
   if (typeof window !== 'undefined') {
     const apiProducts = await getApiCatalogProducts();
@@ -428,7 +464,12 @@ export async function getProducts(): Promise<Product[]> {
           merged.unshift(localP);
         }
       });
-      return merged.filter((p) => p.is_active);
+      return merged
+        .map(p => ({
+          ...p,
+          is_pinned: pinnedIds.includes(p.id) || p.is_pinned === true
+        }))
+        .filter((p) => p.is_active);
     }
   }
 
@@ -495,14 +536,21 @@ export async function getProducts(): Promise<Product[]> {
     }
   });
 
-  return merged.filter((p) => p.is_active);
+  return merged
+    .map(p => ({
+      ...p,
+      is_pinned: pinnedIds.includes(p.id) || p.is_pinned === true
+    }))
+    .filter((p) => p.is_active);
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
+  const pinnedIds = getPinnedProductIds();
+
   if (typeof window !== 'undefined') {
     const products = await getProducts();
     const found = products.find((p) => p.id === id);
-    if (found) return found;
+    if (found) return { ...found, is_pinned: pinnedIds.includes(found.id) || found.is_pinned === true };
   }
 
   if (isSupabaseConfigured()) {
@@ -530,7 +578,7 @@ export async function getProductById(id: string): Promise<Product | null> {
             category: row.category,
             sub_category: row.sub_category || undefined,
             is_active: row.is_active !== false,
-            is_pinned: row.is_pinned === true,
+            is_pinned: pinnedIds.includes(row.id) || row.is_pinned === true,
             variants: (row.variants || []).map((v: any) => ({
               id: v.id,
               product_id: v.product_id,
@@ -556,10 +604,10 @@ export async function getProductById(id: string): Promise<Product | null> {
   }
 
   const foundCustom = customProducts.find((p) => p.id === id);
-  if (foundCustom) return foundCustom;
+  if (foundCustom) return { ...foundCustom, is_pinned: pinnedIds.includes(foundCustom.id) || foundCustom.is_pinned === true };
 
   const mockProduct = MOCK_PRODUCTS.find((p) => p.id === id);
-  return mockProduct || null;
+  return mockProduct ? { ...mockProduct, is_pinned: pinnedIds.includes(mockProduct.id) || mockProduct.is_pinned === true } : null;
 }
 
 export async function createProduct(
@@ -569,6 +617,10 @@ export async function createProduct(
   const id = generateUUID();
   const catPrefix = productData.category.substring(0, 3).toUpperCase();
   const stamp = Date.now().toString().slice(-4);
+
+  if (productData.is_pinned) {
+    togglePinnedProductId(id, true);
+  }
 
   // Build one Variant per size entry (fallback: single Default variant)
   const inputs = sizeVariants.length > 0
@@ -658,6 +710,10 @@ export async function updateProduct(
 ): Promise<Product | null> {
   const existing = await getProductById(id);
   if (!existing) return null;
+
+  if (productData.is_pinned !== undefined) {
+    togglePinnedProductId(id, productData.is_pinned);
+  }
 
   const basePrice = productData.price ?? existing.price;
   const catPrefix = (productData.category ?? existing.category).substring(0, 3).toUpperCase();
