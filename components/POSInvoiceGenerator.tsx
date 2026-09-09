@@ -49,6 +49,7 @@ export interface SavedPOSInvoice {
   customerPhone: string;
   customerAddress: string;
   paymentMethod: 'Cash' | 'Card' | 'Bank Transfer' | 'PayHere';
+  deliveryMethod?: string;
   discountValue: number;
   discountType: 'percentage' | 'flat';
   discountAmount: number;
@@ -60,6 +61,15 @@ export interface SavedPOSInvoice {
   printLayout: 'A4' | 'POS-80mm';
   status: 'PAID' | 'REFUNDED' | 'CANCELLED';
 }
+
+const DELIVERY_OPTIONS = [
+  { value: 'Store Pickup', label: '🏪 Store Pickup (Self Collect)' },
+  { value: 'Cash On Delivery', label: '🚚 Cash On Delivery (COD)' },
+  { value: 'Paid Courier', label: '📦 Paid Courier Service' },
+  { value: 'Paid Post', label: '📮 Paid Post (Postal Delivery)' },
+  { value: 'Cash On Delivery (On weight)', label: '⚖️ Cash On Delivery (On weight)' },
+  { value: 'Courier (On weight)', label: '📦 Courier (On weight)' },
+];
 
 export default function POSInvoiceGenerator() {
   const [activeTab, setActiveTab] = useState<'generator' | 'history'>('generator');
@@ -84,6 +94,7 @@ export default function POSInvoiceGenerator() {
   const [invoiceNo, setInvoiceNo] = useState('');
   const [invoiceDate, setInvoiceDate] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'Cash' | 'Card' | 'Bank Transfer' | 'PayHere'>('Cash');
+  const [deliveryMethod, setDeliveryMethod] = useState<string>('Store Pickup');
   const [discountValue, setDiscountValue] = useState<number>(0);
   const [discountType, setDiscountType] = useState<'percentage' | 'flat'>('flat');
   const [extraCharges, setExtraCharges] = useState<number>(0);
@@ -250,6 +261,7 @@ export default function POSInvoiceGenerator() {
       customerPhone: customerPhone.trim(),
       customerAddress: customerAddress.trim(),
       paymentMethod,
+      deliveryMethod,
       discountValue,
       discountType,
       discountAmount,
@@ -299,6 +311,7 @@ export default function POSInvoiceGenerator() {
     setExtraCharges(0);
     setExtraChargesNotes('');
     setPaymentMethod('Cash');
+    setDeliveryMethod('Store Pickup');
     setLoadedInvoiceId(null);
     setInvoiceDate(new Date().toISOString().split('T')[0]);
     setInvoiceNo(generateNewInvoiceNumber());
@@ -315,6 +328,7 @@ export default function POSInvoiceGenerator() {
     setCustomerPhone(inv.customerPhone || '');
     setCustomerAddress(inv.customerAddress || '');
     setPaymentMethod(inv.paymentMethod || 'Cash');
+    setDeliveryMethod(inv.deliveryMethod || 'Store Pickup');
     setDiscountValue(inv.discountValue || 0);
     setDiscountType(inv.discountType || 'flat');
     setExtraCharges(inv.extraCharges || 0);
@@ -414,6 +428,7 @@ export default function POSInvoiceGenerator() {
       'Customer Name',
       'Customer Phone',
       'Billing Address',
+      'Delivery Method',
       'Items Summary',
       'Total Items Qty',
       'Subtotal (Rs.)',
@@ -437,6 +452,7 @@ export default function POSInvoiceGenerator() {
         `"${(inv.customerName || 'Walk-in Client').replace(/"/g, '""')}"`,
         `"${(inv.customerPhone || '').replace(/"/g, '""')}"`,
         `"${(inv.customerAddress || '').replace(/"/g, '""')}"`,
+        `"${(inv.deliveryMethod || 'Store Pickup').replace(/"/g, '""')}"`,
         `"${itemsSummary.replace(/"/g, '""')}"`,
         totalQty,
         inv.subtotal,
@@ -705,7 +721,7 @@ export default function POSInvoiceGenerator() {
                 <span>04. Discounts, Extra Fees &amp; Pay Type</span>
               </h3>
               
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
                 {/* Discount */}
                 <div className="space-y-1.5">
                   <label className="text-[9px] font-bold text-muted-foreground uppercase">Discount Value</label>
@@ -729,7 +745,7 @@ export default function POSInvoiceGenerator() {
 
                 {/* Extra Charges */}
                 <div className="space-y-1.5">
-                  <label className="text-[9px] font-bold text-muted-foreground uppercase">Delivery / Extra Fees (Rs.)</label>
+                  <label className="text-[9px] font-bold text-muted-foreground uppercase">Delivery / Extra (Rs.)</label>
                   <input 
                     type="number" 
                     value={extraCharges || ''}
@@ -739,13 +755,32 @@ export default function POSInvoiceGenerator() {
                   />
                 </div>
 
+                {/* Delivery Options Dropdown */}
+                <div className="space-y-1.5">
+                  <label className="text-[9px] font-bold text-muted-foreground uppercase flex items-center justify-between">
+                    <span>Delivery Option</span>
+                    <span className="text-[8px] text-[#2CFF05] lowercase font-semibold">method</span>
+                  </label>
+                  <select
+                    value={deliveryMethod}
+                    onChange={e => setDeliveryMethod(e.target.value)}
+                    className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors text-foreground font-bold cursor-pointer"
+                  >
+                    {DELIVERY_OPTIONS.map(opt => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
                 {/* Payment Method */}
                 <div className="space-y-1.5">
                   <label className="text-[9px] font-bold text-muted-foreground uppercase">Payment Type</label>
                   <select
                     value={paymentMethod}
                     onChange={e => setPaymentMethod(e.target.value as any)}
-                    className="w-full bg-background border border-border rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors text-foreground font-bold cursor-pointer"
+                    className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors text-foreground font-bold cursor-pointer"
                   >
                     <option value="Cash">💵 Cash</option>
                     <option value="Card">💳 Card Payment</option>
@@ -761,7 +796,7 @@ export default function POSInvoiceGenerator() {
                   type="text" 
                   value={extraChargesNotes}
                   onChange={e => setExtraChargesNotes(e.target.value)}
-                  placeholder="e.g. Shipping cost, special packaging, design review service"
+                  placeholder="e.g. Courier tracking code, packaging, special handling notes"
                   className="w-full bg-background border border-border rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors"
                 />
               </div>
@@ -862,6 +897,7 @@ export default function POSInvoiceGenerator() {
                     <div>No: {invoiceNo || 'Draft'}</div>
                     <div>Date: {invoiceDate}</div>
                     <div>Pay Method: {paymentMethod}</div>
+                    <div>Delivery: {deliveryMethod}</div>
                   </div>
                 </div>
               </div>
@@ -875,6 +911,7 @@ export default function POSInvoiceGenerator() {
                   <strong className="text-zinc-800 text-xs block">{customerName || 'Cash Walk-in Client'}</strong>
                   {customerPhone && <div className="text-zinc-600 font-medium font-mono">WhatsApp: {customerPhone}</div>}
                   {customerAddress && <div className="text-zinc-500">{customerAddress}</div>}
+                  <div className="text-emerald-800 font-bold mt-0.5 text-[9px]">Method: {deliveryMethod}</div>
                 </div>
                 <div className="text-right">
                   <span className="font-extrabold text-zinc-400 uppercase block tracking-wider text-[8px]">Store Outlet:</span>
@@ -1206,6 +1243,9 @@ export default function POSInvoiceGenerator() {
                                 {inv.customerPhone}
                               </span>
                             )}
+                            <span className="text-[10px] text-muted-foreground block truncate max-w-[180px]">
+                              🚚 {inv.deliveryMethod || 'Store Pickup'}
+                            </span>
                           </div>
                         </td>
                         <td className="p-4">

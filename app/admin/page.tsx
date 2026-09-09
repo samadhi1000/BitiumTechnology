@@ -56,7 +56,8 @@ import {
   Shield,
   Users,
   UserCheck,
-  Receipt
+  Receipt,
+  Pin
 } from 'lucide-react';
 import Image from 'next/image';
 import { sanitizeText } from '@/lib/security/sanitize';
@@ -209,6 +210,7 @@ export default function AdminPanelPage() {
   const [prodMockup2File, setProdMockup2File] = useState<File | null>(null);
   const [prodSizeVariants, setProdSizeVariants] = useState<SizeVariantInput[]>([]);
   const [prodIsActive, setProdIsActive] = useState(true);
+  const [prodIsPinned, setProdIsPinned] = useState(false);
   const [prodImageFile, setProdImageFile] = useState<File | null>(null);
   
   // Modal states for digital artworks
@@ -430,6 +432,7 @@ export default function AdminPanelPage() {
     // Pre-fill standard DTF size tiers as a helpful default
     setProdSizeVariants(getDefaultSizeVariants('dtf_sheet', 500));
     setProdIsActive(true);
+    setProdIsPinned(false);
     setProdImageFile(null);
     setErrorMsg('');
     setIsProductModalOpen(true);
@@ -468,9 +471,22 @@ export default function AdminPanelPage() {
       setProdSizeVariants([]);
     }
     setProdIsActive(product.is_active);
+    setProdIsPinned(Boolean(product.is_pinned));
     setProdImageFile(null);
     setErrorMsg('');
     setIsProductModalOpen(true);
+  };
+
+  const handleTogglePinProduct = async (product: Product) => {
+    const newPinState = !product.is_pinned;
+    try {
+      await updateProduct(product.id, { is_pinned: newPinState });
+      setSuccessMsg(newPinState ? `📌 "${product.name}" pinned to top spotlight!` : `"${product.name}" unpinned from top.`);
+      fetchAllCatalogs();
+      setTimeout(() => setSuccessMsg(''), 3000);
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Failed to update pin state');
+    }
   };
 
   const handleSaveProduct = async (e: React.FormEvent) => {
@@ -521,7 +537,8 @@ export default function AdminPanelPage() {
         original_price: prodOriginalPrice ? Number(prodOriginalPrice) : undefined,
         image_url: finalImageUrl,
         mockup_urls: mockup_urls.length > 0 ? mockup_urls : undefined,
-        is_active: prodIsActive
+        is_active: prodIsActive,
+        is_pinned: prodIsPinned
       };
 
       // Build size variants: use the tier rows if any, else single Default
@@ -1287,7 +1304,14 @@ export default function AdminPanelPage() {
                               </td>
                               <td className="p-4">
                                 <div className="space-y-0.5">
-                                  <span className="font-extrabold text-foreground block text-xs line-clamp-1">{p.name}</span>
+                                  <div className="flex items-center gap-1.5 flex-wrap">
+                                    <span className="font-extrabold text-foreground block text-xs line-clamp-1">{p.name}</span>
+                                    {p.is_pinned && (
+                                      <span className="px-1.5 py-0.5 rounded bg-amber-500/15 border border-amber-500/30 text-amber-400 font-extrabold text-[9px] uppercase tracking-wider inline-flex items-center gap-1">
+                                        📌 PINNED
+                                      </span>
+                                    )}
+                                  </div>
                                   <span className="text-[10px] text-muted-foreground block truncate max-w-[200px]">{p.description}</span>
                                   <span className="text-[9px] font-mono text-zinc-550 block select-all">UUID: {p.id}</span>
                                 </div>
@@ -1331,13 +1355,26 @@ export default function AdminPanelPage() {
                               <td className="p-4 text-right">
                                 <div className="flex justify-end gap-2">
                                   {activeStaff.permissions.canEditProducts && (
-                                    <button
-                                      onClick={() => openEditProductModal(p)}
-                                      className="p-2 rounded-lg bg-card border border-border hover:border-[#2CFF05]/40 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                                      title="Edit Product"
-                                    >
-                                      <Edit size={13} />
-                                    </button>
+                                    <>
+                                      <button
+                                        onClick={() => handleTogglePinProduct(p)}
+                                        className={`p-2 rounded-lg border transition-all cursor-pointer ${
+                                          p.is_pinned
+                                            ? 'bg-amber-500/15 border-amber-500/50 text-amber-400 hover:bg-amber-500/25 shadow-sm'
+                                            : 'bg-card border-border hover:border-[#2CFF05]/40 text-muted-foreground hover:text-foreground'
+                                        }`}
+                                        title={p.is_pinned ? 'Unpin from Top Spotlight' : 'Pin to Top Spotlight (Max 4)'}
+                                      >
+                                        <Pin size={13} className={p.is_pinned ? 'fill-amber-400 rotate-45' : ''} />
+                                      </button>
+                                      <button
+                                        onClick={() => openEditProductModal(p)}
+                                        className="p-2 rounded-lg bg-card border border-border hover:border-[#2CFF05]/40 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                                        title="Edit Product"
+                                      >
+                                        <Edit size={13} />
+                                      </button>
+                                    </>
                                   )}
                                   {activeStaff.permissions.canDeleteProducts && (
                                     <button
@@ -1981,7 +2018,7 @@ export default function AdminPanelPage() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 py-1">
+              <div className="flex flex-wrap items-center gap-6 py-2 border-t border-border/50">
                 <label className="flex items-center gap-2 cursor-pointer select-none text-xs font-semibold">
                   <input
                     type="checkbox"
@@ -1990,6 +2027,16 @@ export default function AdminPanelPage() {
                     className="w-4 h-4 rounded border-border bg-card text-[#2CFF05] focus:ring-[#2CFF05]"
                   />
                   <span>Show product in live catalog</span>
+                </label>
+
+                <label className="flex items-center gap-2 cursor-pointer select-none text-xs font-semibold text-amber-400 bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-500/30">
+                  <input
+                    type="checkbox"
+                    checked={prodIsPinned}
+                    onChange={(e) => setProdIsPinned(e.target.checked)}
+                    className="w-4 h-4 rounded border-amber-500/50 bg-card text-amber-400 focus:ring-amber-400"
+                  />
+                  <span>📌 Pin to Top Spotlight (Showcase in Top 4)</span>
                 </label>
               </div>
 

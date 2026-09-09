@@ -11,6 +11,7 @@ export interface Product {
   category: 'stencil' | 'screen-printing' | 'dtf_sheet' | 'batik-stamp' | 'materials' | 'laser-cutting' | 'other';
   sub_category?: string;
   is_active: boolean;
+  is_pinned?: boolean;
   variants?: Variant[];
 }
 
@@ -529,6 +530,7 @@ export async function getProductById(id: string): Promise<Product | null> {
             category: row.category,
             sub_category: row.sub_category || undefined,
             is_active: row.is_active !== false,
+            is_pinned: row.is_pinned === true,
             variants: (row.variants || []).map((v: any) => ({
               id: v.id,
               product_id: v.product_id,

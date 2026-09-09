@@ -22,6 +22,7 @@ function formatSupabaseProduct(row: any): any {
     category: row.category,
     sub_category: row.sub_category || undefined,
     is_active: row.is_active !== false,
+    is_pinned: row.is_pinned === true,
     variants: (row.variants || []).map((v: any) => ({
       id: v.id,
       product_id: v.product_id,
@@ -177,6 +178,7 @@ export async function POST(request: NextRequest) {
       if (p.category !== undefined) updatePayload.category = p.category;
       if (p.sub_category !== undefined) updatePayload.sub_category = p.sub_category;
       if (p.is_active !== undefined) updatePayload.is_active = p.is_active;
+      if (p.is_pinned !== undefined) updatePayload.is_pinned = p.is_pinned;
 
       const { error: updateErr } = await supabase
         .from('products')
