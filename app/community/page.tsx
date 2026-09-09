@@ -8,7 +8,6 @@ import {
   MessageSquare, 
   ThumbsUp, 
   Share2, 
-  Bookmark, 
   Send, 
   Image as ImageIcon, 
   Tag, 
@@ -604,6 +603,43 @@ export default function CommunityForumPage() {
     }
   };
 
+  const handleDeletePost = async (postId: string) => {
+    const targetPost = posts.find(p => p.id === postId);
+    if (!targetPost) return;
+
+    if (!canEditPost(targetPost)) {
+      if (!user && !profile) {
+        setToastMessage('Please login to delete this post.');
+      } else {
+        setToastMessage('You can only delete your own posts (or Admin required).');
+      }
+      setTimeout(() => setToastMessage(''), 2500);
+      return;
+    }
+
+    if (!confirm('Are you sure you want to delete this post?')) return;
+
+    // Optimistic UI update
+    setPosts(prev => prev.filter(p => p.id !== postId));
+
+    try {
+      const res = await fetch('/api/community', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete_post', postId }),
+      });
+      if (!res.ok) throw new Error('Failed to delete post');
+      fetchCommunityPosts();
+      setToastMessage('Post deleted successfully!');
+      setTimeout(() => setToastMessage(''), 2500);
+    } catch (err) {
+      console.error('Error deleting post:', err);
+      fetchCommunityPosts();
+      setToastMessage('Failed to delete post. Please try again.');
+      setTimeout(() => setToastMessage(''), 2500);
+    }
+  };
+
   const handleShare = (postId: string) => {
     navigator.clipboard.writeText(`${window.location.origin}/community#${postId}`);
     setToastMessage(t.copySuccess);
@@ -1009,19 +1045,11 @@ export default function CommunityForumPage() {
                             <Share2 size={11} />
                           </button>
                           <button
-                            onClick={() => {
-                              const updated = posts.map(p => p.id === post.id ? { ...p, isBookmarkedByUser: !p.isBookmarkedByUser } : p);
-                              setPosts(updated);
-                              setToastMessage(post.isBookmarkedByUser ? 'Removed from bookmarks' : 'Post bookmarked!');
-                              setTimeout(() => setToastMessage(''), 2500);
-                            }}
-                            className={`p-1.5 rounded-lg border transition-all cursor-pointer ${
-                              post.isBookmarkedByUser
-                                ? 'bg-amber-500/10 border-amber-500/20 text-amber-500'
-                                : 'border-border bg-card/25 hover:bg-card hover:text-foreground'
-                            }`}
+                            onClick={() => handleDeletePost(post.id)}
+                            className="p-1.5 rounded-lg border border-border bg-card/25 hover:bg-red-500/10 hover:border-red-500/30 text-muted-foreground hover:text-red-500 transition-all cursor-pointer"
+                            title="Delete Post"
                           >
-                            <Bookmark size={11} className={post.isBookmarkedByUser ? 'fill-current' : ''} />
+                            <Trash2 size={11} />
                           </button>
                         </div>
                       </div>

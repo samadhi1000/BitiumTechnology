@@ -224,6 +224,23 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true });
     }
 
+    // ── Delete a post ─────────────────────────────────────────────────────────
+    if (action === 'delete_post') {
+      const { postId } = body;
+      // Delete attached comments first
+      await supabase
+        .from('community_comments')
+        .delete()
+        .eq('post_id', postId);
+
+      const { error } = await supabase
+        .from('community_posts')
+        .delete()
+        .eq('id', postId);
+      if (error) throw error;
+      return NextResponse.json({ success: true });
+    }
+
     return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
   } catch (err: any) {
     console.error('Community POST error:', err);
