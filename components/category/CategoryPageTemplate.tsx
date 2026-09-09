@@ -431,40 +431,30 @@ function matchesSubCategory(productSub: string | undefined, activeSub: string, a
 
           {/* Section In-Charge Contact Card */}
           {lead && (
-            <div className="mb-6 rounded-2xl bg-[#080E1E] dark:bg-[#070D1E] border border-slate-800 dark:border-white/10 p-3.5 sm:p-4 shadow-lg relative overflow-hidden transition-all">
+            <div className="mb-6 inline-flex flex-col gap-1.5 rounded-2xl bg-[#080E1E]/95 dark:bg-[#070D1E]/95 backdrop-blur-md border border-slate-800/80 dark:border-white/10 p-3 shadow-xl relative overflow-hidden transition-all max-w-fit">
               {/* Subtle background glow */}
-              <div className="absolute top-0 right-0 w-48 h-48 bg-[#2CFF05]/5 rounded-full filter blur-3xl pointer-events-none" />
+              <div className="absolute -top-8 -right-8 w-32 h-32 bg-[#2CFF05]/10 rounded-full filter blur-2xl pointer-events-none" />
 
-              <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5">
-                {/* Left Side: Name, Badge, Role */}
-                <div>
-                  <div className="flex items-center gap-2.5 flex-wrap">
-                    <h3 className="font-heading font-black text-base sm:text-lg text-white tracking-wide">
-                      {lead.name}
-                    </h3>
-                    <span className={`text-[10px] sm:text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${lead.badgeColorClass}`}>
-                      {lead.badge}
-                    </span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-slate-400 dark:text-zinc-400 font-medium mt-0.5">
-                    {lead.role}
-                  </p>
-                </div>
+              <div className="relative z-10 flex flex-col gap-1.5">
+                {/* Lead Name */}
+                <h3 className="font-heading font-black text-sm sm:text-base text-white tracking-wide">
+                  {lead.name}
+                </h3>
 
-                {/* Right Side: Phone Number, WhatsApp button, Copy button */}
-                <div className="flex items-center gap-3 self-start sm:self-auto bg-slate-900/90 dark:bg-black/50 border border-slate-800 dark:border-white/10 py-1.5 px-3 rounded-xl shadow-inner">
+                {/* Contact Pill (Phone, WhatsApp, Copy) */}
+                <div className="flex items-center gap-2.5 bg-slate-900/90 dark:bg-black/60 border border-slate-800 dark:border-white/10 py-1.5 px-3 rounded-xl shadow-inner">
                   {/* Phone Call Link */}
                   <a
                     href={`tel:${lead.phone}`}
-                    className="flex items-center gap-2 group/phone text-[#2CFF05] font-black text-sm sm:text-base tracking-wider hover:brightness-125 transition-all"
+                    className="flex items-center gap-2 group/phone text-[#2CFF05] font-black text-xs sm:text-sm tracking-wider hover:brightness-125 transition-all"
                     title={`Call ${lead.name} (${lead.phone})`}
                   >
-                    <Phone size={15} className="text-[#2CFF05] group-hover/phone:scale-110 transition-transform" />
+                    <Phone size={14} className="text-[#2CFF05] group-hover/phone:scale-110 transition-transform" />
                     <span>{lead.phone}</span>
                   </a>
 
                   {/* Vertical separator */}
-                  <div className="w-[1px] h-4 bg-slate-700 dark:bg-white/10" />
+                  <div className="w-[1px] h-3.5 bg-slate-700 dark:bg-white/10" />
 
                   {/* WhatsApp Action Button */}
                   <a
@@ -475,7 +465,7 @@ function matchesSubCategory(productSub: string | undefined, activeSub: string, a
                     title={`Chat with ${lead.name} on WhatsApp`}
                     aria-label={`WhatsApp ${lead.name}`}
                   >
-                    <MessageCircle size={15} />
+                    <MessageCircle size={14} />
                   </a>
 
                   {/* Copy Phone Button */}
@@ -486,9 +476,9 @@ function matchesSubCategory(productSub: string | undefined, activeSub: string, a
                     aria-label="Copy Phone Number"
                   >
                     {copiedPhone ? (
-                      <Check size={15} className="text-[#2CFF05]" />
+                      <Check size={14} className="text-[#2CFF05]" />
                     ) : (
-                      <Copy size={15} />
+                      <Copy size={14} />
                     )}
                     {copiedPhone && (
                       <span className="absolute -top-7 left-1/2 -translate-x-1/2 bg-[#2CFF05] text-slate-950 font-bold text-[9px] px-1.5 py-0.5 rounded shadow whitespace-nowrap">
