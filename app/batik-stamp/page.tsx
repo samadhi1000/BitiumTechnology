@@ -20,6 +20,7 @@ const BATIK_STAMP_CONFIG_EN: CategoryPageConfig = {
   itemPlural: 'Stamps',
   subCategories: [
     { id: 'cap-batik', label: 'Cap Batik Stamps' },
+    { id: 'wooden-blocks', label: 'Wooden Blocks' },
     { id: 'other', label: 'Other' },
   ],
   whyChooseUs: {
@@ -96,6 +97,7 @@ const BATIK_STAMP_CONFIG_SI: CategoryPageConfig = {
   itemPlural: 'මුද්‍රා',
   subCategories: [
     { id: 'cap-batik', label: 'කැප් බතික් මුද්‍රා' },
+    { id: 'wooden-blocks', label: 'ලී බ්ලොක් (Wooden Blocks)' },
     { id: 'other', label: 'වෙනත්' },
   ],
   whyChooseUs: {

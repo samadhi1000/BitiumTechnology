@@ -12,6 +12,8 @@ export interface Comment {
 
 export interface Post {
   id: string;
+  authorId?: string;
+  authorEmail?: string;
   authorName: string;
   authorAvatar: string;
   authorRole: string;
@@ -77,6 +79,8 @@ export async function GET() {
 
     const posts: Post[] = (data || []).map((row: any) => ({
       id: row.id,
+      authorId: row.author_id,
+      authorEmail: row.author_email,
       authorName: row.author_name,
       authorAvatar: resolveAvatar(row.author_name, row.author_role, row.author_badge, row.author_avatar),
       authorRole: row.author_role || 'Member',
@@ -115,7 +119,7 @@ export async function POST(req: Request) {
     // ── Create a new post ─────────────────────────────────────────────────────
     if (action === 'create_post') {
       const newPost = body.post;
-      const { error } = await supabase.from('community_posts').insert([{
+      const payload: any = {
         id: newPost.id,
         author_name: newPost.authorName,
         author_avatar: newPost.authorAvatar,
@@ -127,7 +131,36 @@ export async function POST(req: Request) {
         category: newPost.category,
         likes: 0,
         is_pinned: false,
-      }]);
+      };
+      if (newPost.authorId) payload.author_id = newPost.authorId;
+      if (newPost.authorEmail) payload.author_email = newPost.authorEmail;
+
+      const { error } = await supabase.from('community_posts').insert([payload]);
+      if (error && (error.message?.includes('column') || error.code === '42703')) {
+        // Retry without extra metadata columns if not present in schema
+        delete payload.author_id;
+        delete payload.author_email;
+        const res = await supabase.from('community_posts').insert([payload]);
+        if (res.error) throw res.error;
+      } else if (error) {
+        throw error;
+      }
+      return NextResponse.json({ success: true });
+    }
+
+    // ── Edit an existing post ──────────────────────────────────────────────────
+    if (action === 'edit_post') {
+      const { postId, title, content, category, imageUrl } = body;
+      const updatePayload: any = {
+        title,
+        content,
+        category,
+        image_url: imageUrl || null,
+      };
+      const { error } = await supabase
+        .from('community_posts')
+        .update(updatePayload)
+        .eq('id', postId);
       if (error) throw error;
       return NextResponse.json({ success: true });
     }

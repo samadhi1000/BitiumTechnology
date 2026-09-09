@@ -197,7 +197,7 @@ export default function Navbar() {
                 <ChevronDown size={11} className={`transition-transform duration-200 ${dtfPrintingHovered ? 'rotate-180' : ''}`} />
               </Link>
               {dtfPrintingHovered && (
-                <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
+                <div className="absolute top-[60px] left-0 w-52 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50 max-h-[420px] overflow-y-auto">
                   <Link href={adminLink('/dtf-printing')} className="px-3 py-2 rounded-lg text-[11px] font-bold text-emerald-600 dark:text-[#2CFF05] hover:bg-card transition-colors">
                     {t.nav.allDtfPrinting}
                   </Link>
@@ -209,6 +209,13 @@ export default function Navbar() {
                     { sub: 'men', label: t.nav.men },
                     { sub: 'women', label: t.nav.women },
                     { sub: 'kids', label: t.nav.kids },
+                    { sub: 'logo-size', label: t.nav.dtfLogoSize || 'Logo - (2.5 x 2.5)' },
+                    { sub: 'a6-size', label: t.nav.dtfA6Size || 'A6 - (6 x 4)' },
+                    { sub: 'a5-size', label: t.nav.dtfA5Size || 'A5 - (8 x 5)' },
+                    { sub: 'a4-size', label: t.nav.dtfA4Size || 'A4 - (8 x 11)' },
+                    { sub: 'a3-size', label: t.nav.dtfA3Size || 'A3 - (11 x 16)' },
+                    { sub: 'a2-size', label: t.nav.dtfA2Size || 'A2 - (16 x 23)' },
+                    { sub: '1m-size', label: t.nav.dtf1mSize || '1m - (22 x 40)' },
                     { sub: 'other', label: t.nav.other || 'Other' }
                   ].map((item) => (
                     <Link 
@@ -223,14 +230,14 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* 05. Batik Stamp Dropdown */}
+            {/* 05. Block Designs (Batik & Wooden Blocks) Dropdown */}
             <div 
               className="relative h-full flex items-center"
               onMouseEnter={() => setBatikStampHovered(true)}
               onMouseLeave={() => setBatikStampHovered(false)}
             >
               <Link href={adminLink('/batik-stamp')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
-                <span>{t.nav.batikStamp || 'Batik Stamps'}</span>
+                <span>{t.nav.batikStamp || 'Block Designs'}</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${batikStampHovered ? 'rotate-180' : ''}`} />
               </Link>
               {batikStampHovered && (
@@ -239,11 +246,12 @@ export default function Navbar() {
                     href={adminLink('/batik-stamp')} 
                     className="px-3 py-2 rounded-lg text-[11px] font-bold text-emerald-600 dark:text-[#2CFF05] hover:bg-card transition-colors"
                   >
-                    {t.nav.allBatikStamps}
+                    {t.nav.allBatikStamps || 'All Block Designs'}
                   </Link>
                   <hr className="border-border my-0.5" />
                   {[
                     { sub: 'cap-batik', label: t.nav.capBatik },
+                    { sub: 'wooden-blocks', label: t.nav.woodenBlocks || 'Wooden Blocks' },
                     { sub: 'other', label: t.nav.other || 'Other' }
                   ].map((item) => (
                     <Link 
@@ -548,6 +556,13 @@ export default function Navbar() {
                     { sub: 'men', label: t.nav.men },
                     { sub: 'women', label: t.nav.women },
                     { sub: 'kids', label: t.nav.kids },
+                    { sub: 'logo-size', label: t.nav.dtfLogoSize || 'Logo - (2.5 x 2.5)' },
+                    { sub: 'a6-size', label: t.nav.dtfA6Size || 'A6 - (6 x 4)' },
+                    { sub: 'a5-size', label: t.nav.dtfA5Size || 'A5 - (8 x 5)' },
+                    { sub: 'a4-size', label: t.nav.dtfA4Size || 'A4 - (8 x 11)' },
+                    { sub: 'a3-size', label: t.nav.dtfA3Size || 'A3 - (11 x 16)' },
+                    { sub: 'a2-size', label: t.nav.dtfA2Size || 'A2 - (16 x 23)' },
+                    { sub: '1m-size', label: t.nav.dtf1mSize || '1m - (22 x 40)' },
                     { sub: 'other', label: t.nav.other || 'Other' }
                   ].map((item) => (
                     <Link
@@ -563,7 +578,7 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* 5. Batik Stamp */}
+            {/* 5. Block Designs */}
             <div className="rounded-xl bg-card/50 border border-border overflow-hidden">
               <div
                 onClick={() => toggleMobileSub('batik')}
@@ -571,7 +586,7 @@ export default function Navbar() {
               >
                 <div className="flex items-center gap-2">
                   <Stamp size={16} className="text-emerald-600 dark:text-[#2CFF05]" />
-                  <span>{t.nav.batikStamp || 'Batik Stamps'}</span>
+                  <span>{t.nav.batikStamp || 'Block Designs'}</span>
                 </div>
                 <ChevronDown
                   size={16}
@@ -588,10 +603,11 @@ export default function Navbar() {
                     onClick={closeMobileMenu}
                     className="block px-3 py-2 rounded-lg text-xs font-bold text-emerald-600 dark:text-[#2CFF05] bg-emerald-500/10 dark:bg-[#2CFF05]/10"
                   >
-                    {t.nav.allBatikStamps} →
+                    {t.nav.allBatikStamps || 'All Block Designs'} →
                   </Link>
                   {[
                     { sub: 'cap-batik', label: t.nav.capBatik },
+                    { sub: 'wooden-blocks', label: t.nav.woodenBlocks || 'Wooden Blocks' },
                     { sub: 'other', label: t.nav.other || 'Other' }
                   ].map((item) => (
                     <Link

@@ -25,7 +25,10 @@ import {
   Phone,
   PhoneCall,
   MessageCircle,
-  Copy
+  Copy,
+  Edit3,
+  X,
+  Loader2
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -40,6 +43,8 @@ interface Comment {
 
 interface Post {
   id: string;
+  authorId?: string;
+  authorEmail?: string;
   authorName: string;
   authorAvatar: string;
   authorRole: string;
@@ -229,6 +234,13 @@ export default function CommunityForumPage() {
     copySuccess: 'ලින්ක් එක කොපි කරගත්තා!',
     selectImage: 'රූපයක් එක් කරන්න',
     imageOptional: 'Image URL (විකල්ප)',
+    edit: 'සංස්කරණය',
+    editPost: 'සටහන සංස්කරණය කරන්න',
+    editPostSub: 'ඔබගේ ප්‍රජා සටහනේ විස්තර යාවත්කාලීන කරන්න',
+    saveChanges: 'වෙනස්කම් සුරකින්න',
+    saving: 'සුරකිමින්...',
+    cancel: 'අවලංගු කරන්න',
+    postUpdatedSuccess: 'සටහන සාර්ථකව යාවත්කාලීන කරන ලදී!',
   } : {
     hubTitle: 'Community Hub & Forum',
     hubSub: 'Connect with Sri Lankan print specialists, share designs, and resolve technical issues.',
@@ -248,6 +260,13 @@ export default function CommunityForumPage() {
     copySuccess: 'Post link copied to clipboard!',
     selectImage: 'Attach Image',
     imageOptional: 'Image URL (Optional)',
+    edit: 'Edit',
+    editPost: 'Edit Discussion Post',
+    editPostSub: 'Update details for your community topic',
+    saveChanges: 'Save Changes',
+    saving: 'Saving...',
+    cancel: 'Cancel',
+    postUpdatedSuccess: 'Post updated successfully!',
   };
 
   const [posts, setPosts] = useState<Post[]>([]);
@@ -262,6 +281,14 @@ export default function CommunityForumPage() {
   const [newPostCategory, setNewPostCategory] = useState('general');
   const [newImageUrl, setNewImageUrl] = useState('');
   const [isPosting, setIsPosting] = useState(false);
+
+  // Edit post modal states
+  const [editingPost, setEditingPost] = useState<Post | null>(null);
+  const [editTitle, setEditTitle] = useState('');
+  const [editContent, setEditContent] = useState('');
+  const [editCategory, setEditCategory] = useState('general');
+  const [editImageUrl, setEditImageUrl] = useState('');
+  const [isSavingEdit, setIsSavingEdit] = useState(false);
 
   // Guest details if not logged in
   const [guestName, setGuestName] = useState('');
@@ -327,6 +354,83 @@ export default function CommunityForumPage() {
     };
   }, []);
 
+  const canEditPost = (post: Post) => {
+    if (!user && !profile) return false;
+    
+    // Admin check (Admin role or CEO Indrajith)
+    if (profile?.role === 'admin' || user?.email === 'indrajith@bitiumtechnology.com') {
+      return true;
+    }
+
+    // Post Author checks
+    if (post.authorId && user?.id && post.authorId === user.id) return true;
+    if (post.authorEmail && user?.email && post.authorEmail.toLowerCase() === user.email.toLowerCase()) return true;
+    if (profile?.email && post.authorName && profile.email.toLowerCase() === post.authorName.toLowerCase()) return true;
+    if (profile?.full_name && post.authorName && profile.full_name.trim().toLowerCase() === post.authorName.trim().toLowerCase()) return true;
+    if (user?.email && post.authorName && user.email.toLowerCase() === post.authorName.toLowerCase()) return true;
+
+    return false;
+  };
+
+  const openEditModal = (post: Post) => {
+    setEditingPost(post);
+    setEditTitle(post.title);
+    setEditContent(post.content);
+    setEditCategory(post.category || 'general');
+    setEditImageUrl(post.imageUrl || '');
+  };
+
+  const handleSaveEditPost = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingPost || !editTitle.trim() || !editContent.trim()) return;
+
+    setIsSavingEdit(true);
+    const updatedPostId = editingPost.id;
+    const updatedTitle = editTitle.trim();
+    const updatedContent = editContent.trim();
+    const updatedCategory = editCategory;
+    const updatedImageUrl = editImageUrl.trim() ? editImageUrl.trim() : undefined;
+
+    // Optimistic UI update
+    setPosts(prev => prev.map(p => p.id === updatedPostId ? {
+      ...p,
+      title: updatedTitle,
+      content: updatedContent,
+      category: updatedCategory,
+      imageUrl: updatedImageUrl,
+    } : p));
+
+    try {
+      const res = await fetch('/api/community', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'edit_post',
+          postId: updatedPostId,
+          title: updatedTitle,
+          content: updatedContent,
+          category: updatedCategory,
+          imageUrl: updatedImageUrl,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to update post');
+      }
+
+      fetchCommunityPosts();
+      setToastMessage(t.postUpdatedSuccess);
+      setTimeout(() => setToastMessage(''), 2500);
+      setEditingPost(null);
+    } catch (err) {
+      console.error('Error saving edited post:', err);
+      setToastMessage('Failed to update post');
+      setTimeout(() => setToastMessage(''), 2500);
+    } finally {
+      setIsSavingEdit(false);
+    }
+  };
+
   const handleCreatePost = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTitle.trim() || !newContent.trim()) return;
@@ -356,6 +460,8 @@ export default function CommunityForumPage() {
 
     const newPost: Post = {
       id: `post-${Date.now()}`,
+      authorId: user?.id,
+      authorEmail: user?.email || profile?.email,
       authorName,
       authorAvatar,
       authorRole,
@@ -872,6 +978,16 @@ export default function CommunityForumPage() {
                         </div>
 
                         <div className="flex items-center gap-2">
+                          {canEditPost(post) && (
+                            <button
+                              onClick={() => openEditModal(post)}
+                              className="px-2 py-1.5 rounded-lg border border-border bg-card/25 hover:bg-card hover:border-[#2CFF05]/50 hover:text-[#2CFF05] transition-all cursor-pointer text-muted-foreground flex items-center gap-1.5 text-[10px] font-bold"
+                              title={t.editPost}
+                            >
+                              <Edit3 size={11} className="text-[#2CFF05]" />
+                              <span>{t.edit}</span>
+                            </button>
+                          )}
                           {profile?.role === 'admin' && (
                             <button
                               onClick={() => handlePinPost(post.id, !!post.isPinned)}
@@ -1093,6 +1209,128 @@ export default function CommunityForumPage() {
           </div>
 
         </div>
+
+      {/* ─── EDIT POST MODAL ─── */}
+      {editingPost && (
+        <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="w-full max-w-xl bg-card border border-[#2CFF05]/30 rounded-3xl p-6 sm:p-7 shadow-[0_0_50px_rgba(0,0,0,0.8)] relative space-y-5">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-border/60 pb-3.5">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-xl bg-[#2CFF05]/10 text-[#2CFF05] border border-[#2CFF05]/20">
+                  <Edit3 size={18} />
+                </div>
+                <div>
+                  <h3 className="text-base font-black text-foreground uppercase tracking-tight">
+                    {t.editPost}
+                  </h3>
+                  <p className="text-[11px] text-muted-foreground">
+                    {t.editPostSub}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setEditingPost(null)}
+                className="p-1.5 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Edit Form */}
+            <form onSubmit={handleSaveEditPost} className="space-y-4">
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                  Title / Query *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editTitle}
+                  onChange={e => setEditTitle(e.target.value)}
+                  placeholder={t.placeholderTitle}
+                  className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors text-foreground font-bold"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                    {t.selectCategory}
+                  </label>
+                  <select
+                    value={editCategory}
+                    onChange={e => setEditCategory(e.target.value)}
+                    className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors text-foreground font-semibold"
+                  >
+                    <option value="general">General</option>
+                    <option value="dtf">DTF Printing</option>
+                    <option value="screen">Screen Printing</option>
+                    <option value="stencil">Stencils & Stamps</option>
+                    <option value="showcase">Project Showcase</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                    {t.imageOptional}
+                  </label>
+                  <input
+                    type="text"
+                    value={editImageUrl}
+                    onChange={e => setEditImageUrl(e.target.value)}
+                    placeholder="https://images.unsplash.com/..."
+                    className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors text-foreground"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                  Discussion Body *
+                </label>
+                <textarea
+                  required
+                  value={editContent}
+                  onChange={e => setEditContent(e.target.value)}
+                  placeholder={t.placeholderContent}
+                  rows={5}
+                  className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors resize-none text-foreground leading-relaxed"
+                />
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-border/60">
+                <button
+                  type="button"
+                  onClick={() => setEditingPost(null)}
+                  className="px-4 py-2 rounded-xl border border-border bg-card/40 hover:bg-card text-muted-foreground hover:text-foreground text-xs font-bold transition-all cursor-pointer"
+                >
+                  {t.cancel}
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSavingEdit}
+                  className="px-6 py-2 rounded-xl bg-[#2CFF05] hover:bg-[#7acc00] disabled:bg-zinc-700 disabled:opacity-40 text-black font-black text-xs uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shadow-lg shadow-[#2CFF05]/20"
+                >
+                  {isSavingEdit ? (
+                    <>
+                      <Loader2 size={13} className="animate-spin" />
+                      <span>{t.saving}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send size={13} />
+                      <span>{t.saveChanges}</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       </div>
     </div>

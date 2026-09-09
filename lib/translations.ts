@@ -40,6 +40,14 @@ export interface Translations {
     kids: string;
     allBatikStamps: string;
     capBatik: string;
+    woodenBlocks: string;
+    dtfLogoSize: string;
+    dtfA6Size: string;
+    dtfA5Size: string;
+    dtfA4Size: string;
+    dtfA3Size: string;
+    dtfA2Size: string;
+    dtf1mSize: string;
     allLaserCutting: string;
     acrylicCutEngrave: string;
     woodEngraving: string;
@@ -239,7 +247,7 @@ export const translations: Record<Language, Translations> = {
       about: "About Us",
       contact: "Contact Us",
       stencil: "Stencils",
-      batikStamp: "Batik Stamps",
+      batikStamp: "Block Designs",
       downloads: "Downloads",
       materials: "Materials / Consumables",
       toolkit: "Toolkit",
@@ -267,8 +275,16 @@ export const translations: Record<Language, Translations> = {
       men: "Men",
       women: "Women",
       kids: "Kids",
-      allBatikStamps: "All Batik Stamps",
+      dtfLogoSize: "Logo - (2.5 x 2.5)",
+      dtfA6Size: "A6 - (6 x 4)",
+      dtfA5Size: "A5 - (8 x 5)",
+      dtfA4Size: "A4 - (8 x 11)",
+      dtfA3Size: "A3 - (11 x 16)",
+      dtfA2Size: "A2 - (16 x 23)",
+      dtf1mSize: "1m - (22 x 40)",
+      allBatikStamps: "All Block Designs",
       capBatik: "Cap Batik Stamps",
+      woodenBlocks: "Wooden Blocks",
       allLaserCutting: "All Laser Cutting",
       acrylicCutEngrave: "Acrylic Cut & Engrave",
       woodEngraving: "Wood Engraving",
@@ -493,7 +509,7 @@ export const translations: Record<Language, Translations> = {
       about: "අප පිළිබඳව",
       contact: "අප හා සම්බන්ධ වන්න",
       stencil: "ස්ටෙන්සිල්",
-      batikStamp: "බතික් මුද්‍රා",
+      batikStamp: "බ්ලොක් ඩිසයින්ස් (Block Designs)",
       downloads: "බාගත කිරීම්",
       materials: "ද්‍රව්‍ය හා අමුද්‍රව්‍ය",
       toolkit: "මෙවලම් කට්ටලය",
@@ -521,8 +537,16 @@ export const translations: Record<Language, Translations> = {
       men: "පිරිමි (Men)",
       women: "කාන්තා (Women)",
       kids: "ළමා (Kids)",
-      allBatikStamps: "සියලුම බතික් මුද්‍රා",
+      dtfLogoSize: "Logo - (2.5 x 2.5)",
+      dtfA6Size: "A6 - (6 x 4)",
+      dtfA5Size: "A5 - (8 x 5)",
+      dtfA4Size: "A4 - (8 x 11)",
+      dtfA3Size: "A3 - (11 x 16)",
+      dtfA2Size: "A2 - (16 x 23)",
+      dtf1mSize: "1m - (22 x 40)",
+      allBatikStamps: "සියලුම බ්ලොක් නිර්මාණ",
       capBatik: "කැප් බතික්",
+      woodenBlocks: "ලී බ්ලොක් (Wooden Blocks)",
       allLaserCutting: "සියලුම ලේසර් කැපුම්",
       acrylicCutEngrave: "ඇක්‍රිලික් කැපුම් සහ කැටයම්",
       woodEngraving: "ලී කැටයම්",
