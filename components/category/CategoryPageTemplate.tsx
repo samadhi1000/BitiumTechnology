@@ -102,10 +102,114 @@ export default function CategoryPageTemplate({
     setCurrentPage(1);
   }, [searchQuery, sortBy]);
 
+const SUBCATEGORY_ALIASES: Record<string, string[]> = {
+  // Screen printing aliases
+  'artwork': ['artwork', 'vector-artwork', 'vector_artwork', 'vector-design', 'vector_design', 'vector', 'vector design', 'vector art', 'artworks', 'design', 'vector-designs', 'designs'],
+  'screen-exposed': ['screen-exposed', 'exposed-screens', 'exposed-screen', 'screen_exposed', 'exposed', 'screen', 'screens', 'exposed screens', 'screen exposed'],
+  'tracing-printouts': ['tracing-printouts', 'tracing-printout', 'tracing', 'tracing-film', 'tracing_printouts', 'tracing-paper', 'tracing printouts'],
+  'positive-printouts': ['positive-printouts', 'positive-film', 'positive', 'positive_printouts', 'positive_film', 'positives', 'positive film'],
+  'cmyk-halftone': ['cmyk-halftone', 'cmyk_halftone', 'cmyk', 'halftone', 'halftones', 'cmyk halftone'],
+  'one-color': ['one-color', 'one_color', '1-color', 'single-color', 'one color', 'single color'],
+  'two-color': ['two-color', 'two_color', '2-color', 'two color'],
+  'three-color': ['three-color', 'three_color', '3-color', 'three color'],
+  'four-color': ['four-color', 'four_color', '4-color', 'four color'],
+
+  // Stencil aliases
+  'hand-painting': ['hand-painting', 'hand_painting', 'handpainting', 'hand', 'hand painting'],
+  'saree': ['saree', 'saree-border', 'saree_border', 'sari', 'saree border'],
+  'tote-bags': ['tote-bags', 'tote_bags', 'tote-bag', 'totebag', 'tote', 'tote bags'],
+  'batik': ['batik', 'batik-patterns', 'batik_patterns', 'batik patterns'],
+  'wall-decoration': ['wall-decoration', 'wall_decoration', 'wall-decor', 'walldecor', 'wall', 'wall decor', 'wall decoration'],
+  'titanium': ['titanium', 'titanium-stencil', 'titanium stencil'],
+
+  // DTF aliases
+  'tshirt-design': ['tshirt-design', 't-shirt-design', 'tshirt', 't-shirt', 't_shirt_design', 't-shirt design', 't-shirt designs', 'tshirt design'],
+  'dtf-sticker': ['dtf-sticker', 'dtf-stickers', 'sticker', 'stickers', 'dtf sticker', 'dtf stickers'],
+  'dtf-cloth': ['dtf-cloth', 'dtf-cloth-transfers', 'cloth', 'transfers', 'dtf cloth', 'cloth transfers'],
+  'men': ['men', 'mens', "men's", 'men-apparel'],
+  'women': ['women', 'womens', "women's", 'women-apparel'],
+  'kids': ['kids', "kid's", 'children', 'child'],
+  'logo-size': ['logo-size', 'logo', 'logo-2.5x2.5', 'logo-(2.5x2.5)', 'logo - (2.5 x 2.5)', 'logo-2.5-x-2.5'],
+  'a6-size': ['a6-size', 'a6', 'a6-(6x4)', 'a6-6x4', 'a6 - (6 x 4)', 'a6-6-x-4'],
+  'a5-size': ['a5-size', 'a5', 'a5-(8x5)', 'a5-8x5', 'a5 - (8 x 5)', 'a5-8-x-5'],
+  'a4-size': ['a4-size', 'a4', 'a4-(8x11)', 'a4-8x11', 'a4 - (8 x 11)', 'a4-8-x-11'],
+  'a3-size': ['a3-size', 'a3', 'a3-(11x16)', 'a3-11x16', 'a3 - (11 x 16)', 'a3-11-x-16'],
+  'a2-size': ['a2-size', 'a2', 'a2-(16x23)', 'a2-16x23', 'a2 - (16 x 23)', 'a2-16-x-23'],
+  '1m-size': ['1m-size', '1m', '1-meter', '1meter', '1m-(22x40)', '1m - (22 x 40)', '1m - (22 x40)', '1m-22-x-40'],
+
+  // Batik Stamp / Block Designs aliases
+  'cap-batik': ['cap-batik', 'cap_batik', 'cap-batik-stamps', 'cap-batik-stamp', 'cap', 'cap batik', 'cap batik stamps'],
+  'wooden-blocks': ['wooden-blocks', 'wood-blocks', 'wooden_blocks', 'wood-block', 'wooden-block', 'wood', 'wooden blocks', 'wooden block', 'wooden'],
+
+  // Laser cutting aliases
+  'acrylic': ['acrylic', 'acrylic-cut', 'acrylic-engrave', 'acrylic cut', 'acrylic engrave'],
+  'wood': ['wood', 'wood-engraving', 'wooden', 'wood engraving'],
+  'custom-profile': ['custom-profile', 'custom-profiles', 'custom', 'custom profile', 'custom profiles'],
+
+  // Materials aliases
+  'screen-printing-consumables': ['screen-printing-consumables', 'screen-consumables', 'screen-ink', 'screen printing consumables'],
+  'hand-painting-consumables': ['hand-painting-consumables', 'painting-consumables', 'fabric-paint', 'hand painting consumables'],
+  'other-consumables': ['other-consumables', 'dtf-consumables', 'dtf-ink', 'consumables'],
+};
+
+function matchesSubCategory(productSub: string | undefined, activeSub: string, allKnownSubIds: string[]): boolean {
+  if (!productSub) {
+    return activeSub === 'other';
+  }
+  
+  const normProduct = productSub.trim().toLowerCase().replace(/[\s_]+/g, '-');
+  const normActive = activeSub.trim().toLowerCase().replace(/[\s_]+/g, '-');
+
+  // Exact or normalized match
+  if (normProduct === normActive) return true;
+
+  // Check aliases for activeSub
+  const activeAliases = SUBCATEGORY_ALIASES[normActive];
+  if (activeAliases && (activeAliases.includes(normProduct) || activeAliases.includes(productSub.trim().toLowerCase()))) {
+    return true;
+  }
+
+  // Reverse alias check (if product is keyed by standard ID)
+  for (const [key, aliases] of Object.entries(SUBCATEGORY_ALIASES)) {
+    if ((aliases.includes(normProduct) || aliases.includes(productSub.trim().toLowerCase())) && (key === normActive || aliases.includes(normActive))) {
+      return true;
+    }
+  }
+
+  // General slug contains check (e.g. "vector-design" contains "vector" or "artwork" contains "art")
+  if (normActive !== 'other') {
+    if (normProduct.includes(normActive) || normActive.includes(normProduct)) {
+      return true;
+    }
+    // Check if parts match (e.g. "vector" in "vector-design" and "vector-artwork")
+    const productWords = normProduct.split('-');
+    const activeWords = normActive.split('-');
+    const hasCommonNonGenericWord = productWords.some(pw => 
+      pw.length > 3 && !['item', 'type', 'size', 'other'].includes(pw) && activeWords.includes(pw)
+    );
+    if (hasCommonNonGenericWord) return true;
+  }
+
+  // If active is 'other', match any product that doesn't match any of the other defined subcategories on this page
+  if (normActive === 'other') {
+    const matchesAnySpecific = allKnownSubIds.some(subId => {
+      if (subId === 'other') return false;
+      const aliases = SUBCATEGORY_ALIASES[subId] || [subId];
+      return aliases.includes(normProduct) || normProduct.includes(subId);
+    });
+    return !matchesAnySpecific || normProduct === 'other';
+  }
+
+  return false;
+}
+
   // Filter products
   const filteredProducts = useMemo(() => {
+    const allKnownSubIds = config.subCategories.map((s) => s.id);
     return initialProducts.filter((p) => {
-      if (activeSub && p.sub_category !== activeSub) return false;
+      if (activeSub && !matchesSubCategory(p.sub_category, activeSub, allKnownSubIds)) {
+        return false;
+      }
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         return (
@@ -116,7 +220,7 @@ export default function CategoryPageTemplate({
       }
       return true;
     });
-  }, [initialProducts, activeSub, searchQuery]);
+  }, [initialProducts, activeSub, searchQuery, config.subCategories]);
 
   // Sort products
   const sortedProducts = useMemo(() => {

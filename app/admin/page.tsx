@@ -74,6 +74,66 @@ const CATEGORY_SIZES: Record<string, string[]> = {
   'other':          [],
 };
 
+export const CATEGORY_SUBCATEGORIES: Record<string, { id: string; label: string }[]> = {
+  'stencil': [
+    { id: 'hand-painting', label: 'Hand Painting' },
+    { id: 'saree', label: 'Saree Border' },
+    { id: 'tote-bags', label: 'Tote Bags' },
+    { id: 'batik', label: 'Batik Patterns' },
+    { id: 'wall-decoration', label: 'Wall Decor' },
+    { id: 'titanium', label: 'Titanium' },
+    { id: 'other', label: 'Other' },
+  ],
+  'screen-printing': [
+    { id: 'screen-exposed', label: 'Exposed Screens' },
+    { id: 'artwork', label: 'Vector Artwork / Design' },
+    { id: 'tracing-printouts', label: 'Tracing Printouts' },
+    { id: 'positive-printouts', label: 'Positive Film' },
+    { id: 'cmyk-halftone', label: 'CMYK Halftone' },
+    { id: 'one-color', label: 'One Color' },
+    { id: 'two-color', label: 'Two Color' },
+    { id: 'three-color', label: 'Three Color' },
+    { id: 'four-color', label: 'Four Color' },
+    { id: 'other', label: 'Other' },
+  ],
+  'dtf_sheet': [
+    { id: 'tshirt-design', label: 'T-Shirt Designs' },
+    { id: 'dtf-sticker', label: 'DTF Stickers' },
+    { id: 'dtf-cloth', label: 'Cloth Transfers' },
+    { id: 'men', label: 'Men' },
+    { id: 'women', label: 'Women' },
+    { id: 'kids', label: 'Kids' },
+    { id: 'logo-size', label: 'Logo - (2.5 x 2.5)' },
+    { id: 'a6-size', label: 'A6 - (6 x 4)' },
+    { id: 'a5-size', label: 'A5 - (8 x 5)' },
+    { id: 'a4-size', label: 'A4 - (8 x 11)' },
+    { id: 'a3-size', label: 'A3 - (11 x 16)' },
+    { id: 'a2-size', label: 'A2 - (16 x 23)' },
+    { id: '1m-size', label: '1m - (22 x 40)' },
+    { id: 'other', label: 'Other' },
+  ],
+  'batik-stamp': [
+    { id: 'cap-batik', label: 'Cap Batik Stamps' },
+    { id: 'wooden-blocks', label: 'Wooden Blocks' },
+    { id: 'other', label: 'Other' },
+  ],
+  'laser-cutting': [
+    { id: 'acrylic', label: 'Acrylic Cut & Engrave' },
+    { id: 'wood', label: 'Wood Engraving' },
+    { id: 'custom-profile', label: 'Custom Profiles' },
+    { id: 'other', label: 'Other' },
+  ],
+  'materials': [
+    { id: 'screen-printing-consumables', label: 'Screen Printing Consumables' },
+    { id: 'hand-painting-consumables', label: 'Hand Painting Consumables' },
+    { id: 'other-consumables', label: 'Other Consumables' },
+    { id: 'other', label: 'Other' },
+  ],
+  'other': [
+    { id: 'other', label: 'Other' },
+  ],
+};
+
 // Price scaling per size index (multiplier over base price)
 const SIZE_PRICE_MULTIPLIERS: Record<string, number[]> = {
   'stencil':        [1.0, 1.7, 2.8, 4.2],
@@ -1473,14 +1533,38 @@ export default function AdminPanelPage() {
                   </select>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Sub-category ID</label>
-                  <input
-                    type="text"
-                    value={prodSubCategory}
-                    onChange={(e) => setProdSubCategory(e.target.value)}
-                    placeholder="e.g. screen-printing-consumables, saree, acrylic"
-                    className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
-                  />
+                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Sub-category *</label>
+                  <div className="space-y-2">
+                    <select
+                      value={prodSubCategory}
+                      onChange={(e) => setProdSubCategory(e.target.value)}
+                      className="w-full bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
+                    >
+                      <option value="">-- Select Sub-category --</option>
+                      {(CATEGORY_SUBCATEGORIES[prodCategory] || []).map((sc) => (
+                        <option key={sc.id} value={sc.id}>
+                          {sc.label} ({sc.id})
+                        </option>
+                      ))}
+                      {prodSubCategory && !(CATEGORY_SUBCATEGORIES[prodCategory] || []).some(sc => sc.id === prodSubCategory) && (
+                        <option value={prodSubCategory}>Custom: {prodSubCategory}</option>
+                      )}
+                      <option value="__custom__">+ Enter Custom Sub-category</option>
+                    </select>
+                    {prodSubCategory === '__custom__' && (
+                      <input
+                        type="text"
+                        autoFocus
+                        placeholder="Enter custom sub-category ID (e.g. vector-art)"
+                        onBlur={(e) => {
+                          if (e.target.value.trim()) {
+                            setProdSubCategory(e.target.value.trim());
+                          }
+                        }}
+                        className="w-full bg-card border border-[#2CFF05]/40 rounded-xl px-4 py-2 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
 
