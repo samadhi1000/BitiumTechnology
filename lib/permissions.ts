@@ -219,6 +219,39 @@ export const INITIAL_STAFF_PROFILES: StaffProfile[] = [
       canExportData: true,
     },
   },
+  {
+    id: 'staff-heshani',
+    name: 'Heshani',
+    username: 'heshani.dtf',
+    passwordHash: '87728dc433d57c9578cae0559e464c26a9815a0a424c1a0f4ca8c55b1d07b6f5',
+    title: 'DTF & Artwork',
+    department: 'DTF & Digital Artwork Department',
+    email: 'heshani@bitiumtechnology.com',
+    role: 'specialist',
+    avatarBg: 'bg-cyan-500',
+    initials: 'HS',
+    isActive: true,
+    phone: '0753026247',
+    joinedDate: '2024-05-01',
+    permissions: {
+      canViewProducts: true,
+      canAddProducts: true,
+      canEditProducts: true,
+      canDeleteProducts: false,
+      canViewDigital: true,
+      canAddDigital: true,
+      canEditDigital: true,
+      canDeleteDigital: false,
+      allowedProductCategories: ['dtf_sheet', 'materials', 'other'],
+      allowedDigitalCategories: ['dtf', 'vector', 'batik', 'wall-art'],
+      canAccessBatchPrint: true,
+      canAccessOrderForm: true,
+      canAccessPOSInvoice: false,
+      canAccessComplaints: false,
+      canManageStaff: false,
+      canExportData: false,
+    },
+  },
 ];
 
 const LOCAL_STORAGE_KEY = 'bitium_admin_staff_profiles_v1';
@@ -234,6 +267,18 @@ export function getSavedStaffProfiles(): StaffProfile[] {
     if (raw) {
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length > 0) {
+        // Merge any new INITIAL_STAFF_PROFILES that are missing in localStorage
+        const existingIds = new Set(parsed.map((p: any) => p.id));
+        let changed = false;
+        INITIAL_STAFF_PROFILES.forEach((initial) => {
+          if (!existingIds.has(initial.id)) {
+            parsed.push(initial);
+            changed = true;
+          }
+        });
+        if (changed) {
+          saveStaffProfiles(parsed);
+        }
         return parsed;
       }
     }

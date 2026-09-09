@@ -195,6 +195,15 @@ const COMMUNITY_CONTACTS = [
     badge: 'Batik & Other',
     badgeColor: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30',
   },
+  {
+    name: 'Heshani',
+    role: 'DTF & Artwork',
+    roleSi: 'DTF මුද්‍රණය සහ කලා නිර්මාණ',
+    phone: '0753026247',
+    cleanPhone: '94753026247',
+    badge: 'DTF & Art',
+    badgeColor: 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/30',
+  },
 ];
 
 

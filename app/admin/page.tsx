@@ -102,6 +102,16 @@ export default function AdminPanelPage() {
   // Tab states: 'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'staff'
   const [activeTab, setActiveTab] = useState<'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'staff'>('products');
   
+  // Strict CEO / Super Admin permission validation
+  const isCeo = activeStaff.role === 'ceo_admin' || activeStaff.id === 'staff-indrajith' || (!!user && profile?.role === 'admin');
+
+  // Guard activeTab if non-CEO operator attempts to view staff management
+  useEffect(() => {
+    if (activeTab === 'staff' && !isCeo) {
+      setActiveTab('products');
+    }
+  }, [activeTab, isCeo]);
+
   const [products, setProducts] = useState<Product[]>([]);
   const [digitalArtworks, setDigitalArtworks] = useState<DigitalArtwork[]>([]);
   const [loading, setLoading] = useState(true);
@@ -557,8 +567,12 @@ export default function AdminPanelPage() {
     }
   };
 
-  // Staff Switcher handler
+  // Staff Switcher handler (CEO & Super Admin only)
   const handleSwitchActiveStaff = (staffId: string) => {
+    if (!isCeo) {
+      console.warn('Unauthorized attempt: only CEO can switch operator profiles.');
+      return;
+    }
     setActiveStaffProfileId(staffId);
     const found = staffProfiles.find(p => p.id === staffId);
     if (found) {
@@ -569,18 +583,18 @@ export default function AdminPanelPage() {
         else if (found.permissions.canAccessOrderForm) setActiveTab('order-form');
         else if (found.permissions.canAccessPOSInvoice) setActiveTab('pos-invoice');
         else if (found.permissions.canAccessBatchPrint) setActiveTab('batch-print');
-        else setActiveTab('staff');
+        else setActiveTab(found.role === 'ceo_admin' ? 'staff' : 'products');
       } else if (activeTab === 'digital' && !found.permissions.canViewDigital) {
         if (found.permissions.canViewProducts) setActiveTab('products');
         else if (found.permissions.canAccessOrderForm) setActiveTab('order-form');
         else if (found.permissions.canAccessPOSInvoice) setActiveTab('pos-invoice');
-        else setActiveTab('staff');
+        else setActiveTab(found.role === 'ceo_admin' ? 'staff' : 'products');
       } else if (activeTab === 'batch-print' && !found.permissions.canAccessBatchPrint) {
-        setActiveTab(found.permissions.canViewProducts ? 'products' : 'staff');
+        setActiveTab(found.permissions.canViewProducts ? 'products' : (found.role === 'ceo_admin' ? 'staff' : 'products'));
       } else if (activeTab === 'order-form' && !found.permissions.canAccessOrderForm) {
-        setActiveTab(found.permissions.canViewProducts ? 'products' : 'staff');
+        setActiveTab(found.permissions.canViewProducts ? 'products' : (found.role === 'ceo_admin' ? 'staff' : 'products'));
       } else if (activeTab === 'pos-invoice' && !found.permissions.canAccessPOSInvoice) {
-        setActiveTab(found.permissions.canViewProducts ? 'products' : 'staff');
+        setActiveTab(found.permissions.canViewProducts ? 'products' : (found.role === 'ceo_admin' ? 'staff' : 'products'));
       }
     }
   };
@@ -998,21 +1012,23 @@ export default function AdminPanelPage() {
               </button>
             )}
 
-            {/* Staff & Permissions Tab */}
-            <button
-              onClick={() => { setActiveTab('staff'); }}
-              className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
-                activeTab === 'staff'
-                  ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
-                  : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
-              }`}
-            >
-              <Shield size={16} />
-              <span>Staff & Permissions</span>
-              <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'staff' ? 'bg-black text-[#2CFF05]' : 'bg-purple-500/20 text-purple-400'}`}>
-                {staffProfiles.length} PROFILES
-              </span>
-            </button>
+            {/* Staff & Permissions Tab - CEO / Super Admin Only */}
+            {isCeo && (
+              <button
+                onClick={() => { setActiveTab('staff'); }}
+                className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                  activeTab === 'staff'
+                    ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
+                    : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
+                }`}
+              >
+                <Shield size={16} />
+                <span>Staff & Permissions</span>
+                <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'staff' ? 'bg-black text-[#2CFF05]' : 'bg-purple-500/20 text-purple-400'}`}>
+                  {staffProfiles.length} PROFILES
+                </span>
+              </button>
+            )}
           </div>
 
           {/* Secondary Filter & Search Row - Shown only for Store & Digital Catalogs */}
@@ -1087,7 +1103,7 @@ export default function AdminPanelPage() {
             </div>
           )}
 
-          {activeTab === 'staff' ? (
+          {activeTab === 'staff' && isCeo ? (
             <AdminStaffManager
               staffProfiles={staffProfiles}
               activeStaffId={activeStaff.id}
