@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   Printer,
   Users,
@@ -8,7 +8,11 @@ import {
   Trash2,
   CheckCircle2,
   PackageCheck,
-  FileSpreadsheet
+  FileSpreadsheet,
+  Search,
+  ChevronDown,
+  Check,
+  X
 } from 'lucide-react';
 
 export interface OrderItem {
@@ -450,6 +454,170 @@ export function QuarterOrderCard({ order }: { order: OrderItem }) {
   );
 }
 
+function QuadrantOrderSelect({
+  slotIdx,
+  selectedOrder,
+  savedOrders,
+  onSelectOrder,
+}: {
+  slotIdx: number;
+  selectedOrder: OrderItem;
+  savedOrders: OrderItem[];
+  onSelectOrder: (order: OrderItem) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const filteredOrders = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return savedOrders;
+    return savedOrders.filter((o) => {
+      const matchName = o.customerName?.toLowerCase().includes(q);
+      const matchPhone = o.whatsappNo?.replace(/\s+/g, '').includes(q.replace(/\s+/g, '')) ||
+                         o.mobile1?.replace(/\s+/g, '').includes(q.replace(/\s+/g, '')) ||
+                         o.mobile2?.replace(/\s+/g, '').includes(q.replace(/\s+/g, ''));
+      const matchId = o.id?.toLowerCase().includes(q);
+      const matchAddress = o.address?.toLowerCase().includes(q);
+      return matchName || matchPhone || matchId || matchAddress;
+    });
+  }, [savedOrders, searchQuery]);
+
+  const isBlank = selectedOrder.id.startsWith('ORD-EMPTY') || !selectedOrder.customerName;
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      {/* Trigger button */}
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full text-left bg-card border border-border hover:border-[#2CFF05]/50 focus:border-[#2CFF05] rounded-xl p-2.5 flex items-center justify-between gap-2 transition-all group cursor-pointer"
+      >
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-1.5 mb-0.5">
+            <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-muted text-muted-foreground border border-border">
+              {isBlank ? 'EMPTY' : selectedOrder.id}
+            </span>
+            {selectedOrder.whatsappNo && (
+              <span className="text-[11px] font-bold text-[#2CFF05] truncate">
+                {selectedOrder.whatsappNo}
+              </span>
+            )}
+          </div>
+          <span className="text-xs font-semibold text-foreground block truncate">
+            {isBlank ? '[Blank Template]' : selectedOrder.customerName || 'Customer'}
+          </span>
+        </div>
+        <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform shrink-0 ${isOpen ? 'rotate-180 text-[#2CFF05]' : 'group-hover:text-foreground'}`} />
+      </button>
+
+      {/* Search Popover Dropdown */}
+      {isOpen && (
+        <div className="absolute z-50 left-0 right-0 top-full mt-1.5 bg-popover/95 backdrop-blur-md border border-border shadow-2xl rounded-2xl p-2 space-y-2 max-h-80 flex flex-col animate-in fade-in zoom-in-95 duration-150 min-w-[260px]">
+          {/* Search Box */}
+          <div className="relative">
+            <Search className="w-3.5 h-3.5 absolute left-2.5 top-2.5 text-muted-foreground" />
+            <input
+              type="text"
+              autoFocus
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search Phone, Name, ID..."
+              className="w-full bg-card border border-border rounded-xl pl-8 pr-7 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#2CFF05]"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2 top-2 text-muted-foreground hover:text-foreground"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+
+          {/* Orders List */}
+          <div className="overflow-y-auto space-y-1 max-h-52 pr-1 custom-scrollbar">
+            {filteredOrders.length > 0 ? (
+              filteredOrders.map((o) => {
+                const isSelected = selectedOrder.id === o.id;
+                return (
+                  <button
+                    key={o.id}
+                    type="button"
+                    onClick={() => {
+                      onSelectOrder(o);
+                      setIsOpen(false);
+                      setSearchQuery('');
+                    }}
+                    className={`w-full text-left p-2 rounded-xl text-xs transition-all flex items-center justify-between gap-2 cursor-pointer ${
+                      isSelected
+                        ? 'bg-[#2CFF05]/15 border border-[#2CFF05]/30 text-foreground font-semibold'
+                        : 'hover:bg-secondary/80 text-foreground'
+                    }`}
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span className="font-mono text-[9px] font-bold text-muted-foreground px-1 bg-background/80 rounded border border-border/50">
+                          {o.id}
+                        </span>
+                        <span className="font-bold text-xs text-[#2CFF05] truncate">
+                          {o.whatsappNo || 'No phone'}
+                        </span>
+                      </div>
+                      <div className="font-semibold text-xs truncate text-foreground">
+                        {o.customerName || 'Customer'}
+                      </div>
+                      {o.address && (
+                        <div className="text-[10px] text-muted-foreground truncate">
+                          {o.address}
+                        </div>
+                      )}
+                    </div>
+                    {isSelected && (
+                      <Check className="w-4 h-4 text-[#2CFF05] shrink-0" />
+                    )}
+                  </button>
+                );
+              })
+            ) : (
+              <div className="text-center py-4 text-xs text-muted-foreground">
+                No orders match &quot;{searchQuery}&quot;
+              </div>
+            )}
+
+            {/* Blank Option */}
+            <div className="pt-1 border-t border-border/50 mt-1">
+              <button
+                type="button"
+                onClick={() => {
+                  onSelectOrder(createEmptyOrder(`ORD-EMPTY-${slotIdx + 1}`));
+                  setIsOpen(false);
+                  setSearchQuery('');
+                }}
+                className="w-full text-left p-2 rounded-xl text-xs text-muted-foreground hover:text-foreground hover:bg-secondary flex items-center gap-2 cursor-pointer"
+              >
+                <span className="font-mono text-[10px] font-bold">[Blank Template]</span>
+                <span className="text-[10px] text-zinc-500">(Clear this quadrant)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function AdminBatchPrint() {
   const [savedOrders, setSavedOrders] = useState<OrderItem[]>([]);
   const [selectedSlots, setSelectedSlots] = useState<OrderItem[]>([
@@ -594,29 +762,20 @@ export default function AdminBatchPrint() {
         {/* Slot Selectors */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3 border-t border-border/60">
           {[0, 1, 2, 3].map((slotIdx) => (
-            <div key={slotIdx} className="bg-background/60 p-3 rounded-xl border border-border">
-              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block mb-1.5">
+            <div key={slotIdx} className="bg-background/60 p-3 rounded-xl border border-border space-y-1.5">
+              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
                 Quadrant #{slotIdx + 1} ({slotIdx === 0 ? 'Top-Left' : slotIdx === 1 ? 'Top-Right' : slotIdx === 2 ? 'Bottom-Left' : 'Bottom-Right'}):
               </span>
-              <select
-                value={selectedSlots[slotIdx]?.id || ''}
-                onChange={(e) => {
-                  const found = savedOrders.find((o) => o.id === e.target.value);
-                  if (found) {
-                    const copy = [...selectedSlots];
-                    copy[slotIdx] = found;
-                    setSelectedSlots(copy);
-                  }
+              <QuadrantOrderSelect
+                slotIdx={slotIdx}
+                selectedOrder={selectedSlots[slotIdx] || createEmptyOrder(`ORD-EMPTY-${slotIdx + 1}`)}
+                savedOrders={savedOrders}
+                onSelectOrder={(order) => {
+                  const copy = [...selectedSlots];
+                  copy[slotIdx] = order;
+                  setSelectedSlots(copy);
                 }}
-                className="w-full text-xs font-semibold bg-card border border-border rounded-lg px-2.5 py-1.5 text-foreground outline-none focus:border-primary"
-              >
-                {savedOrders.map((o) => (
-                  <option key={o.id} value={o.id}>
-                    {o.id}: {o.whatsappNo || 'No Phone'} ({o.customerName || 'Customer'})
-                  </option>
-                ))}
-                <option value={`empty-${slotIdx}`}>[Blank Template]</option>
-              </select>
+              />
             </div>
           ))}
         </div>
