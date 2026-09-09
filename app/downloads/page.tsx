@@ -412,9 +412,9 @@ export default function DownloadsPage() {
             {Array.from({ length: 8 }).map((_, i) => (
               <div
                 key={i}
-                className="animate-pulse rounded-2xl bg-white dark:bg-card border border-slate-200 dark:border-border p-3.5 h-[340px] flex flex-col justify-between"
+                className="animate-pulse rounded-2xl bg-white dark:bg-card border border-slate-200 dark:border-border p-3.5 h-[380px] flex flex-col justify-between"
               >
-                <div className="w-full aspect-[4/3] rounded-xl bg-slate-100 dark:bg-muted" />
+                <div className="w-full aspect-[3/4] rounded-xl bg-slate-100 dark:bg-muted" />
                 <div className="space-y-2 mt-3">
                   <div className="h-3 w-1/3 bg-slate-100 dark:bg-muted rounded" />
                   <div className="h-4 w-4/5 bg-slate-100 dark:bg-muted rounded" />
@@ -454,13 +454,13 @@ export default function DownloadsPage() {
                     key={art.id}
                     className="group relative rounded-2xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-card/90 hover:border-emerald-500/40 dark:hover:border-[#2CFF05]/50 hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 flex flex-col p-3 sm:p-3.5 shadow-sm"
                   >
-                    {/* Watermarked Image Wrapper */}
-                    <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-slate-50 dark:bg-zinc-900 border border-slate-100 dark:border-white/10 mb-3 select-none">
+                    {/* Watermarked Image Wrapper (Portrait 3:4) */}
+                    <div className="relative w-full aspect-[3/4] rounded-xl overflow-hidden bg-slate-50 dark:bg-zinc-900 border border-slate-100 dark:border-white/10 mb-3 select-none">
                       <SecureWatermarkedImage
                         src={art.preview_url}
                         alt={art.title}
                         watermarkText="Bitium Technology"
-                        aspectRatio="4/3"
+                        aspectRatio="3/4"
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
 
@@ -710,7 +710,7 @@ export default function DownloadsPage() {
                       src={selectedArt.preview_url}
                       alt={selectedArt.title}
                       watermarkText="Bitium Technology"
-                      aspectRatio="1/1"
+                      aspectRatio="3/4"
                     />
                   </div>
                   <div className="w-full sm:w-1/2 flex flex-col justify-between">
