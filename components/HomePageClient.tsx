@@ -118,10 +118,12 @@ function HomeContent() {
     {
       title: t.homeSections?.categories?.tutorialsTitle || 'Video Tutorials',
       description: t.homeSections?.categories?.tutorialsDesc || 'Learn how to master Screen & DTF printing with our step-by-step video guides.',
-      href: '/blog',
+      href: 'http://www.youtube.com/@bitiumtechnology2103',
       image: '/images/catalog/video-tutorials.webp',
       icon: PlayCircle,
-      badge: t.homeSections?.categories?.tutorialsBadge || 'Learn & Master'
+      badge: t.homeSections?.categories?.tutorialsBadge || 'Learn & Master',
+      btnText: t.homeSections?.categories?.watchYoutubeBtn || 'Watch Us on Youtube',
+      external: true
     },
     {
       title: t.homeSections?.categories?.feedbacksTitle || 'Customer Feedbacks',
@@ -498,12 +500,11 @@ function HomeContent() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 products-grid">
             {categories.map((c) => {
               const Icon = c.icon;
-              return (
-                <Link
-                  key={c.title}
-                  href={c.href}
-                  className="product-card group flex flex-col bg-white dark:bg-card/70 rounded-2xl overflow-hidden border border-slate-200/90 dark:border-white/10 hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/60 hover:shadow-xl dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition-all duration-300 hover:-translate-y-1"
-                >
+              const isExternal = (c as any).external;
+              const buttonText = (c as any).btnText || (t.homeSections?.categories?.browseBtn || 'Browse Products');
+
+              const cardContent = (
+                <>
                   {/* Card Image Banner */}
                   <div className="relative w-full h-[180px] sm:h-[190px] overflow-hidden bg-slate-100 dark:bg-zinc-900 select-none">
                     <Image
@@ -541,10 +542,34 @@ function HomeContent() {
                     </div>
                     
                     <div className="pt-2.5 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-xs font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05] transition-colors">
-                      <span>{t.homeSections?.categories?.browseBtn || 'Browse Products'}</span>
+                      <span>{buttonText}</span>
                       <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
+                </>
+              );
+
+              if (isExternal) {
+                return (
+                  <a
+                    key={c.title}
+                    href={c.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="product-card group flex flex-col bg-white dark:bg-card/70 rounded-2xl overflow-hidden border border-slate-200/90 dark:border-white/10 hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/60 hover:shadow-xl dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                  >
+                    {cardContent}
+                  </a>
+                );
+              }
+
+              return (
+                <Link
+                  key={c.title}
+                  href={c.href}
+                  className="product-card group flex flex-col bg-white dark:bg-card/70 rounded-2xl overflow-hidden border border-slate-200/90 dark:border-white/10 hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/60 hover:shadow-xl dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition-all duration-300 hover:-translate-y-1"
+                >
+                  {cardContent}
                 </Link>
               );
             })}

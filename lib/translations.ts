@@ -174,6 +174,7 @@ export interface Translations {
       tutorialsTitle: string; tutorialsDesc: string; tutorialsBadge: string;
       feedbacksTitle: string; feedbacksDesc: string; feedbacksBadge: string;
       browseBtn: string;
+      watchYoutubeBtn?: string;
     };
     whyBadge: string;
     whyTitle: string;
@@ -428,7 +429,8 @@ export const translations: Record<Language, Translations> = {
         consumablesTitle: "Consumables", consumablesDesc: "Inks, hot melt powder, film rolls, emulsions, and wash chemicals - the supplies that keep your shop running.", consumablesBadge: "Industrial Grade",
         tutorialsTitle: "Video Tutorials", tutorialsDesc: "Learn how to master Screen & DTF printing with our step-by-step video guides.", tutorialsBadge: "Learn & Master",
         feedbacksTitle: "Customer Feedbacks", feedbacksDesc: "See what our existing customers have to say about Bitium Technology Products.", feedbacksBadge: "Real Stories",
-        browseBtn: "Browse Products"
+        browseBtn: "Browse Products",
+        watchYoutubeBtn: "Watch Us on Youtube"
       },
       whyBadge: "Benefits",
       whyTitle: "The Bitium Advantage",
@@ -690,7 +692,8 @@ export const translations: Record<Language, Translations> = {
         consumablesTitle: "මුද්‍රණ අමුද්‍රව්‍ය", consumablesDesc: "උසස් තත්ත්වයේ තීන්ත, පවුඩර්, ෆිල්ම් රෝල් සහ රසායනික ද්‍රව්‍ය.", consumablesBadge: "කාර්මික ශ්‍රේණියේ",
         tutorialsTitle: "වීඩියෝ මාර්ගෝපදේශ", tutorialsDesc: "ස්ක්‍රීන් සහ DTF මුද්‍රණ ශිල්පය මුල සිට ඉගෙනගැනීමට අපගේ වීඩියෝ බලන්න.", tutorialsBadge: "ඉගෙනගන්න",
         feedbacksTitle: "පාරිභෝගික අදහස්", feedbacksDesc: "අපගේ නිෂ්පාදන භාවිත කළ පාරිභෝගිකයින්ගේ අත්දැකීම් සහ අදහස්.", feedbacksBadge: "සත්‍ය කතා",
-        browseBtn: "නිෂ්පාදන බලන්න"
+        browseBtn: "නිෂ්පාදන බලන්න",
+        watchYoutubeBtn: "Watch Us on Youtube"
       },
       whyBadge: "විශේෂත්වයන්",
       whyTitle: "Bitium Technology තෝරාගත යුත්තේ ඇයි?",
