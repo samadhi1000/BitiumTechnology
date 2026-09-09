@@ -119,11 +119,10 @@ export async function POST(request: NextRequest) {
       const { error: prodError } = await supabase.from('products').upsert([{
         id: p.id,
         name: p.name,
-        description: p.description,
-        price: p.price,
-        original_price: p.original_price || null,
-        image_url: p.image_url,
-        mockup_urls: p.mockup_urls || null,
+        description: p.description || '',
+        price: Number(p.price) || 0,
+        original_price: p.original_price ? Number(p.original_price) : null,
+        image_url: p.image_url || '',
         category: p.category,
         sub_category: p.sub_category || null,
         is_active: p.is_active !== false,
@@ -140,8 +139,8 @@ export async function POST(request: NextRequest) {
           product_id: p.id,
           name: v.name,
           sku: v.sku,
-          price_override: v.price_override != null ? v.price_override : null,
-          stock_quantity: v.stock_quantity || 0,
+          price_override: v.price_override != null ? Number(v.price_override) : null,
+          stock_quantity: Number(v.stock_quantity) || 0,
           attributes: v.attributes || { size: v.name },
         }));
         const { error: varError } = await supabase.from('product_variants').upsert(varRows);
@@ -171,29 +170,21 @@ export async function POST(request: NextRequest) {
       const updatePayload: any = {};
       if (p.name !== undefined) updatePayload.name = p.name;
       if (p.description !== undefined) updatePayload.description = p.description;
-      if (p.price !== undefined) updatePayload.price = p.price;
-      if (p.original_price !== undefined) updatePayload.original_price = p.original_price;
+      if (p.price !== undefined) updatePayload.price = Number(p.price) || 0;
+      if (p.original_price !== undefined) updatePayload.original_price = p.original_price ? Number(p.original_price) : null;
       if (p.image_url !== undefined) updatePayload.image_url = p.image_url;
-      if (p.mockup_urls !== undefined) updatePayload.mockup_urls = p.mockup_urls;
       if (p.category !== undefined) updatePayload.category = p.category;
       if (p.sub_category !== undefined) updatePayload.sub_category = p.sub_category;
-      if (p.is_active !== undefined) updatePayload.is_active = p.is_active;
+      if (p.is_active !== undefined) updatePayload.is_active = p.is_active !== false;
 
-      if (Object.keys(updatePayload).length > 0 || p.is_pinned !== undefined) {
-        const payloadWithPin = p.is_pinned !== undefined ? { ...updatePayload, is_pinned: p.is_pinned } : updatePayload;
+      if (Object.keys(updatePayload).length > 0) {
         const { error: updateErr } = await supabase
           .from('products')
-          .update(payloadWithPin)
+          .update(updatePayload)
           .eq('id', id);
 
-        if (updateErr && p.is_pinned !== undefined && Object.keys(updatePayload).length > 0) {
-          const { error: retryErr } = await supabase
-            .from('products')
-            .update(updatePayload)
-            .eq('id', id);
-          if (retryErr) {
-            console.error('Supabase product update retry error in API:', retryErr);
-          }
+        if (updateErr) {
+          console.error('Supabase product update error in API:', updateErr);
         }
       }
 
