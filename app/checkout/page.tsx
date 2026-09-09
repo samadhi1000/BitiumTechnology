@@ -46,6 +46,17 @@ export default function CheckoutPage() {
     (item.product as any)?.category === 'digital'
   );
 
+  // Check if cart contains custom DTF Printing items
+  const hasDtfItems = items.some((item) => 
+    item.type === 'dtf_sheet' || 
+    (item as any).product?.category === 'dtf_sheet' || 
+    item.product?.id?.startsWith('b2a8')
+  );
+
+  const availableDeliveryOptions = hasDtfItems 
+    ? deliveryOptions.filter((d) => !d.id.toLowerCase().includes('cash on delivery'))
+    : deliveryOptions;
+
   // Form State
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState(user?.email || '');
@@ -53,7 +64,7 @@ export default function CheckoutPage() {
   const [city, setCity] = useState('');
   const [phone, setPhone] = useState('');
   const [note, setNote] = useState('');
-  const [deliveryMethod, setDeliveryMethod] = useState('Cash On Delivery');
+  const [deliveryMethod, setDeliveryMethod] = useState(hasDtfItems ? 'Paid Courier' : 'Cash On Delivery');
 
   // Custom Stencil / Fabric Painting details (Physical Order Details)
   const [showStencilDetails, setShowStencilDetails] = useState(false);
@@ -70,7 +81,7 @@ export default function CheckoutPage() {
   });
 
   const subtotal = getSubtotal();
-  const selectedDelivery = deliveryOptions.find((d) => d.id === deliveryMethod) || deliveryOptions[1];
+  const selectedDelivery = availableDeliveryOptions.find((d) => d.id === deliveryMethod) || availableDeliveryOptions[0] || deliveryOptions[0];
   const shippingCost = isDigitalCart ? 0 : selectedDelivery.cost;
   const total = subtotal + shippingCost;
 
@@ -522,12 +533,24 @@ export default function CheckoutPage() {
                     <h3 className="font-bold text-base">Delivery Method</h3>
                   </div>
                   <span className="text-xs text-muted-foreground font-medium flex items-center gap-1">
-                    <Truck size={14} className="text-primary" /> 6 Delivery Options
+                    <Truck size={14} className="text-primary" /> {availableDeliveryOptions.length} Delivery Options
                   </span>
                 </div>
+
+                {hasDtfItems && (
+                  <div className="p-3 rounded-xl border border-amber-500/40 bg-amber-500/10 text-xs text-amber-300 flex items-start gap-2">
+                    <span className="text-sm">⚠️</span>
+                    <div>
+                      <p className="font-bold">Advance Payment Required for DTF Printing</p>
+                      <p className="text-[11px] text-amber-400/90 mt-0.5">
+                        Cash on Delivery (COD) is not available for custom DTF printing orders. Please select Paid Courier, Paid Post, or Store Pickup.
+                      </p>
+                    </div>
+                  </div>
+                )}
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                  {deliveryOptions.map((opt) => {
+                  {availableDeliveryOptions.map((opt) => {
                     const isSelected = deliveryMethod === opt.id;
                     return (
                       <label

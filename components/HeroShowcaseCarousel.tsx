@@ -312,8 +312,8 @@ export const HeroShowcaseCarousel: React.FC = () => {
                 draggable={false}
                 className="w-[145px] sm:w-[155px] shrink-0 p-2.5 rounded-xl hero-showcase-card hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/70 transition-all duration-200 flex flex-col group/card cursor-pointer shadow-sm dark:shadow-lg"
               >
-                {/* Image */}
-                <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-zinc-800/70 dark:bg-zinc-900/80 border border-white/10 dark:border-white/10 mb-2 pointer-events-none">
+                {/* Image (Portrait 3:4) */}
+                <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-zinc-800/70 dark:bg-zinc-900/80 border border-white/10 dark:border-white/10 mb-2 pointer-events-none">
                   <Image
                     src={item.image}
                     alt={item.title}

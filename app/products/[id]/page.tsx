@@ -178,8 +178,8 @@ export default function ProductPage({ params }: ProductPageProps) {
       </Link>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* ── Left Column: Image ─────────────────────────────────────────── */}
-        <div className="relative aspect-square rounded-3xl overflow-hidden border border-border bg-card shadow-2xl">
+        {/* ── Left Column: Image (Portrait 3:4) ─────────────────────────── */}
+        <div className="relative aspect-[3/4] rounded-3xl overflow-hidden border border-border bg-card shadow-2xl">
           <Image
             src={product.image_url}
             alt={product.name}

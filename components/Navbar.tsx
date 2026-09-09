@@ -207,6 +207,9 @@ export default function Navbar() {
                     { sub: 'tshirt-design', label: t.nav.tshirtDesign },
                     { sub: 'dtf-sticker', label: t.nav.dtfSticker },
                     { sub: 'dtf-cloth', label: t.nav.dtfCloth },
+                    { sub: 'men', label: t.nav.men },
+                    { sub: 'women', label: t.nav.women },
+                    { sub: 'kids', label: t.nav.kids },
                     { sub: 'other', label: t.nav.other || 'Other' }
                   ].map((item) => (
                     <Link 
@@ -566,6 +569,9 @@ export default function Navbar() {
                     { sub: 'tshirt-design', label: t.nav.tshirtDesign },
                     { sub: 'dtf-sticker', label: t.nav.dtfSticker },
                     { sub: 'dtf-cloth', label: t.nav.dtfCloth },
+                    { sub: 'men', label: t.nav.men },
+                    { sub: 'women', label: t.nav.women },
+                    { sub: 'kids', label: t.nav.kids },
                     { sub: 'other', label: t.nav.other || 'Other' }
                   ].map((item) => (
                     <Link

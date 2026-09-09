@@ -8,7 +8,7 @@ interface SecureWatermarkedImageProps {
   alt: string;
   className?: string;
   watermarkText?: string;
-  aspectRatio?: '4/3' | '1/1' | '16/9';
+  aspectRatio?: '3/4' | '4/5' | '4/3' | '1/1' | '16/9';
 }
 
 export default function SecureWatermarkedImage({
@@ -16,7 +16,7 @@ export default function SecureWatermarkedImage({
   alt,
   className = '',
   watermarkText = 'Bitium Technology',
-  aspectRatio = '4/3',
+  aspectRatio = '3/4',
 }: SecureWatermarkedImageProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -115,6 +115,8 @@ export default function SecureWatermarkedImage({
   };
 
   const aspectClass = 
+    aspectRatio === '3/4' ? 'aspect-[3/4]' :
+    aspectRatio === '4/5' ? 'aspect-[4/5]' :
     aspectRatio === '1/1' ? 'aspect-square' :
     aspectRatio === '16/9' ? 'aspect-video' : 'aspect-[4/3]';
 

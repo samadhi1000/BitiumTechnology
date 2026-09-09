@@ -42,7 +42,12 @@ export default function CartDrawer() {
   const [showSuccess, setShowSuccess] = useState(false);
 
   const subtotal = getSubtotal();
-  const shippingCost = 350; // COD Flat Rate
+  const hasDtfItems = items.some(item => 
+    item.type === 'dtf_sheet' || 
+    (item as any).product?.category === 'dtf_sheet' || 
+    item.product?.id?.startsWith('b2a8')
+  );
+  const shippingCost = 350; // Standard Flat Rate
   const total = subtotal + shippingCost;
 
   // Initialize rate limiter: Max 3 checkout attempts per minute (Bot Prevention)
@@ -140,6 +145,12 @@ export default function CartDrawer() {
       const wCity = sanitizeForWhatsApp(sCity);
       const wNotes = sanitizeForWhatsApp(sNotes);
 
+      const hasDtfItems = items.some(item => 
+        item.type === 'dtf_sheet' || 
+        (item as any).product?.category === 'dtf_sheet' || 
+        item.product?.id?.startsWith('b2a8')
+      );
+
       const messageTemplate = 
 `\u{1F6D2} *NEW ORDER RECEIVED* \u{1F6D2}
 ----------------------------------
@@ -153,7 +164,7 @@ ${itemsString}
 
 \u{1F4B5} *Order Summary:*
 - Total Amount: LKR ${total.toLocaleString()}
-- Payment Option: Cash on Delivery (COD)
+- Payment Option: ${hasDtfItems ? 'Bank Transfer / Online Advance (COD not applicable for DTF)' : 'Cash on Delivery (COD)'}
 ----------------------------------
 \u{1F4DD} *Notes:* ${wNotes ? wNotes : 'None'}`;
 
@@ -486,21 +497,41 @@ ${itemsString}
                         <CreditCard size={11} className="text-muted-foreground" /> Payment Option
                       </label>
                       
-                      {/* Preselected Cash on Delivery block */}
-                      <div className="p-3.5 rounded-xl border border-[#2CFF05]/50 bg-[#2CFF05]/5 flex items-center justify-between relative overflow-hidden group">
-                        <div className="flex items-center gap-3">
-                          <div className="w-2.5 h-2.5 rounded-full bg-[#45ff24] border border-white/20" />
-                          <div>
-                            <p className="text-xs font-bold text-foreground flex items-center gap-2">
-                              Cash on Delivery (COD)
-                              <span className="text-[8px] bg-[#2CFF05]/30 text-[#45ff24] border border-[#2CFF05]/30 font-black px-1.5 py-0.5 rounded uppercase tracking-wider">
-                                Pay when you receive
-                              </span>
-                            </p>
-                            <p className="text-[10px] text-muted-foreground mt-0.5">Pay standard cash upon physical carrier delivery.</p>
+                      {hasDtfItems ? (
+                        /* DTF Advance Payment block (COD Disabled) */
+                        <div className="p-3.5 rounded-xl border border-amber-500/40 bg-amber-500/5 flex items-center justify-between relative overflow-hidden group">
+                          <div className="flex items-center gap-3">
+                            <div className="w-2.5 h-2.5 rounded-full bg-amber-400 border border-white/20 shrink-0" />
+                            <div>
+                              <p className="text-xs font-bold text-foreground flex items-center gap-2">
+                                Bank Transfer / Card Payment
+                                <span className="text-[8px] bg-amber-500/20 text-amber-400 border border-amber-500/30 font-black px-1.5 py-0.5 rounded uppercase tracking-wider">
+                                  Advance Required
+                                </span>
+                              </p>
+                              <p className="text-[10px] text-muted-foreground mt-0.5">
+                                Cash on Delivery (COD) is not available for custom DTF printing. Order confirmed upon bank slip/online payment.
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      ) : (
+                        /* Preselected Cash on Delivery block for non-DTF products */
+                        <div className="p-3.5 rounded-xl border border-[#2CFF05]/50 bg-[#2CFF05]/5 flex items-center justify-between relative overflow-hidden group">
+                          <div className="flex items-center gap-3">
+                            <div className="w-2.5 h-2.5 rounded-full bg-[#45ff24] border border-white/20 shrink-0" />
+                            <div>
+                              <p className="text-xs font-bold text-foreground flex items-center gap-2">
+                                Cash on Delivery (COD)
+                                <span className="text-[8px] bg-[#2CFF05]/30 text-[#45ff24] border border-[#2CFF05]/30 font-black px-1.5 py-0.5 rounded uppercase tracking-wider">
+                                  Pay when you receive
+                                </span>
+                              </p>
+                              <p className="text-[10px] text-muted-foreground mt-0.5">Pay standard cash upon physical carrier delivery.</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </form>
                 </div>

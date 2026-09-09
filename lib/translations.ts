@@ -35,6 +35,9 @@ export interface Translations {
     tshirtDesign: string;
     dtfSticker: string;
     dtfCloth: string;
+    men: string;
+    women: string;
+    kids: string;
     allBatikStamps: string;
     capBatik: string;
     allLaserCutting: string;
@@ -261,6 +264,9 @@ export const translations: Record<Language, Translations> = {
       tshirtDesign: "T-Shirt Design",
       dtfSticker: "DTF Sticker",
       dtfCloth: "DTF Cloth Transfers",
+      men: "Men",
+      women: "Women",
+      kids: "Kids",
       allBatikStamps: "All Batik Stamps",
       capBatik: "Cap Batik Stamps",
       allLaserCutting: "All Laser Cutting",
@@ -512,6 +518,9 @@ export const translations: Record<Language, Translations> = {
       tshirtDesign: "ටී-ෂර්ට් නිර්මාණ",
       dtfSticker: "DTF ස්ටිකර්",
       dtfCloth: "DTF රෙදි මුද්‍රණ",
+      men: "පිරිමි (Men)",
+      women: "කාන්තා (Women)",
+      kids: "ළමා (Kids)",
       allBatikStamps: "සියලුම බතික් මුද්‍රා",
       capBatik: "කැප් බතික්",
       allLaserCutting: "සියලුම ලේසර් කැපුම්",

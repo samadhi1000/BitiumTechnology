@@ -22,6 +22,9 @@ const DTF_PRINTING_CONFIG_EN: CategoryPageConfig = {
     { id: 'tshirt-design', label: 'T-Shirt Designs' },
     { id: 'dtf-sticker', label: 'DTF Stickers' },
     { id: 'dtf-cloth', label: 'Cloth Transfers' },
+    { id: 'men', label: 'Men' },
+    { id: 'women', label: 'Women' },
+    { id: 'kids', label: 'Kids' },
     { id: 'other', label: 'Other' },
   ],
   whyChooseUs: {
@@ -110,6 +113,9 @@ const DTF_PRINTING_CONFIG_SI: CategoryPageConfig = {
     { id: 'tshirt-design', label: 'ටී-ෂර්ට් මෝස්තර' },
     { id: 'dtf-sticker', label: 'DTF ස්ටිකර්ස්' },
     { id: 'dtf-cloth', label: 'ඇඳුම් ට්‍රාන්ස්ෆර්ස්' },
+    { id: 'men', label: 'පිරිමි (Men)' },
+    { id: 'women', label: 'කාන්තා (Women)' },
+    { id: 'kids', label: 'ළමා (Kids)' },
     { id: 'other', label: 'වෙනත්' },
   ],
   whyChooseUs: {

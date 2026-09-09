@@ -600,7 +600,7 @@ function HomeContent() {
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 gallery-grid">
             {visibleGallery.slice(0, 8).map((item, i) => (
-              <div key={i} className="group rounded-xl overflow-hidden bg-muted aspect-square relative cursor-pointer">
+              <div key={i} className="group rounded-xl overflow-hidden bg-muted aspect-[3/4] relative cursor-pointer">
                 <img src={item.src} alt={item.alt} className="w-full h-full object-cover block" />
                 <div className="absolute inset-0 bg-black/50 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                   <div className="font-heading font-bold text-[13px] text-foreground">{filterLabels[item.cat] || item.cat}</div>

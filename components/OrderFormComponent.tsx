@@ -400,7 +400,9 @@ export default function OrderFormComponent({ hideNavbar = false }: { hideNavbar?
               <span className="text-[10px] font-bold uppercase text-gray-600 block mb-1">
                 Select Delivery Method:
               </span>
-              {defaultDeliveryOptions.map((opt) => (
+              {defaultDeliveryOptions
+                .filter((opt) => clientOrder.category === 'DTF Printing' ? !opt.id.toLowerCase().includes('cash on delivery') : true)
+                .map((opt) => (
                 <label
                   key={opt.id}
                   className="flex items-center justify-between text-xs cursor-pointer p-1 rounded hover:bg-gray-200"
@@ -450,11 +452,18 @@ export default function OrderFormComponent({ hideNavbar = false }: { hideNavbar?
             </label>
             <select
               value={clientOrder.category || "Stencils"}
-              onChange={(e) => setClientOrder({ ...clientOrder, category: e.target.value })}
+              onChange={(e) => {
+                const newCat = e.target.value;
+                const newDelivery = newCat === 'DTF Printing' && clientOrder.deliveryMethod.toLowerCase().includes('cash on delivery')
+                  ? 'Paid Courier'
+                  : clientOrder.deliveryMethod;
+                setClientOrder({ ...clientOrder, category: newCat, deliveryMethod: newDelivery });
+              }}
               className="flex-1 max-w-[280px] font-bold text-xs px-2.5 py-1.5 border-2 border-black rounded bg-white text-black focus:outline-none cursor-pointer"
             >
               <option value="Stencils">Stencils</option>
               <option value="Screen Printing">Screen Printing</option>
+              <option value="DTF Printing">DTF Printing</option>
               <option value="Batik Stamp">Batik Stamp</option>
             </select>
           </div>

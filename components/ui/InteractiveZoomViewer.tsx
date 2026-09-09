@@ -48,7 +48,7 @@ export default function InteractiveZoomViewer({ src, alt }: InteractiveZoomViewe
   const effectiveZoom = zoomScale > 1 ? zoomScale : isHovered ? 1.8 : 1;
 
   return (
-    <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-border/80 flex flex-col group select-none">
+    <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-border/80 flex flex-col group select-none">
       {/* Zoomable Image Container */}
       <div
         ref={containerRef}
@@ -73,7 +73,7 @@ export default function InteractiveZoomViewer({ src, alt }: InteractiveZoomViewe
             src={src}
             alt={alt}
             fill
-            className="object-contain p-2"
+            className="object-cover"
             sizes="(max-width: 768px) 100vw, 500px"
             priority
           />
