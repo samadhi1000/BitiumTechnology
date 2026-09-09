@@ -13,18 +13,98 @@ import {
   Search, 
   ChevronRight, 
   Home, 
-  Eye,
-  ZoomIn,
-  X,
-  ExternalLink,
-  MessageCircle,
+  Eye, 
+  ZoomIn, 
+  X, 
+  ExternalLink, 
+  MessageCircle, 
   ArrowRight, 
   SlidersHorizontal, 
-  Sparkles,
-  ChevronDown,
-  CheckCircle2,
-  ChevronLeft
+  Sparkles, 
+  ChevronDown, 
+  CheckCircle2, 
+  ChevronLeft,
+  Phone,
+  Copy,
+  Check
 } from 'lucide-react';
+
+export interface SectionLead {
+  name: string;
+  badge: string;
+  badgeColorClass: string;
+  role: string;
+  phone: string;
+  whatsapp: string;
+}
+
+export const SECTION_LEADS: Record<string, SectionLead> = {
+  'screen-printing': {
+    name: 'Prasadari',
+    badge: 'Screen Print',
+    badgeColorClass: 'bg-purple-500/15 text-purple-400 border-purple-500/30',
+    role: 'Screen Printing & Artwork',
+    phone: '0716352558',
+    whatsapp: '94716352558',
+  },
+  'stencil': {
+    name: 'Nadeeka',
+    badge: 'Stencils',
+    badgeColorClass: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
+    role: 'Stencils & Hand Painting',
+    phone: '0772212369',
+    whatsapp: '94772212369',
+  },
+  'dtf_sheet': {
+    name: 'Heshani',
+    badge: 'DTF & Art',
+    badgeColorClass: 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30',
+    role: 'DTF & Artwork',
+    phone: '0753026247',
+    whatsapp: '94753026247',
+  },
+  'batik-stamp': {
+    name: 'Dinithi',
+    badge: 'Batik & Other',
+    badgeColorClass: 'bg-rose-500/15 text-rose-400 border-rose-500/30',
+    role: 'Cap Batik & Other',
+    phone: '0779731097',
+    whatsapp: '94779731097',
+  },
+  'laser-cutting': {
+    name: 'Dinithi',
+    badge: 'Laser Cutting',
+    badgeColorClass: 'bg-blue-500/15 text-blue-400 border-blue-500/30',
+    role: 'Laser Cutting & Custom Profiles',
+    phone: '0779731097',
+    whatsapp: '94779731097',
+  },
+  'materials': {
+    name: 'Dinithi',
+    badge: 'Consumables',
+    badgeColorClass: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
+    role: 'Consumables & Materials',
+    phone: '0779731097',
+    whatsapp: '94779731097',
+  },
+  'other': {
+    name: 'Dinithi',
+    badge: 'Batik & Other',
+    badgeColorClass: 'bg-rose-500/15 text-rose-400 border-rose-500/30',
+    role: 'Cap Batik & Other',
+    phone: '0779731097',
+    whatsapp: '94779731097',
+  },
+};
+
+export const DEFAULT_INQUIRY_LEAD: SectionLead = {
+  name: 'Dilrukshi',
+  badge: 'Inquiries',
+  badgeColorClass: 'bg-sky-500/15 text-sky-400 border-sky-500/30',
+  role: 'Customer Inquiries & Complaints',
+  phone: '0768370920',
+  whatsapp: '94768370920',
+};
 
 export interface CategoryPageConfig {
   slug: string;
@@ -40,6 +120,7 @@ export interface CategoryPageConfig {
   itemSingular: string;
   itemPlural: string;
   subCategories: { id: string; label: string }[];
+  sectionLead?: SectionLead;
   whyChooseUs: {
     title: string;
     features: { icon: React.ReactNode; title: string; desc: string }[];
@@ -91,7 +172,18 @@ export default function CategoryPageTemplate({
   const [currentPage, setCurrentPage] = useState(1);
   const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
   const [previewImageIndex, setPreviewImageIndex] = useState(0);
+  const [copiedPhone, setCopiedPhone] = useState(false);
   const itemsPerPage = 20; // 20 items per page (4 columns x 5 rows)
+
+  const lead: SectionLead = config.sectionLead || SECTION_LEADS[config.categoryKey] || SECTION_LEADS[config.slug] || DEFAULT_INQUIRY_LEAD;
+
+  const handleCopyPhone = (phoneNum: string) => {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(phoneNum);
+      setCopiedPhone(true);
+      setTimeout(() => setCopiedPhone(false), 2000);
+    }
+  };
 
   useEffect(() => {
     setActiveSub(subParam);
@@ -336,6 +428,78 @@ function matchesSubCategory(productSub: string | undefined, activeSub: string, a
               {config.description}
             </p>
           </div>
+
+          {/* Section In-Charge Contact Card */}
+          {lead && (
+            <div className="mb-6 rounded-2xl bg-[#080E1E] dark:bg-[#070D1E] border border-slate-800 dark:border-white/10 p-3.5 sm:p-4 shadow-lg relative overflow-hidden transition-all">
+              {/* Subtle background glow */}
+              <div className="absolute top-0 right-0 w-48 h-48 bg-[#2CFF05]/5 rounded-full filter blur-3xl pointer-events-none" />
+
+              <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5">
+                {/* Left Side: Name, Badge, Role */}
+                <div>
+                  <div className="flex items-center gap-2.5 flex-wrap">
+                    <h3 className="font-heading font-black text-base sm:text-lg text-white tracking-wide">
+                      {lead.name}
+                    </h3>
+                    <span className={`text-[10px] sm:text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${lead.badgeColorClass}`}>
+                      {lead.badge}
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-400 dark:text-zinc-400 font-medium mt-0.5">
+                    {lead.role}
+                  </p>
+                </div>
+
+                {/* Right Side: Phone Number, WhatsApp button, Copy button */}
+                <div className="flex items-center gap-3 self-start sm:self-auto bg-slate-900/90 dark:bg-black/50 border border-slate-800 dark:border-white/10 py-1.5 px-3 rounded-xl shadow-inner">
+                  {/* Phone Call Link */}
+                  <a
+                    href={`tel:${lead.phone}`}
+                    className="flex items-center gap-2 group/phone text-[#2CFF05] font-black text-sm sm:text-base tracking-wider hover:brightness-125 transition-all"
+                    title={`Call ${lead.name} (${lead.phone})`}
+                  >
+                    <Phone size={15} className="text-[#2CFF05] group-hover/phone:scale-110 transition-transform" />
+                    <span>{lead.phone}</span>
+                  </a>
+
+                  {/* Vertical separator */}
+                  <div className="w-[1px] h-4 bg-slate-700 dark:bg-white/10" />
+
+                  {/* WhatsApp Action Button */}
+                  <a
+                    href={`https://wa.me/${lead.whatsapp}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1.5 rounded-lg text-emerald-400 hover:text-white bg-emerald-500/10 hover:bg-emerald-500 border border-emerald-500/30 transition-all cursor-pointer"
+                    title={`Chat with ${lead.name} on WhatsApp`}
+                    aria-label={`WhatsApp ${lead.name}`}
+                  >
+                    <MessageCircle size={15} />
+                  </a>
+
+                  {/* Copy Phone Button */}
+                  <button
+                    onClick={() => handleCopyPhone(lead.phone)}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition-all cursor-pointer relative"
+                    title="Copy Phone Number"
+                    aria-label="Copy Phone Number"
+                  >
+                    {copiedPhone ? (
+                      <Check size={15} className="text-[#2CFF05]" />
+                    ) : (
+                      <Copy size={15} />
+                    )}
+                    {copiedPhone && (
+                      <span className="absolute -top-7 left-1/2 -translate-x-1/2 bg-[#2CFF05] text-slate-950 font-bold text-[9px] px-1.5 py-0.5 rounded shadow whitespace-nowrap">
+                        Copied!
+                      </span>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Search Bar & Sort Dropdown Row */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-6">

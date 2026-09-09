@@ -26,6 +26,7 @@ const STENCIL_CONFIG_EN: CategoryPageConfig = {
     { id: 'batik', label: 'Batik Patterns' },
     { id: 'wall-decoration', label: 'Wall Decor' },
     { id: 'titanium', label: 'Titanium' },
+    { id: 'two-color', label: 'Two Color' },
     { id: 'other', label: 'Other' },
   ],
   whyChooseUs: {
@@ -117,6 +118,7 @@ const STENCIL_CONFIG_SI: CategoryPageConfig = {
     { id: 'batik', label: 'බතික් රටා' },
     { id: 'wall-decoration', label: 'බිත්ති අලංකරණ' },
     { id: 'titanium', label: 'ටයිටේනියම්' },
+    { id: 'two-color', label: 'ටූ කලර්' },
     { id: 'other', label: 'වෙනත්' },
   ],
   whyChooseUs: {

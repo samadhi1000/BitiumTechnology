@@ -85,6 +85,7 @@ export const CATEGORY_SUBCATEGORIES: Record<string, { id: string; label: string 
     { id: 'batik', label: 'Batik Patterns' },
     { id: 'wall-decoration', label: 'Wall Decor' },
     { id: 'titanium', label: 'Titanium' },
+    { id: 'two-color', label: 'Two Color' },
     { id: 'other', label: 'Other' },
   ],
   'screen-printing': [
