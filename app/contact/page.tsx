@@ -111,6 +111,46 @@ export default function ContactPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Social Channels */}
+              <div className="pt-2">
+                <p className="text-xs font-semibold text-foreground mb-2.5 uppercase tracking-wider">Follow & Connect</p>
+                <div className="flex items-center gap-3">
+                  <a
+                    href="https://web.facebook.com/bitiumtechnology"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-lg bg-card border border-border hover:border-blue-500/50 hover:bg-blue-500/10 text-xs font-medium text-muted-foreground hover:text-blue-400 transition-all flex items-center gap-1.5"
+                  >
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1V12h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z" />
+                    </svg>
+                    Facebook
+                  </a>
+                  <a
+                    href="http://www.youtube.com/@bitiumtechnology2103"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-lg bg-card border border-border hover:border-red-500/50 hover:bg-red-500/10 text-xs font-medium text-muted-foreground hover:text-red-400 transition-all flex items-center gap-1.5"
+                  >
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                    </svg>
+                    YouTube
+                  </a>
+                  <a
+                    href="https://www.tiktok.com/@bitiumtechnology"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-lg bg-card border border-border hover:border-[#2CFF05]/50 hover:bg-[#2CFF05]/10 text-xs font-medium text-muted-foreground hover:text-[#2CFF05] transition-all flex items-center gap-1.5"
+                  >
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.86-.74-3.94-1.74-.22-.2-.41-.43-.61-.65-.02 4.11.01 8.22-.02 12.33-.18 2.44-1.46 4.88-3.76 5.75-2.28.87-4.96.48-6.84-1.01-2.02-1.61-2.88-4.38-2.12-6.89.6-1.93 2.13-3.61 4.14-4.14 1.25-.33 2.59-.14 3.73.43V4.07c-1.95-.59-3.75-1.9-4.73-3.66C7.5.39 7.4.37 7.3.35v11.23c-1.3-.9-3.05-1.12-4.52-.53-1.61.64-2.8 2.21-3.05 3.93-.3 2.05.61 4.22 2.29 5.27 1.68 1.05 3.96.93 5.48-.3 1.25-1.02 1.83-2.65 1.78-4.24.03-5.23-.01-10.46.02-15.69z" />
+                    </svg>
+                    TikTok
+                  </a>
+                </div>
+              </div>
             </div>
 
             <div className="border-t border-border pt-6 text-center md:text-left">

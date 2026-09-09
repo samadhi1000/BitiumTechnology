@@ -257,10 +257,9 @@ function HomeContent() {
               "closes": "18:00"
             },
             "sameAs": [
-              "https://www.facebook.com/bitiumtechnology",
-              "https://www.instagram.com/bitiumtechnology",
-              "https://www.youtube.com/@bitiumtechnology",
-              "https://www.linkedin.com/company/bitiumtechnology"
+              "https://web.facebook.com/bitiumtechnology",
+              "https://www.youtube.com/@bitiumtechnology2103",
+              "https://www.tiktok.com/@bitiumtechnology"
             ]
           })
         }}
