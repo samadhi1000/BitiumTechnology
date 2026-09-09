@@ -769,7 +769,7 @@ export default function AdminPanelPage() {
   const totalDigitalCount = digitalArtworks.length;
   const lowStockCount = products.filter((p) => {
     const s = p.variants?.[0]?.stock_quantity ?? 0;
-    return s > 0 && s < 20;
+    return s <= 5;
   }).length;
   const inactiveCount = products.filter((p) => !p.is_active).length + digitalArtworks.filter(d => d.is_active === false).length;
 
@@ -1314,7 +1314,7 @@ export default function AdminPanelPage() {
                               </td>
                               <td className="p-4 text-center">
                                 <span className={`font-black text-xs ${
-                                  primaryStock === 0 ? 'text-rose-500' : primaryStock < 20 ? 'text-amber-500' : 'text-foreground'
+                                  primaryStock <= 5 ? 'text-red-500 font-bold' : 'text-[#2CFF05]'
                                 }`}>
                                   {primaryStock}
                                 </span>
