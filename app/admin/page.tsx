@@ -1258,7 +1258,7 @@ export default function AdminPanelPage() {
             </div>
           ) : activeTab === 'pos-invoice' ? (
             <div className="p-4 sm:p-6 rounded-2xl border border-border bg-card/10 backdrop-blur-sm">
-              <POSInvoiceGenerator />
+              <POSInvoiceGenerator activeStaff={activeStaff} />
             </div>
           ) : (
             <div className="rounded-2xl border border-border bg-card/10 backdrop-blur-sm overflow-hidden">

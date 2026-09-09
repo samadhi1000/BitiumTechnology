@@ -29,6 +29,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { getProducts, Product, Variant } from '@/lib/products';
+import { StaffProfile, getActiveStaffProfile } from '@/lib/permissions';
 
 export interface InvoiceLineItem {
   id: string; // unique for this line
@@ -48,6 +49,7 @@ export interface SavedPOSInvoice {
   customerName: string;
   customerPhone: string;
   customerAddress: string;
+  issuedBy?: string;
   paymentMethod: 'Cash' | 'Card' | 'Bank Transfer' | 'PayHere';
   deliveryMethod?: string;
   discountValue: number;
@@ -71,7 +73,7 @@ const DELIVERY_OPTIONS = [
   { value: 'Courier (On weight)', label: '📦 Courier (On weight)' },
 ];
 
-export default function POSInvoiceGenerator() {
+export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: StaffProfile }) {
   const [activeTab, setActiveTab] = useState<'generator' | 'history'>('generator');
   const [catalog, setCatalog] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -89,6 +91,7 @@ export default function POSInvoiceGenerator() {
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
   const [customerAddress, setCustomerAddress] = useState('');
+  const [issuedBy, setIssuedBy] = useState<string>(activeStaff?.name || 'Indrajith Admin');
   
   // Invoice config
   const [invoiceNo, setInvoiceNo] = useState('');
@@ -260,6 +263,7 @@ export default function POSInvoiceGenerator() {
       customerName: customerName.trim() || 'Walk-in Client',
       customerPhone: customerPhone.trim(),
       customerAddress: customerAddress.trim(),
+      issuedBy: issuedBy.trim() || activeStaff?.name || 'Admin',
       paymentMethod,
       deliveryMethod,
       discountValue,
@@ -307,6 +311,7 @@ export default function POSInvoiceGenerator() {
     setCustomerName('');
     setCustomerPhone('');
     setCustomerAddress('');
+    setIssuedBy(activeStaff?.name || 'Indrajith Admin');
     setDiscountValue(0);
     setExtraCharges(0);
     setExtraChargesNotes('');
@@ -327,6 +332,7 @@ export default function POSInvoiceGenerator() {
     setCustomerName(inv.customerName === 'Walk-in Client' ? '' : inv.customerName);
     setCustomerPhone(inv.customerPhone || '');
     setCustomerAddress(inv.customerAddress || '');
+    setIssuedBy(inv.issuedBy || activeStaff?.name || 'Indrajith Admin');
     setPaymentMethod(inv.paymentMethod || 'Cash');
     setDeliveryMethod(inv.deliveryMethod || 'Store Pickup');
     setDiscountValue(inv.discountValue || 0);
@@ -352,6 +358,8 @@ export default function POSInvoiceGenerator() {
       if (loadedInvoiceId === id) {
         handleResetNewInvoice();
       }
+      setSaveSuccessToast(`Invoice ${invNo} removed.`);
+      setTimeout(() => setSaveSuccessToast(''), 3000);
     }
   };
 
@@ -364,8 +372,9 @@ export default function POSInvoiceGenerator() {
         const matchNo = inv.invoiceNo.toLowerCase().includes(q);
         const matchName = inv.customerName.toLowerCase().includes(q);
         const matchPhone = inv.customerPhone.toLowerCase().includes(q);
+        const matchStaff = (inv.issuedBy || '').toLowerCase().includes(q);
         const matchItems = inv.lineItems.some(item => item.name.toLowerCase().includes(q));
-        if (!matchNo && !matchName && !matchPhone && !matchItems) return false;
+        if (!matchNo && !matchName && !matchPhone && !matchItems && !matchStaff) return false;
       }
 
       // 2. Payment Method Filter
@@ -428,8 +437,10 @@ export default function POSInvoiceGenerator() {
       'Customer Name',
       'Customer Phone',
       'Billing Address',
+      'Issued By (Staff)',
       'Delivery Method',
       'Items Summary',
+      'Special Note / Remarks',
       'Total Items Qty',
       'Subtotal (Rs.)',
       'Discount (Rs.)',
@@ -452,8 +463,10 @@ export default function POSInvoiceGenerator() {
         `"${(inv.customerName || 'Walk-in Client').replace(/"/g, '""')}"`,
         `"${(inv.customerPhone || '').replace(/"/g, '""')}"`,
         `"${(inv.customerAddress || '').replace(/"/g, '""')}"`,
+        `"${(inv.issuedBy || 'Indrajith Admin').replace(/"/g, '""')}"`,
         `"${(inv.deliveryMethod || 'Store Pickup').replace(/"/g, '""')}"`,
         `"${itemsSummary.replace(/"/g, '""')}"`,
+        `"${(inv.extraChargesNotes || '').replace(/"/g, '""')}"`,
         totalQty,
         inv.subtotal,
         inv.discountAmount,
@@ -554,7 +567,7 @@ export default function POSInvoiceGenerator() {
                 <User size={14} />
                 <span>01. Walk-In Customer Info</span>
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1">
                   <label className="text-[9px] font-bold text-muted-foreground uppercase">Customer Name</label>
                   <input 
@@ -562,7 +575,7 @@ export default function POSInvoiceGenerator() {
                     value={customerName}
                     onChange={e => setCustomerName(e.target.value)}
                     placeholder="Walk-in Buyer / Cash Customer"
-                    className="w-full bg-background border border-border rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors"
+                    className="w-full bg-background border border-border rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors font-bold text-foreground"
                   />
                 </div>
                 <div className="space-y-1">
@@ -573,6 +586,19 @@ export default function POSInvoiceGenerator() {
                     onChange={e => setCustomerPhone(e.target.value)}
                     placeholder="e.g. 077 123 4567"
                     className="w-full bg-background border border-border rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[9px] font-bold text-muted-foreground uppercase flex items-center justify-between">
+                    <span>Cashier / Issued By</span>
+                    <span className="text-[8px] text-[#2CFF05] lowercase font-semibold">staff name</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    value={issuedBy}
+                    onChange={e => setIssuedBy(e.target.value)}
+                    placeholder="e.g. Indrajith Admin"
+                    className="w-full bg-background border border-border rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors text-foreground font-bold"
                   />
                 </div>
               </div>
@@ -602,22 +628,22 @@ export default function POSInvoiceGenerator() {
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
                   placeholder="Search store items to add (e.g. stencil, dtf)..."
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border bg-background text-xs focus:outline-none focus:border-[#2CFF05] transition-colors"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border bg-background text-xs focus:outline-none focus:border-[#2CFF05] transition-colors text-foreground"
                 />
                 {filteredProducts.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-1 border border-border bg-slate-950 rounded-xl shadow-2xl overflow-hidden z-[60]">
+                  <div className="absolute top-full left-0 right-0 mt-1 border border-slate-200 dark:border-border bg-white dark:bg-[#0b1329] text-slate-900 dark:text-foreground rounded-xl shadow-2xl overflow-hidden z-[60]">
                     {filteredProducts.map(p => (
                       <button
                         key={p.id}
                         type="button"
                         onClick={() => handleProductSelect(p)}
-                        className="w-full px-4 py-2.5 text-left text-xs hover:bg-card/40 flex items-center justify-between border-b border-border/50 last:border-b-0 cursor-pointer"
+                        className="w-full px-4 py-2.5 text-left text-xs hover:bg-slate-100 dark:hover:bg-card/80 flex items-center justify-between border-b border-slate-100 dark:border-border/50 last:border-b-0 cursor-pointer transition-colors"
                       >
                         <div>
-                          <strong className="text-foreground">{p.name}</strong>
-                          <span className="text-[9px] text-muted-foreground ml-2 uppercase font-semibold">({p.category})</span>
+                          <strong className="text-slate-900 dark:text-foreground">{p.name}</strong>
+                          <span className="text-[9px] text-slate-500 dark:text-muted-foreground ml-2 uppercase font-semibold">({p.category})</span>
                         </div>
-                        <span className="font-extrabold text-[#2CFF05]">Rs. {p.price.toLocaleString()}</span>
+                        <span className="font-extrabold text-emerald-600 dark:text-[#2CFF05]">Rs. {p.price.toLocaleString()}</span>
                       </button>
                     ))}
                   </div>
@@ -791,13 +817,19 @@ export default function POSInvoiceGenerator() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[9px] font-bold text-muted-foreground uppercase">Notes for Delivery / Extra Fees</label>
+                <label className="text-[9px] font-bold text-muted-foreground uppercase flex items-center justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <FileText size={12} className="text-[#2CFF05]" />
+                    <span>Special Invoice Note / Remarks (Prints on Bill)</span>
+                  </span>
+                  <span className="text-[8px] text-[#2CFF05] lowercase font-semibold">printed note</span>
+                </label>
                 <input 
                   type="text" 
                   value={extraChargesNotes}
                   onChange={e => setExtraChargesNotes(e.target.value)}
-                  placeholder="e.g. Courier tracking code, packaging, special handling notes"
-                  className="w-full bg-background border border-border rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors"
+                  placeholder="e.g. Courier tracking code, special finish requested, custom delivery note"
+                  className="w-full bg-background border border-border rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors text-foreground font-medium"
                 />
               </div>
             </div>
@@ -896,6 +928,7 @@ export default function POSInvoiceGenerator() {
                   <div className="text-[10px] font-bold text-zinc-500 font-mono details-list">
                     <div>No: {invoiceNo || 'Draft'}</div>
                     <div>Date: {invoiceDate}</div>
+                    <div>Staff: <strong className="text-zinc-900">{issuedBy || 'Indrajith Admin'}</strong></div>
                     <div>Pay Method: {paymentMethod}</div>
                     <div>Delivery: {deliveryMethod}</div>
                   </div>
@@ -916,7 +949,8 @@ export default function POSInvoiceGenerator() {
                 <div className="text-right">
                   <span className="font-extrabold text-zinc-400 uppercase block tracking-wider text-[8px]">Store Outlet:</span>
                   <strong className="text-zinc-700 block">Bitium Tech Main Branch</strong>
-                  <span className="text-zinc-500">Walk-in Order Register</span>
+                  <div className="text-zinc-600 font-semibold text-[9px] mt-0.5">Cashier: <strong>{issuedBy || 'Indrajith Admin'}</strong></div>
+                  <span className="text-zinc-400 text-[8.5px]">Walk-in Order Register</span>
                 </div>
               </div>
 
@@ -990,6 +1024,16 @@ export default function POSInvoiceGenerator() {
                 </table>
               </div>
 
+              {/* Special Note Box (Printed if entered) */}
+              {extraChargesNotes && (
+                <div className="p-2.5 sm:p-3 rounded-xl bg-amber-50/90 border border-amber-300 text-[10px] text-zinc-900 note-box my-2">
+                  <span className="font-extrabold text-amber-950 uppercase text-[8.5px] tracking-wider block mb-0.5">
+                    📝 Special Note / Remarks:
+                  </span>
+                  <p className="font-semibold text-zinc-850 italic leading-snug">{extraChargesNotes}</p>
+                </div>
+              )}
+
               <hr className="border-zinc-200" />
 
               {/* Pricing breakdowns */}
@@ -1039,7 +1083,7 @@ export default function POSInvoiceGenerator() {
                   Thank you for printing with Bitium Technology!
                 </p>
                 <p className="text-[8px] text-zinc-400 leading-normal max-w-sm mx-auto footer-legal">
-                  This is a computer generated invoice for store register purchases. No signature required. 
+                  Bill Prepared &amp; Issued by: <strong className="text-zinc-600 font-bold">{issuedBy || 'Indrajith Admin'}</strong> &bull; Computer generated register invoice.<br />
                   Returns accepted within 7 days with original packaging intact.
                 </p>
               </div>
@@ -1243,9 +1287,15 @@ export default function POSInvoiceGenerator() {
                                 {inv.customerPhone}
                               </span>
                             )}
-                            <span className="text-[10px] text-muted-foreground block truncate max-w-[180px]">
-                              🚚 {inv.deliveryMethod || 'Store Pickup'}
-                            </span>
+                            <div className="flex flex-col gap-0.5 text-[10px] text-muted-foreground pt-0.5">
+                              <span>🚚 {inv.deliveryMethod || 'Store Pickup'}</span>
+                              <span className="text-zinc-400 font-mono text-[9px]">👤 Staff: {inv.issuedBy || 'Admin'}</span>
+                              {inv.extraChargesNotes && (
+                                <span className="text-amber-400/90 italic truncate max-w-[180px]" title={inv.extraChargesNotes}>
+                                  📝 {inv.extraChargesNotes}
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </td>
                         <td className="p-4">
