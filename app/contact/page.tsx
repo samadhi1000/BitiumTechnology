@@ -1,13 +1,82 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, MessageSquare, Clock, RefreshCw } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, MessageSquare, Clock, RefreshCw, PhoneCall, MessageCircle, Copy, Check } from 'lucide-react';
 import Link from 'next/link';
+
+interface DirectContact {
+  name: string;
+  badge: string;
+  badgeColorClass: string;
+  role: string;
+  phone: string;
+  whatsapp: string;
+}
+
+const DIRECT_CONTACTS: DirectContact[] = [
+  {
+    name: 'Indrajith',
+    badge: 'CEO',
+    badgeColorClass: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+    role: 'CEO',
+    phone: '0715520897',
+    whatsapp: '94715520897',
+  },
+  {
+    name: 'Dilrukshi',
+    badge: 'Inquiries',
+    badgeColorClass: 'bg-sky-500/10 text-sky-400 border-sky-500/20',
+    role: 'Customer Inquiries & Complaints',
+    phone: '0768370920',
+    whatsapp: '94768370920',
+  },
+  {
+    name: 'Prasadari',
+    badge: 'Screen Print',
+    badgeColorClass: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+    role: 'Screen Printing & Artwork',
+    phone: '0716352558',
+    whatsapp: '94716352558',
+  },
+  {
+    name: 'Nadeeka',
+    badge: 'Stencils',
+    badgeColorClass: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+    role: 'Stencils & Hand Painting',
+    phone: '0772212369',
+    whatsapp: '94772212369',
+  },
+  {
+    name: 'Dinithi',
+    badge: 'Batik & Other',
+    badgeColorClass: 'bg-rose-500/10 text-rose-400 border-rose-500/20',
+    role: 'Cap Batik & Other',
+    phone: '0779731097',
+    whatsapp: '94779731097',
+  },
+  {
+    name: 'Heshani',
+    badge: 'DTF & Art',
+    badgeColorClass: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
+    role: 'DTF & Artwork',
+    phone: '0753026247',
+    whatsapp: '94753026247',
+  },
+];
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', whatsapp: '', address: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [copiedPhoneIdx, setCopiedPhoneIdx] = useState<number | null>(null);
+
+  const handleCopyDirectPhone = (phone: string, idx: number) => {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(phone);
+      setCopiedPhoneIdx(idx);
+      setTimeout(() => setCopiedPhoneIdx(null), 2000);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,7 +123,7 @@ export default function ContactPage() {
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#2CFF05]/10 rounded-full filter blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#2CFF05]/10 rounded-full filter blur-[120px] pointer-events-none"></div>
       
-      <div className="max-w-4xl mx-auto relative z-10 space-y-12">
+      <div className="max-w-7xl mx-auto relative z-10 space-y-12">
         {/* Header */}
         <div className="text-center space-y-4">
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-[#2CFF05]">
@@ -65,11 +134,11 @@ export default function ContactPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Contact Details Card */}
-          <div className="p-8 rounded-3xl border border-border bg-card/40 backdrop-blur space-y-8 flex flex-col justify-between">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+          {/* 1. Contact Details Card */}
+          <div className="p-6 sm:p-8 rounded-3xl border border-border bg-card/40 backdrop-blur space-y-6 flex flex-col justify-between">
             <div className="space-y-6">
-              <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+              <h2 className="text-lg sm:text-xl font-bold text-foreground flex items-center gap-2">
                 <MessageSquare className="text-[#2CFF05]" size={20} />
                 Contact Information
               </h2>
@@ -113,9 +182,9 @@ export default function ContactPage() {
               </div>
 
               {/* Social Channels */}
-              <div className="pt-2">
+              <div className="pt-2 border-t border-border/50">
                 <p className="text-xs font-semibold text-foreground mb-2.5 uppercase tracking-wider">Follow & Connect</p>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5 flex-wrap">
                   <a
                     href="https://web.facebook.com/bitiumtechnology"
                     target="_blank"
@@ -153,15 +222,15 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="border-t border-border pt-6 text-center md:text-left">
+            <div className="border-t border-border pt-4 text-center md:text-left">
               <p className="text-xs text-muted-foreground font-medium">
                 Bitium Technology - Leading High-Performance Custom Printing Solutions
               </p>
             </div>
           </div>
 
-          {/* Form Card */}
-          <div className="p-8 rounded-3xl border border-border bg-card/40 backdrop-blur">
+          {/* 2. Message Form Card */}
+          <div className="p-6 sm:p-8 rounded-3xl border border-border bg-card/40 backdrop-blur flex flex-col justify-between">
             {submitted ? (
               <div className="h-full flex flex-col items-center justify-center text-center space-y-4 py-8">
                 <div className="w-12 h-12 rounded-full bg-[#2CFF05]/20 border border-[#2CFF05] flex items-center justify-center text-[#2CFF05] text-lg font-bold">
@@ -179,71 +248,73 @@ export default function ContactPage() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="space-y-1.5">
-                  <label htmlFor="name" className="text-xs font-bold text-muted-foreground uppercase tracking-wide">
-                    Your Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    required
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    placeholder="Enter your name"
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-[#2CFF05] text-sm text-foreground placeholder-zinc-600 outline-none transition-colors"
-                  />
-                </div>
+              <form onSubmit={handleSubmit} className="space-y-4 flex flex-col justify-between h-full">
+                <div className="space-y-3.5">
+                  <div className="space-y-1">
+                    <label htmlFor="name" className="text-xs font-bold text-muted-foreground uppercase tracking-wide">
+                      Your Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      required
+                      value={form.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      placeholder="Enter your name"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border focus:border-[#2CFF05] text-sm text-foreground placeholder-zinc-600 outline-none transition-colors"
+                    />
+                  </div>
 
-                <div className="space-y-1.5">
-                  <label htmlFor="whatsapp" className="text-xs font-bold text-muted-foreground uppercase tracking-wide">
-                    WhatsApp Number
-                  </label>
-                  <input
-                    type="tel"
-                    id="whatsapp"
-                    required
-                    value={form.whatsapp}
-                    onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
-                    placeholder="+94 77 123 4567"
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-[#2CFF05] text-sm text-foreground placeholder-zinc-600 outline-none transition-colors"
-                  />
-                </div>
+                  <div className="space-y-1">
+                    <label htmlFor="whatsapp" className="text-xs font-bold text-muted-foreground uppercase tracking-wide">
+                      WhatsApp Number
+                    </label>
+                    <input
+                      type="tel"
+                      id="whatsapp"
+                      required
+                      value={form.whatsapp}
+                      onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
+                      placeholder="+94 77 123 4567"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border focus:border-[#2CFF05] text-sm text-foreground placeholder-zinc-600 outline-none transition-colors"
+                    />
+                  </div>
 
-                <div className="space-y-1.5">
-                  <label htmlFor="address" className="text-xs font-bold text-muted-foreground uppercase tracking-wide">
-                    Address
-                  </label>
-                  <input
-                    type="text"
-                    id="address"
-                    required
-                    value={form.address}
-                    onChange={(e) => setForm({ ...form, address: e.target.value })}
-                    placeholder="Enter your street address, city"
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-[#2CFF05] text-sm text-foreground placeholder-zinc-600 outline-none transition-colors"
-                  />
-                </div>
+                  <div className="space-y-1">
+                    <label htmlFor="address" className="text-xs font-bold text-muted-foreground uppercase tracking-wide">
+                      Address
+                    </label>
+                    <input
+                      type="text"
+                      id="address"
+                      required
+                      value={form.address}
+                      onChange={(e) => setForm({ ...form, address: e.target.value })}
+                      placeholder="Enter your street address, city"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border focus:border-[#2CFF05] text-sm text-foreground placeholder-zinc-600 outline-none transition-colors"
+                    />
+                  </div>
 
-                <div className="space-y-1.5">
-                  <label htmlFor="message" className="text-xs font-bold text-muted-foreground uppercase tracking-wide">
-                    Your Message
-                  </label>
-                  <textarea
-                    id="message"
-                    required
-                    rows={4}
-                    value={form.message}
-                    onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    placeholder="How can we help you?"
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-[#2CFF05] text-sm text-foreground placeholder-zinc-600 outline-none transition-colors resize-none"
-                  />
+                  <div className="space-y-1">
+                    <label htmlFor="message" className="text-xs font-bold text-muted-foreground uppercase tracking-wide">
+                      Your Message
+                    </label>
+                    <textarea
+                      id="message"
+                      required
+                      rows={3}
+                      value={form.message}
+                      onChange={(e) => setForm({ ...form, message: e.target.value })}
+                      placeholder="How can we help you?"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border focus:border-[#2CFF05] text-sm text-foreground placeholder-zinc-600 outline-none transition-colors resize-none"
+                    />
+                  </div>
                 </div>
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] font-bold text-xs flex items-center justify-center gap-2 transition-all glow-primary shadow-lg shadow-[#2CFF05]/20 text-[#0a0a0a] disabled:opacity-50"
+                  className="w-full py-3 rounded-xl bg-[#2CFF05] hover:bg-[#45ff24] font-bold text-xs flex items-center justify-center gap-2 transition-all glow-primary shadow-lg shadow-[#2CFF05]/20 text-[#0a0a0a] disabled:opacity-50 mt-2"
                 >
                   {loading ? (
                     <RefreshCw size={14} className="animate-spin" />
@@ -256,6 +327,94 @@ export default function ContactPage() {
                 </button>
               </form>
             )}
+          </div>
+
+          {/* 3. Direct Support Contacts Card */}
+          <div className="p-6 sm:p-8 rounded-3xl border border-border bg-card/40 backdrop-blur space-y-4 flex flex-col justify-between">
+            <div className="space-y-3.5">
+              <div className="flex items-center justify-between gap-2 border-b border-border pb-3">
+                <div className="flex items-center gap-2">
+                  <PhoneCall className="text-[#2CFF05]" size={18} />
+                  <h2 className="text-base sm:text-lg font-bold text-foreground tracking-wide">
+                    DIRECT SUPPORT CONTACTS
+                  </h2>
+                </div>
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  TEAM
+                </span>
+              </div>
+              
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Directly reach out to our department leads for instant help:
+              </p>
+
+              <div className="space-y-2.5">
+                {DIRECT_CONTACTS.map((c, idx) => (
+                  <div
+                    key={c.name}
+                    className="p-2.5 sm:p-3 rounded-2xl border border-border/80 bg-background/70 hover:border-[#2CFF05]/40 transition-all space-y-1 shadow-sm"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <h3 className="font-extrabold text-xs sm:text-sm text-foreground">
+                        {c.name}
+                      </h3>
+                      <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${c.badgeColorClass}`}>
+                        {c.badge}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground">
+                      {c.role}
+                    </p>
+                    <div className="pt-1 flex items-center justify-between border-t border-border/40">
+                      <a
+                        href={`tel:${c.phone}`}
+                        className="flex items-center gap-1.5 text-xs font-bold text-[#2CFF05] hover:brightness-125 transition-all"
+                        title={`Call ${c.name} (${c.phone})`}
+                      >
+                        <Phone size={12} className="text-[#2CFF05]" />
+                        <span>{c.phone}</span>
+                      </a>
+                      <div className="flex items-center gap-1.5">
+                        <a
+                          href={`https://wa.me/${c.whatsapp}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-1 rounded-md text-emerald-400 hover:text-white bg-emerald-500/10 hover:bg-emerald-500 border border-emerald-500/20 transition-all"
+                          title={`WhatsApp ${c.name}`}
+                          aria-label={`WhatsApp ${c.name}`}
+                        >
+                          <MessageCircle size={12} />
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => handleCopyDirectPhone(c.phone, idx)}
+                          className="p-1 rounded-md text-slate-400 hover:text-white bg-slate-800/60 hover:bg-slate-700 border border-slate-700/60 transition-all relative cursor-pointer"
+                          title="Copy Number"
+                          aria-label="Copy Number"
+                        >
+                          {copiedPhoneIdx === idx ? (
+                            <Check size={12} className="text-[#2CFF05]" />
+                          ) : (
+                            <Copy size={12} />
+                          )}
+                          {copiedPhoneIdx === idx && (
+                            <span className="absolute -top-7 right-0 bg-[#2CFF05] text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded shadow whitespace-nowrap z-20">
+                              Copied!
+                            </span>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="border-t border-border pt-3.5 text-center">
+              <p className="text-[11px] text-muted-foreground">
+                Available Mon - Sat during official working hours
+              </p>
+            </div>
           </div>
         </div>
       </div>
