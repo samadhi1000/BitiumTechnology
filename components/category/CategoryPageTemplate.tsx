@@ -7,6 +7,8 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { Product } from '@/lib/products';
 import HoverZoomImage from '@/components/ui/HoverZoomImage';
 import InteractiveZoomViewer from '@/components/ui/InteractiveZoomViewer';
+import SecureWatermarkedImage from '@/components/SecureWatermarkedImage';
+import ProductCardMediaCarousel from '@/components/ui/ProductCardMediaCarousel';
 import { 
   Search, 
   ChevronRight, 
@@ -88,6 +90,7 @@ export default function CategoryPageTemplate({
   const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'name' | 'newest'>('featured');
   const [currentPage, setCurrentPage] = useState(1);
   const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
+  const [previewImageIndex, setPreviewImageIndex] = useState(0);
   const itemsPerPage = 20; // 20 items per page (4 columns x 5 rows)
 
   useEffect(() => {
@@ -366,12 +369,15 @@ export default function CategoryPageTemplate({
                     key={product.id}
                     className="group relative rounded-2xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-card/90 hover:border-emerald-500/40 dark:hover:border-[#2CFF05]/50 hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 flex flex-col p-3 sm:p-3.5 shadow-sm"
                   >
-                    {/* Image Wrapper (Portrait 3:4) */}
-                    <div className="relative w-full aspect-[3/4] rounded-xl overflow-hidden bg-slate-50 dark:bg-zinc-900 border border-slate-100 dark:border-white/10 mb-3 group/img">
-                      <HoverZoomImage
-                        src={product.image_url}
+                    {/* Watermarked Image Wrapper (Portrait 3:4 with Hover Auto-Slideshow) */}
+                    <div className="relative w-full aspect-[3/4] rounded-xl overflow-hidden bg-slate-50 dark:bg-zinc-900 border border-slate-100 dark:border-white/10 mb-3 select-none">
+                      <ProductCardMediaCarousel
+                        mainImage={product.image_url}
+                        mockupUrls={product.mockup_urls}
                         alt={product.name}
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 25vw"
+                        watermarkText="Bitium Technology"
+                        aspectRatio="3/4"
+                        className="w-full h-full object-cover"
                       />
 
                       {/* Badges on Top-Left */}
@@ -399,6 +405,7 @@ export default function CategoryPageTemplate({
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
+                          setPreviewImageIndex(0);
                           setPreviewProduct(product);
                         }}
                         aria-label={`Quick Zoom Preview for ${product.name}`}
@@ -625,11 +632,42 @@ export default function CategoryPageTemplate({
               </button>
 
               {/* Interactive Pan & Zoom Image Viewer on Left */}
-              <div className="w-full md:w-1/2 shrink-0">
-                <InteractiveZoomViewer
-                  src={previewProduct.image_url}
-                  alt={previewProduct.name}
-                />
+              <div className="w-full md:w-1/2 shrink-0 flex flex-col gap-3">
+                {(() => {
+                  const previewSlides = [
+                    previewProduct.image_url,
+                    ...(previewProduct.mockup_urls || []),
+                  ].filter(Boolean);
+                  const activeSrc = previewSlides[previewImageIndex] || previewProduct.image_url;
+                  const labels = ['Design / Artwork', 'Mockup 1', 'Mockup 2'];
+
+                  return (
+                    <>
+                      <InteractiveZoomViewer
+                        src={activeSrc}
+                        alt={previewProduct.name}
+                      />
+                      {previewSlides.length > 1 && (
+                        <div className="flex items-center gap-2">
+                          {previewSlides.map((_, idx) => (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => setPreviewImageIndex(idx)}
+                              className={`flex-1 py-1.5 px-2 rounded-lg text-[10px] font-bold transition-all flex items-center justify-center gap-1 cursor-pointer ${
+                                previewImageIndex === idx
+                                  ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-md shadow-[#2CFF05]/20 font-black'
+                                  : 'bg-slate-100 dark:bg-card border border-slate-200 dark:border-white/10 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white'
+                              }`}
+                            >
+                              <span>{labels[idx] || `View ${idx + 1}`}</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
 
               {/* Product Details & Actions on Right */}

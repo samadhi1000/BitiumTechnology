@@ -18,6 +18,7 @@ function formatSupabaseProduct(row: any): any {
     price: Number(row.price) || 0,
     original_price: row.original_price ? Number(row.original_price) : undefined,
     image_url: row.image_url || '',
+    mockup_urls: row.mockup_urls || (row.mockup_1 ? [row.mockup_1, row.mockup_2].filter(Boolean) : []),
     category: row.category,
     sub_category: row.sub_category || undefined,
     is_active: row.is_active !== false,
@@ -121,6 +122,7 @@ export async function POST(request: NextRequest) {
         price: p.price,
         original_price: p.original_price || null,
         image_url: p.image_url,
+        mockup_urls: p.mockup_urls || null,
         category: p.category,
         sub_category: p.sub_category || null,
         is_active: p.is_active !== false,
@@ -171,6 +173,7 @@ export async function POST(request: NextRequest) {
       if (p.price !== undefined) updatePayload.price = p.price;
       if (p.original_price !== undefined) updatePayload.original_price = p.original_price;
       if (p.image_url !== undefined) updatePayload.image_url = p.image_url;
+      if (p.mockup_urls !== undefined) updatePayload.mockup_urls = p.mockup_urls;
       if (p.category !== undefined) updatePayload.category = p.category;
       if (p.sub_category !== undefined) updatePayload.sub_category = p.sub_category;
       if (p.is_active !== undefined) updatePayload.is_active = p.is_active;

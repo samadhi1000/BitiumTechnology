@@ -71,6 +71,7 @@ const CATEGORY_SIZES: Record<string, string[]> = {
   'batik-stamp':    [],
   'materials':      [],
   'laser-cutting':  [],
+  'other':          [],
 };
 
 // Price scaling per size index (multiplier over base price)
@@ -119,12 +120,16 @@ export default function AdminPanelPage() {
 
   // Physical Product Form states
   const [prodName, setProdName] = useState('');
-  const [prodCategory, setProdCategory] = useState<'stencil' | 'screen-printing' | 'dtf_sheet' | 'batik-stamp' | 'materials' | 'laser-cutting'>('dtf_sheet');
+  const [prodCategory, setProdCategory] = useState<'stencil' | 'screen-printing' | 'dtf_sheet' | 'batik-stamp' | 'materials' | 'laser-cutting' | 'other'>('dtf_sheet');
   const [prodSubCategory, setProdSubCategory] = useState('');
   const [prodDescription, setProdDescription] = useState('');
   const [prodPrice, setProdPrice] = useState(0);
   const [prodOriginalPrice, setProdOriginalPrice] = useState<number | undefined>(undefined);
   const [prodImageUrl, setProdImageUrl] = useState('');
+  const [prodMockup1Url, setProdMockup1Url] = useState('');
+  const [prodMockup1File, setProdMockup1File] = useState<File | null>(null);
+  const [prodMockup2Url, setProdMockup2Url] = useState('');
+  const [prodMockup2File, setProdMockup2File] = useState<File | null>(null);
   const [prodSizeVariants, setProdSizeVariants] = useState<SizeVariantInput[]>([]);
   const [prodIsActive, setProdIsActive] = useState(true);
   const [prodImageFile, setProdImageFile] = useState<File | null>(null);
@@ -292,6 +297,10 @@ export default function AdminPanelPage() {
     setProdPrice(0);
     setProdOriginalPrice(undefined);
     setProdImageUrl('');
+    setProdMockup1Url('');
+    setProdMockup1File(null);
+    setProdMockup2Url('');
+    setProdMockup2File(null);
     // Pre-fill standard DTF size tiers as a helpful default
     setProdSizeVariants(getDefaultSizeVariants('dtf_sheet', 500));
     setProdIsActive(true);
@@ -309,6 +318,10 @@ export default function AdminPanelPage() {
     setProdPrice(product.price);
     setProdOriginalPrice(product.original_price);
     setProdImageUrl(product.image_url);
+    setProdMockup1Url(product.mockup_urls?.[0] || '');
+    setProdMockup1File(null);
+    setProdMockup2Url(product.mockup_urls?.[1] || '');
+    setProdMockup2File(null);
     // Populate size tiers from existing variants (skip "Default" single-variant products)
     const existingVariants = product.variants ?? [];
     const hasRealSizes = existingVariants.some(v => v.attributes.size && v.attributes.size !== 'Default');
@@ -345,15 +358,30 @@ export default function AdminPanelPage() {
 
     try {
       let finalImageUrl = prodImageUrl;
+      let finalMockup1Url = prodMockup1Url;
+      let finalMockup2Url = prodMockup2Url;
 
-      // Handle Image File Upload
+      // Handle Image File Uploads
       if (prodImageFile) {
+        setUploadProgress('Uploading Main Design Artwork...');
         finalImageUrl = await uploadToSupabaseStorage(prodImageFile, 'public-previews');
       }
 
-      if (!finalImageUrl) {
-        throw new Error('Please select an image file or specify an Image URL.');
+      if (prodMockup1File) {
+        setUploadProgress('Uploading Mockup 1 (T-Shirt / Saree)...');
+        finalMockup1Url = await uploadToSupabaseStorage(prodMockup1File, 'public-previews');
       }
+
+      if (prodMockup2File) {
+        setUploadProgress('Uploading Mockup 2 (Secondary View)...');
+        finalMockup2Url = await uploadToSupabaseStorage(prodMockup2File, 'public-previews');
+      }
+
+      if (!finalImageUrl) {
+        throw new Error('Please select a main design image file or specify an Image URL.');
+      }
+
+      const mockup_urls = [finalMockup1Url, finalMockup2Url].filter((u): u is string => Boolean(u && u.trim()));
 
       const pData: Partial<Product> = {
         name: sanitizedName,
@@ -363,6 +391,7 @@ export default function AdminPanelPage() {
         price: Number(prodPrice),
         original_price: prodOriginalPrice ? Number(prodOriginalPrice) : undefined,
         image_url: finalImageUrl,
+        mockup_urls: mockup_urls.length > 0 ? mockup_urls : undefined,
         is_active: prodIsActive
       };
 
@@ -1001,7 +1030,8 @@ export default function AdminPanelPage() {
                     { id: 'dtf_sheet', label: 'DTF Printing' },
                     { id: 'batik-stamp', label: 'Batik Stamps' },
                     { id: 'materials', label: 'Consumables' },
-                    { id: 'laser-cutting', label: 'Laser Cut' }
+                    { id: 'laser-cutting', label: 'Laser Cut' },
+                    { id: 'other', label: 'Other Products' }
                   ]
                     .filter((cat) => cat.id === 'all' || canAccessProductCategory(activeStaff, cat.id))
                     .map((cat) => (
@@ -1423,6 +1453,7 @@ export default function AdminPanelPage() {
                     <option value="batik-stamp">Batik Stamps</option>
                     <option value="materials">Materials & Ink</option>
                     <option value="laser-cutting">Laser Cutting</option>
+                    <option value="other">Other Products</option>
                   </select>
                 </div>
                 <div className="space-y-1">
@@ -1561,35 +1592,125 @@ export default function AdminPanelPage() {
                 </div>
               </div>
 
-              {/* Secure Image Upload System */}
-              <div className="p-4 rounded-xl border border-border bg-background/50 space-y-3">
-                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Product Image Upload</label>
-                <div className="flex flex-col sm:flex-row gap-4 items-center">
-                  <label className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-dashed border-border hover:border-[#2CFF05]/40 hover:bg-card cursor-pointer transition-colors text-xs font-semibold text-muted-foreground">
-                    <Upload size={14} />
-                    <span>Choose File</span>
-                    <input 
-                      type="file" 
-                      accept="image/*"
-                      onChange={(e) => {
-                        if (e.target.files?.[0]) setProdImageFile(e.target.files[0]);
-                      }}
-                      className="hidden"
-                    />
+              {/* ── PRODUCT IMAGES SYSTEM (Main Artwork + 2 Mockups) ── */}
+              <div className="p-4 rounded-2xl border border-border bg-background/50 space-y-4">
+                <div>
+                  <label className="text-[11px] font-extrabold text-[#2CFF05] uppercase tracking-wider block">
+                    Product Imagery &amp; Mockup Auto-Slideshow
                   </label>
-                  <div className="text-xs truncate text-muted-foreground flex-grow max-w-[200px]">
-                    {prodImageFile ? prodImageFile.name : 'No file selected (Optional)'}
-                  </div>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">
+                    1st image is the core design. 2nd &amp; 3rd images are product mockups (e.g. T-Shirt, Saree). When customers hover on product cards, it auto-slides every 2 seconds right-to-left.
+                  </p>
                 </div>
 
-                <div className="space-y-1">
-                  <span className="text-[9px] font-bold text-zinc-550 block">OR Paste Hosted URL:</span>
+                {/* 1. Main Design / Artwork (Required) */}
+                <div className="p-3.5 rounded-xl border border-border bg-card/60 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="w-4 h-4 rounded-full bg-[#2CFF05]/20 text-[#2CFF05] flex items-center justify-center text-[9px] font-black">1</span>
+                      <span>Primary Artwork / Design *</span>
+                    </label>
+                    <span className="text-[9px] text-[#2CFF05] font-bold uppercase">Required</span>
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row gap-3 items-center">
+                    <label className="w-full sm:w-auto flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg border border-dashed border-border hover:border-[#2CFF05]/40 hover:bg-card cursor-pointer transition-colors text-xs font-semibold text-muted-foreground">
+                      <Upload size={13} />
+                      <span>Choose Artwork</span>
+                      <input 
+                        type="file" 
+                        accept="image/*"
+                        onChange={(e) => {
+                          if (e.target.files?.[0]) setProdImageFile(e.target.files[0]);
+                        }}
+                        className="hidden"
+                      />
+                    </label>
+                    <div className="text-xs truncate text-muted-foreground flex-grow max-w-[220px]">
+                      {prodImageFile ? prodImageFile.name : (prodImageUrl ? 'URL Provided' : 'No file chosen')}
+                    </div>
+                  </div>
+
                   <input
                     type="text"
                     value={prodImageUrl}
                     onChange={(e) => setProdImageUrl(e.target.value)}
-                    placeholder="https://images.unsplash.com/photo-..."
-                    className="w-full bg-card border border-border rounded-xl px-4 py-2 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
+                    placeholder="Or paste image URL (https://...)"
+                    className="w-full bg-card border border-border rounded-lg px-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-[#2CFF05] transition-colors"
+                  />
+                </div>
+
+                {/* 2. Mockup 1 (e.g. T-Shirt, Saree) */}
+                <div className="p-3.5 rounded-xl border border-border bg-card/60 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="w-4 h-4 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-[9px] font-black">2</span>
+                      <span>Mockup 1 (e.g. T-Shirt / Saree Preview)</span>
+                    </label>
+                    <span className="text-[9px] text-muted-foreground font-semibold uppercase">Optional</span>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3 items-center">
+                    <label className="w-full sm:w-auto flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg border border-dashed border-border hover:border-cyan-500/40 hover:bg-card cursor-pointer transition-colors text-xs font-semibold text-muted-foreground">
+                      <Upload size={13} />
+                      <span>Choose Mockup 1</span>
+                      <input 
+                        type="file" 
+                        accept="image/*"
+                        onChange={(e) => {
+                          if (e.target.files?.[0]) setProdMockup1File(e.target.files[0]);
+                        }}
+                        className="hidden"
+                      />
+                    </label>
+                    <div className="text-xs truncate text-muted-foreground flex-grow max-w-[220px]">
+                      {prodMockup1File ? prodMockup1File.name : (prodMockup1Url ? 'URL Provided' : 'No file chosen')}
+                    </div>
+                  </div>
+
+                  <input
+                    type="text"
+                    value={prodMockup1Url}
+                    onChange={(e) => setProdMockup1Url(e.target.value)}
+                    placeholder="Or paste Mockup 1 URL (https://...)"
+                    className="w-full bg-card border border-border rounded-lg px-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-cyan-400 transition-colors"
+                  />
+                </div>
+
+                {/* 3. Mockup 2 (e.g. Hoodie, Secondary Saree View, Model) */}
+                <div className="p-3.5 rounded-xl border border-border bg-card/60 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="w-4 h-4 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-[9px] font-black">3</span>
+                      <span>Mockup 2 (e.g. Hoodie / Secondary Mockup)</span>
+                    </label>
+                    <span className="text-[9px] text-muted-foreground font-semibold uppercase">Optional</span>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3 items-center">
+                    <label className="w-full sm:w-auto flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg border border-dashed border-border hover:border-purple-500/40 hover:bg-card cursor-pointer transition-colors text-xs font-semibold text-muted-foreground">
+                      <Upload size={13} />
+                      <span>Choose Mockup 2</span>
+                      <input 
+                        type="file" 
+                        accept="image/*"
+                        onChange={(e) => {
+                          if (e.target.files?.[0]) setProdMockup2File(e.target.files[0]);
+                        }}
+                        className="hidden"
+                      />
+                    </label>
+                    <div className="text-xs truncate text-muted-foreground flex-grow max-w-[220px]">
+                      {prodMockup2File ? prodMockup2File.name : (prodMockup2Url ? 'URL Provided' : 'No file chosen')}
+                    </div>
+                  </div>
+
+                  <input
+                    type="text"
+                    value={prodMockup2Url}
+                    onChange={(e) => setProdMockup2Url(e.target.value)}
+                    placeholder="Or paste Mockup 2 URL (https://...)"
+                    className="w-full bg-card border border-border rounded-lg px-3 py-1.5 text-xs text-foreground focus:outline-none focus:border-purple-400 transition-colors"
                   />
                 </div>
               </div>

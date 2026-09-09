@@ -7,7 +7,8 @@ export interface Product {
   price: number;
   original_price?: number;
   image_url: string;
-  category: 'stencil' | 'screen-printing' | 'dtf_sheet' | 'batik-stamp' | 'materials' | 'laser-cutting';
+  mockup_urls?: string[];
+  category: 'stencil' | 'screen-printing' | 'dtf_sheet' | 'batik-stamp' | 'materials' | 'laser-cutting' | 'other';
   sub_category?: string;
   is_active: boolean;
   variants?: Variant[];
@@ -181,6 +182,57 @@ const UNIQUE_IMAGES: Record<string, string[]> = {
   ]
 };
 
+const CATEGORY_MOCKUPS: Record<string, [string, string]> = {
+  'tshirt-design': [
+    'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80',
+  ],
+  'dtf-sticker': [
+    'https://images.unsplash.com/photo-1572375995501-4b0894d50d69?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=600&q=80',
+  ],
+  'dtf-cloth': [
+    'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=600&q=80',
+  ],
+  'men': [
+    'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80',
+  ],
+  'women': [
+    'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80',
+  ],
+  'saree': [
+    'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1508807526345-15e988543c28?auto=format&fit=crop&w=600&q=80',
+  ],
+  'tote-bags': [
+    'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80',
+  ],
+  'batik': [
+    'https://images.unsplash.com/photo-1508807526345-15e988543c28?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1590736704728-f4730bb30770?auto=format&fit=crop&w=600&q=80',
+  ],
+  'wall-decoration': [
+    'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80',
+  ],
+  'cap-batik': [
+    'https://images.unsplash.com/photo-1590736704728-f4730bb30770?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1508807526345-15e988543c28?auto=format&fit=crop&w=600&q=80',
+  ],
+  'acrylic': [
+    'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=600&q=80',
+  ],
+  'wood': [
+    'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80',
+    'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=600&q=80',
+  ]
+};
+
 SUBCAT_DATA.forEach((sc) => {
   sc.names.forEach((name, idx) => {
     const slug = name.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and');
@@ -205,6 +257,12 @@ SUBCAT_DATA.forEach((sc) => {
     const itemOrig = (sc as any).origs && (sc as any).origs[idx] !== undefined 
       ? (sc as any).origs[idx] 
       : (sc as any).orig;
+
+    // Generate mockup URLs for physical products (e.g., T-shirt, saree, tote bag mockups)
+    const mockups = CATEGORY_MOCKUPS[sc.sub] || [
+      `${sc.image}&mockup=1&sig=${idx + 10}`,
+      `${sc.image}&mockup=2&sig=${idx + 20}`
+    ];
 
     // Generate size variants based on category to test the size selector feature
     let mockVariants: Variant[] = [];
@@ -253,6 +311,7 @@ SUBCAT_DATA.forEach((sc) => {
       price: itemPrice,
       original_price: itemOrig,
       image_url: finalImage,
+      mockup_urls: mockups,
       category: sc.cat as any,
       sub_category: sc.sub,
       is_active: true,
@@ -385,6 +444,7 @@ export async function getProducts(): Promise<Product[]> {
           price: Number(row.price) || 0,
           original_price: row.original_price ? Number(row.original_price) : undefined,
           image_url: row.image_url || '',
+          mockup_urls: row.mockup_urls || (row.mockup_1 ? [row.mockup_1, row.mockup_2].filter(Boolean) : []),
           category: row.category,
           sub_category: row.sub_category || undefined,
           is_active: row.is_active !== false,
@@ -457,6 +517,7 @@ export async function getProductById(id: string): Promise<Product | null> {
             price: Number(row.price) || 0,
             original_price: row.original_price ? Number(row.original_price) : undefined,
             image_url: row.image_url || '',
+            mockup_urls: row.mockup_urls || (row.mockup_1 ? [row.mockup_1, row.mockup_2].filter(Boolean) : []),
             category: row.category,
             sub_category: row.sub_category || undefined,
             is_active: row.is_active !== false,
@@ -546,6 +607,7 @@ export async function createProduct(
         price: productData.price,
         original_price: productData.original_price || null,
         image_url: productData.image_url,
+        mockup_urls: productData.mockup_urls || null,
         category: productData.category,
         sub_category: productData.sub_category || null,
         is_active: true,
@@ -644,6 +706,7 @@ export async function updateProduct(
           price: updated.price,
           original_price: updated.original_price || null,
           image_url: updated.image_url,
+          mockup_urls: updated.mockup_urls || null,
           category: updated.category,
           sub_category: updated.sub_category || null,
           is_active: updated.is_active,

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getProductById, Product, Variant } from '@/lib/products';
 import { useCartStore } from '@/lib/store/cartStore';
+import SecureWatermarkedImage from '@/components/SecureWatermarkedImage';
 import { ArrowLeft, ShoppingBag, Check, AlertCircle, Ruler } from 'lucide-react';
 
 interface ProductPageProps {
@@ -17,6 +18,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
   const [added, setAdded] = useState(false);
@@ -151,6 +153,7 @@ export default function ProductPage({ params }: ProductPageProps) {
     'batik-stamp': 'Batik Stamps',
     materials: 'Materials & Ink',
     'laser-cutting': 'Laser Cutting',
+    other: 'Other Products',
   };
 
   const categoryRouteMap: Record<string, string> = {
@@ -160,6 +163,7 @@ export default function ProductPage({ params }: ProductPageProps) {
     'batik-stamp': '/batik-stamp',
     materials: '/materials',
     'laser-cutting': '/laser-cutting',
+    other: '/other',
   };
 
   const backHref = product?.category && categoryRouteMap[product.category]
@@ -178,16 +182,60 @@ export default function ProductPage({ params }: ProductPageProps) {
       </Link>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* ── Left Column: Image (Portrait 3:4) ─────────────────────────── */}
-        <div className="relative aspect-[3/4] rounded-3xl overflow-hidden border border-border bg-card shadow-2xl">
-          <Image
-            src={product.image_url}
-            alt={product.name}
-            fill
-            sizes="(max-width: 768px) 100vw, 600px"
-            priority
-            className="object-cover"
-          />
+        {/* ── Left Column: Image Gallery (Portrait 3:4 Watermarked) ─────────────── */}
+        <div className="flex flex-col gap-4 select-none">
+          {(() => {
+            const allImages = [
+              product.image_url,
+              ...(product.mockup_urls || []),
+            ].filter((u): u is string => Boolean(u && u.trim()));
+            const currentImg = allImages[selectedImageIndex] || product.image_url;
+            const labels = ['Artwork / Design', 'Mockup 1', 'Mockup 2'];
+
+            return (
+              <>
+                <div className="relative aspect-[3/4] rounded-3xl overflow-hidden border border-border bg-card shadow-2xl select-none">
+                  <SecureWatermarkedImage
+                    src={currentImg}
+                    alt={`${product.name} - ${labels[selectedImageIndex] || 'View'}`}
+                    watermarkText="Bitium Technology"
+                    aspectRatio="3/4"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                {/* Thumbnails switcher if multiple images available */}
+                {allImages.length > 1 && (
+                  <div className="grid grid-cols-3 gap-3">
+                    {allImages.map((imgSrc, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setSelectedImageIndex(idx)}
+                        className={`relative aspect-[3/4] rounded-xl overflow-hidden border-2 transition-all cursor-pointer p-0.5 bg-card ${
+                          selectedImageIndex === idx
+                            ? 'border-[#2CFF05] shadow-lg shadow-[#2CFF05]/20 scale-[1.02]'
+                            : 'border-border/60 hover:border-border opacity-70 hover:opacity-100'
+                        }`}
+                      >
+                        <div className="relative w-full h-full rounded-lg overflow-hidden">
+                          <Image
+                            src={imgSrc}
+                            alt={`${product.name} view ${idx + 1}`}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <span className="absolute bottom-1 inset-x-1 py-0.5 px-1 rounded bg-black/80 backdrop-blur-sm text-[9px] font-black text-white uppercase text-center truncate">
+                          {labels[idx] || `View ${idx + 1}`}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </>
+            );
+          })()}
         </div>
 
         {/* ── Right Column: Order Panel ──────────────────────────────────── */}

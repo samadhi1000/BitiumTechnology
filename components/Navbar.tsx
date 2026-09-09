@@ -67,7 +67,6 @@ export default function Navbar() {
   const [dtfPrintingHovered, setDtfPrintingHovered] = useState(false);
   const [batikStampHovered, setBatikStampHovered] = useState(false);
   const [laserCuttingHovered, setLaserCuttingHovered] = useState(false);
-  const [toolkitHovered, setToolkitHovered] = useState(false);
 
   // Mobile menu open state & mobile accordion states
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -293,34 +292,6 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Toolkit Dropdown */}
-            <div 
-              className="relative h-full flex items-center"
-              onMouseEnter={() => setToolkitHovered(true)}
-              onMouseLeave={() => setToolkitHovered(false)}
-            >
-              <Link href={adminLink('/3d-customizer')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
-                <span>{t.nav.toolkit || 'Toolkit'}</span>
-                <ChevronDown size={11} className={`transition-transform duration-200 ${toolkitHovered ? 'rotate-180' : ''}`} />
-              </Link>
-              {toolkitHovered && (
-                <div className="absolute top-[60px] left-0 w-56 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
-                  <Link href={adminLink('/3d-customizer')} className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-emerald-600 dark:text-[#2CFF05] hover:bg-card transition-colors flex items-center gap-1">
-                    <Shirt size={11} /> {t.subNav.mockupStudio}
-                  </Link>
-                  <Link href={adminLink('/canvas')} className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-emerald-600 dark:text-[#2CFF05] hover:bg-card transition-colors flex items-center gap-1">
-                    <LayoutGrid size={11} /> {t.subNav.canvasBuilder}
-                  </Link>
-                  <Link href={adminLink('/size-guide')} className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-emerald-600 dark:text-[#2CFF05] hover:bg-card transition-colors flex items-center gap-1">
-                    <Layers size={11} /> {t.subNav.sizeGuide}
-                  </Link>
-                  <Link href={adminLink('/product-catalog')} className="px-3 py-1.5 rounded-lg text-[11px] font-bold text-emerald-600 dark:text-[#2CFF05] hover:bg-card transition-colors flex items-center gap-1">
-                    <BookOpen size={11} /> {t.subNav.productCatalog}
-                  </Link>
-                </div>
-              )}
-            </div>
-
             {/* 07. Digital downloads */}
             <Link href={adminLink('/downloads')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
               {t.nav.downloads || 'Downloads'}
@@ -329,6 +300,11 @@ export default function Navbar() {
             {/* 08. Materials / Consumables */}
             <Link href={adminLink('/materials')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
               {t.nav.materials || 'Materials / Consumables'}
+            </Link>
+
+            {/* 09. Other Category */}
+            <Link href={adminLink('/other')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
+              {t.nav.other || 'Other'}
             </Link>
           </div>
 
@@ -677,58 +653,6 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Toolkit Accordion */}
-            <div className="rounded-xl bg-card/50 border border-border overflow-hidden">
-              <div
-                onClick={() => toggleMobileSub('toolkit')}
-                className="flex items-center justify-between px-4 py-3 cursor-pointer text-sm font-bold text-foreground"
-              >
-                <div className="flex items-center gap-2">
-                  <Sparkles size={16} className="text-emerald-600 dark:text-[#2CFF05]" />
-                  <span>{t.nav.toolkit || 'Toolkit'}</span>
-                </div>
-                <ChevronDown
-                  size={16}
-                  className={`text-muted-foreground transition-transform duration-200 ${
-                    mobileSubOpen === 'toolkit' ? 'rotate-180' : ''
-                  }`}
-                />
-              </div>
-
-              {mobileSubOpen === 'toolkit' && (
-                <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-border/50">
-                  <Link
-                    href={adminLink('/3d-customizer')}
-                    onClick={closeMobileMenu}
-                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-600 dark:text-[#2CFF05] hover:bg-card hover:text-foreground"
-                  >
-                    {t.subNav.mockupStudio}
-                  </Link>
-                  <Link
-                    href={adminLink('/canvas')}
-                    onClick={closeMobileMenu}
-                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-600 dark:text-[#2CFF05] hover:bg-card hover:text-foreground"
-                  >
-                    {t.subNav.canvasBuilder}
-                  </Link>
-                  <Link
-                    href={adminLink('/size-guide')}
-                    onClick={closeMobileMenu}
-                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-600 dark:text-[#2CFF05] hover:bg-card hover:text-foreground"
-                  >
-                    {t.subNav.sizeGuide}
-                  </Link>
-                  <Link
-                    href={adminLink('/product-catalog')}
-                    onClick={closeMobileMenu}
-                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-600 dark:text-[#2CFF05] hover:bg-card hover:text-foreground"
-                  >
-                    {t.subNav.productCatalog}
-                  </Link>
-                </div>
-              )}
-            </div>
-
             {/* 06. Digital downloads */}
             <Link
               href={adminLink('/downloads')}
@@ -742,7 +666,7 @@ export default function Navbar() {
               <ChevronRight size={16} className="text-muted-foreground" />
             </Link>
 
-            {/* 6. Materials / Consumables */}
+            {/* 07. Materials / Consumables */}
             <Link
               href={adminLink('/materials')}
               onClick={closeMobileMenu}
@@ -751,6 +675,19 @@ export default function Navbar() {
               <div className="flex items-center gap-2">
                 <PackageCheck size={16} className="text-emerald-600 dark:text-[#2CFF05]" />
                 <span>{t.nav.materials || 'Materials / Consumables'}</span>
+              </div>
+              <ChevronRight size={16} className="text-muted-foreground" />
+            </Link>
+
+            {/* 08. Other Products */}
+            <Link
+              href={adminLink('/other')}
+              onClick={closeMobileMenu}
+              className="flex items-center justify-between px-4 py-3 rounded-xl bg-card/50 hover:bg-card border border-border text-sm font-bold text-foreground"
+            >
+              <div className="flex items-center gap-2">
+                <Sparkles size={16} className="text-emerald-600 dark:text-[#2CFF05]" />
+                <span>{t.nav.other || 'Other'}</span>
               </div>
               <ChevronRight size={16} className="text-muted-foreground" />
             </Link>

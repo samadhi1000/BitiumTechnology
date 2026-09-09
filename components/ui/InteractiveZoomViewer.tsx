@@ -77,6 +77,14 @@ export default function InteractiveZoomViewer({ src, alt }: InteractiveZoomViewe
             sizes="(max-width: 768px) 100vw, 500px"
             priority
           />
+          {/* Bitium Technology Watermark Security Overlay */}
+          <div 
+            className="absolute inset-0 pointer-events-none select-none z-10 opacity-35"
+            style={{
+              backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='140' viewBox='0 0 200 140'><text x='50%' y='50%' fill='white' font-family='sans-serif' font-weight='bold' font-size='14' text-anchor='middle' transform='rotate(-20 100 70)' opacity='0.8'>Bitium Technology</text><line x1='0' y1='0' x2='200' y2='140' stroke='rgba(255,255,255,0.2)' stroke-width='1'/></svg>")`,
+              backgroundRepeat: 'repeat',
+            }}
+          />
         </div>
 
         {/* Magnifier Guideline Overlay when hovering */}
