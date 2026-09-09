@@ -5,19 +5,9 @@ import { MessageSquare, X, Send } from 'lucide-react';
 
 export default function WhatsAppButton() {
   const [isOpen, setIsOpen] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
-
-  useEffect(() => {
-    // Show a helpful welcome tooltip after 4 seconds on page load
-    const timer = setTimeout(() => {
-      setShowTooltip(true);
-    }, 4000);
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
-    setShowTooltip(false);
   };
 
   const handleClose = (e: React.MouseEvent) => {
@@ -113,22 +103,7 @@ export default function WhatsAppButton() {
         </div>
       )}
 
-      {/* 3. Welcome Tooltip */}
-      {showTooltip && !isOpen && (
-        <div className="mb-3 px-4 py-2.5 bg-card border border-border text-foreground text-xs font-bold rounded-xl shadow-lg relative flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2">
-          <span>Need help? Chat with us!</span>
-          <button 
-            onClick={(e) => { e.stopPropagation(); setShowTooltip(false); }} 
-            className="text-muted-foreground hover:text-foreground cursor-pointer"
-          >
-            <X size={12} />
-          </button>
-          {/* Arrow pointing down */}
-          <div className="absolute bottom-[-6px] right-6 w-3 h-3 bg-card border-r border-b border-border rotate-45" />
-        </div>
-      )}
-
-      {/* 4. Floating Trigger Button */}
+      {/* 3. Floating Trigger Button */}
       <div className="flex flex-col items-center">
         {/* The main green WhatsApp trigger button */}
         <button
