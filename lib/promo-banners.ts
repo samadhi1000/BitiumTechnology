@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Promo & Seasonal Offer Banners Configuration for Bitium Technology.
  * Allows 100% dynamic customization of CTA & Advertisement sections per category.
  */
@@ -155,7 +155,8 @@ export function savePromoBanners(banners: PromoBanner[]): void {
 
 export function getPromoBannerForCategory(categorySlug: string): PromoBanner | null {
   const allBanners = getPromoBanners();
-  const found = allBanners.find(b => b.category === categorySlug);
+  const normalized = categorySlug === 'dtf-printing' || categorySlug === 'dtf' ? 'dtf_sheet' : categorySlug;
+  const found = allBanners.find(b => b.category === normalized || b.category === categorySlug);
   if (found && found.isActive) return found;
   
   // Fallback to 'all' or default
