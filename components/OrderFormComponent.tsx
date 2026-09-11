@@ -45,6 +45,8 @@ export interface OrderItem {
   };
 }
 
+import { getNextOrderNumber, filterRealOrders } from "@/lib/order-utils";
+
 export const defaultDeliveryOptions = [
   { id: "Paid Post", label: "Paid Post" },
   { id: "Cash On Delivery", label: "Cash On Delivery" },
@@ -55,7 +57,7 @@ export const defaultDeliveryOptions = [
 ];
 
 export const createEmptyOrder = (): OrderItem => ({
-  id: `ORD-${Date.now().toString().slice(-4)}`,
+  id: "BTO-00001",
   customerName: "",
   whatsappNo: "",
   shortCode: "",
@@ -100,14 +102,15 @@ export default function OrderFormComponent({ hideNavbar = false }: { hideNavbar?
       return;
     }
 
-    const newOrder = {
+    const orderId = getNextOrderNumber();
+    const newOrder: OrderItem = {
       ...clientOrder,
-      id: `ORD-${Date.now().toString().slice(-4)}`,
+      id: orderId,
       date: new Date().toISOString().split("T")[0],
     };
 
     try {
-      const existing = JSON.parse(localStorage.getItem("bitium_orders") || "[]");
+      const existing = filterRealOrders(JSON.parse(localStorage.getItem("bitium_orders") || "[]"));
       const updated = [newOrder, ...existing];
       localStorage.setItem("bitium_orders", JSON.stringify(updated));
     } catch (err) {

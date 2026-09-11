@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import { getProducts, Product, Variant } from '@/lib/products';
 import { StaffProfile, getActiveStaffProfile } from '@/lib/permissions';
+import { getNextInvoiceNumber, commitInvoiceCounter } from '@/lib/order-utils';
 
 export interface InvoiceLineItem {
   id: string; // unique for this line
@@ -51,6 +52,7 @@ export interface SavedPOSInvoice {
   customerAddress: string;
   issuedBy?: string;
   paymentMethod: 'Cash' | 'Card' | 'Bank Transfer' | 'PayHere';
+  paymentStatus?: 'PAID' | 'COD' | 'UNPAID' | 'ADVANCE';
   deliveryMethod?: string;
   discountValue: number;
   discountType: 'percentage' | 'flat';
@@ -97,6 +99,7 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
   const [invoiceNo, setInvoiceNo] = useState('');
   const [invoiceDate, setInvoiceDate] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'Cash' | 'Card' | 'Bank Transfer' | 'PayHere'>('Cash');
+  const [paymentStatus, setPaymentStatus] = useState<'PAID' | 'COD' | 'UNPAID' | 'ADVANCE'>('PAID');
   const [deliveryMethod, setDeliveryMethod] = useState<string>('Store Pickup');
   const [discountValue, setDiscountValue] = useState<number>(0);
   const [discountType, setDiscountType] = useState<'percentage' | 'flat'>('flat');
@@ -118,12 +121,9 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
 
   const [isClient, setIsClient] = useState(false);
 
-  // Generate a fresh unique invoice number
-  const generateNewInvoiceNumber = () => {
-    const now = new Date();
-    const dateStr = now.toISOString().split('T')[0];
-    const timeRef = now.getTime().toString().slice(-5);
-    return `INV-${dateStr.replace(/-/g, '')}-${timeRef}`;
+  // Generate a fresh unique sequential invoice number (e.g. BTI-00001, BTI-00002)
+  const generateNewInvoiceNumber = (invoicesList?: SavedPOSInvoice[]) => {
+    return getNextInvoiceNumber(invoicesList || savedInvoices);
   };
 
   useEffect(() => {
@@ -136,20 +136,24 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
     }
     loadCatalog();
 
-    // Auto-generate invoice date and number
+    // Auto-generate invoice date and load invoices
     const now = new Date();
     const dateStr = now.toISOString().split('T')[0];
     setInvoiceDate(dateStr);
-    setInvoiceNo(generateNewInvoiceNumber());
 
     // Load saved POS invoices from localStorage
     try {
       const stored = localStorage.getItem('bitium_pos_invoices');
       if (stored) {
-        setSavedInvoices(JSON.parse(stored));
+        const parsed: SavedPOSInvoice[] = JSON.parse(stored);
+        setSavedInvoices(parsed);
+        setInvoiceNo(getNextInvoiceNumber(parsed));
+      } else {
+        setInvoiceNo(getNextInvoiceNumber([]));
       }
     } catch (e) {
       console.error('Failed to load saved POS invoices from storage:', e);
+      setInvoiceNo(getNextInvoiceNumber([]));
     }
   }, []);
 
@@ -265,6 +269,7 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
       customerAddress: customerAddress.trim(),
       issuedBy: issuedBy.trim() || activeStaff?.name || 'Admin',
       paymentMethod,
+      paymentStatus,
       deliveryMethod,
       discountValue,
       discountType,
@@ -288,6 +293,7 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
     }
 
     setSavedInvoices(updated);
+    commitInvoiceCounter(record.invoiceNo);
     if (typeof window !== 'undefined') {
       localStorage.setItem('bitium_pos_invoices', JSON.stringify(updated));
     }
@@ -316,6 +322,7 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
     setExtraCharges(0);
     setExtraChargesNotes('');
     setPaymentMethod('Cash');
+    setPaymentStatus('PAID');
     setDeliveryMethod('Store Pickup');
     setLoadedInvoiceId(null);
     setInvoiceDate(new Date().toISOString().split('T')[0]);
@@ -334,6 +341,7 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
     setCustomerAddress(inv.customerAddress || '');
     setIssuedBy(inv.issuedBy || activeStaff?.name || 'Indrajith Admin');
     setPaymentMethod(inv.paymentMethod || 'Cash');
+    setPaymentStatus(inv.paymentStatus || (inv.deliveryMethod?.includes('Cash On Delivery') ? 'COD' : 'PAID'));
     setDeliveryMethod(inv.deliveryMethod || 'Store Pickup');
     setDiscountValue(inv.discountValue || 0);
     setDiscountType(inv.discountType || 'flat');
@@ -447,6 +455,7 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
       'Extra Charges (Rs.)',
       'Grand Total (Rs.)',
       'Payment Method',
+      'Payment Status',
       'Format',
       'Status'
     ];
@@ -473,6 +482,7 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
         inv.extraCharges,
         inv.totalAmount,
         `"${inv.paymentMethod}"`,
+        `"${inv.paymentStatus || 'PAID'}"`,
         `"${inv.printLayout}"`,
         `"${inv.status || 'PAID'}"`
       ].join(',');
@@ -744,10 +754,10 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
             <div className="p-5 rounded-2xl border border-border bg-card/15 backdrop-blur-md space-y-4">
               <h3 className="text-xs font-black uppercase tracking-wider text-[#2CFF05] flex items-center gap-2">
                 <DollarSign size={14} />
-                <span>04. Discounts, Extra Fees &amp; Pay Type</span>
+                <span>04. Discounts, Extra Fees, Delivery &amp; Payment</span>
               </h3>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                 {/* Discount */}
                 <div className="space-y-1.5">
                   <label className="text-[9px] font-bold text-muted-foreground uppercase">Discount Value</label>
@@ -789,7 +799,15 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
                   </label>
                   <select
                     value={deliveryMethod}
-                    onChange={e => setDeliveryMethod(e.target.value)}
+                    onChange={e => {
+                      const val = e.target.value;
+                      setDeliveryMethod(val);
+                      if (val === 'Cash On Delivery' || val === 'Cash On Delivery (On weight)') {
+                        setPaymentStatus('COD');
+                      } else if (paymentStatus === 'COD') {
+                        setPaymentStatus('PAID');
+                      }
+                    }}
                     className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors text-foreground font-bold cursor-pointer"
                   >
                     {DELIVERY_OPTIONS.map(opt => (
@@ -812,6 +830,32 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
                     <option value="Card">💳 Card Payment</option>
                     <option value="Bank Transfer">🏦 Bank Transfer</option>
                     <option value="PayHere">🔒 PayHere Online</option>
+                  </select>
+                </div>
+
+                {/* Payment Status (NEW) */}
+                <div className="space-y-1.5 sm:col-span-2">
+                  <label className="text-[9px] font-bold text-muted-foreground uppercase flex items-center justify-between">
+                    <span>Payment Status (Prints on Bill)</span>
+                    <span className="text-[8px] text-[#2CFF05] font-semibold">actual status</span>
+                  </label>
+                  <select
+                    value={paymentStatus}
+                    onChange={e => setPaymentStatus(e.target.value as any)}
+                    className={`w-full bg-background border rounded-xl px-3 py-2 text-xs focus:outline-none transition-colors font-bold cursor-pointer ${
+                      paymentStatus === 'PAID'
+                        ? 'border-emerald-500/50 text-emerald-400'
+                        : paymentStatus === 'COD'
+                        ? 'border-amber-500/50 text-amber-400'
+                        : paymentStatus === 'ADVANCE'
+                        ? 'border-blue-500/50 text-blue-400'
+                        : 'border-rose-500/50 text-rose-400'
+                    }`}
+                  >
+                    <option value="PAID">✓ Fully Paid (Payment Received)</option>
+                    <option value="COD">🚚 Cash On Delivery (Payment Pending / Collect on Delivery)</option>
+                    <option value="UNPAID">⏳ Payment Pending / Unpaid</option>
+                    <option value="ADVANCE">⏳ Advance Paid / Partially Paid</option>
                   </select>
                 </div>
               </div>
@@ -930,6 +974,7 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
                     <div>Date: {invoiceDate}</div>
                     <div>Staff: <strong className="text-zinc-900">{issuedBy || 'Indrajith Admin'}</strong></div>
                     <div>Pay Method: {paymentMethod}</div>
+                    <div>Status: <strong className={paymentStatus === 'PAID' ? 'text-emerald-700' : paymentStatus === 'COD' ? 'text-amber-700' : paymentStatus === 'ADVANCE' ? 'text-blue-700' : 'text-rose-700'}>{paymentStatus === 'PAID' ? 'Paid' : paymentStatus === 'COD' ? 'COD (Pending)' : paymentStatus === 'ADVANCE' ? 'Advance' : 'Unpaid'}</strong></div>
                     <div>Delivery: {deliveryMethod}</div>
                   </div>
                 </div>
@@ -1038,11 +1083,28 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
 
               {/* Pricing breakdowns */}
               <div className="flex justify-between items-start gap-4 flex-wrap sm:flex-nowrap summary-section">
-                <div className="text-[9px] text-zinc-400 max-w-[200px] leading-relaxed payment-info flex-grow">
+                <div className="text-[9px] text-zinc-400 max-w-[240px] leading-relaxed payment-info flex-grow">
                   <span className="font-extrabold uppercase text-[8px] block tracking-wider mb-0.5">Payment Status:</span>
-                  <div className="font-bold text-emerald-700 bg-emerald-50 px-2 py-1 rounded inline-block text-[9px]">
-                    ✓ FULLY PAID &mdash; RECEIVED via {paymentMethod.toUpperCase()}
-                  </div>
+                  {paymentStatus === 'PAID' && (
+                    <div className="font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded inline-block text-[9px]">
+                      ✓ FULLY PAID &mdash; RECEIVED via {paymentMethod.toUpperCase()}
+                    </div>
+                  )}
+                  {paymentStatus === 'COD' && (
+                    <div className="font-bold text-amber-800 bg-amber-50 border border-amber-300 px-2 py-1 rounded inline-block text-[9px]">
+                      🚚 CASH ON DELIVERY &mdash; TO COLLECT: Rs. {totalAmount.toLocaleString()}
+                    </div>
+                  )}
+                  {paymentStatus === 'UNPAID' && (
+                    <div className="font-bold text-rose-700 bg-rose-50 border border-rose-300 px-2 py-1 rounded inline-block text-[9px]">
+                      ⏳ PAYMENT PENDING &mdash; AMOUNT DUE: Rs. {totalAmount.toLocaleString()}
+                    </div>
+                  )}
+                  {paymentStatus === 'ADVANCE' && (
+                    <div className="font-bold text-blue-700 bg-blue-50 border border-blue-300 px-2 py-1 rounded inline-block text-[9px]">
+                      ⏳ PARTIALLY PAID &mdash; BALANCE DUE: Rs. {totalAmount.toLocaleString()}
+                    </div>
+                  )}
                   <p className="mt-2 verify-note">Products are checked &amp; verified. Please inspect goods before leaving checkout register.</p>
                 </div>
                 
@@ -1248,11 +1310,12 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
               <table className="w-full border-collapse text-left text-xs">
                 <thead>
                   <tr className="bg-background/80 border-b border-border text-muted-foreground font-bold uppercase tracking-wider text-[10px]">
-                    <th className="p-4 w-36">Invoice No</th>
+                    <th className="p-4 w-32">Invoice No</th>
                     <th className="p-4 w-28">Date</th>
                     <th className="p-4">Customer Details</th>
                     <th className="p-4">Items Summary</th>
                     <th className="p-4 text-center">Pay Method</th>
+                    <th className="p-4 text-center">Payment Status</th>
                     <th className="p-4 text-right">Grand Total</th>
                     <th className="p-4 text-right">Actions</th>
                   </tr>
@@ -1260,7 +1323,7 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
                 <tbody className="divide-y divide-border/40">
                   {filteredHistoryInvoices.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="p-12 text-center text-muted-foreground italic">
+                      <td colSpan={8} className="p-12 text-center text-muted-foreground italic">
                         {savedInvoices.length === 0 
                           ? 'No POS invoices have been saved yet. Print or Save an invoice from the "Create Invoice" tab to see records here.' 
                           : 'No invoices found matching your current filter / search query.'}
@@ -1314,6 +1377,28 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
                           }`}>
                             {inv.paymentMethod}
                           </span>
+                        </td>
+                        <td className="p-4 text-center">
+                          {(!inv.paymentStatus || inv.paymentStatus === 'PAID') && (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                              ✓ Paid
+                            </span>
+                          )}
+                          {inv.paymentStatus === 'COD' && (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                              🚚 COD
+                            </span>
+                          )}
+                          {inv.paymentStatus === 'UNPAID' && (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                              ⏳ Unpaid
+                            </span>
+                          )}
+                          {inv.paymentStatus === 'ADVANCE' && (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                              ⏳ Advance
+                            </span>
+                          )}
                         </td>
                         <td className="p-4 text-right font-black font-mono text-sm text-[#2CFF05]">
                           Rs. {inv.totalAmount.toLocaleString()}

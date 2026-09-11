@@ -20,6 +20,7 @@ import {
   Mail,
   ShieldCheck
 } from 'lucide-react';
+import { getNextOrderNumber, filterRealOrders } from '@/lib/order-utils';
 
 const deliveryOptions = [
   { id: 'Paid Post', label: 'Paid Post', desc: 'Standard postal delivery with prior payment', cost: 250 },
@@ -103,7 +104,7 @@ export default function CheckoutPage() {
 
     try {
       const savedItemDetails = [];
-      let orderId = `ORD-${Date.now().toString().slice(-5)}`;
+      let orderId = getNextOrderNumber();
       let isSupabaseActive = true;
 
       const shippingAddressObj = {
@@ -247,7 +248,7 @@ export default function CheckoutPage() {
         };
 
         try {
-          const existingOrders = JSON.parse(localStorage.getItem('bitium_orders') || '[]');
+          const existingOrders = filterRealOrders(JSON.parse(localStorage.getItem('bitium_orders') || '[]'));
           const updatedOrders = [batchOrderItem, ...existingOrders];
           localStorage.setItem('bitium_orders', JSON.stringify(updatedOrders));
         } catch (err) {

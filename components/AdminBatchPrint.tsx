@@ -487,37 +487,64 @@ function QuadrantOrderSelect({
   );
 }
 
+import { filterRealOrders } from '@/lib/order-utils';
+
 export default function AdminBatchPrint() {
   const [savedOrders, setSavedOrders] = useState<OrderItem[]>([]);
   const [selectedSlots, setSelectedSlots] = useState<OrderItem[]>([
-    createEmptyOrder('ORD-1'),
-    createEmptyOrder('ORD-2'),
-    createEmptyOrder('ORD-3'),
-    createEmptyOrder('ORD-4'),
+    createEmptyOrder('ORD-EMPTY-1'),
+    createEmptyOrder('ORD-EMPTY-2'),
+    createEmptyOrder('ORD-EMPTY-3'),
+    createEmptyOrder('ORD-EMPTY-4'),
   ]);
 
-  useEffect(() => {
+  const loadAndFilterOrders = () => {
     const saved = localStorage.getItem('bitium_orders');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setSavedOrders(parsed);
-          if (parsed.length >= 4) {
-            setSelectedSlots(parsed.slice(0, 4));
+        const cleanOrders = filterRealOrders<OrderItem>(parsed);
+        setSavedOrders(cleanOrders);
+        localStorage.setItem('bitium_orders', JSON.stringify(cleanOrders));
+        
+        const filled: OrderItem[] = [];
+        for (let i = 0; i < 4; i++) {
+          if (cleanOrders[i]) {
+            filled.push(cleanOrders[i]);
           } else {
-            const filled = [...parsed];
-            while (filled.length < 4) {
-              filled.push(createEmptyOrder(`ORD-EMPTY-${filled.length + 1}`));
-            }
-            setSelectedSlots(filled);
+            filled.push(createEmptyOrder(`ORD-EMPTY-${i + 1}`));
           }
         }
+        setSelectedSlots(filled);
       } catch (e) {
         console.error('Error loading bitium_orders:', e);
       }
+    } else {
+      setSelectedSlots([
+        createEmptyOrder('ORD-EMPTY-1'),
+        createEmptyOrder('ORD-EMPTY-2'),
+        createEmptyOrder('ORD-EMPTY-3'),
+        createEmptyOrder('ORD-EMPTY-4'),
+      ]);
     }
+  };
+
+  useEffect(() => {
+    loadAndFilterOrders();
   }, []);
+
+  const handleClearAllOrders = () => {
+    if (confirm('Are you sure you want to clear all saved orders from the batch queue?')) {
+      setSavedOrders([]);
+      localStorage.removeItem('bitium_orders');
+      setSelectedSlots([
+        createEmptyOrder('ORD-EMPTY-1'),
+        createEmptyOrder('ORD-EMPTY-2'),
+        createEmptyOrder('ORD-EMPTY-3'),
+        createEmptyOrder('ORD-EMPTY-4'),
+      ]);
+    }
+  };
 
   const handlePrintA4 = () => {
     window.print();
@@ -600,6 +627,18 @@ export default function AdminBatchPrint() {
           </div>
 
           <div className="flex items-center gap-2.5">
+            {savedOrders.length > 0 && (
+              <button
+                type="button"
+                onClick={handleClearAllOrders}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-card border border-rose-500/30 text-rose-400 hover:bg-rose-500/10 cursor-pointer transition-all"
+                title="Clear all saved orders in batch list"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                Clear Queue
+              </button>
+            )}
+
             <button
               type="button"
               onClick={handlePrintA4}
