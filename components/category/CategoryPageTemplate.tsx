@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Product } from '@/lib/products';
+import { getPromoBannerForCategory, PromoBanner } from '@/lib/promo-banners';
 import HoverZoomImage from '@/components/ui/HoverZoomImage';
 import InteractiveZoomViewer from '@/components/ui/InteractiveZoomViewer';
 import SecureWatermarkedImage from '@/components/SecureWatermarkedImage';
@@ -173,6 +174,7 @@ export default function CategoryPageTemplate({
   const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
   const [previewImageIndex, setPreviewImageIndex] = useState(0);
   const [copiedPhone, setCopiedPhone] = useState(false);
+  const [promoBanner, setPromoBanner] = useState<PromoBanner | null>(null);
   const itemsPerPage = 20; // 20 items per page (4 columns x 5 rows)
 
   const lead: SectionLead = config.sectionLead || SECTION_LEADS[config.categoryKey] || SECTION_LEADS[config.slug] || DEFAULT_INQUIRY_LEAD;
@@ -184,6 +186,16 @@ export default function CategoryPageTemplate({
       setTimeout(() => setCopiedPhone(false), 2000);
     }
   };
+
+  useEffect(() => {
+    const loadBanner = () => {
+      const banner = getPromoBannerForCategory(config.categoryKey || config.slug);
+      setPromoBanner(banner);
+    };
+    loadBanner();
+    window.addEventListener('bitium_promo_banners_updated', loadBanner);
+    return () => window.removeEventListener('bitium_promo_banners_updated', loadBanner);
+  }, [config.categoryKey, config.slug]);
 
   useEffect(() => {
     setActiveSub(subParam);
@@ -981,30 +993,84 @@ function matchesSubCategory(productSub: string | undefined, activeSub: string, a
             </div>
           </div>
 
-          {/* Card 3: Need a Custom Solution? */}
-          <div className="md:col-span-3 bg-white dark:bg-card/70 rounded-2xl border border-slate-200/90 dark:border-white/10 p-5 sm:p-6 shadow-sm flex flex-col justify-between relative overflow-hidden">
-            <div className="relative z-10">
-              <h3 className="font-heading font-extrabold text-base text-slate-900 dark:text-white mb-2">
-                {config.customCta.title}
-              </h3>
-              <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed mb-5">
-                {config.customCta.desc}
-              </p>
-            </div>
+          {/* Card 3: Need a Custom Solution / Offer Advertisement Card */}
+          {(() => {
+            const hasCustomBanner = promoBanner && promoBanner.isActive;
+            const title = hasCustomBanner ? promoBanner.title : config.customCta.title;
+            const desc = hasCustomBanner ? promoBanner.desc : config.customCta.desc;
+            const buttonText = hasCustomBanner ? promoBanner.buttonText : config.customCta.buttonText;
+            const buttonHref = hasCustomBanner ? promoBanner.buttonHref : config.customCta.buttonHref;
+            const badgeText = hasCustomBanner ? promoBanner.badgeText : undefined;
+            const imageUrl = hasCustomBanner ? promoBanner.imageUrl : undefined;
+            const theme = hasCustomBanner ? promoBanner.theme : 'neon-green';
 
-            <div className="relative z-10">
-              <Link
-                href={config.customCta.buttonHref}
-                className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-full bg-[#2CFF05] text-[#0a0a0a] text-xs font-bold hover:bg-[#3af816] transition-all shadow-md shadow-[#2CFF05]/20 hover:scale-[1.02]"
-              >
-                <span>{config.customCta.buttonText}</span>
-                <ArrowRight size={13} />
-              </Link>
-            </div>
+            const themeColor = theme === 'amber-gold' ? '#F59E0B'
+              : theme === 'cyber-blue' ? '#06B6D4'
+              : theme === 'rose-red' ? '#F43F5E'
+              : theme === 'purple-glow' ? '#A855F7'
+              : '#2CFF05';
 
-            {/* Subtle background illustration glow */}
-            <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-emerald-500/10 dark:bg-[#2CFF05]/10 rounded-full blur-xl pointer-events-none" />
-          </div>
+            const buttonTextColor = theme === 'neon-green' ? '#0a0a0a' : '#ffffff';
+
+            return (
+              <div className="md:col-span-3 bg-white dark:bg-card/70 rounded-2xl border border-slate-200/90 dark:border-white/10 p-5 sm:p-6 shadow-sm flex flex-col justify-between relative overflow-hidden group">
+                
+                {imageUrl && (
+                  <div className="mb-4 rounded-xl overflow-hidden border border-slate-200 dark:border-white/10 max-h-40 bg-slate-100 dark:bg-black/40 relative z-10">
+                    <img
+                      src={imageUrl}
+                      alt={title}
+                      className="w-full h-32 sm:h-36 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                )}
+
+                <div className="relative z-10">
+                  {badgeText && (
+                    <div 
+                      className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider mb-2.5 border"
+                      style={{
+                        borderColor: `${themeColor}60`,
+                        backgroundColor: `${themeColor}20`,
+                        color: themeColor
+                      }}
+                    >
+                      <Sparkles size={10} />
+                      <span>{badgeText}</span>
+                    </div>
+                  )}
+
+                  <h3 className="font-heading font-extrabold text-base text-slate-900 dark:text-white mb-2 leading-snug">
+                    {title}
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed mb-5">
+                    {desc}
+                  </p>
+                </div>
+
+                <div className="relative z-10">
+                  <Link
+                    href={buttonHref}
+                    className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-full text-xs font-bold transition-all shadow-md hover:scale-[1.02]"
+                    style={{
+                      backgroundColor: themeColor,
+                      color: buttonTextColor,
+                      boxShadow: `0 4px 14px ${themeColor}35`
+                    }}
+                  >
+                    <span>{buttonText}</span>
+                    <ArrowRight size={13} />
+                  </Link>
+                </div>
+
+                {/* Subtle background illustration glow */}
+                <div 
+                  className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full blur-xl pointer-events-none opacity-25" 
+                  style={{ backgroundColor: themeColor }}
+                />
+              </div>
+            );
+          })()}
         </section>
 
         {/* ── QUICK ZOOM & PREVIEW MODAL ── */}
