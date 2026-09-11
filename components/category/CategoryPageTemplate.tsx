@@ -196,111 +196,126 @@ export default function CategoryPageTemplate({
 
 const SUBCATEGORY_ALIASES: Record<string, string[]> = {
   // Screen printing aliases
-  'artwork': ['artwork', 'vector-artwork', 'vector_artwork', 'vector-design', 'vector_design', 'vector', 'vector design', 'vector art', 'artworks', 'design', 'vector-designs', 'designs'],
-  'screen-exposed': ['screen-exposed', 'exposed-screens', 'exposed-screen', 'screen_exposed', 'exposed', 'screen', 'screens', 'exposed screens', 'screen exposed'],
-  'tracing-printouts': ['tracing-printouts', 'tracing-printout', 'tracing', 'tracing-film', 'tracing_printouts', 'tracing-paper', 'tracing printouts'],
-  'positive-printouts': ['positive-printouts', 'positive-film', 'positive', 'positive_printouts', 'positive_film', 'positives', 'positive film'],
-  'cmyk-halftone': ['cmyk-halftone', 'cmyk_halftone', 'cmyk', 'halftone', 'halftones', 'cmyk halftone'],
-  'one-color': ['one-color', 'one_color', '1-color', 'single-color', 'one color', 'single color'],
-  'two-color': ['two-color', 'two_color', '2-color', 'two color'],
-  'three-color': ['three-color', 'three_color', '3-color', 'three color'],
-  'four-color': ['four-color', 'four_color', '4-color', 'four color'],
+  'artwork': ['artwork', 'vector-artwork', 'vector-design', 'vector-art', 'vector-designs', 'artwork-design', 'vector-artwork-design', 'vector'],
+  'screen-exposed': ['screen-exposed', 'exposed-screens', 'exposed-screen', 'screen-exposure', 'exposed-frame'],
+  'tracing-printouts': ['tracing-printouts', 'tracing-printout', 'tracing-film', 'tracing-paper', 'tracing-sheets'],
+  'positive-printouts': ['positive-printouts', 'positive-printout', 'positive-film', 'positives', 'positive-sheet', 'positive-films'],
+  'cmyk-halftone': ['cmyk-halftone', 'cmyk-halftones', 'cmyk-separation', 'cmyk-film', 'cmyk-process', 'cmyk'],
+  'one-color': ['one-color', '1-color', 'single-color', '1-color-screen'],
+  'two-color': ['two-color', '2-color', 'dual-color', '2-color-screen'],
+  'three-color': ['three-color', '3-color', 'triple-color', '3-color-screen'],
+  'four-color': ['four-color', '4-color', 'quad-color', '4-color-screen'],
 
   // Stencil aliases
-  'hand-painting': ['hand-painting', 'hand_painting', 'handpainting', 'hand', 'hand painting'],
-  // Stencil & DTF Saree aliases
-  'saree': ['saree', 'sarees', 'saree-border', 'saree_border', 'saree-design', 'saree design', 'sari', 'saree border', 'saree-dtf'],
-  'tote-bags': ['tote-bags', 'tote_bags', 'tote-bag', 'totebag', 'tote', 'tote bags'],
-  'batik': ['batik', 'batik-patterns', 'batik_patterns', 'batik patterns'],
-  'wall-decoration': ['wall-decoration', 'wall_decoration', 'wall-decor', 'walldecor', 'wall', 'wall decor', 'wall decoration'],
-  'titanium': ['titanium', 'titanium-stencil', 'titanium stencil'],
+  'hand-painting': ['hand-painting', 'hand-painted', 'handpaint', 'handpainting', 'hand-painting-stencil'],
+  'saree': ['saree', 'sarees', 'saree-border', 'saree-design', 'sari', 'sari-border', 'saree-stencils', 'saree-dtf'],
+  'tote-bags': ['tote-bags', 'tote-bag', 'totebags', 'totebag', 'tote-bag-stencil'],
+  'batik': ['batik', 'batik-patterns', 'batik-pattern', 'batik-stencil'],
+  'wall-decoration': ['wall-decoration', 'wall-decor', 'walldecor', 'wall-art', 'wall-pattern'],
+  'titanium': ['titanium', 'titanium-stencil', 'titanium-sheet'],
 
   // DTF aliases
-  'tshirt-design': ['tshirt-design', 't-shirt-design', 'tshirt', 't-shirt', 't_shirt_design', 't-shirt design', 't-shirt designs', 'tshirt design'],
-  'dtf-sticker': ['dtf-sticker', 'dtf-stickers', 'sticker', 'stickers', 'dtf sticker', 'dtf stickers'],
-  'dtf-cloth': ['dtf-cloth', 'dtf-cloth-transfers', 'cloth', 'transfers', 'dtf cloth', 'cloth transfers'],
-  'men': ['men', 'mens', "men's", 'men-apparel'],
-  'women': ['women', 'womens', "women's", 'women-apparel'],
-  'kids': ['kids', "kid's", 'children', 'child'],
-  'logo-size': ['logo-size', 'logo', 'logo-2.5x2.5', 'logo-(2.5x2.5)', 'logo - (2.5 x 2.5)', 'logo-2.5-x-2.5'],
-  'a6-size': ['a6-size', 'a6', 'a6-(6x4)', 'a6-6x4', 'a6 - (6 x 4)', 'a6-6-x-4'],
-  'a5-size': ['a5-size', 'a5', 'a5-(8x5)', 'a5-8x5', 'a5 - (8 x 5)', 'a5-8-x-5'],
-  'a4-size': ['a4-size', 'a4', 'a4-(8x11)', 'a4-8x11', 'a4 - (8 x 11)', 'a4-8-x-11'],
-  'a3-size': ['a3-size', 'a3', 'a3-(11x16)', 'a3-11x16', 'a3 - (11 x 16)', 'a3-11-x-16'],
-  'a2-size': ['a2-size', 'a2', 'a2-(16x23)', 'a2-16x23', 'a2 - (16 x 23)', 'a2-16-x-23'],
-  '1m-size': ['1m-size', '1m', '1-meter', '1meter', '1m-(22x40)', '1m - (22 x 40)', '1m - (22 x40)', '1m-22-x-40'],
+  'tshirt-design': ['tshirt-design', 't-shirt-design', 'tshirt', 't-shirt', 't-shirt-designs', 'tshirt-designs', 't-shirt-dtf'],
+  'dtf-sticker': ['dtf-sticker', 'dtf-stickers', 'dtf-sticker-sheet', 'dtf-stickers-pack'],
+  'dtf-cloth': ['dtf-cloth', 'dtf-cloth-transfers', 'cloth-transfers', 'dtf-fabric', 'dtf-cloth-sheet'],
+  'men': ['men', 'mens', 'men-apparel', 'mens-wear', 'mens-apparel'],
+  'women': ['women', 'womens', 'women-apparel', 'womens-wear', 'womens-apparel'],
+  'kids': ['kids', 'children', 'kids-apparel', 'childrens-apparel'],
+  'logo-size': ['logo-size', 'logo-2-5-x-2-5', 'logo-2-5x2-5', 'logo-25x25', 'logo'],
+  'a6-size': ['a6-size', 'a6-6-x-4', 'a6-6x4', 'a6'],
+  'a5-size': ['a5-size', 'a5-8-x-5', 'a5-8x5', 'a5'],
+  'a4-size': ['a4-size', 'a4-8-x-11', 'a4-8x11', 'a4'],
+  'a3-size': ['a3-size', 'a3-11-x-16', 'a3-11x16', 'a3'],
+  'a2-size': ['a2-size', 'a2-16-x-23', 'a2-16x23', 'a2'],
+  '1m-size': ['1m-size', '1m-22-x-40', '1m-22x40', '1m', '1-meter', '1meter'],
 
   // Batik Stamp / Block Designs aliases
-  'cap-batik': ['cap-batik', 'cap_batik', 'cap-batik-stamps', 'cap-batik-stamp', 'cap', 'cap batik', 'cap batik stamps'],
-  'wooden-blocks': ['wooden-blocks', 'wood-blocks', 'wooden_blocks', 'wood-block', 'wooden-block', 'wood', 'wooden blocks', 'wooden block', 'wooden'],
+  'cap-batik': ['cap-batik', 'cap-batik-stamps', 'cap-batik-stamp', 'copper-cap-batik', 'cap-batik-stamp-copper'],
+  'wooden-blocks': ['wooden-blocks', 'wood-blocks', 'wood-block', 'wooden-block', 'wooden-stamps', 'wood-printing-block', 'wooden-printing-blocks'],
 
   // Laser cutting aliases
-  'acrylic': ['acrylic', 'acrylic-cut', 'acrylic-engrave', 'acrylic cut', 'acrylic engrave'],
-  'wood': ['wood', 'wood-engraving', 'wooden', 'wood engraving'],
-  'custom-profile': ['custom-profile', 'custom-profiles', 'custom', 'custom profile', 'custom profiles'],
+  'acrylic': ['acrylic', 'acrylic-cut', 'acrylic-signs', 'acrylic-engrave', 'acrylic-cut-signs', 'acrylic-cut-and-signs'],
+  'wood': ['wood', 'wood-engraving', 'wood-cut', 'wooden-craft', 'wood-laser-cut'],
+  'custom-profile': ['custom-profile', 'custom-profiles', 'custom-cutting', 'custom-shape', 'custom-laser-profiles'],
 
   // Materials aliases
-  'screen-printing-consumables': ['screen-printing-consumables', 'screen-consumables', 'screen-ink', 'screen printing consumables'],
-  'hand-painting-consumables': ['hand-painting-consumables', 'painting-consumables', 'fabric-paint', 'hand painting consumables'],
-  'other-consumables': ['other-consumables', 'dtf-consumables', 'dtf-ink', 'consumables'],
+  'screen-printing-consumables': ['screen-printing-consumables', 'screen-printing-consumable', 'screen-consumables', 'screen-ink-chemicals', 'screen-printing-materials'],
+  'hand-painting-consumables': ['hand-painting-consumables', 'hand-painting-consumable', 'hand-paint-consumables', 'fabric-paint-consumables', 'hand-painting-materials'],
+  'other-consumables': ['other-consumables', 'dtf-consumables', 'dtf-inks-and-films', 'printing-materials', 'other-printing-consumables'],
+
+  // Other aliases
+  'custom': ['custom', 'custom-production'],
+  'accessories': ['accessories', 'accessories-and-tools', 'tools-and-accessories'],
+  'merchandise': ['merchandise', 'custom-merchandise'],
+  'other': ['other', 'general', 'misc', 'miscellaneous'],
 };
 
-function matchesSingleSub(singleProductSub: string, activeSub: string, allKnownSubIds: string[]): boolean {
-  const normProduct = singleProductSub.trim().toLowerCase().replace(/[\s_]+/g, '-');
-  const normActive = activeSub.trim().toLowerCase().replace(/[\s_]+/g, '-');
+function normalizeSub(s: string): string {
+  return (s || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
 
+function matchesSingleSub(singleProductSub: string, activeSub: string): boolean {
+  const normProduct = normalizeSub(singleProductSub);
+  const normActive = normalizeSub(activeSub);
+
+  if (!normProduct || !normActive) return false;
+
+  // 1. Direct exact normalized match
   if (normProduct === normActive) return true;
 
-  const activeAliases = SUBCATEGORY_ALIASES[normActive];
-  if (activeAliases && (activeAliases.includes(normProduct) || activeAliases.includes(singleProductSub.trim().toLowerCase()))) {
+  // 2. Check if normProduct matches activeSub's defined aliases
+  const activeAliases = SUBCATEGORY_ALIASES[normActive] || [];
+  if (activeAliases.some(alias => normalizeSub(alias) === normProduct)) {
     return true;
   }
 
-  for (const [key, aliases] of Object.entries(SUBCATEGORY_ALIASES)) {
-    if ((aliases.includes(normProduct) || aliases.includes(singleProductSub.trim().toLowerCase())) && (key === normActive || aliases.includes(normActive))) {
-      return true;
-    }
-  }
-
-  if (normActive !== 'other') {
-    if (normProduct.includes(normActive) || normActive.includes(normProduct)) {
-      return true;
-    }
-    const productWords = normProduct.split('-');
-    const activeWords = normActive.split('-');
-    const hasCommonNonGenericWord = productWords.some(pw => 
-      pw.length > 3 && !['item', 'type', 'size', 'other'].includes(pw) && activeWords.includes(pw)
-    );
-    if (hasCommonNonGenericWord) return true;
+  // 3. Reverse check: if product's sub is defined as a key in SUBCATEGORY_ALIASES, check if normActive is in its aliases
+  const productAliases = SUBCATEGORY_ALIASES[normProduct] || [];
+  if (productAliases.some(alias => normalizeSub(alias) === normActive)) {
+    return true;
   }
 
   return false;
 }
 
 function matchesSubCategory(productSub: string | undefined, activeSub: string, allKnownSubIds: string[]): boolean {
-  if (!productSub) {
-    return activeSub === 'other';
+  const normActive = normalizeSub(activeSub);
+
+  if (!productSub || !productSub.trim()) {
+    // If product has no subcategory, show it under 'other' / 'other-consumables' tab only
+    return normActive === 'other' || normActive === 'other-consumables';
   }
 
   // Split multiple comma or semicolon separated subcategories
   const subItems = productSub.split(/[,;/]+/).map(s => s.trim()).filter(Boolean);
   if (subItems.length === 0) {
-    return activeSub === 'other';
+    return normActive === 'other' || normActive === 'other-consumables';
   }
 
-  // If specific sub is active, check if any of the product's subcategories matches
-  if (activeSub !== 'other') {
-    return subItems.some(subItem => matchesSingleSub(subItem, activeSub, allKnownSubIds));
-  }
+  const isOtherTab = normActive === 'other' || normActive === 'other-consumables';
+  if (isOtherTab) {
+    // Check if it explicitly matches 'other' / 'other-consumables'
+    const explicitlyMatchesOther = subItems.some(subItem => matchesSingleSub(subItem, activeSub));
+    if (explicitlyMatchesOther) return true;
 
-  // If active is 'other', match if none of the product's subcategories matches any specific known subIds
-  const matchesAnySpecific = subItems.some(subItem => {
-    return allKnownSubIds.some(subId => {
-      if (subId === 'other') return false;
-      return matchesSingleSub(subItem, subId, allKnownSubIds);
+    // Fallback: match only if the product's subcategory does NOT match ANY OTHER tab on this category page
+    const matchesAnyOtherTab = subItems.some(subItem => {
+      return allKnownSubIds.some(subId => {
+        const normSubId = normalizeSub(subId);
+        if (normSubId === 'other' || normSubId === 'other-consumables') return false;
+        return matchesSingleSub(subItem, subId);
+      });
     });
-  });
-  return !matchesAnySpecific || subItems.some(s => s.toLowerCase() === 'other');
+
+    return !matchesAnyOtherTab;
+  }
+
+  // If a specific subcategory tab is active:
+  return subItems.some(subItem => matchesSingleSub(subItem, activeSub));
 }
 
   // Filter products
