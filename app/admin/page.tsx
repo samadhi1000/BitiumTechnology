@@ -1922,7 +1922,7 @@ export default function AdminPanelPage() {
                   </div>
                   
                   <div className="flex flex-col sm:flex-row gap-3 items-center">
-                    <label className="w-full sm:w-auto flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg border border-dashed border-border hover:border-[#2CFF05]/40 hover:bg-card cursor-pointer transition-colors text-xs font-semibold text-muted-foreground">
+                    <label className="w-full sm:w-auto flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg border border-dashed border-border hover:border-[#2CFF05]/40 hover:bg-card cursor-pointer transition-colors text-xs font-semibold text-muted-foreground shrink-0">
                       <Upload size={13} />
                       <span>Choose Artwork</span>
                       <input 
@@ -1937,6 +1937,29 @@ export default function AdminPanelPage() {
                     <div className="text-xs truncate text-muted-foreground flex-grow max-w-[220px]">
                       {prodImageFile ? prodImageFile.name : (prodImageUrl ? 'URL Provided' : 'No file chosen')}
                     </div>
+                    {(prodImageFile || prodImageUrl) && (
+                      <div className="flex items-center gap-2 shrink-0">
+                        <div className="relative w-9 h-9 rounded-lg overflow-hidden border border-border bg-black/40">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={prodImageFile ? URL.createObjectURL(prodImageFile) : prodImageUrl}
+                            alt="Main preview"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setProdImageFile(null);
+                            setProdImageUrl('');
+                          }}
+                          className="p-1 rounded-md text-red-400 hover:bg-red-500/10 text-[11px] font-bold"
+                          title="Clear main image"
+                        >
+                          <X size={13} />
+                        </button>
+                      </div>
+                    )}
                   </div>
 
                   <input
@@ -1959,7 +1982,7 @@ export default function AdminPanelPage() {
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3 items-center">
-                    <label className="w-full sm:w-auto flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg border border-dashed border-border hover:border-cyan-500/40 hover:bg-card cursor-pointer transition-colors text-xs font-semibold text-muted-foreground">
+                    <label className="w-full sm:w-auto flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg border border-dashed border-border hover:border-cyan-500/40 hover:bg-card cursor-pointer transition-colors text-xs font-semibold text-muted-foreground shrink-0">
                       <Upload size={13} />
                       <span>Choose Mockup 1</span>
                       <input 
@@ -1974,6 +1997,29 @@ export default function AdminPanelPage() {
                     <div className="text-xs truncate text-muted-foreground flex-grow max-w-[220px]">
                       {prodMockup1File ? prodMockup1File.name : (prodMockup1Url ? 'URL Provided' : 'No file chosen')}
                     </div>
+                    {(prodMockup1File || prodMockup1Url) && (
+                      <div className="flex items-center gap-2 shrink-0">
+                        <div className="relative w-9 h-9 rounded-lg overflow-hidden border border-cyan-500/40 bg-black/40">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={prodMockup1File ? URL.createObjectURL(prodMockup1File) : prodMockup1Url}
+                            alt="Mockup 1 preview"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setProdMockup1File(null);
+                            setProdMockup1Url('');
+                          }}
+                          className="p-1 rounded-md text-red-400 hover:bg-red-500/10 text-[11px] font-bold"
+                          title="Clear Mockup 1"
+                        >
+                          <X size={13} />
+                        </button>
+                      </div>
+                    )}
                   </div>
 
                   <input
@@ -1996,7 +2042,7 @@ export default function AdminPanelPage() {
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3 items-center">
-                    <label className="w-full sm:w-auto flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg border border-dashed border-border hover:border-purple-500/40 hover:bg-card cursor-pointer transition-colors text-xs font-semibold text-muted-foreground">
+                    <label className="w-full sm:w-auto flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg border border-dashed border-border hover:border-purple-500/40 hover:bg-card cursor-pointer transition-colors text-xs font-semibold text-muted-foreground shrink-0">
                       <Upload size={13} />
                       <span>Choose Mockup 2</span>
                       <input 
@@ -2011,6 +2057,29 @@ export default function AdminPanelPage() {
                     <div className="text-xs truncate text-muted-foreground flex-grow max-w-[220px]">
                       {prodMockup2File ? prodMockup2File.name : (prodMockup2Url ? 'URL Provided' : 'No file chosen')}
                     </div>
+                    {(prodMockup2File || prodMockup2Url) && (
+                      <div className="flex items-center gap-2 shrink-0">
+                        <div className="relative w-9 h-9 rounded-lg overflow-hidden border border-purple-500/40 bg-black/40">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={prodMockup2File ? URL.createObjectURL(prodMockup2File) : prodMockup2Url}
+                            alt="Mockup 2 preview"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setProdMockup2File(null);
+                            setProdMockup2Url('');
+                          }}
+                          className="p-1 rounded-md text-red-400 hover:bg-red-500/10 text-[11px] font-bold"
+                          title="Clear Mockup 2"
+                        >
+                          <X size={13} />
+                        </button>
+                      </div>
+                    )}
                   </div>
 
                   <input

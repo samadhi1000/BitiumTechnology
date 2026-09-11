@@ -9,16 +9,47 @@ const catalogPath = path.join(process.cwd(), 'lib', 'products-catalog.json');
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+// Helpers to safely embed and retrieve mockup URLs in description for Supabase compatibility
+export function encodeProductDescription(description?: string, mockupUrls?: string[]): string {
+  const clean = (description || '').replace(/\s*<!--\s*MOCKUPS:[\s\S]*?-->\s*$/g, '').trim();
+  const validMockups = (mockupUrls || []).filter((u): u is string => Boolean(u && typeof u === 'string' && u.trim()));
+  if (validMockups.length === 0) return clean;
+  return clean ? `${clean}\n\n<!-- MOCKUPS:${JSON.stringify(validMockups)} -->` : `<!-- MOCKUPS:${JSON.stringify(validMockups)} -->`;
+}
+
+export function decodeProductDescription(rawDescription?: string | null): { cleanDescription: string; mockupUrls: string[] } {
+  if (!rawDescription) return { cleanDescription: '', mockupUrls: [] };
+  const match = rawDescription.match(/<!--\s*MOCKUPS:([\s\S]*?)-->/);
+  let mockupUrls: string[] = [];
+  let cleanDescription = rawDescription;
+
+  if (match) {
+    try {
+      const parsed = JSON.parse(match[1]);
+      if (Array.isArray(parsed)) {
+        mockupUrls = parsed.filter((u) => typeof u === 'string' && u.trim());
+      }
+    } catch {}
+    cleanDescription = rawDescription.replace(/\s*<!--\s*MOCKUPS:[\s\S]*?-->\s*/g, '').trim();
+  }
+
+  return { cleanDescription, mockupUrls };
+}
+
 // Format Supabase product records into application Product structure
 function formatSupabaseProduct(row: any): any {
+  const { cleanDescription, mockupUrls } = decodeProductDescription(row.description);
+  const directMockups = row.mockup_urls || (row.mockup_1 ? [row.mockup_1, row.mockup_2].filter(Boolean) : []);
+  const finalMockups = directMockups && directMockups.length > 0 ? directMockups : mockupUrls;
+
   return {
     id: row.id,
     name: row.name,
-    description: row.description || '',
+    description: cleanDescription,
     price: Number(row.price) || 0,
     original_price: row.original_price ? Number(row.original_price) : undefined,
     image_url: row.image_url || '',
-    mockup_urls: row.mockup_urls || (row.mockup_1 ? [row.mockup_1, row.mockup_2].filter(Boolean) : []),
+    mockup_urls: finalMockups,
     category: row.category,
     sub_category: row.sub_category || undefined,
     is_active: row.is_active !== false,
@@ -114,12 +145,13 @@ export async function POST(request: NextRequest) {
     if (action === 'create' && product) {
       const p = product;
       const vars = variants || p.variants || [];
+      const encodedDesc = encodeProductDescription(p.description, p.mockup_urls);
 
       // Insert product to Supabase
       const { error: prodError } = await supabase.from('products').upsert([{
         id: p.id,
         name: p.name,
-        description: p.description || '',
+        description: encodedDesc,
         price: Number(p.price) || 0,
         original_price: p.original_price ? Number(p.original_price) : null,
         image_url: p.image_url || '',
@@ -169,7 +201,23 @@ export async function POST(request: NextRequest) {
 
       const updatePayload: any = {};
       if (p.name !== undefined) updatePayload.name = p.name;
-      if (p.description !== undefined) updatePayload.description = p.description;
+      if (p.description !== undefined || p.mockup_urls !== undefined) {
+        let baseDesc = p.description;
+        if (baseDesc === undefined) {
+          try {
+            const { data: existingRow } = await supabase.from('products').select('description').eq('id', id).single();
+            if (existingRow) {
+              const { cleanDescription } = decodeProductDescription(existingRow.description);
+              baseDesc = cleanDescription;
+            } else {
+              baseDesc = '';
+            }
+          } catch {
+            baseDesc = '';
+          }
+        }
+        updatePayload.description = encodeProductDescription(baseDesc, p.mockup_urls);
+      }
       if (p.price !== undefined) updatePayload.price = Number(p.price) || 0;
       if (p.original_price !== undefined) updatePayload.original_price = p.original_price ? Number(p.original_price) : null;
       if (p.image_url !== undefined) updatePayload.image_url = p.image_url;

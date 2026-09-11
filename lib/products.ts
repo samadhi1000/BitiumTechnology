@@ -32,6 +32,33 @@ export interface SizeVariantInput {
   stock: number;  // stock qty for this size
 }
 
+// Helpers to safely embed and retrieve mockup URLs in description for Supabase compatibility
+export function encodeProductDescription(description?: string, mockupUrls?: string[]): string {
+  const clean = (description || '').replace(/\s*<!--\s*MOCKUPS:[\s\S]*?-->\s*$/g, '').trim();
+  const validMockups = (mockupUrls || []).filter((u): u is string => Boolean(u && typeof u === 'string' && u.trim()));
+  if (validMockups.length === 0) return clean;
+  return clean ? `${clean}\n\n<!-- MOCKUPS:${JSON.stringify(validMockups)} -->` : `<!-- MOCKUPS:${JSON.stringify(validMockups)} -->`;
+}
+
+export function decodeProductDescription(rawDescription?: string | null): { cleanDescription: string; mockupUrls: string[] } {
+  if (!rawDescription) return { cleanDescription: '', mockupUrls: [] };
+  const match = rawDescription.match(/<!--\s*MOCKUPS:([\s\S]*?)-->/);
+  let mockupUrls: string[] = [];
+  let cleanDescription = rawDescription;
+
+  if (match) {
+    try {
+      const parsed = JSON.parse(match[1]);
+      if (Array.isArray(parsed)) {
+        mockupUrls = parsed.filter((u) => typeof u === 'string' && u.trim());
+      }
+    } catch {}
+    cleanDescription = rawDescription.replace(/\s*<!--\s*MOCKUPS:[\s\S]*?-->\s*/g, '').trim();
+  }
+
+  return { cleanDescription, mockupUrls };
+}
+
 // Subcategory definitions (15 subcategories, 9 items each = 135 products total)
 const SUBCAT_DATA = [
   // Stencil
@@ -488,27 +515,33 @@ export async function getProducts(): Promise<Product[]> {
         .order('created_at', { ascending: false });
 
       if (!error && data && data.length > 0) {
-        dbProducts = data.map((row: any) => ({
-          id: row.id,
-          name: row.name,
-          description: row.description || '',
-          price: Number(row.price) || 0,
-          original_price: row.original_price ? Number(row.original_price) : undefined,
-          image_url: row.image_url || '',
-          mockup_urls: row.mockup_urls || (row.mockup_1 ? [row.mockup_1, row.mockup_2].filter(Boolean) : []),
-          category: row.category,
-          sub_category: row.sub_category || undefined,
-          is_active: row.is_active !== false,
-          variants: (row.variants || []).map((v: any) => ({
-            id: v.id,
-            product_id: v.product_id,
-            name: v.name,
-            sku: v.sku,
-            price_override: v.price_override != null ? Number(v.price_override) : null,
-            stock_quantity: Number(v.stock_quantity) || 0,
-            attributes: v.attributes || { size: v.name },
-          })),
-        }));
+        dbProducts = data.map((row: any) => {
+          const { cleanDescription, mockupUrls } = decodeProductDescription(row.description);
+          const directMockups = row.mockup_urls || (row.mockup_1 ? [row.mockup_1, row.mockup_2].filter(Boolean) : []);
+          const finalMockups = directMockups && directMockups.length > 0 ? directMockups : mockupUrls;
+
+          return {
+            id: row.id,
+            name: row.name,
+            description: cleanDescription,
+            price: Number(row.price) || 0,
+            original_price: row.original_price ? Number(row.original_price) : undefined,
+            image_url: row.image_url || '',
+            mockup_urls: finalMockups,
+            category: row.category,
+            sub_category: row.sub_category || undefined,
+            is_active: row.is_active !== false,
+            variants: (row.variants || []).map((v: any) => ({
+              id: v.id,
+              product_id: v.product_id,
+              name: v.name,
+              sku: v.sku,
+              price_override: v.price_override != null ? Number(v.price_override) : null,
+              stock_quantity: Number(v.stock_quantity) || 0,
+              attributes: v.attributes || { size: v.name },
+            })),
+          };
+        });
       }
     } catch (err) {
       console.error('Error fetching products from DB:', err);
@@ -568,14 +601,18 @@ export async function getProductById(id: string): Promise<Product | null> {
           .single();
 
         if (!error && row) {
+          const { cleanDescription, mockupUrls } = decodeProductDescription(row.description);
+          const directMockups = row.mockup_urls || (row.mockup_1 ? [row.mockup_1, row.mockup_2].filter(Boolean) : []);
+          const finalMockups = directMockups && directMockups.length > 0 ? directMockups : mockupUrls;
+
           return {
             id: row.id,
             name: row.name,
-            description: row.description || '',
+            description: cleanDescription,
             price: Number(row.price) || 0,
             original_price: row.original_price ? Number(row.original_price) : undefined,
             image_url: row.image_url || '',
-            mockup_urls: row.mockup_urls || (row.mockup_1 ? [row.mockup_1, row.mockup_2].filter(Boolean) : []),
+            mockup_urls: finalMockups,
             category: row.category,
             sub_category: row.sub_category || undefined,
             is_active: row.is_active !== false,
@@ -663,10 +700,11 @@ export async function createProduct(
   // 2. Direct Supabase Client fallback
   if (isSupabaseConfigured()) {
     try {
+      const encodedDesc = encodeProductDescription(productData.description, productData.mockup_urls);
       const { error: prodError } = await supabase.from('products').upsert({
         id,
         name: productData.name,
-        description: productData.description,
+        description: encodedDesc,
         price: productData.price,
         original_price: productData.original_price || null,
         image_url: productData.image_url,
@@ -766,9 +804,10 @@ export async function updateProduct(
     const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
     if (isUUID) {
       try {
+        const encodedDesc = encodeProductDescription(updated.description, updated.mockup_urls);
         await supabase.from('products').update({
           name: updated.name,
-          description: updated.description,
+          description: encodedDesc,
           price: updated.price,
           original_price: updated.original_price || null,
           image_url: updated.image_url,
