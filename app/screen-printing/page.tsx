@@ -65,7 +65,7 @@ const SCREEN_PRINTING_CONFIG_EN: CategoryPageConfig = {
     title: 'Need a custom screen exposed?',
     desc: 'Send us your vector design and get a ready-to-print screen delivered to your doorstep.',
     buttonText: 'Order Custom Screen',
-    buttonHref: '/order-form',
+    buttonHref: '/contact',
   },
   afterListings: {
     sections: [
@@ -154,7 +154,7 @@ const SCREEN_PRINTING_CONFIG_SI: CategoryPageConfig = {
     title: 'ඔබට අවශ්‍ය පරිදි සකසාගත් ස්ක්‍රීන් එකක් අවශ්‍යද?',
     desc: 'ඔබේ වෙක්ටර් සැලසුම අප වෙත එවා, මුද්‍රණයට සූදානම් ස්ක්‍රීන් එකක් ඔබේ නිවසටම ගෙන්වා ගන්න.',
     buttonText: 'ස්ක්‍රීන් ඇණවුම් කරන්න',
-    buttonHref: '/order-form',
+    buttonHref: '/contact',
   },
   afterListings: {
     sections: [
