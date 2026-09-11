@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   Printer,
-  Users,
   RefreshCw,
   Trash2,
   CheckCircle2,
@@ -93,139 +92,6 @@ export const createEmptyOrder = (id?: string): OrderItem => ({
   packedBy: '',
   officeDate: '',
 });
-
-export const sampleOrders: OrderItem[] = [
-  {
-    id: 'ORD-101',
-    customerName: 'Kavindu Perera',
-    whatsappNo: '077 123 4567',
-    shortCode: '4567',
-    address: 'No. 45, Temple Road, Kandy',
-    note: 'Call before delivery',
-    date: new Date().toISOString().split('T')[0],
-    totalAmount: '4,850',
-    deliveryMethod: 'Cash On Delivery',
-    stencils: [
-      [{ code: 'A3-01', qty: '1', checked: true }, { code: 'A3-14', qty: '2', checked: true }, { code: '', qty: '', checked: false }, { code: 'A2-05', qty: '1', checked: true }, { code: 'A4-12', qty: '1', checked: true }],
-      [{ code: 'A3-08', qty: '3', checked: true }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: 'A4-88', qty: '1', checked: true }],
-      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-    ],
-    fabricPainting: [
-      [{ code: 'FB-01', qty: '1', checked: true }, { code: 'FB-04', qty: '2', checked: true }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-    ],
-    accessories: {
-      rollerBrush: true,
-      paintBrush: true,
-      fabricPaint: true,
-      tracing: false,
-      fabric: false,
-    },
-  },
-  {
-    id: 'ORD-102',
-    customerName: 'Sanduni Jayasinghe',
-    whatsappNo: '071 987 6543',
-    shortCode: '6543',
-    address: '24/B, Galle Road, Matara',
-    note: 'Fragile packing please',
-    date: new Date().toISOString().split('T')[0],
-    totalAmount: '6,200',
-    deliveryMethod: 'Paid Courier',
-    stencils: [
-      [{ code: 'A3-22', qty: '2', checked: true }, { code: 'A3-45', qty: '1', checked: true }, { code: 'A3-99', qty: '1', checked: true }, { code: 'A2-01', qty: '1', checked: true }, { code: '', qty: '', checked: false }],
-      [{ code: 'A3-11', qty: '1', checked: true }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: 'A2-09', qty: '2', checked: true }, { code: 'A4-03', qty: '1', checked: true }],
-      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-    ],
-    fabricPainting: [
-      [{ code: 'FB-12', qty: '1', checked: true }, { code: '', qty: '', checked: false }, { code: 'FB-19', qty: '1', checked: true }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-      [{ code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }, { code: '', qty: '', checked: false }],
-    ],
-    accessories: {
-      rollerBrush: false,
-      paintBrush: true,
-      fabricPaint: true,
-      tracing: true,
-      fabric: true,
-    },
-  },
-  {
-    id: 'ORD-103',
-    customerName: 'Nimal Fernando',
-    whatsappNo: '075 555 4321',
-    address: 'Negombo Town',
-    note: 'Come to shop',
-    date: new Date().toISOString().split('T')[0],
-    totalAmount: '2,300',
-    deliveryMethod: 'Store Pickup',
-    stencils: [
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: 'A4-01', checked: true }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: 'A4-05', checked: true }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: 'A4-10', checked: true }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-    ],
-    fabricPainting: [
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-    ],
-    accessories: {
-      rollerBrush: true,
-      paintBrush: false,
-      fabricPaint: true,
-      tracing: false,
-      fabric: false,
-    },
-  },
-  {
-    id: 'ORD-104',
-    customerName: 'Thilini Disanayake',
-    whatsappNo: '078 333 7890',
-    address: 'Kurunegala Road, Kuliyapitiya',
-    note: 'Urgent order',
-    date: new Date().toISOString().split('T')[0],
-    totalAmount: '7,900',
-    deliveryMethod: 'Courier (On weight)',
-    stencils: [
-      [{ code: 'A3-50', checked: true }, { code: 'A3-51', checked: true }, { code: '', checked: false }, { code: 'A2-30', checked: true }, { code: 'A4-70', checked: true }],
-      [{ code: 'A3-52', checked: true }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-    ],
-    fabricPainting: [
-      [{ code: 'FB-30', checked: true }, { code: 'FB-31', checked: true }, { code: 'FB-32', checked: true }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-      [{ code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }, { code: '', checked: false }],
-    ],
-    accessories: {
-      rollerBrush: true,
-      paintBrush: true,
-      fabricPaint: true,
-      tracing: true,
-      fabric: true,
-    },
-  },
-];
 
 export function QuarterOrderCard({ order }: { order: OrderItem }) {
   const shortCodeVal = order.shortCode || (order.whatsappNo ? order.whatsappNo.replace(/\D/g, '').slice(-4) : '');
@@ -548,6 +414,25 @@ function QuadrantOrderSelect({
 
           {/* Orders List */}
           <div className="overflow-y-auto space-y-1 max-h-52 pr-1 custom-scrollbar">
+            {/* Blank Option (Pinned at top) */}
+            <div className="pb-1 border-b border-border/50 mb-1">
+              <button
+                type="button"
+                onClick={() => {
+                  onSelectOrder(createEmptyOrder(`ORD-EMPTY-${slotIdx + 1}`));
+                  setIsOpen(false);
+                  setSearchQuery('');
+                }}
+                className="w-full text-left p-2 rounded-xl text-xs text-muted-foreground hover:text-foreground hover:bg-secondary/80 flex items-center justify-between gap-2 cursor-pointer transition-all"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-[10px] font-bold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">[Blank Template]</span>
+                  <span className="text-[10px] text-muted-foreground">(Clear this quadrant)</span>
+                </div>
+                {isBlank && <Check className="w-3.5 h-3.5 text-amber-500 shrink-0" />}
+              </button>
+            </div>
+
             {filteredOrders.length > 0 ? (
               filteredOrders.map((o) => {
                 const isSelected = selectedOrder.id === o.id;
@@ -595,22 +480,6 @@ function QuadrantOrderSelect({
                 No orders match &quot;{searchQuery}&quot;
               </div>
             )}
-
-            {/* Blank Option */}
-            <div className="pt-1 border-t border-border/50 mt-1">
-              <button
-                type="button"
-                onClick={() => {
-                  onSelectOrder(createEmptyOrder(`ORD-EMPTY-${slotIdx + 1}`));
-                  setIsOpen(false);
-                  setSearchQuery('');
-                }}
-                className="w-full text-left p-2 rounded-xl text-xs text-muted-foreground hover:text-foreground hover:bg-secondary flex items-center gap-2 cursor-pointer"
-              >
-                <span className="font-mono text-[10px] font-bold">[Blank Template]</span>
-                <span className="text-[10px] text-zinc-500">(Clear this quadrant)</span>
-              </button>
-            </div>
           </div>
         </div>
       )}
@@ -632,31 +501,23 @@ export default function AdminBatchPrint() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        setSavedOrders(parsed);
-        if (parsed.length >= 4) {
-          setSelectedSlots(parsed.slice(0, 4));
-        } else if (parsed.length > 0) {
-          const filled = [...parsed];
-          while (filled.length < 4) {
-            filled.push(createEmptyOrder(`ORD-EMPTY-${filled.length + 1}`));
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setSavedOrders(parsed);
+          if (parsed.length >= 4) {
+            setSelectedSlots(parsed.slice(0, 4));
+          } else {
+            const filled = [...parsed];
+            while (filled.length < 4) {
+              filled.push(createEmptyOrder(`ORD-EMPTY-${filled.length + 1}`));
+            }
+            setSelectedSlots(filled);
           }
-          setSelectedSlots(filled);
         }
       } catch (e) {
-        console.error(e);
+        console.error('Error loading bitium_orders:', e);
       }
-    } else {
-      setSavedOrders(sampleOrders);
-      setSelectedSlots(sampleOrders.slice(0, 4));
-      localStorage.setItem('bitium_orders', JSON.stringify(sampleOrders));
     }
   }, []);
-
-  const loadDemoData = () => {
-    setSavedOrders(sampleOrders);
-    setSelectedSlots(sampleOrders);
-    localStorage.setItem('bitium_orders', JSON.stringify(sampleOrders));
-  };
 
   const handlePrintA4 = () => {
     window.print();
@@ -739,15 +600,6 @@ export default function AdminBatchPrint() {
           </div>
 
           <div className="flex items-center gap-2.5">
-            <button
-              type="button"
-              onClick={loadDemoData}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-card border border-border text-foreground hover:bg-muted cursor-pointer transition-all"
-            >
-              <Users className="w-3.5 h-3.5 text-cyan-400" />
-              Load Demo Orders
-            </button>
-
             <button
               type="button"
               onClick={handlePrintA4}
