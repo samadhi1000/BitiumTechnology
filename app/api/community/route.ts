@@ -227,23 +227,69 @@ export async function POST(req: Request) {
     // ── Delete a post ─────────────────────────────────────────────────────────
     if (action === 'delete_post') {
       const { postId } = body;
-      // Delete attached comments first
-      await supabase
-        .from('community_comments')
-        .delete()
-        .eq('post_id', postId);
+      if (!postId) {
+        return NextResponse.json({ error: 'Missing postId' }, { status: 400 });
+      }
+
+      // Delete attached comments first (if any)
+      try {
+        await supabase
+          .from('community_comments')
+          .delete()
+          .eq('post_id', postId);
+      } catch (cErr) {
+        console.warn('Non-fatal: comments deletion warning:', cErr);
+      }
 
       const { error } = await supabase
         .from('community_posts')
         .delete()
         .eq('id', postId);
-      if (error) throw error;
-      return NextResponse.json({ success: true });
+
+      if (error) {
+        console.error('Supabase delete_post error:', error);
+        throw error;
+      }
+
+      return NextResponse.json({ success: true, deletedPostId: postId });
     }
 
     return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
   } catch (err: any) {
     console.error('Community POST error:', err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const postId = searchParams.get('postId') || searchParams.get('id');
+
+    if (!postId) {
+      return NextResponse.json({ error: 'Missing postId' }, { status: 400 });
+    }
+
+    // Delete attached comments first
+    try {
+      await supabase
+        .from('community_comments')
+        .delete()
+        .eq('post_id', postId);
+    } catch (cErr) {
+      console.warn('Non-fatal: comments deletion warning:', cErr);
+    }
+
+    const { error } = await supabase
+      .from('community_posts')
+      .delete()
+      .eq('id', postId);
+
+    if (error) throw error;
+
+    return NextResponse.json({ success: true, deletedPostId: postId });
+  } catch (err: any) {
+    console.error('Community DELETE error:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

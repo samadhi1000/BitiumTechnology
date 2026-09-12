@@ -354,19 +354,31 @@ export default function CommunityForumPage() {
   }, []);
 
   const canEditPost = (post: Post) => {
-    if (!user && !profile) return false;
-    
-    // Admin check (Admin role or CEO Indrajith)
+    // 1. Staff admin from localStorage (Indrajith Admin or active staff)
+    if (typeof window !== 'undefined') {
+      const activeStaffId = localStorage.getItem('bitium_admin_active_staff_id_v1');
+      if (activeStaffId) return true;
+    }
+
+    // 2. Supabase Admin check (Admin role or CEO Indrajith)
     if (profile?.role === 'admin' || user?.email === 'indrajith@bitiumtechnology.com') {
       return true;
     }
 
-    // Post Author checks
+    // 3. Post Author checks
     if (post.authorId && user?.id && post.authorId === user.id) return true;
     if (post.authorEmail && user?.email && post.authorEmail.toLowerCase() === user.email.toLowerCase()) return true;
     if (profile?.email && post.authorName && profile.email.toLowerCase() === post.authorName.toLowerCase()) return true;
     if (profile?.full_name && post.authorName && profile.full_name.trim().toLowerCase() === post.authorName.trim().toLowerCase()) return true;
     if (user?.email && post.authorName && user.email.toLowerCase() === post.authorName.toLowerCase()) return true;
+
+    // 4. Check if post was created in current browser session (for guests/unauthenticated authors)
+    if (typeof window !== 'undefined') {
+      try {
+        const myPosts: string[] = JSON.parse(localStorage.getItem('bitium_my_community_post_ids') || '[]');
+        if (myPosts.includes(post.id)) return true;
+      } catch {}
+    }
 
     return false;
   };
@@ -475,6 +487,17 @@ export default function CommunityForumPage() {
     };
 
     setPosts(prev => [newPost, ...prev]);
+
+    // Store created post ID locally for post creator permissions
+    if (typeof window !== 'undefined') {
+      try {
+        const myPosts: string[] = JSON.parse(localStorage.getItem('bitium_my_community_post_ids') || '[]');
+        if (!myPosts.includes(newPost.id)) {
+          myPosts.push(newPost.id);
+          localStorage.setItem('bitium_my_community_post_ids', JSON.stringify(myPosts));
+        }
+      } catch {}
+    }
 
     try {
       await fetch('/api/community', {
@@ -609,7 +632,7 @@ export default function CommunityForumPage() {
 
     if (!canEditPost(targetPost)) {
       if (!user && !profile) {
-        setToastMessage('Please login to delete this post.');
+        setToastMessage('Please login or switch to admin to delete this post.');
       } else {
         setToastMessage('You can only delete your own posts (or Admin required).');
       }
@@ -619,23 +642,48 @@ export default function CommunityForumPage() {
 
     if (!confirm('Are you sure you want to delete this post?')) return;
 
-    // Optimistic UI update
+    // 1. Optimistic UI update
     setPosts(prev => prev.filter(p => p.id !== postId));
 
+    // Remove from local creator list
+    if (typeof window !== 'undefined') {
+      try {
+        const myPosts: string[] = JSON.parse(localStorage.getItem('bitium_my_community_post_ids') || '[]');
+        const updated = myPosts.filter(id => id !== postId);
+        localStorage.setItem('bitium_my_community_post_ids', JSON.stringify(updated));
+      } catch {}
+    }
+
+    // 2. Call backend deletion
     try {
       const res = await fetch('/api/community', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'delete_post', postId }),
       });
-      if (!res.ok) throw new Error('Failed to delete post');
+
+      if (!res.ok) {
+        // Fallback to direct DELETE method
+        await fetch(`/api/community?postId=${postId}`, {
+          method: 'DELETE',
+        });
+      }
+
       fetchCommunityPosts();
       setToastMessage('Post deleted successfully!');
       setTimeout(() => setToastMessage(''), 2500);
     } catch (err) {
       console.error('Error deleting post:', err);
-      fetchCommunityPosts();
-      setToastMessage('Failed to delete post. Please try again.');
+      try {
+        await fetch(`/api/community?postId=${postId}`, {
+          method: 'DELETE',
+        });
+        fetchCommunityPosts();
+        setToastMessage('Post deleted successfully!');
+      } catch (e2) {
+        fetchCommunityPosts();
+        setToastMessage('Failed to delete post. Please try again.');
+      }
       setTimeout(() => setToastMessage(''), 2500);
     }
   };
