@@ -36,6 +36,48 @@ export interface SavedPOSInvoice {
 }
 
 const LOCAL_STORAGE_KEY = 'bitium_pos_invoices';
+const TOMBSTONES_KEY = 'bitium_deleted_invoices_tombstones';
+
+/**
+ * Gets the set of deleted invoice keys/numbers to avoid resurrection.
+ */
+export function getDeletedTombstones(): Set<string> {
+  if (typeof window === 'undefined') return new Set();
+  try {
+    const raw = localStorage.getItem(TOMBSTONES_KEY);
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr)) return new Set(arr);
+    }
+  } catch {}
+  return new Set();
+}
+
+/**
+ * Marks an invoice as deleted in local tombstones.
+ */
+export function markInvoiceDeleted(id?: string, invoiceNo?: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const set = getDeletedTombstones();
+    if (id) set.add(id);
+    if (invoiceNo) set.add(invoiceNo);
+    localStorage.setItem(TOMBSTONES_KEY, JSON.stringify(Array.from(set)));
+  } catch {}
+}
+
+/**
+ * Unmarks an invoice from tombstones (e.g. if newly created or edited).
+ */
+export function unmarkInvoiceDeleted(id?: string, invoiceNo?: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const set = getDeletedTombstones();
+    if (id) set.delete(id);
+    if (invoiceNo) set.delete(invoiceNo);
+    localStorage.setItem(TOMBSTONES_KEY, JSON.stringify(Array.from(set)));
+  } catch {}
+}
 
 /**
  * Reads local cached invoices from localStorage.
@@ -46,7 +88,10 @@ export function getLocalCachedInvoices(): SavedPOSInvoice[] {
     const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) return parsed;
+      if (Array.isArray(parsed)) {
+        const tombstones = getDeletedTombstones();
+        return parsed.filter((inv) => !tombstones.has(inv.id) && !tombstones.has(inv.invoiceNo));
+      }
     }
   } catch (e) {
     console.error('Failed to parse local cached invoices:', e);
@@ -60,8 +105,10 @@ export function getLocalCachedInvoices(): SavedPOSInvoice[] {
 export function setLocalCachedInvoices(invoices: SavedPOSInvoice[]): void {
   if (typeof window === 'undefined') return;
   try {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(invoices));
-    window.dispatchEvent(new CustomEvent('bitium_pos_invoices_updated', { detail: invoices }));
+    const tombstones = getDeletedTombstones();
+    const clean = invoices.filter((inv) => !tombstones.has(inv.id) && !tombstones.has(inv.invoiceNo));
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(clean));
+    window.dispatchEvent(new CustomEvent('bitium_pos_invoices_updated', { detail: clean }));
   } catch (e) {
     console.error('Failed to set local cached invoices:', e);
   }
@@ -69,11 +116,11 @@ export function setLocalCachedInvoices(invoices: SavedPOSInvoice[]): void {
 
 /**
  * Fetches all saved invoices from the central server/database,
- * seamlessly merges with local cache, uploads any unsynced local invoices,
- * and updates localStorage so all admins stay in perfect sync.
+ * seamlessly updates local cache, and syncs across all admins.
  */
 export async function fetchInvoices(): Promise<SavedPOSInvoice[]> {
   const localList = getLocalCachedInvoices();
+  const tombstones = getDeletedTombstones();
 
   try {
     const res = await fetch('/api/invoices', {
@@ -84,52 +131,20 @@ export async function fetchInvoices(): Promise<SavedPOSInvoice[]> {
     if (res.ok) {
       const data = await res.json();
       if (data.success && Array.isArray(data.invoices)) {
-        const serverInvoices: SavedPOSInvoice[] = data.invoices;
+        // Filter out any tombstoned/deleted records
+        const serverInvoices: SavedPOSInvoice[] = data.invoices.filter(
+          (inv: SavedPOSInvoice) => !tombstones.has(inv.id) && !tombstones.has(inv.invoiceNo)
+        );
 
-        // Map for merging
-        const map = new Map<string, SavedPOSInvoice>();
-
-        // 1. Put local items first
-        localList.forEach((inv) => {
-          const key = inv.invoiceNo || inv.id;
-          if (key) map.set(key, inv);
-        });
-
-        // 2. Put server items (server items take authoritative precedence)
-        serverInvoices.forEach((inv) => {
-          const key = inv.invoiceNo || inv.id;
-          if (key) map.set(key, inv);
-        });
-
-        const merged = Array.from(map.values()).sort((a, b) => {
-          const dateA = new Date(a.createdAt || a.invoiceDate).getTime();
-          const dateB = new Date(b.createdAt || b.invoiceDate).getTime();
-          return dateB - dateA;
-        });
-
-        // If there were local invoices that the server didn't have, sync them to server in background
-        const serverKeys = new Set(serverInvoices.map((i) => i.invoiceNo || i.id));
-        localList.forEach((localInv) => {
-          const key = localInv.invoiceNo || localInv.id;
-          if (key && !serverKeys.has(key)) {
-            // Background push to server
-            fetch('/api/invoices', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(localInv),
-            }).catch(() => {});
-          }
-        });
-
-        // Update local cache
-        setLocalCachedInvoices(merged);
+        // Server is the authoritative source of truth.
+        setLocalCachedInvoices(serverInvoices);
 
         // Commit latest invoice counter
-        merged.forEach((inv) => {
+        serverInvoices.forEach((inv) => {
           if (inv.invoiceNo) commitInvoiceCounter(inv.invoiceNo);
         });
 
-        return merged;
+        return serverInvoices;
       }
     }
   } catch (error) {
@@ -143,6 +158,9 @@ export async function fetchInvoices(): Promise<SavedPOSInvoice[]> {
  * Saves or updates an invoice to the central database and local cache.
  */
 export async function saveInvoice(invoice: SavedPOSInvoice): Promise<{ success: boolean; invoice: SavedPOSInvoice }> {
+  // Clear any past deletion tombstone for this invoice
+  unmarkInvoiceDeleted(invoice.id, invoice.invoiceNo);
+
   // 1. Immediate optimistic local storage update
   const localList = getLocalCachedInvoices();
   const existingIdx = localList.findIndex(
@@ -182,24 +200,34 @@ export async function saveInvoice(invoice: SavedPOSInvoice): Promise<{ success: 
 }
 
 /**
- * Deletes an invoice from central database and local cache.
+ * Deletes an invoice permanently from central database, API and local cache.
  */
 export async function deleteInvoice(id: string, invoiceNo: string): Promise<boolean> {
-  // 1. Immediate optimistic local removal
+  // 1. Mark as tombstoned locally
+  markInvoiceDeleted(id, invoiceNo);
+
+  // 2. Immediate optimistic local removal
   const localList = getLocalCachedInvoices();
-  const filtered = localList.filter((i) => i.id !== id && i.invoiceNo !== invoiceNo);
+  const filtered = localList.filter((i) => {
+    if (invoiceNo && i.invoiceNo === invoiceNo) return false;
+    if (id && i.id === id) return false;
+    return true;
+  });
   setLocalCachedInvoices(filtered);
 
-  // 2. Delete on central server
+  // 3. Delete on central server & Supabase
   try {
     const params = new URLSearchParams();
     if (id) params.set('id', id);
     if (invoiceNo) params.set('invoiceNo', invoiceNo);
 
-    await fetch(`/api/invoices?${params.toString()}`, {
+    const res = await fetch(`/api/invoices?${params.toString()}`, {
       method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, invoiceNo }),
     });
-    return true;
+
+    return res.ok;
   } catch (err) {
     console.error('Error deleting invoice on server:', err);
     return false;

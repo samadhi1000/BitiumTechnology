@@ -121,6 +121,7 @@ function formatInvoiceToRow(inv: SavedPOSInvoice): any {
 export async function GET() {
   try {
     let dbInvoices: SavedPOSInvoice[] = [];
+    let isDbAvailable = false;
     let supabaseError: any = null;
 
     try {
@@ -133,6 +134,7 @@ export async function GET() {
         supabaseError = error;
         console.warn('Supabase query pos_invoices warning:', error.message);
       } else if (data) {
+        isDbAvailable = true;
         dbInvoices = data.map(formatRowToInvoice);
       }
     } catch (e: any) {
@@ -140,34 +142,22 @@ export async function GET() {
       console.warn('Supabase fetch error for pos_invoices:', e.message);
     }
 
-    const localInvoices = readLocalFallbackInvoices();
+    let finalInvoices: SavedPOSInvoice[];
 
-    // Merge databases: DB items take priority, merge any missing local fallback items
-    const invoiceMap = new Map<string, SavedPOSInvoice>();
-    localInvoices.forEach((inv) => {
-      const key = inv.invoiceNo || inv.id;
-      if (key) invoiceMap.set(key, inv);
-    });
-    dbInvoices.forEach((inv) => {
-      const key = inv.invoiceNo || inv.id;
-      if (key) invoiceMap.set(key, inv);
-    });
-
-    const merged = Array.from(invoiceMap.values()).sort((a, b) => {
-      const dateA = new Date(a.createdAt || a.invoiceDate).getTime();
-      const dateB = new Date(b.createdAt || b.invoiceDate).getTime();
-      return dateB - dateA;
-    });
-
-    // Update local file cache with latest state
-    if (dbInvoices.length > 0) {
-      writeLocalFallbackInvoices(merged);
+    if (isDbAvailable) {
+      // Database is the authoritative source of truth!
+      finalInvoices = dbInvoices;
+      // Sync local fallback file with exact DB state
+      writeLocalFallbackInvoices(finalInvoices);
+    } else {
+      // Fallback if DB is unreachable
+      finalInvoices = readLocalFallbackInvoices();
     }
 
     return NextResponse.json({
       success: true,
-      invoices: merged,
-      fromDatabase: dbInvoices.length > 0,
+      invoices: finalInvoices,
+      fromDatabase: isDbAvailable,
       supabaseError: supabaseError ? supabaseError.message : null,
     });
   } catch (error: any) {
@@ -214,7 +204,7 @@ export async function POST(req: NextRequest) {
       status: body.status || 'PAID',
     };
 
-    // 1. Try Upserting into Supabase
+    // 1. Upsert into Supabase
     let supabaseSuccess = false;
     try {
       const row = formatInvoiceToRow(invoice);
@@ -231,7 +221,7 @@ export async function POST(req: NextRequest) {
       console.warn('Supabase pos_invoices upsert exception:', e.message);
     }
 
-    // 2. Always persist into local fallback file
+    // 2. Persist into local fallback file
     const localInvoices = readLocalFallbackInvoices();
     const existingIndex = localInvoices.findIndex(
       (i) => i.invoiceNo === invoice.invoiceNo || i.id === invoice.id
@@ -256,12 +246,21 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// DELETE: Remove an invoice
+// DELETE: Remove an invoice completely from database and fallback store
 export async function DELETE(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id');
-    const invoiceNo = searchParams.get('invoiceNo');
+    let id = searchParams.get('id');
+    let invoiceNo = searchParams.get('invoiceNo');
+
+    // Also check JSON body if available
+    try {
+      const body = await req.json();
+      if (body) {
+        if (!id && body.id) id = body.id;
+        if (!invoiceNo && body.invoiceNo) invoiceNo = body.invoiceNo;
+      }
+    } catch {}
 
     if (!id && !invoiceNo) {
       return NextResponse.json({ success: false, error: 'Missing invoice id or invoiceNo' }, { status: 400 });
@@ -269,24 +268,31 @@ export async function DELETE(req: NextRequest) {
 
     // 1. Delete from Supabase
     try {
-      let query = supabase.from('pos_invoices').delete();
-      if (id && invoiceNo) {
-        query = query.or(`id.eq.${id},invoice_no.eq.${invoiceNo}`);
-      } else if (id) {
-        query = query.eq('id', id);
-      } else if (invoiceNo) {
-        query = query.eq('invoice_no', invoiceNo);
+      if (invoiceNo) {
+        const { error: err1 } = await supabase
+          .from('pos_invoices')
+          .delete()
+          .eq('invoice_no', invoiceNo);
+        if (err1) console.warn('Supabase delete by invoice_no warning:', err1.message);
       }
-      await query;
+      if (id) {
+        const { error: err2 } = await supabase
+          .from('pos_invoices')
+          .delete()
+          .eq('id', id);
+        if (err2) console.warn('Supabase delete by id warning:', err2.message);
+      }
     } catch (e) {
-      console.warn('Supabase pos_invoices delete error:', e);
+      console.warn('Supabase pos_invoices delete exception:', e);
     }
 
     // 2. Delete from local fallback file
     const localInvoices = readLocalFallbackInvoices();
-    const filtered = localInvoices.filter(
-      (i) => (id ? i.id !== id : true) && (invoiceNo ? i.invoiceNo !== invoiceNo : true)
-    );
+    const filtered = localInvoices.filter((i) => {
+      if (invoiceNo && i.invoiceNo === invoiceNo) return false;
+      if (id && i.id === id) return false;
+      return true;
+    });
     writeLocalFallbackInvoices(filtered);
 
     return NextResponse.json({ success: true, deleted: { id, invoiceNo } });

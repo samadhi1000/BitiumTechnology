@@ -374,17 +374,21 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
   };
 
   // Delete an invoice from history
-  const handleDeleteInvoice = (id: string, invNo: string) => {
+  const handleDeleteInvoice = async (id: string, invNo: string) => {
     if (confirm(`Are you sure you want to delete invoice ${invNo} from history?`)) {
-      const updated = savedInvoices.filter(i => i.id !== id && i.invoiceNo !== invNo);
-      setSavedInvoices(updated);
-      removeInvoice(id, invNo).catch(err => {
-        console.error('Error removing invoice on server:', err);
+      const updated = savedInvoices.filter(i => {
+        if (invNo && i.invoiceNo === invNo) return false;
+        if (id && i.id === id) return false;
+        return true;
       });
-      if (loadedInvoiceId === id) {
+      setSavedInvoices(updated);
+
+      if (loadedInvoiceId === id || invoiceNo === invNo) {
         handleResetNewInvoice();
       }
-      setSaveSuccessToast(`Invoice ${invNo} removed.`);
+
+      setSaveSuccessToast(`Invoice ${invNo} deleted.`);
+      await removeInvoice(id, invNo);
       setTimeout(() => setSaveSuccessToast(''), 3000);
     }
   };
