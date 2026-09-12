@@ -27,9 +27,11 @@ import {
   Copy,
   Edit3,
   X,
-  Loader2
+  Loader2,
+  Upload
 } from 'lucide-react';
 import Image from 'next/image';
+import { uploadImageToStorage } from '@/lib/storage';
 
 interface Comment {
   id: string;
@@ -231,8 +233,13 @@ export default function CommunityForumPage() {
     comment: 'අදහස්',
     share: 'බෙදාගන්න',
     copySuccess: 'ලින්ක් එක කොපි කරගත්තා!',
-    selectImage: 'රූපයක් එක් කරන්න',
-    imageOptional: 'Image URL (විකල්ප)',
+    selectImage: 'රූපයක් එක් කරන්න (Upload)',
+    chooseImage: 'Device එකෙන් රූපයක් තෝරන්න',
+    orPasteUrl: 'හෝ Image URL එකක් භාවිතා කරන්න',
+    imageOptional: 'රූපය / ඡායාරූපය (විකල්ප)',
+    uploadingImage: 'රූපය Upload වෙමින් පවතී...',
+    changeImage: 'වෙනස් කරන්න',
+    removeImage: 'ඉවත් කරන්න',
     edit: 'සංස්කරණය',
     editPost: 'සටහන සංස්කරණය කරන්න',
     editPostSub: 'ඔබගේ ප්‍රජා සටහනේ විස්තර යාවත්කාලීන කරන්න',
@@ -257,8 +264,13 @@ export default function CommunityForumPage() {
     comment: 'Comment',
     share: 'Share',
     copySuccess: 'Post link copied to clipboard!',
-    selectImage: 'Attach Image',
-    imageOptional: 'Image URL (Optional)',
+    selectImage: 'Upload Local Image',
+    chooseImage: 'Choose image from device',
+    orPasteUrl: 'Or enter image URL',
+    imageOptional: 'Attachment Image (Optional)',
+    uploadingImage: 'Uploading image...',
+    changeImage: 'Change',
+    removeImage: 'Remove',
     edit: 'Edit',
     editPost: 'Edit Discussion Post',
     editPostSub: 'Update details for your community topic',
@@ -279,7 +291,10 @@ export default function CommunityForumPage() {
   const [newContent, setNewContent] = useState('');
   const [newPostCategory, setNewPostCategory] = useState('general');
   const [newImageUrl, setNewImageUrl] = useState('');
+  const [newImageFile, setNewImageFile] = useState<File | null>(null);
+  const [newImagePreview, setNewImagePreview] = useState<string | null>(null);
   const [isPosting, setIsPosting] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState('');
 
   // Edit post modal states
   const [editingPost, setEditingPost] = useState<Post | null>(null);
@@ -287,6 +302,8 @@ export default function CommunityForumPage() {
   const [editContent, setEditContent] = useState('');
   const [editCategory, setEditCategory] = useState('general');
   const [editImageUrl, setEditImageUrl] = useState('');
+  const [editImageFile, setEditImageFile] = useState<File | null>(null);
+  const [editImagePreview, setEditImagePreview] = useState<string | null>(null);
   const [isSavingEdit, setIsSavingEdit] = useState(false);
 
   // Guest details if not logged in
@@ -389,6 +406,8 @@ export default function CommunityForumPage() {
     setEditContent(post.content);
     setEditCategory(post.category || 'general');
     setEditImageUrl(post.imageUrl || '');
+    setEditImageFile(null);
+    setEditImagePreview(null);
   };
 
   const handleSaveEditPost = async (e: React.FormEvent) => {
@@ -396,11 +415,24 @@ export default function CommunityForumPage() {
     if (!editingPost || !editTitle.trim() || !editContent.trim()) return;
 
     setIsSavingEdit(true);
+    let finalImageUrl = editImageUrl.trim();
+
+    try {
+      if (editImageFile) {
+        finalImageUrl = await uploadImageToStorage(editImageFile, 'community');
+      }
+    } catch (uploadErr: any) {
+      console.error('Image upload failed during edit:', uploadErr);
+      setToastMessage(uploadErr.message || 'Image upload failed.');
+      setIsSavingEdit(false);
+      return;
+    }
+
     const updatedPostId = editingPost.id;
     const updatedTitle = editTitle.trim();
     const updatedContent = editContent.trim();
     const updatedCategory = editCategory;
-    const updatedImageUrl = editImageUrl.trim() ? editImageUrl.trim() : undefined;
+    const updatedImageUrl = finalImageUrl ? finalImageUrl : undefined;
 
     // Optimistic UI update
     setPosts(prev => prev.map(p => p.id === updatedPostId ? {
@@ -433,6 +465,8 @@ export default function CommunityForumPage() {
       setToastMessage(t.postUpdatedSuccess);
       setTimeout(() => setToastMessage(''), 2500);
       setEditingPost(null);
+      setEditImageFile(null);
+      setEditImagePreview(null);
     } catch (err) {
       console.error('Error saving edited post:', err);
       setToastMessage('Failed to update post');
@@ -447,6 +481,22 @@ export default function CommunityForumPage() {
     if (!newTitle.trim() || !newContent.trim()) return;
 
     setIsPosting(true);
+    setUploadStatus('');
+
+    let finalImageUrl = newImageUrl.trim();
+
+    try {
+      if (newImageFile) {
+        setUploadStatus(t.uploadingImage);
+        finalImageUrl = await uploadImageToStorage(newImageFile, 'community');
+      }
+    } catch (uploadErr: any) {
+      console.error('Image upload failed:', uploadErr);
+      setToastMessage(uploadErr.message || 'Image upload failed.');
+      setIsPosting(false);
+      setUploadStatus('');
+      return;
+    }
 
     let authorName = 'Anonymous Printer';
     let authorAvatar = '';
@@ -479,7 +529,7 @@ export default function CommunityForumPage() {
       authorBadge,
       title: newTitle.trim(),
       content: newContent.trim(),
-      imageUrl: newImageUrl.trim() ? newImageUrl.trim() : undefined,
+      imageUrl: finalImageUrl ? finalImageUrl : undefined,
       category: newPostCategory,
       likes: 0,
       comments: [],
@@ -513,7 +563,10 @@ export default function CommunityForumPage() {
     setNewTitle('');
     setNewContent('');
     setNewImageUrl('');
+    setNewImageFile(null);
+    setNewImagePreview(null);
     setIsPosting(false);
+    setUploadStatus('');
   };
 
   const handleLikePost = async (postId: string) => {
@@ -907,29 +960,123 @@ export default function CommunityForumPage() {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="text-[9px] font-bold text-muted-foreground uppercase">{t.selectCategory}</label>
-                    <select
-                      value={newPostCategory}
-                      onChange={e => setNewPostCategory(e.target.value)}
-                      className="w-full bg-background border border-border rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors text-foreground font-semibold"
-                    >
-                      <option value="general">General</option>
-                      <option value="dtf">DTF Printing</option>
-                      <option value="screen">Screen Printing</option>
-                      <option value="stencil">Stencils & Stamps</option>
-                      <option value="showcase">Project Showcase</option>
-                    </select>
+                <div className="space-y-1">
+                  <label className="text-[9px] font-bold text-muted-foreground uppercase">{t.selectCategory}</label>
+                  <select
+                    value={newPostCategory}
+                    onChange={e => setNewPostCategory(e.target.value)}
+                    className="w-full bg-background border border-border rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors text-foreground font-semibold"
+                  >
+                    <option value="general">General</option>
+                    <option value="dtf">DTF Printing</option>
+                    <option value="screen">Screen Printing</option>
+                    <option value="stencil">Stencils & Stamps</option>
+                    <option value="showcase">Project Showcase</option>
+                  </select>
+                </div>
+
+                {/* Local Image Uploader & Preview */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[9px] font-bold text-muted-foreground uppercase flex items-center gap-1.5">
+                      <ImageIcon size={12} className="text-emerald-600 dark:text-[#2CFF05]" />
+                      <span>{t.imageOptional}</span>
+                    </label>
+                    {newImageFile && (
+                      <span className="text-[10px] text-emerald-600 dark:text-[#2CFF05] font-bold">
+                        {(newImageFile.size / (1024 * 1024)).toFixed(2)} MB
+                      </span>
+                    )}
                   </div>
-                  <div className="space-y-1">
-                    <label className="text-[9px] font-bold text-muted-foreground uppercase">{t.imageOptional}</label>
+
+                  <div className="p-3 rounded-2xl border border-dashed border-border hover:border-emerald-500/40 dark:hover:border-[#2CFF05]/40 bg-background/50 transition-all space-y-2.5">
+                    {newImagePreview || newImageUrl ? (
+                      <div className="flex items-center gap-3">
+                        <div className="relative w-16 h-16 rounded-xl overflow-hidden border border-border bg-black/40 shrink-0">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={newImagePreview || newImageUrl}
+                            alt="Selected attachment"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-bold text-foreground truncate">
+                            {newImageFile ? newImageFile.name : (newImageUrl ? 'Image URL Provided' : 'Attached image')}
+                          </p>
+                          <p className="text-[10px] text-muted-foreground">
+                            {newImageFile ? 'Local image will be uploaded with post' : 'External image URL'}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <label className="p-2 rounded-xl bg-card border border-border hover:border-emerald-500/50 hover:bg-card/80 text-foreground text-xs font-semibold cursor-pointer transition-colors shadow-xs" title={t.changeImage}>
+                            <Upload size={13} className="text-emerald-600 dark:text-[#2CFF05]" />
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                  setNewImageFile(file);
+                                  setNewImagePreview(URL.createObjectURL(file));
+                                  setNewImageUrl('');
+                                }
+                              }}
+                            />
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setNewImageFile(null);
+                              setNewImagePreview(null);
+                              setNewImageUrl('');
+                            }}
+                            className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-500 hover:bg-rose-500/20 text-xs font-semibold cursor-pointer transition-colors"
+                            title={t.removeImage}
+                          >
+                            <X size={13} />
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                        <label className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-card border border-border hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/50 hover:bg-card/80 text-foreground cursor-pointer transition-all text-xs font-bold shadow-xs">
+                          <Upload size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
+                          <span>{t.chooseImage}</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                setNewImageFile(file);
+                                setNewImagePreview(URL.createObjectURL(file));
+                                setNewImageUrl('');
+                              }
+                            }}
+                          />
+                        </label>
+                        <div className="text-[10px] sm:text-[11px] text-muted-foreground font-medium text-center sm:text-left flex-1">
+                          Select JPG, PNG, WEBP from your computer or phone
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Fallback URL input */}
                     <input 
                       type="text"
                       value={newImageUrl}
-                      onChange={e => setNewImageUrl(e.target.value)}
-                      placeholder="https://images.unsplash.com/..."
-                      className="w-full bg-background border border-border rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors"
+                      onChange={e => {
+                        setNewImageUrl(e.target.value);
+                        if (e.target.value) {
+                          setNewImageFile(null);
+                          setNewImagePreview(null);
+                        }
+                      }}
+                      placeholder={t.orPasteUrl}
+                      className="w-full bg-background border border-border rounded-xl px-3.5 py-1.5 text-[11px] focus:outline-none focus:border-emerald-500 dark:focus:border-[#2CFF05] transition-colors text-muted-foreground"
                     />
                   </div>
                 </div>
@@ -950,10 +1097,19 @@ export default function CommunityForumPage() {
                   <button
                     type="submit"
                     disabled={isPosting}
-                    className="px-6 py-2.5 rounded-xl bg-[#2CFF05] hover:bg-[#7acc00] disabled:bg-zinc-700 disabled:opacity-40 text-black font-black text-xs uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer"
+                    className="px-6 py-2.5 rounded-xl bg-[#2CFF05] hover:bg-[#7acc00] disabled:bg-zinc-700 disabled:opacity-40 text-black font-black text-xs uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shadow-lg shadow-[#2CFF05]/20"
                   >
-                    <Send size={12} />
-                    <span>{t.publish}</span>
+                    {isPosting ? (
+                      <>
+                        <Loader2 size={13} className="animate-spin" />
+                        <span>{uploadStatus || 'Publishing...'}</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send size={12} />
+                        <span>{t.publish}</span>
+                      </>
+                    )}
                   </button>
                 </div>
               </form>
@@ -1330,34 +1486,125 @@ export default function CommunityForumPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-                    {t.selectCategory}
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                  {t.selectCategory}
+                </label>
+                <select
+                  value={editCategory}
+                  onChange={e => setEditCategory(e.target.value)}
+                  className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors text-foreground font-semibold"
+                >
+                  <option value="general">General</option>
+                  <option value="dtf">DTF Printing</option>
+                  <option value="screen">Screen Printing</option>
+                  <option value="stencil">Stencils & Stamps</option>
+                  <option value="showcase">Project Showcase</option>
+                </select>
+              </div>
+
+              {/* Edit Modal Local Image Uploader & Preview */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+                    <ImageIcon size={12} className="text-emerald-600 dark:text-[#2CFF05]" />
+                    <span>{t.imageOptional}</span>
                   </label>
-                  <select
-                    value={editCategory}
-                    onChange={e => setEditCategory(e.target.value)}
-                    className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors text-foreground font-semibold"
-                  >
-                    <option value="general">General</option>
-                    <option value="dtf">DTF Printing</option>
-                    <option value="screen">Screen Printing</option>
-                    <option value="stencil">Stencils & Stamps</option>
-                    <option value="showcase">Project Showcase</option>
-                  </select>
+                  {editImageFile && (
+                    <span className="text-[10px] text-emerald-600 dark:text-[#2CFF05] font-bold">
+                      {(editImageFile.size / (1024 * 1024)).toFixed(2)} MB
+                    </span>
+                  )}
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-                    {t.imageOptional}
-                  </label>
+                <div className="p-3 rounded-2xl border border-dashed border-border hover:border-emerald-500/40 dark:hover:border-[#2CFF05]/40 bg-background/50 transition-all space-y-2.5">
+                  {editImagePreview || editImageUrl ? (
+                    <div className="flex items-center gap-3">
+                      <div className="relative w-16 h-16 rounded-xl overflow-hidden border border-border bg-black/40 shrink-0">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={editImagePreview || editImageUrl}
+                          alt="Edit attachment"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-bold text-foreground truncate">
+                          {editImageFile ? editImageFile.name : (editImageUrl ? 'Image Attached' : 'Attached image')}
+                        </p>
+                        <p className="text-[10px] text-muted-foreground">
+                          {editImageFile ? 'New local image selected' : 'Current image'}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <label className="p-2 rounded-xl bg-card border border-border hover:border-emerald-500/50 hover:bg-card/80 text-foreground text-xs font-semibold cursor-pointer transition-colors shadow-xs" title={t.changeImage}>
+                          <Upload size={13} className="text-emerald-600 dark:text-[#2CFF05]" />
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                setEditImageFile(file);
+                                setEditImagePreview(URL.createObjectURL(file));
+                                setEditImageUrl('');
+                              }
+                            }}
+                          />
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setEditImageFile(null);
+                            setEditImagePreview(null);
+                            setEditImageUrl('');
+                          }}
+                          className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-500 hover:bg-rose-500/20 text-xs font-semibold cursor-pointer transition-colors"
+                          title={t.removeImage}
+                        >
+                          <X size={13} />
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                      <label className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-card border border-border hover:border-emerald-500/50 dark:hover:border-[#2CFF05]/50 hover:bg-card/80 text-foreground cursor-pointer transition-all text-xs font-bold shadow-xs">
+                        <Upload size={14} className="text-emerald-600 dark:text-[#2CFF05]" />
+                        <span>{t.chooseImage}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              setEditImageFile(file);
+                              setEditImagePreview(URL.createObjectURL(file));
+                              setEditImageUrl('');
+                            }
+                          }}
+                        />
+                      </label>
+                      <div className="text-[10px] sm:text-[11px] text-muted-foreground font-medium text-center sm:text-left flex-1">
+                        Select JPG, PNG, WEBP from your computer or phone
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Fallback URL input */}
                   <input
                     type="text"
                     value={editImageUrl}
-                    onChange={e => setEditImageUrl(e.target.value)}
-                    placeholder="https://images.unsplash.com/..."
-                    className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-[#2CFF05] transition-colors text-foreground"
+                    onChange={e => {
+                      setEditImageUrl(e.target.value);
+                      if (e.target.value) {
+                        setEditImageFile(null);
+                        setEditImagePreview(null);
+                      }
+                    }}
+                    placeholder={t.orPasteUrl}
+                    className="w-full bg-background border border-border rounded-xl px-3.5 py-1.5 text-[11px] focus:outline-none focus:border-emerald-500 dark:focus:border-[#2CFF05] transition-colors text-muted-foreground"
                   />
                 </div>
               </div>
