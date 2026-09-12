@@ -458,10 +458,7 @@ function matchesSubCategory(productSub: string | undefined, activeSub: string, a
 
           {/* Section In-Charge Contact Card */}
           {lead && (
-            <div className="mb-6 inline-flex flex-col gap-1.5 rounded-2xl bg-slate-50 dark:bg-card/70 border border-slate-200/90 dark:border-white/15 p-3 shadow-sm relative overflow-hidden transition-all max-w-fit">
-              {/* Subtle background glow */}
-              <div className="absolute -top-8 -right-8 w-32 h-32 bg-[#2CFF05]/10 rounded-full filter blur-2xl pointer-events-none" />
-
+            <div className="mb-6 inline-flex flex-col gap-1.5 rounded-2xl bg-white dark:bg-card/70 border border-slate-200/90 dark:border-white/15 p-3 shadow-sm relative overflow-hidden transition-all max-w-fit">
               <div className="relative z-10 flex flex-col gap-1.5">
                 {/* Lead Name */}
                 <h3 className="font-heading font-black text-sm sm:text-base text-slate-800 dark:text-white tracking-wide">
@@ -469,7 +466,7 @@ function matchesSubCategory(productSub: string | undefined, activeSub: string, a
                 </h3>
 
                 {/* Contact Pill (Phone, WhatsApp, Copy) */}
-                <div className="flex items-center gap-2.5 bg-white dark:bg-black/60 border border-slate-200/90 dark:border-white/10 py-1.5 px-3 rounded-xl shadow-xs dark:shadow-inner">
+                <div className="flex items-center gap-2.5 bg-slate-50 dark:bg-black/60 border border-slate-200/90 dark:border-white/10 py-1.5 px-3 rounded-xl shadow-xs dark:shadow-inner">
                   {/* Phone Call Link */}
                   <a
                     href={`tel:${lead.phone}`}
@@ -498,7 +495,7 @@ function matchesSubCategory(productSub: string | undefined, activeSub: string, a
                   {/* Copy Phone Button */}
                   <button
                     onClick={() => handleCopyPhone(lead.phone)}
-                    className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/80 dark:hover:bg-slate-700 border border-slate-200/90 dark:border-white/10 transition-all cursor-pointer relative"
+                    className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white bg-white hover:bg-slate-100 dark:bg-slate-800/80 dark:hover:bg-slate-700 border border-slate-200/90 dark:border-white/10 transition-all cursor-pointer relative"
                     title="Copy Phone Number"
                     aria-label="Copy Phone Number"
                   >
