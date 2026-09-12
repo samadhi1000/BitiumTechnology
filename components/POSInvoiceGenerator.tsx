@@ -26,45 +26,25 @@ import {
   Receipt,
   X,
   Clock,
-  Sparkles
+  Sparkles,
+  RefreshCw,
+  Cloud,
+  CheckCircle2
 } from 'lucide-react';
 import { getProducts, Product, Variant } from '@/lib/products';
 import { StaffProfile, getActiveStaffProfile } from '@/lib/permissions';
 import { getNextInvoiceNumber, commitInvoiceCounter } from '@/lib/order-utils';
+import {
+  InvoiceLineItem,
+  SavedPOSInvoice,
+  fetchInvoices,
+  saveInvoice as persistInvoice,
+  deleteInvoice as removeInvoice,
+  subscribeToInvoices,
+  getLocalCachedInvoices
+} from '@/lib/invoices';
 
-export interface InvoiceLineItem {
-  id: string; // unique for this line
-  productId?: string;
-  variantId?: string;
-  name: string;
-  size: string;
-  price: number;
-  quantity: number;
-}
-
-export interface SavedPOSInvoice {
-  id: string;
-  invoiceNo: string;
-  invoiceDate: string;
-  createdAt: string; // ISO timestamp
-  customerName: string;
-  customerPhone: string;
-  customerAddress: string;
-  issuedBy?: string;
-  paymentMethod: 'Cash' | 'Card' | 'Bank Transfer' | 'PayHere';
-  paymentStatus?: 'PAID' | 'COD' | 'UNPAID' | 'ADVANCE';
-  deliveryMethod?: string;
-  discountValue: number;
-  discountType: 'percentage' | 'flat';
-  discountAmount: number;
-  extraCharges: number;
-  extraChargesNotes: string;
-  subtotal: number;
-  totalAmount: number;
-  lineItems: InvoiceLineItem[];
-  printLayout: 'A4' | 'POS-80mm';
-  status: 'PAID' | 'REFUNDED' | 'CANCELLED';
-}
+export type { InvoiceLineItem, SavedPOSInvoice };
 
 const DELIVERY_OPTIONS = [
   { value: 'Store Pickup', label: '🏪 Store Pickup (Self Collect)' },
@@ -118,12 +98,30 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
   const [filterPaymentMethod, setFilterPaymentMethod] = useState<string>('all');
   const [loadedInvoiceId, setLoadedInvoiceId] = useState<string | null>(null);
   const [saveSuccessToast, setSaveSuccessToast] = useState('');
+  const [isSyncingInvoices, setIsSyncingInvoices] = useState(false);
+  const [lastSyncedTime, setLastSyncedTime] = useState<Date | null>(null);
 
   const [isClient, setIsClient] = useState(false);
 
   // Generate a fresh unique sequential invoice number (e.g. BTI-00001, BTI-00002)
   const generateNewInvoiceNumber = (invoicesList?: SavedPOSInvoice[]) => {
     return getNextInvoiceNumber(invoicesList || savedInvoices);
+  };
+
+  // Manual sync trigger
+  const handleSyncInvoices = async () => {
+    setIsSyncingInvoices(true);
+    try {
+      const fresh = await fetchInvoices();
+      setSavedInvoices(fresh);
+      setLastSyncedTime(new Date());
+      setSaveSuccessToast('Invoices synced across all admins!');
+      setTimeout(() => setSaveSuccessToast(''), 3000);
+    } catch (e) {
+      console.error('Failed to sync invoices:', e);
+    } finally {
+      setIsSyncingInvoices(false);
+    }
   };
 
   useEffect(() => {
@@ -136,25 +134,44 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
     }
     loadCatalog();
 
-    // Auto-generate invoice date and load invoices
+    // Auto-generate invoice date
     const now = new Date();
     const dateStr = now.toISOString().split('T')[0];
     setInvoiceDate(dateStr);
 
-    // Load saved POS invoices from localStorage
-    try {
-      const stored = localStorage.getItem('bitium_pos_invoices');
-      if (stored) {
-        const parsed: SavedPOSInvoice[] = JSON.parse(stored);
-        setSavedInvoices(parsed);
-        setInvoiceNo(getNextInvoiceNumber(parsed));
-      } else {
-        setInvoiceNo(getNextInvoiceNumber([]));
-      }
-    } catch (e) {
-      console.error('Failed to load saved POS invoices from storage:', e);
+    // 1. Load cached invoices immediately for zero flicker
+    const cached = getLocalCachedInvoices();
+    if (cached.length > 0) {
+      setSavedInvoices(cached);
+      setInvoiceNo(getNextInvoiceNumber(cached));
+    } else {
       setInvoiceNo(getNextInvoiceNumber([]));
     }
+
+    // 2. Fetch fresh invoices from server/database across all admins
+    setIsSyncingInvoices(true);
+    fetchInvoices()
+      .then((fresh) => {
+        setSavedInvoices(fresh);
+        setInvoiceNo(getNextInvoiceNumber(fresh));
+        setLastSyncedTime(new Date());
+      })
+      .catch((e) => {
+        console.error('Failed to load saved POS invoices from server:', e);
+      })
+      .finally(() => {
+        setIsSyncingInvoices(false);
+      });
+
+    // 3. Realtime subscription for multi-admin sync
+    const unsubscribe = subscribeToInvoices((updatedInvoices) => {
+      setSavedInvoices(updatedInvoices);
+      setLastSyncedTime(new Date());
+    });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   // Filter products matching search in generator
@@ -293,12 +310,13 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
     }
 
     setSavedInvoices(updated);
-    commitInvoiceCounter(record.invoiceNo);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('bitium_pos_invoices', JSON.stringify(updated));
-    }
+    
+    // Save and sync to central database, API and local storage
+    persistInvoice(record).catch(err => {
+      console.error('Error syncing invoice:', err);
+    });
 
-    setSaveSuccessToast(`Invoice ${record.invoiceNo} saved successfully!`);
+    setSaveSuccessToast(`Invoice ${record.invoiceNo} saved & synced to all admins!`);
     setTimeout(() => setSaveSuccessToast(''), 4000);
 
     return record;
@@ -360,9 +378,9 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
     if (confirm(`Are you sure you want to delete invoice ${invNo} from history?`)) {
       const updated = savedInvoices.filter(i => i.id !== id && i.invoiceNo !== invNo);
       setSavedInvoices(updated);
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('bitium_pos_invoices', JSON.stringify(updated));
-      }
+      removeInvoice(id, invNo).catch(err => {
+        console.error('Error removing invoice on server:', err);
+      });
       if (loadedInvoiceId === id) {
         handleResetNewInvoice();
       }
@@ -539,8 +557,21 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
           </button>
         </div>
 
-        {/* Status Toast / Loaded indicator */}
+        {/* Status Toast / Loaded indicator & Cloud Sync */}
         <div className="flex items-center gap-2.5">
+          {/* Cloud Sync Status */}
+          <button
+            type="button"
+            onClick={handleSyncInvoices}
+            disabled={isSyncingInvoices}
+            title={lastSyncedTime ? `Last synced with cloud: ${lastSyncedTime.toLocaleTimeString()}` : 'Sync with central database'}
+            className="px-2.5 py-1.5 rounded-xl bg-card border border-border text-muted-foreground hover:text-foreground text-[11px] font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-60"
+          >
+            <RefreshCw className={`w-3 h-3 text-[#2CFF05] ${isSyncingInvoices ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline">{isSyncingInvoices ? 'Syncing...' : 'Live Sync'}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#2CFF05] animate-pulse" />
+          </button>
+
           {saveSuccessToast && (
             <span className="text-xs font-semibold text-[#2CFF05] bg-[#2CFF05]/10 border border-[#2CFF05]/30 px-3 py-1.5 rounded-xl flex items-center gap-1.5 animate-in fade-in duration-200">
               <Check className="w-3.5 h-3.5" />
@@ -1260,6 +1291,18 @@ export default function POSInvoiceGenerator({ activeStaff }: { activeStaff?: Sta
                 <option value="Bank Transfer">Bank Transfer</option>
                 <option value="PayHere">PayHere Online</option>
               </select>
+
+              {/* Sync Invoices Button */}
+              <button
+                type="button"
+                onClick={handleSyncInvoices}
+                disabled={isSyncingInvoices}
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-card border border-border hover:border-[#2CFF05]/40 text-foreground text-xs font-bold transition-all shadow-sm cursor-pointer disabled:opacity-60"
+                title="Sync and pull latest invoices created by other admins"
+              >
+                <RefreshCw size={14} className={`text-[#2CFF05] ${isSyncingInvoices ? 'animate-spin' : ''}`} />
+                <span>{isSyncingInvoices ? 'Syncing...' : 'Sync Cloud'}</span>
+              </button>
 
               {/* Export to CSV Button */}
               <button
