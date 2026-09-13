@@ -237,29 +237,31 @@ export default function ProductPage({ params }: ProductPageProps) {
                       <button
                         type="button"
                         onClick={(e) => {
+                          e.preventDefault();
                           e.stopPropagation();
                           setSelectedImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
                         }}
                         aria-label="Previous image"
-                        className="absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/65 hover:bg-black/90 backdrop-blur-md border border-white/20 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 shadow-lg cursor-pointer"
+                        className="absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 z-50 pointer-events-auto w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black/75 hover:bg-black/95 backdrop-blur-md border border-white/30 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 shadow-2xl cursor-pointer"
                       >
-                        <ChevronLeft size={20} className="sm:w-6 sm:h-6 stroke-[2.5]" />
+                        <ChevronLeft size={22} className="sm:w-6 sm:h-6 stroke-[2.5]" />
                       </button>
 
                       <button
                         type="button"
                         onClick={(e) => {
+                          e.preventDefault();
                           e.stopPropagation();
                           setSelectedImageIndex((prev) => (prev + 1) % allImages.length);
                         }}
                         aria-label="Next image"
-                        className="absolute right-2.5 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/65 hover:bg-black/90 backdrop-blur-md border border-white/20 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 shadow-lg cursor-pointer"
+                        className="absolute right-2.5 sm:right-4 top-1/2 -translate-y-1/2 z-50 pointer-events-auto w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-black/75 hover:bg-black/95 backdrop-blur-md border border-white/30 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 shadow-2xl cursor-pointer"
                       >
-                        <ChevronRight size={20} className="sm:w-6 sm:h-6 stroke-[2.5]" />
+                        <ChevronRight size={22} className="sm:w-6 sm:h-6 stroke-[2.5]" />
                       </button>
 
                       {/* Image index counter badge on hover */}
-                      <div className="absolute top-3 right-3 z-20 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white/90 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="absolute top-3 right-3 z-50 pointer-events-none px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-[10px] font-bold text-white/90 opacity-0 group-hover:opacity-100 transition-opacity">
                         {selectedImageIndex + 1} / {allImages.length}
                       </div>
                     </>

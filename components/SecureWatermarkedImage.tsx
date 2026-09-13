@@ -137,7 +137,7 @@ export default function SecureWatermarkedImage({
 
       {/* 2. Absolute overlay cover shielding the Canvas from mouse events and inspect-element pointer */}
       <div
-        className="absolute inset-0 z-30 select-none cursor-default bg-transparent"
+        className="absolute inset-0 z-10 select-none cursor-default bg-transparent"
         onContextMenu={preventTheft}
         onDragStart={preventTheft}
         onDrop={preventTheft}

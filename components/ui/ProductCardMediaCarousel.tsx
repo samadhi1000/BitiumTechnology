@@ -31,7 +31,7 @@ export default function ProductCardMediaCarousel({
 
   const hasMultiple = slides.length > 1;
 
-  // Auto-slide every 2 seconds from right to left on hover
+  // Auto-slide every 1 second from right to left on hover
   useEffect(() => {
     if (!isHovered || !hasMultiple) {
       setCurrentIndex(0);
@@ -40,7 +40,7 @@ export default function ProductCardMediaCarousel({
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % slides.length);
-    }, 2000);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [isHovered, hasMultiple, slides.length]);
