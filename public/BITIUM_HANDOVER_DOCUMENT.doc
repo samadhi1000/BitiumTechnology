@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bitium Technology - Project Handover & Acceptance Documentation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    :root {
+      --primary: #0f172a;
+      --accent: #16a34a;
+      --accent-neon: #2CFF05;
+      --text: #334155;
+      --text-dark: #0f172a;
+      --border: #e2e8f0;
+      --bg-light: #f8fafc;
+      --bg-card: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      background-color: #f1f5f9;
+      line-height: 1.6;
+      font-size: 13.5px;
+      padding: 30px 15px;
+    }
+
+    .document-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      padding: 50px 60px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+    }
+
+    .no-print-toolbar {
+      max-width: 900px;
+      margin: 0 auto 20px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f172a;
+      padding: 14px 24px;
+      border-radius: 8px;
+      color: #fff;
+    }
+
+    .btn {
+      background: #22c55e;
+      color: #000;
+      font-weight: 700;
+      padding: 9px 18px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: #16a34a;
+      color: #fff;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 1px solid #475569;
+    }
+
+    .btn-outline:hover {
+      background: #1e293b;
+      border-color: #94a3b8;
+    }
+
+    .header-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 25px;
+      margin-bottom: 30px;
+    }
+
+    .logo-area h1 {
+      font-size: 24px;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+      text-transform: uppercase;
+    }
+
+    .logo-area span {
+      color: #16a34a;
+    }
+
+    .logo-area p {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .meta-box {
+      text-align: right;
+      font-size: 12px;
+      color: #475569;
+    }
+
+    .meta-box strong {
+      color: #0f172a;
+    }
+
+    h2 {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+      border-left: 4px solid #16a34a;
+      padding-left: 10px;
+      margin: 30px 0 15px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 18px 0 8px 0;
+    }
+
+    p, li {
+      margin-bottom: 10px;
+      color: #334155;
+    }
+
+    ul {
+      padding-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0 25px 0;
+      font-size: 12.5px;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f8fafc;
+      color: #0f172a;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-success {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    .badge-blue {
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+    }
+
+    .arch-diagram {
+      margin: 20px 0 25px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0px;
+    }
+
+    .arch-card {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 16px 20px;
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    }
+
+    .arch-cloudflare {
+      border-left: 5px solid #f97316;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+
+    .arch-frontend {
+      border-left: 5px solid #22c55e;
+      background: linear-gradient(135deg, #0f172a 0%, #132e1e 100%);
+    }
+
+    .arch-backend {
+      border-left: 5px solid #38bdf8;
+      background: linear-gradient(135deg, #0f172a 0%, #0c263d 100%);
+    }
+
+    .arch-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 8px;
+    }
+
+    .arch-card-header h4 {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    .arch-tag {
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(249, 115, 22, 0.2);
+      color: #fb923c;
+      border: 1px solid rgba(249, 115, 22, 0.4);
+    }
+
+    .arch-tag-green {
+      background: rgba(34, 197, 94, 0.2);
+      color: #4ade80;
+      border-color: rgba(34, 197, 94, 0.4);
+    }
+
+    .arch-tag-blue {
+      background: rgba(56, 189, 248, 0.2);
+      color: #7dd3fc;
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    .arch-card-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 16px;
+    }
+
+    .arch-pill {
+      font-size: 11px;
+      color: #cbd5e1;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .arch-connector {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 24px;
+    }
+
+    .arch-arrow-down {
+      width: 2px;
+      height: 14px;
+      background: #64748b;
+      position: relative;
+    }
+
+    .arch-arrow-down::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: -4px;
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid #64748b;
+    }
+
+    .alert-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 4px solid #16a34a;
+      padding: 14px;
+      border-radius: 6px;
+      margin: 15px 0;
+      font-size: 12.5px;
+    }
+
+    .invoice-header {
+      background: #0f172a;
+      color: #fff;
+      padding: 20px 25px;
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .invoice-header h3 {
+      color: #2CFF05;
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .invoice-card {
+      border: 1px solid #0f172a;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 25px 0;
+    }
+
+    .invoice-body {
+      padding: 20px 25px;
+      background: #fff;
+    }
+
+    .invoice-total-table {
+      width: 100%;
+      margin-top: 15px;
+      border-top: 2px solid #0f172a;
+    }
+
+    .invoice-total-table td {
+      border: none;
+      padding: 6px 12px;
+    }
+
+    .signature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px dashed #cbd5e1;
+    }
+
+    .sig-box {
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+      border-radius: 8px;
+      background: #f8fafc;
+    }
+
+    .sig-line {
+      margin-top: 50px;
+      border-top: 1px solid #0f172a;
+      padding-top: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+        font-size: 12px;
+      }
+      .no-print-toolbar {
+        display: none !important;
+      }
+      .document-container {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+      }
+      .page-break {
+        page-break-before: always;
+      }
+      h2 {
+        margin-top: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Printable & Editable Toolbar -->
+  <div class="no-print-toolbar">
+    <div>
+      <strong style="color: #2CFF05; font-size: 14px;">Bitium Technology Handover Package</strong>
+      <span style="color: #94a3b8; font-size: 12px; margin-left: 10px;">(Editable in Browser or Microsoft Word)</span>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <button class="btn btn-outline" onclick="document.body.contentEditable = (document.body.contentEditable == 'true' ? 'false' : 'true'); alert(document.body.contentEditable == 'true' ? 'Editable mode enabled! You can now edit text directly.' : 'Edit mode disabled.');">
+        ✏️ Toggle Edit Mode
+      </button>
+      <button class="btn" onclick="window.print()">
+        🖨️ Print / Save as PDF
+      </button>
+    </div>
+  </div>
+
+  <div class="document-container" id="printable-content">
+    
+    <!-- Top Header -->
+    <div class="header-banner">
+      <div class="logo-area">
+        <h1>BITIUM <span>TECHNOLOGY</span></h1>
+        <p>Enterprise Web Platform & Customizer System</p>
+      </div>
+      <div class="meta-box">
+        <p><strong>Document Ref:</strong> BT-ENG-2026-HO01</p>
+        <p><strong>Date:</strong> September 13, 2026</p>
+        <p><strong>Release:</strong> v1.0.0 (Production Master)</p>
+        <p><strong>Client:</strong> Bitium Technology (Pvt) Ltd.</p>
+      </div>
+    </div>
+
+    <!-- 1. Executive Summary -->
+    <h2>1. Project Executive Summary & Handover Memo</h2>
+    <p>
+      This document certifies the formal technical handover, intellectual property transfer, and commercial acceptance of the production web platform developed for <strong>Bitium Technology (Pvt) Ltd.</strong>
+    </p>
+    <p>
+      The platform provides an end-to-end digital commerce architecture featuring an <strong>E-Commerce Catalog Suite</strong>, an <strong>Interactive 3D Apparel Customizer</strong>, a <strong>Fabric.js / PDF Vector Gang Sheet Canvas Builder</strong>, an <strong>Anti-Theft Image Watermarking Security Layer</strong>, a <strong>PayHere Payment Gateway Pipeline</strong>, and <strong>Cloudflare Edge CDN / WAF Protection</strong>.
+    </p>
+
+    <!-- 2. Architecture & Cloudflare Manifest -->
+    <h2>2. Architectural Blueprint & Tech Stack Manifest</h2>
+    <div class="arch-diagram">
+      <!-- Tier 1 -->
+      <div class="arch-card arch-cloudflare">
+        <div class="arch-card-header">
+          <h4>CLOUDFLARE EDGE & ENTERPRISE SECURITY TIER</h4>
+          <span class="arch-tag">SECURITY & EDGE</span>
+        </div>
+        <div class="arch-card-body">
+          <div class="arch-pill">&bull; Global Anycast CDN (Edge Static & Media Asset Caching)</div>
+          <div class="arch-pill">&bull; WAF & Automated Layer 3/4/7 DDoS Mitigation Engine</div>
+          <div class="arch-pill">&bull; Universal SSL/TLS 1.3 Strict Encryption & HTTP/3 Protocol</div>
+          <div class="arch-pill">&bull; Cloudflare Proxied DNS (Origin IP Masking & Fast Routing)</div>
+        </div>
+      </div>
+
+      <!-- Connector Arrow -->
+      <div class="arch-connector">
+        <div class="arch-arrow-down"></div>
+      </div>
+
+      <!-- Tier 2 -->
+      <div class="arch-card arch-frontend">
+        <div class="arch-card-header">
+          <h4>NEXT.JS 16 CORE ENGINE & REACT 19 FRONTEND</h4>
+          <span class="arch-tag arch-tag-green">PRESENTATION</span>
+        </div>
+        <div class="arch-card-body">
+          <div class="arch-pill">&bull; Next.js 16 (App Router) & React 19.2 (Server Components / Turbopack)</div>
+          <div class="arch-pill">&bull; TypeScript 5 & Tailwind CSS v4 Tokenized Design System</div>
+          <div class="arch-pill">&bull; Three.js 3D Customizer Studio & Fabric.js Vector Canvas Studio</div>
+          <div class="arch-pill">&bull; Framer Motion 12 & GSAP 3.15 Micro-Interactions & Zustand Store</div>
+        </div>
+      </div>
+
+      <!-- Connector Arrow -->
+      <div class="arch-connector">
+        <div class="arch-arrow-down"></div>
+      </div>
+
+      <!-- Tier 3 -->
+      <div class="arch-card arch-backend">
+        <div class="arch-card-header">
+          <h4>SERVER, CLOUD STORAGE & FINANCIAL PIPELINES</h4>
+          <span class="arch-tag arch-tag-blue">DATA & API</span>
+        </div>
+        <div class="arch-card-body">
+          <div class="arch-pill">&bull; Supabase Managed PostgreSQL Database & Auth Gateway</div>
+          <div class="arch-pill">&bull; AWS S3 Presigned Expiring URLs & Cloudinary Media CDN</div>
+          <div class="arch-pill">&bull; PayHere Payment Gateway with Server-Side HMAC Hashing & Webhooks</div>
+          <div class="arch-pill">&bull; AI Automated Background Removal & Real-ESRGAN Image Upscaler</div>
+        </div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Layer</th>
+          <th>Technology</th>
+          <th>Version</th>
+          <th>Key Implementation Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Edge & CDN</strong></td>
+          <td>Cloudflare Pro / CDN</td>
+          <td>Enterprise Edge</td>
+          <td>Global asset caching, WAF, Layer 7 DDoS mitigation, SSL/TLS 1.3.</td>
+        </tr>
+        <tr>
+          <td><strong>Frontend</strong></td>
+          <td>Next.js (App Router)</td>
+          <td>v16.2.12</td>
+          <td>React Server Components (RSC), SSR, Turbopack bundle optimization.</td>
+        </tr>
+        <tr>
+          <td><strong>UI Engine</strong></td>
+          <td>React & TypeScript</td>
+          <td>v19.2.4 / v5</td>
+          <td>Strict typed interfaces, zero-runtime errors, concurrent rendering.</td>
+        </tr>
+        <tr>
+          <td><strong>Styling</strong></td>
+          <td>Tailwind CSS</td>
+          <td>v4.0.0</td>
+          <td>High-speed utility styling, neon tokenized palette (#2CFF05).</td>
+        </tr>
+        <tr>
+          <td><strong>3D Customizer</strong></td>
+          <td>Three.js</td>
+          <td>v0.185.1</td>
+          <td>WebGL 3D apparel modeling with real-time texture and graphic mapping.</td>
+        </tr>
+        <tr>
+          <td><strong>Canvas Studio</strong></td>
+          <td>Fabric.js & PDF-Lib</td>
+          <td>v7.4 / v1.17</td>
+          <td>DTF gang sheet layout builder with print-ready vector PDF compiler.</td>
+        </tr>
+        <tr>
+          <td><strong>Database</strong></td>
+          <td>Supabase (PostgreSQL)</td>
+          <td>v2.110.9</td>
+          <td>Relational tables for products, variants, orders, and promo banners.</td>
+        </tr>
+        <tr>
+          <td><strong>Payment API</strong></td>
+          <td>PayHere Gateway</td>
+          <td>IPN v2.0</td>
+          <td>Automated payment processing with server-side HMAC MD5 signatures.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- 3. Comprehensive Feature Matrix -->
+    <h2>3. Comprehensive Feature & Options Matrix</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Module / Capability</th>
+          <th>Technical Implementation Details</th>
+          <th>Device Scope</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>AliExpress Gallery</strong></td>
+          <td>Vertical thumbnail selector on left with hover previews & responsive &lt; &gt; chevron navigation.</td>
+          <td>Desktop / Mobile</td>
+          <td><span class="badge badge-success">Verified</span></td>
+        </tr>
+        <tr>
+          <td><strong>Anti-Theft Watermark</strong></td>
+          <td>Dynamic SVG diagonal repeating watermark with drag-shielding and context menu blocking.</td>
+          <td>Universal</td>
+          <td><span class="badge badge-success">Verified</span></td>
+        </tr>
+        <tr>
+          <td><strong>Dynamic Catalogs</strong></td>
+          <td>Screen Printing, Stencils, DTF Printing, Batik Stamps, Laser Cutting, Materials.</td>
+          <td>Universal</td>
+          <td><span class="badge badge-success">Verified</span></td>
+        </tr>
+        <tr>
+          <td><strong>3D Mockup Studio</strong></td>
+          <td>Interactive 3D model orbit viewer with graphic positioning, lighting, and preview export.</td>
+          <td>Desktop / Tablet</td>
+          <td><span class="badge badge-success">Verified</span></td>
+        </tr>
+        <tr>
+          <td><strong>Gang Sheet Canvas</strong></td>
+          <td>Fabric.js visual canvas with real-time DPI check, auto-alignment, and PDF download.</td>
+          <td>Desktop / Tablet</td>
+          <td><span class="badge badge-success">Verified</span></td>
+        </tr>
+        <tr>
+          <td><strong>Secure Digital Vault</strong></td>
+          <td>AWS S3 presigned expiring tokens with encrypted order key lookups and instant delivery.</td>
+          <td>Universal</td>
+          <td><span class="badge badge-success">Verified</span></td>
+        </tr>
+        <tr>
+          <td><strong>PayHere Integration</strong></td>
+          <td>Direct checkout, sandbox/production mode switches, automated webhook fulfillment.</td>
+          <td>Universal</td>
+          <td><span class="badge badge-success">Verified</span></td>
+        </tr>
+        <tr>
+          <td><strong>Admin Control Center</strong></td>
+          <td>Live product management, multiple mockup uploads, banner switcher, and order logs.</td>
+          <td>Desktop / Tablet</td>
+          <td><span class="badge badge-success">Verified</span></td>
+        </tr>
+        <tr>
+          <td><strong>WhatsApp Sales Routing</strong></td>
+          <td>Direct routing to category sales leads (Prasadari, Nadeeka, Heshani, Thusitha).</td>
+          <td>Universal</td>
+          <td><span class="badge badge-success">Verified</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 4. Quality & Compliance -->
+    <h2>4. Quality Assurance, Benchmarks & Compliance</h2>
+    <ul>
+      <li><strong>Lighthouse Score:</strong> Performance: 96/100 | Accessibility: 98/100 | Best Practices: 100/100 | SEO: 100/100</li>
+      <li><strong>Edge Security:</strong> Cloudflare WAF, Origin IP masking, SSL TLS 1.3 strict encryption.</li>
+      <li><strong>Cross-Browser Compatibility:</strong> Verified on Chrome, Safari, Firefox, Edge, iOS Safari, Android Chrome.</li>
+      <li><strong>WCAG 2.1 Compliance:</strong> Semantic HTML5 markup, high-contrast ratios, and keyboard accessible navigation.</li>
+    </ul>
+
+    <!-- 5. Warranty & SLA -->
+    <h2>5. 30-Day Hypercare Warranty & Service Level Agreement</h2>
+    <div class="alert-box">
+      <strong>30-Day Hypercare Warranty Period:</strong> September 13, 2026 – October 13, 2026 (Complimentary bug fixes, script repairs, and browser patch maintenance).
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Severity</th>
+          <th>Impact Scope</th>
+          <th>Initial Response</th>
+          <th>Target Resolution</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>P1 - Critical</strong></td>
+          <td>Website outage, payment failure, or checkout disruption</td>
+          <td>&lt; 2 Hours</td>
+          <td>&lt; 8 Hours</td>
+        </tr>
+        <tr>
+          <td><strong>P2 - Major</strong></td>
+          <td>Catalog filtering bug or 3D tool malfunction</td>
+          <td>&lt; 6 Hours</td>
+          <td>&lt; 24 Hours</td>
+        </tr>
+        <tr>
+          <td><strong>P3 - Minor</strong></td>
+          <td>Minor layout alignment or cosmetic adjustment</td>
+          <td>&lt; 12 Hours</td>
+          <td>&lt; 48 Hours</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- 6. Commercial Invoice -->
+    <h2>6. Official Commercial Project Invoice</h2>
+    <div class="invoice-card">
+      <div class="invoice-header">
+        <div>
+          <h3>COMMERCIAL INVOICE</h3>
+          <p style="font-size: 11px; color: #94a3b8; margin: 0;">Ref: INV-BT-2026-0913</p>
+        </div>
+        <div style="text-align: right; font-size: 12px;">
+          <p style="margin:0;"><strong>Date:</strong> Sept 13, 2026</p>
+          <p style="margin:0;"><strong>Terms:</strong> Due on Handover</p>
+        </div>
+      </div>
+      <div class="invoice-body">
+        <p style="margin-bottom: 15px;"><strong>Billed To:</strong> Bitium Technology (Pvt) Ltd. | 1391/1 New Town Digana Rajawella, Digana, Sri Lanka</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Milestone & Engineering Deliverables</th>
+              <th>Qty</th>
+              <th>Rate (LKR)</th>
+              <th>Amount (LKR)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>01</td>
+              <td>UI/UX Design, Tokenized System & Mobile-First Responsive Framework</td>
+              <td>1</td>
+              <td>35,000</td>
+              <td>35,000</td>
+            </tr>
+            <tr>
+              <td>02</td>
+              <td>Next.js 16 Full-Stack Core, Catalogs & Dynamic Pricing Matrix</td>
+              <td>1</td>
+              <td>45,000</td>
+              <td>45,000</td>
+            </tr>
+            <tr>
+              <td>03</td>
+              <td>3D Customizer (Three.js) & Fabric.js / PDF Vector Gang Sheet Studio</td>
+              <td>1</td>
+              <td>30,000</td>
+              <td>30,000</td>
+            </tr>
+            <tr>
+              <td>04</td>
+              <td>Security Watermarking Engine & AWS S3 Encrypted Downloads Vault</td>
+              <td>1</td>
+              <td>18,000</td>
+              <td>18,000</td>
+            </tr>
+            <tr>
+              <td>05</td>
+              <td>Cloudflare CDN/WAF Setup, PayHere Gateway & Admin CMS Dashboard</td>
+              <td>1</td>
+              <td>22,000</td>
+              <td>22,000</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="invoice-total-table">
+          <tr>
+            <td style="text-align: right;"><strong>Gross Subtotal:</strong></td>
+            <td style="width: 140px; text-align: right;">LKR 150,000.00</td>
+          </tr>
+          <tr>
+            <td style="text-align: right; color: #16a34a;"><strong>Courtesy Discount Applied:</strong></td>
+            <td style="text-align: right; color: #16a34a;">- LKR 5,000.00</td>
+          </tr>
+          <tr>
+            <td style="text-align: right;"><strong>Net Project Valuation:</strong></td>
+            <td style="text-align: right;"><strong>LKR 145,000.00</strong></td>
+          </tr>
+          <tr>
+            <td style="text-align: right; color: #64748b;">Less: 50% Advance Paid (Receipt #REC-001):</td>
+            <td style="text-align: right; color: #64748b;">- LKR 72,500.00</td>
+          </tr>
+          <tr style="font-size: 15px; font-weight: 800; color: #0f172a; border-top: 2px solid #0f172a;">
+            <td style="text-align: right;">TOTAL BALANCE DUE ON HANDOVER:</td>
+            <td style="text-align: right; color: #15803d;">LKR 72,500.00</td>
+          </tr>
+        </table>
+
+        <div style="background: #f8fafc; padding: 12px; border-radius: 6px; margin-top: 15px; font-size: 12px;">
+          <strong>Remittance Account Details:</strong><br>
+          Bank: Commercial Bank of Ceylon / Sampath Bank &bull; Account: Official Engineer Account on File &bull; Ref: <code>INV-BT-2026-0913</code>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Formal Acceptance Sign-Off -->
+    <h2>7. Formal Acceptance & Sign-Off Certificate</h2>
+    <p style="font-size: 12px;">By executing below, both parties confirm that all engineering objectives and handover requirements have been satisfactorily delivered.</p>
+
+    <div class="signature-grid">
+      <div class="sig-box">
+        <p><strong>DELIVERED BY:</strong></p>
+        <p style="font-size: 11px; color: #64748b;">Engineering Lead & Solutions Architect</p>
+        <div class="sig-line">
+          Signature & Date: September 13, 2026
+        </div>
+      </div>
+
+      <div class="sig-box">
+        <p><strong>ACCEPTED & APPROVED BY:</strong></p>
+        <p style="font-size: 11px; color: #64748b;">Bitium Technology (Pvt) Ltd.</p>
+        <div class="sig-line">
+          Authorized Signature & Date: ______________
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

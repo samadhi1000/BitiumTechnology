@@ -531,6 +531,7 @@ export async function getProducts(): Promise<Product[]> {
             category: row.category,
             sub_category: row.sub_category || undefined,
             is_active: row.is_active !== false,
+            is_pinned: row.is_pinned === true,
             variants: (row.variants || []).map((v: any) => ({
               id: v.id,
               product_id: v.product_id,
@@ -711,6 +712,7 @@ export async function createProduct(
         category: productData.category,
         sub_category: productData.sub_category || null,
         is_active: true,
+        is_pinned: Boolean(productData.is_pinned),
       });
 
       if (!prodError) {
@@ -814,6 +816,7 @@ export async function updateProduct(
           category: updated.category,
           sub_category: updated.sub_category || null,
           is_active: updated.is_active,
+          is_pinned: updated.is_pinned === true,
         }).eq('id', id);
 
         if (sizeVariants && sizeVariants.length > 0) {

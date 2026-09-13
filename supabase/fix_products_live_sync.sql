@@ -6,6 +6,9 @@
 -- 1. Ensure required columns exist on products table
 ALTER TABLE public.products ADD COLUMN IF NOT EXISTS original_price NUMERIC(10, 2);
 ALTER TABLE public.products ADD COLUMN IF NOT EXISTS sub_category TEXT;
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS is_pinned BOOLEAN DEFAULT FALSE;
+
+CREATE INDEX IF NOT EXISTS idx_products_is_pinned ON public.products (is_pinned DESC);
 
 -- 2. Drop restrictive category constraint to support all Bitium categories
 ALTER TABLE public.products DROP CONSTRAINT IF EXISTS products_category_check;

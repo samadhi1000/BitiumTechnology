@@ -57,8 +57,7 @@ import {
   Users,
   UserCheck,
   Receipt,
-  Pin,
-  Megaphone
+  Pin
 } from 'lucide-react';
 import Image from 'next/image';
 import { sanitizeText } from '@/lib/security/sanitize';
@@ -66,7 +65,6 @@ import AdminBatchPrint from '@/components/AdminBatchPrint';
 import OrderFormComponent from '@/components/OrderFormComponent';
 import POSInvoiceGenerator from '@/components/POSInvoiceGenerator';
 import AdminStaffManager from '@/components/AdminStaffManager';
-import AdminPromoManager from '@/components/AdminPromoManager';
 
 // ─── Size presets per category ─────────────────────────────────────────────
 const CATEGORY_SIZES: Record<string, string[]> = {
@@ -166,8 +164,8 @@ export default function AdminPanelPage() {
   const [activeStaff, setActiveStaff] = useState<StaffProfile>(getActiveStaffProfile(staffProfiles));
   const [isStaffAuthenticated, setIsStaffAuthenticated] = useState<boolean>(false);
 
-  // Tab states: 'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'promo-banners' | 'staff'
-  const [activeTab, setActiveTab] = useState<'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'promo-banners' | 'staff'>('products');
+  // Tab states: 'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'staff'
+  const [activeTab, setActiveTab] = useState<'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'staff'>('products');
   
   // Strict CEO / Super Admin permission validation
   const isCeo = activeStaff.role === 'ceo_admin' || activeStaff.id === 'staff-indrajith' || (!!user && profile?.role === 'admin');
@@ -1012,7 +1010,7 @@ export default function AdminPanelPage() {
                   <Printer size={16} />
                   <span>Print 4-in-1 A4</span>
                 </button>
-              ) : activeTab === 'order-form' || activeTab === 'pos-invoice' || activeTab === 'staff' || activeTab === 'promo-banners' ? null : (
+              ) : activeTab === 'order-form' || activeTab === 'pos-invoice' || activeTab === 'staff' ? null : (
                 <>
                   {activeTab === 'products' && activeStaff.permissions.canAddProducts && (
                     <button
@@ -1180,24 +1178,6 @@ export default function AdminPanelPage() {
               </button>
             )}
 
-            {/* Promo & Offer Banners Customizer Tab */}
-            {(isCeo || activeStaff.permissions.canEditProducts) && (
-              <button
-                onClick={() => { setActiveTab('promo-banners'); }}
-                className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
-                  activeTab === 'promo-banners'
-                    ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
-                    : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
-                }`}
-              >
-                <Megaphone size={16} />
-                <span>Offer Banners</span>
-                <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'promo-banners' ? 'bg-black text-[#2CFF05]' : 'bg-cyan-500/20 text-cyan-400'}`}>
-                  PROMO
-                </span>
-              </button>
-            )}
-
             {/* Staff & Permissions Tab - CEO / Super Admin Only */}
             {isCeo && (
               <button
@@ -1218,7 +1198,7 @@ export default function AdminPanelPage() {
           </div>
 
           {/* Secondary Filter & Search Row - Shown only for Store & Digital Catalogs */}
-          {activeTab !== 'batch-print' && activeTab !== 'order-form' && activeTab !== 'pos-invoice' && activeTab !== 'staff' && activeTab !== 'promo-banners' && (
+          {activeTab !== 'batch-print' && activeTab !== 'order-form' && activeTab !== 'pos-invoice' && activeTab !== 'staff' && (
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between p-4 rounded-2xl border border-border bg-card/20 backdrop-blur-sm">
               <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
                 <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mr-2 flex items-center gap-1.5"><Filter size={12} /> Category:</span>
@@ -1300,8 +1280,6 @@ export default function AdminPanelPage() {
               }}
               onSwitchActiveStaff={handleSwitchActiveStaff}
             />
-          ) : activeTab === 'promo-banners' ? (
-            <AdminPromoManager />
           ) : activeTab === 'batch-print' ? (
             <AdminBatchPrint />
           ) : activeTab === 'order-form' ? (
