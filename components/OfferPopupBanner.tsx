@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Sparkles, Copy, Check, ArrowRight, Clock, ShieldCheck, Zap } from 'lucide-react';
+import { X, Sparkles, ArrowRight, Clock } from 'lucide-react';
 import {
   OfferPopupConfig,
   DEFAULT_OFFER_POPUP,
@@ -25,7 +25,6 @@ export default function OfferPopupBanner({
 }: OfferPopupBannerProps) {
   const [config, setConfig] = useState<OfferPopupConfig>(previewConfig || DEFAULT_OFFER_POPUP);
   const [isOpen, setIsOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [timeLeft, setTimeLeft] = useState<{ hours: number; minutes: number; seconds: number } | null>(null);
 
   // Sync preview config changes
@@ -113,16 +112,6 @@ export default function OfferPopupBanner({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, handleClose]);
 
-  const handleCopyCode = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!config.promo_code) return;
-
-    navigator.clipboard.writeText(config.promo_code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
-  };
-
   return (
     <AnimatePresence>
       {isOpen && (
@@ -209,11 +198,6 @@ export default function OfferPopupBanner({
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                  
-                  {/* Live Watermark / Brand stamp */}
-                  <div className="absolute bottom-2 left-2.5 px-2 py-0.5 rounded bg-black/70 backdrop-blur-sm border border-[#2CFF05]/30 text-[9px] font-mono font-bold text-[#2CFF05]">
-                    BITIUM OFFICIAL OFFER
-                  </div>
                 </div>
               )}
 
@@ -227,42 +211,6 @@ export default function OfferPopupBanner({
                     {String(timeLeft.minutes).padStart(2, '0')}:
                     {String(timeLeft.seconds).padStart(2, '0')}
                   </span>
-                </div>
-              )}
-
-              {/* Voucher Code Box with 1-Click Copy */}
-              {config.promo_code && (
-                <div className="w-full mb-4 p-2.5 rounded-2xl bg-black/60 border border-[#2CFF05]/40 flex items-center justify-between gap-2 shadow-inner">
-                  <div className="flex flex-col items-start pl-2">
-                    <span className="text-[9px] uppercase font-black tracking-wider text-white">
-                      Use Promo Code:
-                    </span>
-                    <span className="font-mono font-black text-sm sm:text-base text-[#2CFF05] tracking-wider">
-                      {config.promo_code}
-                    </span>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={handleCopyCode}
-                    className={`px-3 py-1.5 rounded-xl font-heading font-extrabold text-[11px] transition-all flex items-center gap-1.5 cursor-pointer shadow-sm ${
-                      copied
-                        ? 'bg-[#2CFF05] text-black font-black'
-                        : 'bg-white/15 hover:bg-white/25 text-white border border-white/20'
-                    }`}
-                  >
-                    {copied ? (
-                      <>
-                        <Check size={13} className="text-black" />
-                        <span className="text-black font-black">COPIED!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy size={13} className="text-white" />
-                        <span className="text-white font-bold">COPY CODE</span>
-                      </>
-                    )}
-                  </button>
                 </div>
               )}
 

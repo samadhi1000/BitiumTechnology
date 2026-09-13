@@ -300,23 +300,6 @@ export default function AdminPopupManager() {
               />
             </div>
 
-            {/* Promo Voucher Code */}
-            <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-zinc-300 uppercase tracking-wider mb-1.5">
-                Promo / Voucher Code (Optional)
-              </label>
-              <input
-                type="text"
-                value={config.promo_code}
-                onChange={(e) => setConfig({ ...config, promo_code: e.target.value.toUpperCase() })}
-                placeholder="e.g. BITIUM40"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border font-mono font-black text-sm text-[#2CFF05] dark:text-[#2CFF05] placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#2CFF05]"
-              />
-              <span className="text-[11px] text-muted-foreground dark:text-zinc-400 mt-1 block">
-                Customers can click 1 button on the popup to automatically copy this coupon code.
-              </span>
-            </div>
-
             {/* Trust Badges / Feature Chips */}
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-zinc-300 uppercase tracking-wider mb-2">
