@@ -243,7 +243,7 @@ export default function AdminPopupManager() {
             {/* Campaign Name & Badge */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 dark:text-zinc-300 uppercase tracking-wider mb-1.5">
                   Internal Campaign Title
                 </label>
                 <input
@@ -251,13 +251,13 @@ export default function AdminPopupManager() {
                   value={config.campaign_name}
                   onChange={(e) => setConfig({ ...config, campaign_name: e.target.value })}
                   placeholder="e.g. Seasonal Mega Offer 2026"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-sm text-foreground focus:outline-none focus:border-[#2CFF05]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-sm text-slate-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#2CFF05] dark:focus:border-[#2CFF05]"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 dark:text-zinc-300 uppercase tracking-wider mb-1.5">
                   Top Badge Text
                 </label>
                 <input
@@ -265,7 +265,7 @@ export default function AdminPopupManager() {
                   value={config.badge_text}
                   onChange={(e) => setConfig({ ...config, badge_text: e.target.value })}
                   placeholder="e.g. 🔥 SPECIAL SEASONAL OFFER"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-sm text-foreground focus:outline-none focus:border-[#2CFF05]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-sm text-slate-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#2CFF05] dark:focus:border-[#2CFF05]"
                   required
                 />
               </div>
@@ -273,7 +273,7 @@ export default function AdminPopupManager() {
 
             {/* Headline (Discount) */}
             <div>
-              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-zinc-300 uppercase tracking-wider mb-1.5">
                 Main Headline / Discount Title
               </label>
               <input
@@ -281,14 +281,14 @@ export default function AdminPopupManager() {
                 value={config.headline}
                 onChange={(e) => setConfig({ ...config, headline: e.target.value })}
                 placeholder="e.g. UP TO 40% OFF"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-base font-black text-foreground focus:outline-none focus:border-[#2CFF05]"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-base font-black text-slate-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#2CFF05] dark:focus:border-[#2CFF05]"
                 required
               />
             </div>
 
             {/* Subheadline description */}
             <div>
-              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-zinc-300 uppercase tracking-wider mb-1.5">
                 Subheadline / Description Message
               </label>
               <textarea
@@ -296,13 +296,13 @@ export default function AdminPopupManager() {
                 onChange={(e) => setConfig({ ...config, subheadline: e.target.value })}
                 rows={3}
                 placeholder="Short, attractive description highlighting the promotion..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs text-foreground focus:outline-none focus:border-[#2CFF05] resize-none"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs text-slate-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#2CFF05] dark:focus:border-[#2CFF05] resize-none"
               />
             </div>
 
             {/* Promo Voucher Code */}
             <div>
-              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-zinc-300 uppercase tracking-wider mb-1.5">
                 Promo / Voucher Code (Optional)
               </label>
               <input
@@ -310,23 +310,23 @@ export default function AdminPopupManager() {
                 value={config.promo_code}
                 onChange={(e) => setConfig({ ...config, promo_code: e.target.value.toUpperCase() })}
                 placeholder="e.g. BITIUM40"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border font-mono font-black text-sm text-[#2CFF05] focus:outline-none focus:border-[#2CFF05]"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border font-mono font-black text-sm text-[#2CFF05] dark:text-[#2CFF05] placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#2CFF05]"
               />
-              <span className="text-[11px] text-muted-foreground mt-1 block">
+              <span className="text-[11px] text-muted-foreground dark:text-zinc-400 mt-1 block">
                 Customers can click 1 button on the popup to automatically copy this coupon code.
               </span>
             </div>
 
             {/* Trust Badges / Feature Chips */}
             <div>
-              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-slate-700 dark:text-zinc-300 uppercase tracking-wider mb-2">
                 Highlight Features / Trust Badges
               </label>
               <div className="flex flex-wrap gap-2 mb-3">
                 {(config.features || []).map((feat, idx) => (
                   <span
                     key={idx}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-muted border border-border text-xs font-bold text-foreground"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-muted border border-border text-xs font-bold text-slate-900 dark:text-white"
                   >
                     <span>{feat}</span>
                     <button
@@ -352,12 +352,12 @@ export default function AdminPopupManager() {
                     }
                   }}
                   placeholder="e.g. ⚡ 24H Express Dispatch"
-                  className="flex-grow px-3.5 py-2 rounded-xl bg-background border border-border text-xs text-foreground focus:outline-none focus:border-[#2CFF05]"
+                  className="flex-grow px-3.5 py-2 rounded-xl bg-background border border-border text-xs text-slate-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#2CFF05]"
                 />
                 <button
                   type="button"
                   onClick={handleAddFeature}
-                  className="px-3 py-2 rounded-xl bg-muted hover:bg-muted/80 border border-border text-xs font-bold text-foreground flex items-center gap-1 cursor-pointer"
+                  className="px-3 py-2 rounded-xl bg-muted hover:bg-muted/80 border border-border text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1 cursor-pointer"
                 >
                   <Plus size={14} />
                   <span>Add Badge</span>
@@ -376,7 +376,7 @@ export default function AdminPopupManager() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 dark:text-zinc-300 uppercase tracking-wider mb-1.5">
                   Button Text (CTA)
                 </label>
                 <input
@@ -384,13 +384,13 @@ export default function AdminPopupManager() {
                   value={config.cta_text}
                   onChange={(e) => setConfig({ ...config, cta_text: e.target.value })}
                   placeholder="e.g. Claim Offer & Shop Now"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-sm font-bold text-foreground focus:outline-none focus:border-[#2CFF05]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-sm font-bold text-slate-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#2CFF05]"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 dark:text-zinc-300 uppercase tracking-wider mb-1.5">
                   Target Destination URL
                 </label>
                 <input
@@ -398,7 +398,7 @@ export default function AdminPopupManager() {
                   value={config.cta_link}
                   onChange={(e) => setConfig({ ...config, cta_link: e.target.value })}
                   placeholder="e.g. /gang-sheet or /screen-exposed"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-sm font-mono text-foreground focus:outline-none focus:border-[#2CFF05]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-sm font-mono text-slate-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#2CFF05]"
                   required
                 />
               </div>
@@ -406,7 +406,7 @@ export default function AdminPopupManager() {
 
             {/* Quick Link presets */}
             <div className="flex flex-wrap gap-1.5 items-center">
-              <span className="text-[11px] text-muted-foreground mr-1">Presets:</span>
+              <span className="text-[11px] text-muted-foreground dark:text-zinc-400 mr-1">Presets:</span>
               {[
                 { label: 'DTF Gang Sheet', url: '/gang-sheet' },
                 { label: 'Screen Printing', url: '/screen-exposed' },
@@ -418,7 +418,7 @@ export default function AdminPopupManager() {
                   key={preset.url}
                   type="button"
                   onClick={() => setConfig({ ...config, cta_link: preset.url })}
-                  className="text-[10px] font-bold px-2 py-1 rounded bg-muted/60 hover:bg-muted border border-border text-foreground transition-colors"
+                  className="text-[10px] font-bold px-2 py-1 rounded bg-muted/60 hover:bg-muted border border-border text-slate-800 dark:text-white transition-colors"
                 >
                   {preset.label}
                 </button>
@@ -427,16 +427,16 @@ export default function AdminPopupManager() {
 
             {/* Countdown timer expiry */}
             <div>
-              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-zinc-300 uppercase tracking-wider mb-1.5">
                 Countdown Timer End Date/Time (Optional)
               </label>
               <input
                 type="datetime-local"
                 value={config.countdown_end ? config.countdown_end.slice(0, 16) : ''}
                 onChange={(e) => setConfig({ ...config, countdown_end: e.target.value ? new Date(e.target.value).toISOString() : '' })}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs text-foreground focus:outline-none focus:border-[#2CFF05]"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs text-slate-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#2CFF05]"
               />
-              <span className="text-[11px] text-muted-foreground mt-1 block">
+              <span className="text-[11px] text-muted-foreground dark:text-zinc-400 mt-1 block">
                 If specified, an animated countdown timer (e.g. "Offer Ends in: 05:22:18") will appear on the popup.
               </span>
             </div>
@@ -474,7 +474,7 @@ export default function AdminPopupManager() {
 
             {/* Direct URL Input */}
             <div>
-              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-zinc-300 uppercase tracking-wider mb-1.5">
                 Image Public URL
               </label>
               <input
@@ -482,16 +482,16 @@ export default function AdminPopupManager() {
                 value={config.image_url}
                 onChange={(e) => setConfig({ ...config, image_url: e.target.value })}
                 placeholder="https://..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs font-mono text-foreground focus:outline-none focus:border-[#2CFF05]"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs font-mono text-slate-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#2CFF05]"
               />
             </div>
 
             {/* Or Upload file */}
             <div>
-              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-zinc-300 uppercase tracking-wider mb-1.5">
                 Or Upload New Banner Artwork
               </label>
-              <label className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-dashed border-border bg-muted/30 hover:bg-muted/60 text-xs font-bold text-foreground cursor-pointer transition-colors">
+              <label className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-dashed border-border bg-muted/30 hover:bg-muted/60 text-xs font-bold text-slate-800 dark:text-white cursor-pointer transition-colors">
                 <Upload size={14} className="text-[#2CFF05]" />
                 <span>{uploadingImage ? 'Uploading image...' : 'Choose Image File (JPG / PNG / WEBP)'}</span>
                 <input
@@ -514,7 +514,7 @@ export default function AdminPopupManager() {
 
             {/* Frequency options */}
             <div>
-              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-slate-700 dark:text-zinc-300 uppercase tracking-wider mb-2">
                 Display Frequency
               </label>
               <div className="space-y-2">
@@ -551,8 +551,8 @@ export default function AdminPopupManager() {
                       className="mt-0.5 text-[#2CFF05] focus:ring-[#2CFF05]"
                     />
                     <div>
-                      <span className="font-bold text-xs text-foreground block">{freq.title}</span>
-                      <span className="text-[11px] text-muted-foreground block leading-tight mt-0.5">{freq.desc}</span>
+                      <span className="font-bold text-xs text-slate-900 dark:text-white block">{freq.title}</span>
+                      <span className="text-[11px] text-muted-foreground dark:text-zinc-400 block leading-tight mt-0.5">{freq.desc}</span>
                     </div>
                   </label>
                 ))}
@@ -562,7 +562,7 @@ export default function AdminPopupManager() {
             {/* Entrance delay */}
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                <label className="text-xs font-bold text-slate-700 dark:text-zinc-300 uppercase tracking-wider">
                   Entrance Delay
                 </label>
                 <span className="text-xs font-mono font-bold text-[#2CFF05]">
