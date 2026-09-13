@@ -214,6 +214,7 @@ export interface Translations {
   footer?: {
     brandDesc: string;
     servicesTitle: string;
+    toolsTitle?: string;
     toolkitTitle: string;
     contactTitle: string;
     stencil: string;
@@ -221,6 +222,10 @@ export interface Translations {
     dtfPrinting: string;
     batikStamp: string;
     laserCutting: string;
+    customizer3D?: string;
+    gangSheetCanvas?: string;
+    sizeGuide?: string;
+    orderForm?: string;
     blog: string;
     downloads: string;
     community: string;
@@ -479,6 +484,7 @@ export const translations: Record<Language, Translations> = {
     footer: {
       brandDesc: "Sri Lanka's leading custom printing partner. Saturated DTF transfers, stencils, and custom apparel prints delivered in 24 hours.",
       servicesTitle: "Services",
+      toolsTitle: "Interactive Tools",
       toolkitTitle: "Toolkit & Community",
       contactTitle: "Contact info",
       stencil: "Stencil",
@@ -486,6 +492,10 @@ export const translations: Record<Language, Translations> = {
       dtfPrinting: "DTF Printing",
       batikStamp: "Batik Stamp",
       laserCutting: "Laser Cutting",
+      customizer3D: "3D Mockup Studio",
+      gangSheetCanvas: "DTF Gang Sheet Canvas",
+      sizeGuide: "Apparel Size Guide",
+      orderForm: "Quick Order Form",
       blog: "Blog & Master Guides",
       downloads: "Digital downloads",
       community: "Community Hub",
@@ -742,13 +752,18 @@ export const translations: Record<Language, Translations> = {
     footer: {
       brandDesc: "ශ්‍රී ලංකාවේ ප්‍රමුඛතම මුද්‍රණ සහකරු. DTF Transfers, ස්ටෙන්සිල් සහ රෙදිපිළි මුද්‍රණ පැය 24ක් ඇතුළත.",
       servicesTitle: "සේවාවන්",
-      toolkitTitle: "උපාංග සහ ප්‍රජාව",
+      toolsTitle: "අන්තර්ක්‍රියාකාරී මෙවලම්",
+      toolkitTitle: "ප්‍රජාව සහ මගපෙන්වීම්",
       contactTitle: "සම්බන්ධ කර ගැනීමට",
       stencil: "ස්ටෙන්සිල්",
       screenPrinting: "ස්ක්‍රීන් මුද්‍රණය",
       dtfPrinting: "DTF මුද්‍රණය",
       batikStamp: "බතික් මුද්‍රා",
       laserCutting: "ලේසර් කැපීම",
+      customizer3D: "3D මොකප් ස්ටූඩියෝ",
+      gangSheetCanvas: "DTF කැන්වස් බිල්ඩර්",
+      sizeGuide: "ඇඳුම් ප්‍රමාණ මාර්ගෝපදේශය",
+      orderForm: "ක්ෂණික ඇණවුම් පත්‍රිකාව",
       blog: "බ්ලොග් ලිපි සහ මගපෙන්වීම්",
       downloads: "ඩිජිටල් ඩවුන්ලෝඩ්ස්",
       community: "ප්‍රජා කේන්ද්‍රය (Community)",

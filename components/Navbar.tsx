@@ -33,7 +33,10 @@ import {
   Scissors,
   Users,
   LayoutDashboard,
-  Shield
+  Shield,
+  Wrench,
+  Ruler,
+  FileText
 } from 'lucide-react';
 
 export default function Navbar() {
@@ -743,7 +746,63 @@ export default function Navbar() {
               <ChevronRight size={16} className="text-muted-foreground" />
             </Link>
 
-            {/* 08. Other Products */}
+            {/* 08. Interactive Tools Accordion */}
+            <div className="rounded-xl bg-card/50 border border-border overflow-hidden">
+              <div
+                onClick={() => toggleMobileSub('tools')}
+                className="flex items-center justify-between px-4 py-3 cursor-pointer text-sm font-bold text-foreground"
+              >
+                <div className="flex items-center gap-2">
+                  <Wrench size={16} className="text-emerald-600 dark:text-[#2CFF05]" />
+                  <span>{t.footer?.toolsTitle || 'Interactive Tools'}</span>
+                </div>
+                <ChevronDown
+                  size={16}
+                  className={`text-muted-foreground transition-transform duration-200 ${
+                    mobileSubOpen === 'tools' ? 'rotate-180' : ''
+                  }`}
+                />
+              </div>
+
+              {mobileSubOpen === 'tools' && (
+                <div className="px-4 pb-3 space-y-1.5 bg-background/60 pt-1 border-t border-border/50">
+                  <Link
+                    href="/3d-customizer"
+                    onClick={closeMobileMenu}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-card hover:text-emerald-600 dark:hover:text-[#2CFF05]"
+                  >
+                    <Shirt size={14} className="text-emerald-500" />
+                    <span>3D Mockup Studio</span>
+                  </Link>
+                  <Link
+                    href="/canvas"
+                    onClick={closeMobileMenu}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-card hover:text-emerald-600 dark:hover:text-[#2CFF05]"
+                  >
+                    <Layers size={14} className="text-emerald-500" />
+                    <span>DTF Gang Sheet Canvas</span>
+                  </Link>
+                  <Link
+                    href="/size-guide"
+                    onClick={closeMobileMenu}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-card hover:text-emerald-600 dark:hover:text-[#2CFF05]"
+                  >
+                    <Ruler size={14} className="text-emerald-500" />
+                    <span>Apparel Size Guide</span>
+                  </Link>
+                  <Link
+                    href="/order-form"
+                    onClick={closeMobileMenu}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-card hover:text-emerald-600 dark:hover:text-[#2CFF05]"
+                  >
+                    <FileText size={14} className="text-emerald-500" />
+                    <span>Quick Order Form</span>
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* 09. Other Products */}
             <Link
               href={adminLink('/other')}
               onClick={closeMobileMenu}
