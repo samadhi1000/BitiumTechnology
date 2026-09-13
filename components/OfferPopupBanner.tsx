@@ -181,7 +181,7 @@ export default function OfferPopupBanner({
               </h2>
 
               {/* Subheadline description */}
-              <p className="text-xs sm:text-[13px] text-zinc-300 line-clamp-2 max-w-[90%] leading-relaxed mb-4">
+              <p className="text-xs sm:text-[13px] text-white/90 dark:text-white font-medium line-clamp-2 max-w-[90%] leading-relaxed mb-4">
                 {config.subheadline}
               </p>
 
@@ -191,7 +191,7 @@ export default function OfferPopupBanner({
                   {config.features.map((feat, idx) => (
                     <span
                       key={idx}
-                      className="px-2.5 py-0.5 rounded-md bg-white/[0.06] border border-white/10 text-[10px] sm:text-[11px] font-bold text-zinc-200 shadow-sm"
+                      className="px-2.5 py-1 rounded-md bg-white/[0.08] border border-white/20 text-[10px] sm:text-[11px] font-black text-white shadow-sm"
                     >
                       {feat}
                     </span>
@@ -201,7 +201,7 @@ export default function OfferPopupBanner({
 
               {/* Hero Visual Mockup Box */}
               {config.image_url && (
-                <div className="relative w-full aspect-[16/10] sm:aspect-[16/9.5] rounded-2xl overflow-hidden border border-white/10 bg-zinc-900/80 mb-4 group shadow-inner">
+                <div className="relative w-full aspect-[16/10] sm:aspect-[16/9.5] rounded-2xl overflow-hidden border border-white/15 bg-zinc-900/80 mb-4 group shadow-inner">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={config.image_url}
@@ -221,8 +221,8 @@ export default function OfferPopupBanner({
               {timeLeft && (
                 <div className="w-full mb-3.5 py-1.5 px-3 rounded-xl bg-black/40 border border-amber-500/30 flex items-center justify-center gap-2 text-amber-300 text-xs font-bold">
                   <Clock size={13} className="text-amber-400 animate-spin" style={{ animationDuration: '4s' }} />
-                  <span>Offer Ends in:</span>
-                  <span className="font-mono font-black text-white bg-black/60 px-1.5 py-0.5 rounded">
+                  <span className="text-white font-bold">Offer Ends in:</span>
+                  <span className="font-mono font-black text-white bg-black/60 px-1.5 py-0.5 rounded border border-white/10">
                     {String(timeLeft.hours).padStart(2, '0')}:
                     {String(timeLeft.minutes).padStart(2, '0')}:
                     {String(timeLeft.seconds).padStart(2, '0')}
@@ -232,9 +232,9 @@ export default function OfferPopupBanner({
 
               {/* Voucher Code Box with 1-Click Copy */}
               {config.promo_code && (
-                <div className="w-full mb-4 p-2.5 rounded-2xl bg-black/50 border border-[#2CFF05]/30 flex items-center justify-between gap-2 shadow-inner">
+                <div className="w-full mb-4 p-2.5 rounded-2xl bg-black/60 border border-[#2CFF05]/40 flex items-center justify-between gap-2 shadow-inner">
                   <div className="flex flex-col items-start pl-2">
-                    <span className="text-[9px] uppercase font-extrabold tracking-wider text-zinc-400">
+                    <span className="text-[9px] uppercase font-black tracking-wider text-white">
                       Use Promo Code:
                     </span>
                     <span className="font-mono font-black text-sm sm:text-base text-[#2CFF05] tracking-wider">
@@ -248,18 +248,18 @@ export default function OfferPopupBanner({
                     className={`px-3 py-1.5 rounded-xl font-heading font-extrabold text-[11px] transition-all flex items-center gap-1.5 cursor-pointer shadow-sm ${
                       copied
                         ? 'bg-[#2CFF05] text-black font-black'
-                        : 'bg-white/10 hover:bg-white/20 text-white border border-white/15'
+                        : 'bg-white/15 hover:bg-white/25 text-white border border-white/20'
                     }`}
                   >
                     {copied ? (
                       <>
                         <Check size={13} className="text-black" />
-                        <span>COPIED!</span>
+                        <span className="text-black font-black">COPIED!</span>
                       </>
                     ) : (
                       <>
-                        <Copy size={13} />
-                        <span>COPY CODE</span>
+                        <Copy size={13} className="text-white" />
+                        <span className="text-white font-bold">COPY CODE</span>
                       </>
                     )}
                   </button>

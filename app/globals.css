@@ -139,6 +139,18 @@ html.light-mode .hover\:bg-\[\#2CFF05\]\/95:hover {
   background-color: #047857 !important;
   color: #ffffff !important;
 }
+
+/* ── Dark Mode Input & Box Text Color Enforcement ───────────────── */
+html.dark input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+html.dark textarea,
+html.dark select {
+  color: #FFFFFF !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #94A3B8 !important;
+}
 html.light-mode .shadow-\[\#2CFF05\]\/10,
 html.light-mode .shadow-\[\#2CFF05\]\/15,
 html.light-mode .shadow-\[\#2CFF05\]\/20,

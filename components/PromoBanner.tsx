@@ -109,7 +109,7 @@ export default function PromoBanner() {
             </h2>
 
             {/* Intro line */}
-            <p className="promo-intro text-sm text-muted-foreground leading-relaxed max-w-xl">
+            <p className="promo-intro text-sm text-muted-foreground dark:text-zinc-200 leading-relaxed max-w-xl">
               {t.homeSections?.whyBadge === 'විශේෂත්වයන්'
                 ? 'DTF මගින් ඕනෑම රෙදි වර්ගයක් මත සාර්ථකව මුද්‍රණය කළ හැක. පහතින් රෙදි වර්ගය තෝරා වෙනස වටහාගන්න.'
                 : "DTF doesn't care what you're printing on. Tap a fabric type below and see why it just works."}
@@ -124,7 +124,7 @@ export default function PromoBanner() {
                   className={`px-4.5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 border cursor-pointer ${
                     activeTab === type.id
                       ? 'bg-[#2CFF05] border-[#2CFF05] text-[#0a0a0a] shadow-lg shadow-[#2CFF05]/20 scale-105'
-                      : 'bg-card border-border text-muted-foreground hover:text-foreground hover:border-[#2CFF05]/40'
+                      : 'bg-card border-border text-slate-700 dark:text-white hover:text-foreground dark:hover:text-[#2CFF05] hover:border-[#2CFF05]/40'
                   }`}
                 >
                   {type.label}
@@ -134,14 +134,14 @@ export default function PromoBanner() {
 
             {/* Tab Result Content */}
             <div className="promo-result w-full min-h-[90px] p-6 rounded-2xl border border-border bg-card/35 backdrop-blur flex items-center justify-center lg:justify-start">
-              <p className="promo-result-text text-sm text-foreground leading-relaxed font-semibold">
+              <p className="promo-result-text text-sm text-foreground dark:text-white leading-relaxed font-semibold">
                 {currentResult}
               </p>
             </div>
 
             {/* Closing */}
             <div className="promo-closing space-y-4 w-full pt-2">
-              <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
+              <p className="text-xs text-muted-foreground dark:text-zinc-300 leading-relaxed max-w-xl">
                 {t.homeSections?.whyBadge === 'විශේෂත්වයන්'
                   ? 'සෑම විටම එකම උසස් ගුණාත්මකභාවය සහ පැය 24ක වේගවත් නිමාව.'
                   : "Same process, same turnaround, every time - no matter what's on the rack."}
