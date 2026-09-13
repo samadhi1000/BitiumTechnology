@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Image from 'next/image';
-import { Layers } from 'lucide-react';
 
 interface ProductCardMediaCarouselProps {
   mainImage: string;
@@ -57,8 +56,6 @@ export default function ProductCardMediaCarousel({
     aspectRatio === '4/5' ? 'aspect-[4/5]' :
     aspectRatio === '1/1' ? 'aspect-square' :
     aspectRatio === '16/9' ? 'aspect-video' : 'aspect-[3/4]';
-
-  const slideLabels = ['Design / Artwork', 'Mockup 1', 'Mockup 2'];
 
   return (
     <div
@@ -130,16 +127,6 @@ export default function ProductCardMediaCarousel({
               />
             ))}
           </div>
-        </div>
-      )}
-
-      {/* ── Slide View Type Label Tag (e.g. Artwork vs Mockup 1 vs Mockup 2 on Hover) ── */}
-      {hasMultiple && isHovered && (
-        <div className="absolute top-2.5 left-2.5 z-30 pointer-events-none animate-fade-in">
-          <span className="px-2 py-0.5 rounded-md bg-black/80 backdrop-blur-md border border-[#2CFF05]/40 text-[#2CFF05] text-[9px] font-black uppercase tracking-wider shadow-md flex items-center gap-1">
-            <Layers size={10} />
-            {slideLabels[currentIndex] || `View ${currentIndex + 1}`}
-          </span>
         </div>
       )}
     </div>

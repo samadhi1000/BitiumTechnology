@@ -1097,7 +1097,6 @@ function matchesSubCategory(productSub: string | undefined, activeSub: string, a
                     ...(previewProduct.mockup_urls || []),
                   ].filter(Boolean);
                   const activeSrc = previewSlides[previewImageIndex] || previewProduct.image_url;
-                  const labels = ['Design / Artwork', 'Mockup 1', 'Mockup 2'];
 
                   return (
                     <>
@@ -1107,18 +1106,25 @@ function matchesSubCategory(productSub: string | undefined, activeSub: string, a
                       />
                       {previewSlides.length > 1 && (
                         <div className="flex items-center gap-2">
-                          {previewSlides.map((_, idx) => (
+                          {previewSlides.map((imgSrc, idx) => (
                             <button
                               key={idx}
                               type="button"
                               onClick={() => setPreviewImageIndex(idx)}
-                              className={`flex-1 py-1.5 px-2 rounded-lg text-[10px] font-bold transition-all flex items-center justify-center gap-1 cursor-pointer ${
+                              className={`relative h-12 w-12 rounded-lg overflow-hidden border-2 transition-all cursor-pointer p-0.5 bg-card ${
                                 previewImageIndex === idx
-                                  ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-md shadow-[#2CFF05]/20 font-black'
-                                  : 'bg-slate-100 dark:bg-card border border-slate-200 dark:border-white/10 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white'
+                                  ? 'border-[#2CFF05] shadow-md shadow-[#2CFF05]/20 ring-1 ring-[#2CFF05]'
+                                  : 'border-border/60 opacity-70 hover:opacity-100 hover:border-white/50'
                               }`}
                             >
-                              <span>{labels[idx] || `View ${idx + 1}`}</span>
+                              <div className="relative w-full h-full rounded-[4px] overflow-hidden">
+                                <Image
+                                  src={imgSrc}
+                                  alt={`View ${idx + 1}`}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
                             </button>
                           ))}
                         </div>

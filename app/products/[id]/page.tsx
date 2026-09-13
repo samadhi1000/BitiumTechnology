@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { getProductById, Product, Variant } from '@/lib/products';
 import { useCartStore } from '@/lib/store/cartStore';
 import SecureWatermarkedImage from '@/components/SecureWatermarkedImage';
-import { ArrowLeft, ShoppingBag, Check, AlertCircle, Ruler } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, Check, AlertCircle, Ruler, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -183,39 +183,29 @@ export default function ProductPage({ params }: ProductPageProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         {/* ── Left Column: Image Gallery (Portrait 3:4 Watermarked) ─────────────── */}
-        <div className="flex flex-col gap-4 select-none">
+        <div className="flex flex-row gap-3 sm:gap-4 items-start select-none">
           {(() => {
             const allImages = [
               product.image_url,
               ...(product.mockup_urls || []),
             ].filter((u): u is string => Boolean(u && u.trim()));
             const currentImg = allImages[selectedImageIndex] || product.image_url;
-            const labels = ['Artwork / Design', 'Mockup 1', 'Mockup 2'];
 
             return (
               <>
-                <div className="relative aspect-[3/4] rounded-3xl overflow-hidden border border-border bg-card shadow-2xl select-none">
-                  <SecureWatermarkedImage
-                    src={currentImg}
-                    alt={`${product.name} - ${labels[selectedImageIndex] || 'View'}`}
-                    watermarkText="Bitium Technology"
-                    aspectRatio="3/4"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                {/* Thumbnails switcher if multiple images available */}
+                {/* Vertical Thumbnails switcher on the left side (AliExpress style) */}
                 {allImages.length > 1 && (
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="flex flex-col gap-2.5 sm:gap-3 w-16 sm:w-20 md:w-20 lg:w-24 shrink-0">
                     {allImages.map((imgSrc, idx) => (
                       <button
                         key={idx}
                         type="button"
+                        onMouseEnter={() => setSelectedImageIndex(idx)}
                         onClick={() => setSelectedImageIndex(idx)}
-                        className={`relative aspect-[3/4] rounded-xl overflow-hidden border-2 transition-all cursor-pointer p-0.5 bg-card ${
+                        className={`relative aspect-[3/4] rounded-xl overflow-hidden border-2 transition-all duration-200 cursor-pointer p-0.5 bg-card ${
                           selectedImageIndex === idx
-                            ? 'border-[#2CFF05] shadow-lg shadow-[#2CFF05]/20 scale-[1.02]'
-                            : 'border-border/60 hover:border-border opacity-70 hover:opacity-100'
+                            ? 'border-[#2CFF05] shadow-lg shadow-[#2CFF05]/20 scale-[1.02] ring-1 ring-[#2CFF05]'
+                            : 'border-border/60 hover:border-white/50 opacity-70 hover:opacity-100 hover:scale-[1.01]'
                         }`}
                       >
                         <div className="relative w-full h-full rounded-lg overflow-hidden">
@@ -226,13 +216,55 @@ export default function ProductPage({ params }: ProductPageProps) {
                             className="object-cover"
                           />
                         </div>
-                        <span className="absolute bottom-1 inset-x-1 py-0.5 px-1 rounded bg-black/80 backdrop-blur-sm text-[9px] font-black text-white uppercase text-center truncate">
-                          {labels[idx] || `View ${idx + 1}`}
-                        </span>
                       </button>
                     ))}
                   </div>
                 )}
+
+                {/* Main Watermarked Image with Hover Arrow Navigation */}
+                <div className="relative flex-1 aspect-[3/4] rounded-3xl overflow-hidden border border-border bg-card shadow-2xl select-none group">
+                  <SecureWatermarkedImage
+                    src={currentImg}
+                    alt={`${product.name} - View ${selectedImageIndex + 1}`}
+                    watermarkText="Bitium Technology"
+                    aspectRatio="3/4"
+                    className="w-full h-full object-cover"
+                  />
+
+                  {/* Left & Right Hover Chevron Navigation (< >) */}
+                  {allImages.length > 1 && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
+                        }}
+                        aria-label="Previous image"
+                        className="absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/65 hover:bg-black/90 backdrop-blur-md border border-white/20 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 shadow-lg cursor-pointer"
+                      >
+                        <ChevronLeft size={20} className="sm:w-6 sm:h-6 stroke-[2.5]" />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedImageIndex((prev) => (prev + 1) % allImages.length);
+                        }}
+                        aria-label="Next image"
+                        className="absolute right-2.5 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/65 hover:bg-black/90 backdrop-blur-md border border-white/20 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 shadow-lg cursor-pointer"
+                      >
+                        <ChevronRight size={20} className="sm:w-6 sm:h-6 stroke-[2.5]" />
+                      </button>
+
+                      {/* Image index counter badge on hover */}
+                      <div className="absolute top-3 right-3 z-20 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white/90 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {selectedImageIndex + 1} / {allImages.length}
+                      </div>
+                    </>
+                  )}
+                </div>
               </>
             );
           })()}
