@@ -368,11 +368,6 @@ function matchesSubCategory(productSub: string | undefined, activeSub: string, a
     }
   }, [filteredProducts, sortBy]);
 
-  // Pinned products (up to 4 items) for top pinned spotlight banner
-  const pinnedProducts = useMemo(() => {
-    return filteredProducts.filter((p) => p.is_pinned).slice(0, 4);
-  }, [filteredProducts]);
-
   // Pagination
   const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
   const paginatedProducts = useMemo(() => {
@@ -647,109 +642,6 @@ function matchesSubCategory(productSub: string | undefined, activeSub: string, a
           </div>
         ) : (
           <>
-            {/* ── TOP PINNED SPOTLIGHT (UP TO 4 PINNED DESIGNS) ── */}
-            {pinnedProducts.length > 0 && currentPage === 1 && !searchQuery.trim() && (
-              <div className="mb-10 p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-emerald-500/[0.04] via-emerald-500/[0.02] to-transparent dark:from-[#2CFF05]/[0.06] dark:via-[#2CFF05]/[0.02] dark:to-transparent border border-emerald-500/30 dark:border-[#2CFF05]/30 shadow-sm relative overflow-hidden">
-                <div className="flex flex-wrap items-center justify-between gap-2 mb-5">
-                  <div className="flex items-center gap-2.5">
-                    <span className="w-8 h-8 rounded-xl bg-[#2CFF05]/20 text-[#0a0a0a] dark:text-[#2CFF05] flex items-center justify-center font-bold text-sm shadow-sm border border-[#2CFF05]/30">
-                      📌
-                    </span>
-                    <div>
-                      <h2 className="font-heading font-black text-sm sm:text-base text-slate-900 dark:text-white tracking-wide uppercase flex items-center gap-2">
-                        Pinned Spotlight Designs
-                        <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-[#2CFF05] text-[#0a0a0a] lowercase">
-                          {pinnedProducts.length} pinned
-                        </span>
-                      </h2>
-                      <p className="text-[11px] text-slate-500 dark:text-zinc-400">
-                        Top priority designs pinned to the top of catalog for quick view and ordering
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-                  {pinnedProducts.map((p) => {
-                    const isSale = !!p.original_price && p.original_price > p.price;
-                    const subLabel = p.sub_category
-                      ? p.sub_category.replace(/-/g, ' ').toUpperCase()
-                      : config.itemSingular.toUpperCase();
-
-                    return (
-                      <div
-                        key={`pinned-${p.id}`}
-                        className="group relative rounded-2xl border-2 border-emerald-500/40 dark:border-[#2CFF05]/40 bg-white dark:bg-[#0d1527] hover:border-emerald-500 dark:hover:border-[#2CFF05] hover:shadow-xl dark:hover:shadow-[#2CFF05]/10 transition-all duration-300 flex flex-col p-3 shadow-sm"
-                      >
-                        <div className="relative w-full aspect-[3/4] rounded-xl overflow-hidden bg-slate-50 dark:bg-zinc-900 border border-slate-100 dark:border-white/10 mb-2.5 select-none">
-                          <ProductCardMediaCarousel
-                            mainImage={p.image_url}
-                            mockupUrls={p.mockup_urls}
-                            alt={p.name}
-                            watermarkText="Bitium Technology"
-                            aspectRatio="3/4"
-                            className="w-full h-full object-cover"
-                          />
-
-                          <div className="absolute top-2 left-2 flex flex-col gap-1 z-30 pointer-events-none">
-                            <span className="px-2 py-0.5 rounded bg-gradient-to-r from-amber-500 to-emerald-500 text-white font-black text-[9px] uppercase tracking-wide shadow-sm flex items-center gap-1">
-                              📌 PINNED
-                            </span>
-                            {isSale && (
-                              <span className="px-2 py-0.5 rounded bg-[#ff1a3c] text-white font-black text-[9px] uppercase tracking-wide shadow-sm">
-                                SALE
-                              </span>
-                            )}
-                          </div>
-
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              setPreviewImageIndex(0);
-                              setPreviewProduct(p);
-                            }}
-                            aria-label={`Quick Zoom Preview for ${p.name}`}
-                            title="Quick Zoom & Preview"
-                            className="group/btn absolute top-2 right-2 w-7 h-7 rounded-full bg-white/95 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-600 shadow-md backdrop-blur-md flex items-center justify-center transition-all z-30 hover:bg-[#2CFF05] hover:text-black dark:hover:bg-[#2CFF05] dark:hover:text-black dark:hover:border-[#2CFF05] hover:scale-110 cursor-pointer pointer-events-auto"
-                          >
-                            <Eye size={13} className="text-slate-800 dark:text-white group-hover/btn:text-black transition-colors" />
-                          </button>
-                        </div>
-
-                        <div className="flex flex-col flex-grow">
-                          <span className="text-[9.5px] font-extrabold text-emerald-600 dark:text-[#2CFF05] uppercase tracking-wider mb-0.5 truncate">
-                            {subLabel}
-                          </span>
-                          <h3 className="font-heading font-bold text-[13px] text-slate-900 dark:text-white leading-snug line-clamp-1 group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05] transition-colors mb-1.5">
-                            {p.name}
-                          </h3>
-                          <div className="mt-auto pt-1 flex items-baseline gap-2">
-                            {p.original_price && p.original_price > p.price && (
-                              <span className="text-[11px] text-slate-400 dark:text-zinc-500 line-through">
-                                Rs. {p.original_price.toLocaleString()}
-                              </span>
-                            )}
-                            <span className="font-heading font-black text-[13.5px] text-emerald-600 dark:text-[#2CFF05]">
-                              From Rs. {p.price.toLocaleString()}
-                            </span>
-                          </div>
-                          <Link
-                            href={`/products/${p.id}`}
-                            className="mt-2.5 pt-2 border-t border-slate-100 dark:border-white/10 flex items-center justify-between text-[11px] font-bold text-slate-700 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05] transition-colors"
-                          >
-                            <span>View {config.itemSingular}</span>
-                            <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-                          </Link>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
             {/* 4-Column Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
               {paginatedProducts.map((product, idx) => {
@@ -766,7 +658,11 @@ function matchesSubCategory(productSub: string | undefined, activeSub: string, a
                 return (
                   <div
                     key={product.id}
-                    className="group relative rounded-2xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-card/90 hover:border-emerald-500/40 dark:hover:border-[#2CFF05]/50 hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 flex flex-col p-3 sm:p-3.5 shadow-sm"
+                    className={`group relative rounded-2xl border bg-white dark:bg-card/90 hover:border-emerald-500/40 dark:hover:border-[#2CFF05]/50 hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 flex flex-col p-3 sm:p-3.5 shadow-sm ${
+                      product.is_pinned
+                        ? 'border-emerald-500/60 dark:border-[#2CFF05]/60 ring-1 ring-emerald-500/20 dark:ring-[#2CFF05]/20 shadow-emerald-500/5 dark:shadow-[#2CFF05]/5'
+                        : 'border-slate-200/90 dark:border-white/10'
+                    }`}
                   >
                     {/* Watermarked Image Wrapper (Portrait 3:4 with Hover Auto-Slideshow) */}
                     <div className="relative w-full aspect-[3/4] rounded-xl overflow-hidden bg-slate-50 dark:bg-zinc-900 border border-slate-100 dark:border-white/10 mb-3 select-none">
