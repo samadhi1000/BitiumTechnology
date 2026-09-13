@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import PreloaderWrapper from "@/components/PreloaderWrapper";
 import CartDrawer from "@/components/CartDrawer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import OfferPopupBanner from "@/components/OfferPopupBanner";
 
 const notoSansSinhala = Noto_Sans_Sinhala({
   subsets: ["sinhala", "latin"],
@@ -83,6 +84,7 @@ export default function RootLayout({
                 <main className="flex-grow flex flex-col">{children}</main>
                 <Footer />
                 <CartDrawer />
+                <OfferPopupBanner />
               </AuthProvider>
             </PreloaderWrapper>
             <WhatsAppButton />

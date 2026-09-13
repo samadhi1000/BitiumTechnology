@@ -57,7 +57,8 @@ import {
   Users,
   UserCheck,
   Receipt,
-  Pin
+  Pin,
+  Megaphone
 } from 'lucide-react';
 import Image from 'next/image';
 import { sanitizeText } from '@/lib/security/sanitize';
@@ -65,6 +66,7 @@ import AdminBatchPrint from '@/components/AdminBatchPrint';
 import OrderFormComponent from '@/components/OrderFormComponent';
 import POSInvoiceGenerator from '@/components/POSInvoiceGenerator';
 import AdminStaffManager from '@/components/AdminStaffManager';
+import AdminPopupManager from '@/components/AdminPopupManager';
 
 // ─── Size presets per category ─────────────────────────────────────────────
 const CATEGORY_SIZES: Record<string, string[]> = {
@@ -164,8 +166,8 @@ export default function AdminPanelPage() {
   const [activeStaff, setActiveStaff] = useState<StaffProfile>(getActiveStaffProfile(staffProfiles));
   const [isStaffAuthenticated, setIsStaffAuthenticated] = useState<boolean>(false);
 
-  // Tab states: 'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'staff'
-  const [activeTab, setActiveTab] = useState<'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'staff'>('products');
+  // Tab states: 'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'staff' | 'popup'
+  const [activeTab, setActiveTab] = useState<'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'staff' | 'popup'>('products');
   
   // Strict CEO / Super Admin permission validation
   const isCeo = activeStaff.role === 'ceo_admin' || activeStaff.id === 'staff-indrajith' || (!!user && profile?.role === 'admin');
@@ -1010,7 +1012,7 @@ export default function AdminPanelPage() {
                   <Printer size={16} />
                   <span>Print 4-in-1 A4</span>
                 </button>
-              ) : activeTab === 'order-form' || activeTab === 'pos-invoice' || activeTab === 'staff' ? null : (
+              ) : activeTab === 'order-form' || activeTab === 'pos-invoice' || activeTab === 'staff' || activeTab === 'popup' ? null : (
                 <>
                   {activeTab === 'products' && activeStaff.permissions.canAddProducts && (
                     <button
@@ -1195,10 +1197,28 @@ export default function AdminPanelPage() {
                 </span>
               </button>
             )}
+
+            {/* Special Offers & Promo Popup Banner Tab */}
+            {(isCeo || activeStaff.role === 'ceo_admin') && (
+              <button
+                onClick={() => { setActiveTab('popup'); }}
+                className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                  activeTab === 'popup'
+                    ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
+                    : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
+                }`}
+              >
+                <Sparkles size={16} />
+                <span>Special Offers Popup</span>
+                <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'popup' ? 'bg-black text-[#2CFF05]' : 'bg-emerald-500/20 text-emerald-400'}`}>
+                  POPUP BANNER
+                </span>
+              </button>
+            )}
           </div>
 
           {/* Secondary Filter & Search Row - Shown only for Store & Digital Catalogs */}
-          {activeTab !== 'batch-print' && activeTab !== 'order-form' && activeTab !== 'pos-invoice' && activeTab !== 'staff' && (
+          {activeTab !== 'batch-print' && activeTab !== 'order-form' && activeTab !== 'pos-invoice' && activeTab !== 'staff' && activeTab !== 'popup' && (
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between p-4 rounded-2xl border border-border bg-card/20 backdrop-blur-sm">
               <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
                 <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mr-2 flex items-center gap-1.5"><Filter size={12} /> Category:</span>
@@ -1290,6 +1310,8 @@ export default function AdminPanelPage() {
             <div className="p-4 sm:p-6 rounded-2xl border border-border bg-card/10 backdrop-blur-sm">
               <POSInvoiceGenerator activeStaff={activeStaff} />
             </div>
+          ) : activeTab === 'popup' ? (
+            <AdminPopupManager />
           ) : (
             <div className="rounded-2xl border border-border bg-card/10 backdrop-blur-sm overflow-hidden">
               {loading ? (
