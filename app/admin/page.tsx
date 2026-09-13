@@ -241,7 +241,7 @@ export default function AdminPanelPage() {
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
-  // Restore staff session from sessionStorage if present
+  // Restore staff session or default to CEO when Master Admin is logged in
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedStaffId = sessionStorage.getItem('bitium_admin_staff_id');
@@ -251,10 +251,21 @@ export default function AdminPanelPage() {
           setActiveStaff(found);
           setActiveStaffProfileId(found.id);
           setIsStaffAuthenticated(true);
+          return;
+        }
+      }
+
+      // If Master Admin Supabase user is logged in, ensure CEO/Admin profile is active
+      if (user && profile?.role === 'admin') {
+        const ceoStaff = staffProfiles.find(s => s.role === 'ceo_admin') || staffProfiles[0];
+        if (ceoStaff) {
+          setActiveStaff(ceoStaff);
+          setActiveStaffProfileId(ceoStaff.id);
+          setIsStaffAuthenticated(true);
         }
       }
     }
-  }, [staffProfiles]);
+  }, [staffProfiles, user, profile]);
 
   // Fetch catalogs if authenticated
   const fetchAllCatalogs = async () => {
@@ -321,6 +332,14 @@ export default function AdminPanelPage() {
       if (error) {
         setLoginError('Invalid login credentials. Please check your staff username/email and password.');
       } else if (data.user) {
+        const ceoStaff = staffProfiles.find(s => s.role === 'ceo_admin') || staffProfiles[0];
+        if (ceoStaff) {
+          setActiveStaff(ceoStaff);
+          setActiveStaffProfileId(ceoStaff.id);
+          if (typeof window !== 'undefined') {
+            sessionStorage.setItem('bitium_admin_staff_id', ceoStaff.id);
+          }
+        }
         setIsStaffAuthenticated(true);
         fetchAllCatalogs();
       }
@@ -336,6 +355,12 @@ export default function AdminPanelPage() {
     setIsStaffAuthenticated(false);
     if (typeof window !== 'undefined') {
       sessionStorage.removeItem('bitium_admin_staff_id');
+      localStorage.removeItem('bitium_admin_active_staff_id_v1');
+    }
+    const ceoStaff = staffProfiles.find(s => s.role === 'ceo_admin') || staffProfiles[0];
+    if (ceoStaff) {
+      setActiveStaff(ceoStaff);
+      setActiveStaffProfileId(ceoStaff.id);
     }
     try {
       await signOut();
@@ -955,7 +980,7 @@ export default function AdminPanelPage() {
                     </span>
                   </div>
                 </div>
-                {activeStaff.role === 'ceo_admin' && (
+                {(isCeo || activeStaff.role === 'ceo_admin') && (
                   <select
                     value={activeStaff.id}
                     onChange={(e) => handleSwitchActiveStaff(e.target.value)}

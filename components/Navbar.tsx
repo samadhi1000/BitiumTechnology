@@ -80,6 +80,7 @@ export default function Navbar() {
   const handleNavbarSignOut = async () => {
     if (typeof window !== 'undefined') {
       sessionStorage.removeItem('bitium_admin_staff_id');
+      localStorage.removeItem('bitium_admin_active_staff_id_v1');
     }
     setActiveStaffSession(null);
     try {
