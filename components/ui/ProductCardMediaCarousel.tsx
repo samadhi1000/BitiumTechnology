@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 
 interface ProductCardMediaCarouselProps {
@@ -22,28 +22,55 @@ export default function ProductCardMediaCarousel({
 }: ProductCardMediaCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [enableTransition, setEnableTransition] = useState(true);
 
   // Combine main artwork image and up to 2 mockups
-  const slides = useMemo(() => {
+  const originalSlides = useMemo(() => {
     const list = [mainImage, ...(mockupUrls || [])].filter((url): url is string => Boolean(url && url.trim()));
     return list.length > 0 ? list : [mainImage];
   }, [mainImage, mockupUrls]);
 
-  const hasMultiple = slides.length > 1;
+  const hasMultiple = originalSlides.length > 1;
 
-  // Auto-slide every 1 second from right to left on hover
+  // Clone first slide at the end for 100% seamless infinite forward sliding without rewinding
+  const loopSlides = useMemo(() => {
+    if (!hasMultiple) return originalSlides;
+    return [...originalSlides, originalSlides[0]];
+  }, [originalSlides, hasMultiple]);
+
+  // Auto-slide every 1.2s in one continuous forward direction on hover
   useEffect(() => {
     if (!isHovered || !hasMultiple) {
+      setEnableTransition(false);
       setCurrentIndex(0);
       return;
     }
 
+    setEnableTransition(true);
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % slides.length);
-    }, 1000);
+      setCurrentIndex((prev) => prev + 1);
+    }, 1200);
 
     return () => clearInterval(interval);
-  }, [isHovered, hasMultiple, slides.length]);
+  }, [isHovered, hasMultiple]);
+
+  // When reached the cloned slide at the end (loopSlides.length - 1), seamlessly reset to index 0
+  useEffect(() => {
+    if (currentIndex >= loopSlides.length - 1) {
+      const timer = setTimeout(() => {
+        setEnableTransition(false);
+        setCurrentIndex(0);
+      }, 550); // Matches the 0.55s slide animation duration
+
+      return () => clearTimeout(timer);
+    } else {
+      // Re-enable transition for regular forward steps
+      const timer = setTimeout(() => {
+        setEnableTransition(true);
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex, loopSlides.length]);
 
   // Context menu prevention handler to prevent image theft
   const preventTheft = (e: React.SyntheticEvent) => {
@@ -57,33 +84,37 @@ export default function ProductCardMediaCarousel({
     aspectRatio === '1/1' ? 'aspect-square' :
     aspectRatio === '16/9' ? 'aspect-video' : 'aspect-[3/4]';
 
+  const activeDotIndex = currentIndex % originalSlides.length;
+
   return (
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
+        setEnableTransition(false);
         setCurrentIndex(0);
       }}
       onContextMenu={preventTheft}
       className={`relative w-full overflow-hidden bg-slate-100 dark:bg-zinc-900 rounded-xl select-none ${aspectClass} ${className}`}
     >
-      {/* ── Slide Track (Right-to-Left Slide Animation) ── */}
+      {/* ── Seamless Infinite Slide Track ── */}
       <div className="relative w-full h-full overflow-hidden">
-        {slides.map((src, idx) => {
-          // Calculate offset position for right-to-left slide
+        {loopSlides.map((src, idx) => {
           const offset = idx - currentIndex;
           return (
             <div
               key={`${src}-${idx}`}
               style={{
                 transform: `translateX(${offset * 100}%)`,
-                transition: 'transform 0.55s cubic-bezier(0.22, 1, 0.36, 1)',
+                transition: enableTransition
+                  ? 'transform 0.55s cubic-bezier(0.22, 1, 0.36, 1)'
+                  : 'none',
               }}
               className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none"
             >
               <Image
                 src={src}
-                alt={`${alt} - View ${idx + 1}`}
+                alt={`${alt} - View ${(idx % originalSlides.length) + 1}`}
                 fill
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 className="object-cover w-full h-full"
@@ -116,11 +147,11 @@ export default function ProductCardMediaCarousel({
       {hasMultiple && (
         <div className="absolute bottom-2 inset-x-0 z-30 flex items-center justify-center gap-1.5 pointer-events-none">
           <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 shadow-sm transition-opacity duration-300">
-            {slides.map((_, dotIdx) => (
+            {originalSlides.map((_, dotIdx) => (
               <span
                 key={dotIdx}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  dotIdx === currentIndex
+                  dotIdx === activeDotIndex
                     ? 'w-3.5 bg-[#2CFF05] shadow-[0_0_6px_rgba(44,255,5,0.8)]'
                     : 'w-1.5 bg-white/40'
                 }`}
