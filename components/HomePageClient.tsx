@@ -9,6 +9,7 @@ import PromoBanner from '@/components/PromoBanner';
 import { ArrowRight, Sparkles, Palette, Printer, Layers, Stamp, Flame, CheckCircle2, Scissors, FlaskConical, PlayCircle, MessageSquareHeart, Upload, Grid, Cuboid, Package, Shield, Zap, Phone, ThumbsUp, Activity, Shirt, Feather, Clock, Droplet, PenTool, Crown, Target, Star, Users } from 'lucide-react';
 import { HeroSearch } from '@/components/HeroSearch';
 import { HeroShowcaseCarousel } from '@/components/HeroShowcaseCarousel';
+import CustomerReviewsCarousel from '@/components/CustomerReviewsCarousel';
 import { useLanguage } from '@/lib/context/LanguageContext';
 
 // Icons for How It Works & Why Choose Us
@@ -774,54 +775,8 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Testimonials (Reviews) */}
-      <section className="py-20 px-6 bg-background border-b border-border">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <span className="font-heading font-bold text-[13px] text-[#2CFF05] uppercase tracking-widest">
-              {t.homeSections?.reviewsBadge || 'Reviews'}
-            </span>
-            <h2 className="font-heading font-black text-[clamp(28px,4vw,42px)] text-foreground mt-2">
-              {t.homeSections?.reviewsTitle || 'What Our Customers Say'}
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 testi-grid">
-            {testimonials.map((tItem, i) => (
-              <div key={tItem.name} className="bg-zinc-50 dark:bg-card rounded-[20px] p-8 border-[1.5px] border-border">
-                <div className="flex gap-1 mb-5">
-                  {Array.from({ length: 5 }).map((_, s) => <StarIcon key={s} filled={s < tItem.rating} />)}
-                </div>
-                <p className="text-[15px] text-muted-foreground dark:text-foreground leading-[1.7] mb-6 italic">{tItem.text}</p>
-                <div className="flex items-center gap-3">
-                  <div className={`w-[42px] h-[42px] rounded-full flex items-center justify-center font-heading font-extrabold text-[14px] text-white shrink-0 ${i === 0 ? 'dark:text-[#0a0a0a]' : ''}`} style={{ background: avatarColors[i] }}>
-                    {tItem.avatar}
-                  </div>
-                  <div>
-                    <div className="font-heading font-bold text-[14px] text-foreground">{tItem.name}</div>
-                    <div className="text-[12px] text-muted-foreground">{tItem.role}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Community Hub CTA Button */}
-          <div className="text-center mt-12">
-            <Link 
-              href="/community" 
-              className="lime-btn inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full text-[14px] font-bold shadow-lg shadow-[#2CFF05]/15 hover:scale-105 transition-all cursor-pointer"
-            >
-              <Users size={18} />
-              <span>
-                {t.homeSections?.whyBadge === 'විශේෂත්වයන්' 
-                  ? 'අපගේ සමූහයට එකතු වන්න (Visit Our Community)' 
-                  : 'Visit Our Community'}
-              </span>
-              <ArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* Customer Reviews & Feedback Carousel */}
+      <CustomerReviewsCarousel />
 
       {/* FAQ Section (Placed between Reviews and Ready to get started) */}
       <section className="py-24 px-6 bg-zinc-50 dark:bg-card/20 border-b border-border overflow-hidden relative">
