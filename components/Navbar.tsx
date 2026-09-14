@@ -855,15 +855,16 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* Floating Quick Action: Return to Admin Panel when browsing non-admin pages */}
+      {/* Desktop-only Minimal Floating Action: Return to Admin Panel when browsing non-admin pages */}
       {isLoggedIn && pathname !== '/admin' && (
-        <div className="fixed bottom-6 right-6 z-40">
+        <div className="fixed bottom-6 left-6 z-40 hidden lg:block">
           <Link
             href="/admin"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-zinc-950/90 dark:bg-zinc-900/90 border border-emerald-500/50 dark:border-[#2CFF05]/50 text-emerald-400 dark:text-[#2CFF05] font-black text-xs uppercase tracking-wider shadow-2xl backdrop-blur-md hover:scale-105 transition-all hover:shadow-[0_0_25px_rgba(44,255,5,0.35)] cursor-pointer group"
+            title="Return to Admin Dashboard"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-950/80 dark:bg-zinc-900/80 border border-emerald-500/30 dark:border-[#2CFF05]/30 text-emerald-400 dark:text-[#2CFF05] font-bold text-[11px] tracking-wide shadow-lg backdrop-blur-md hover:scale-105 hover:border-[#2CFF05] transition-all hover:shadow-[0_0_15px_rgba(44,255,5,0.25)] cursor-pointer group"
           >
-            <LayoutDashboard size={16} className="text-emerald-500 dark:text-[#2CFF05] group-hover:rotate-12 transition-transform" />
-            <span>Admin Panel ({displayName})</span>
+            <LayoutDashboard size={13} className="text-emerald-500 dark:text-[#2CFF05] group-hover:rotate-12 transition-transform shrink-0" />
+            <span className="truncate max-w-[120px]">Admin ({displayName})</span>
           </Link>
         </div>
       )}
