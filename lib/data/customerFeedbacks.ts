@@ -8,20 +8,11 @@ export interface CustomerFeedbackItem {
   text: string;
   textSi?: string;
   avatar: string; // Initials or short tag (e.g. "KP", "DS")
-  avatarBg?: string; // Background color for the avatar badge (Hex/Tailwind class)
+  avatarBg?: string; // Background color for the avatar badge (Hex)
   image: string; // High-res background image of work/customer
   categoryTag?: string; // Optional badge (e.g. "DTF Printing", "Laser Cut Stencils")
 }
 
-/**
- * ─────────────────────────────────────────────────────────────────────────────
- * BITIUM TECHNOLOGY - CUSTOMER FEEDBACK & REVIEWS DATA
- * ─────────────────────────────────────────────────────────────────────────────
- * Customer reviews can be manually edited, added, or deleted below.
- * Each review card displays the background image, 5-star rating, review quote,
- * avatar initials, customer name, and role.
- * ─────────────────────────────────────────────────────────────────────────────
- */
 export const defaultCustomerFeedbacks: CustomerFeedbackItem[] = [
   {
     id: 'review-1',
@@ -94,3 +85,61 @@ export const defaultCustomerFeedbacks: CustomerFeedbackItem[] = [
     categoryTag: 'Custom DTF & Apparel'
   }
 ];
+
+const STORAGE_KEY = 'bitium_customer_feedbacks_data';
+
+export function getLocalCustomerFeedbacks(): CustomerFeedbackItem[] {
+  if (typeof window === 'undefined') return defaultCustomerFeedbacks;
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to parse local customer feedbacks:', err);
+  }
+  return defaultCustomerFeedbacks;
+}
+
+export function setLocalCustomerFeedbacks(feedbacks: CustomerFeedbackItem[]) {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(feedbacks));
+  } catch (err) {
+    console.warn('Failed to store customer feedbacks locally:', err);
+  }
+}
+
+export async function fetchCustomerFeedbacks(): Promise<CustomerFeedbackItem[]> {
+  try {
+    const res = await fetch('/api/customer-reviews', { cache: 'no-store' });
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        setLocalCustomerFeedbacks(data);
+        return data;
+      }
+    }
+  } catch (err) {
+    console.error('Failed to fetch customer feedbacks from API:', err);
+  }
+  return getLocalCustomerFeedbacks();
+}
+
+export async function saveCustomerFeedbacks(feedbacks: CustomerFeedbackItem[]): Promise<boolean> {
+  setLocalCustomerFeedbacks(feedbacks);
+  try {
+    const res = await fetch('/api/customer-reviews', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(feedbacks),
+    });
+    return res.ok;
+  } catch (err) {
+    console.error('Failed to save customer feedbacks to API:', err);
+    return false;
+  }
+}

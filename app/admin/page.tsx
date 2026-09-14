@@ -58,7 +58,8 @@ import {
   UserCheck,
   Receipt,
   Pin,
-  Megaphone
+  Megaphone,
+  MessageSquareHeart
 } from 'lucide-react';
 import Image from 'next/image';
 import { sanitizeText } from '@/lib/security/sanitize';
@@ -67,6 +68,7 @@ import OrderFormComponent from '@/components/OrderFormComponent';
 import POSInvoiceGenerator from '@/components/POSInvoiceGenerator';
 import AdminStaffManager from '@/components/AdminStaffManager';
 import AdminPopupManager from '@/components/AdminPopupManager';
+import AdminReviewsManager from '@/components/AdminReviewsManager';
 
 // ─── Size presets per category ─────────────────────────────────────────────
 const CATEGORY_SIZES: Record<string, string[]> = {
@@ -166,8 +168,8 @@ export default function AdminPanelPage() {
   const [activeStaff, setActiveStaff] = useState<StaffProfile>(getActiveStaffProfile(staffProfiles));
   const [isStaffAuthenticated, setIsStaffAuthenticated] = useState<boolean>(false);
 
-  // Tab states: 'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'staff' | 'popup'
-  const [activeTab, setActiveTab] = useState<'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'staff' | 'popup'>('products');
+  // Tab states: 'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'staff' | 'popup' | 'reviews'
+  const [activeTab, setActiveTab] = useState<'products' | 'digital' | 'batch-print' | 'order-form' | 'pos-invoice' | 'staff' | 'popup' | 'reviews'>('products');
   
   // Strict CEO / Super Admin permission validation
   const isCeo = activeStaff.role === 'ceo_admin' || activeStaff.id === 'staff-indrajith' || (!!user && profile?.role === 'admin');
@@ -1215,10 +1217,26 @@ export default function AdminPanelPage() {
                 </span>
               </button>
             )}
+
+            {/* Customer Reviews & Feedback Tab */}
+            <button
+              onClick={() => { setActiveTab('reviews'); }}
+              className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                activeTab === 'reviews'
+                  ? 'bg-[#2CFF05] text-[#0a0a0a] shadow-xl shadow-[#2CFF05]/20 scale-105'
+                  : 'bg-card/40 border border-border text-muted-foreground hover:text-foreground hover:bg-card'
+              }`}
+            >
+              <MessageSquareHeart size={16} />
+              <span>Customer Reviews</span>
+              <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase ${activeTab === 'reviews' ? 'bg-black text-[#2CFF05]' : 'bg-amber-500/20 text-amber-400'}`}>
+                CAROUSEL
+              </span>
+            </button>
           </div>
 
           {/* Secondary Filter & Search Row - Shown only for Store & Digital Catalogs */}
-          {activeTab !== 'batch-print' && activeTab !== 'order-form' && activeTab !== 'pos-invoice' && activeTab !== 'staff' && activeTab !== 'popup' && (
+          {activeTab !== 'batch-print' && activeTab !== 'order-form' && activeTab !== 'pos-invoice' && activeTab !== 'staff' && activeTab !== 'popup' && activeTab !== 'reviews' && (
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between p-4 rounded-2xl border border-border bg-card/20 backdrop-blur-sm">
               <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
                 <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mr-2 flex items-center gap-1.5"><Filter size={12} /> Category:</span>
@@ -1312,6 +1330,8 @@ export default function AdminPanelPage() {
             </div>
           ) : activeTab === 'popup' ? (
             <AdminPopupManager />
+          ) : activeTab === 'reviews' ? (
+            <AdminReviewsManager />
           ) : (
             <div className="rounded-2xl border border-border bg-card/10 backdrop-blur-sm overflow-hidden">
               {loading ? (

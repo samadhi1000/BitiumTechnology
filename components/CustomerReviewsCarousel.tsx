@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Star, ChevronLeft, ChevronRight, Users, ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/lib/context/LanguageContext';
-import { CustomerFeedbackItem, defaultCustomerFeedbacks } from '@/lib/data/customerFeedbacks';
+import { CustomerFeedbackItem, defaultCustomerFeedbacks, fetchCustomerFeedbacks, getLocalCustomerFeedbacks } from '@/lib/data/customerFeedbacks';
 
 interface CustomerReviewsCarouselProps {
   feedbacks?: CustomerFeedbackItem[];
@@ -15,19 +15,39 @@ interface CustomerReviewsCarouselProps {
 }
 
 export default function CustomerReviewsCarousel({
-  feedbacks = defaultCustomerFeedbacks,
+  feedbacks: initialFeedbacks,
   title,
   badge,
   communityBtnText,
 }: CustomerReviewsCarouselProps) {
   const { isSinhala } = useLanguage();
+  const [items, setItems] = useState<CustomerFeedbackItem[]>(initialFeedbacks || defaultCustomerFeedbacks);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Sync with live server API on mount
+  React.useEffect(() => {
+    if (initialFeedbacks && initialFeedbacks.length > 0) {
+      setItems(initialFeedbacks);
+      return;
+    }
+    // Load local storage first for zero-layout-shift
+    const local = getLocalCustomerFeedbacks();
+    if (local && local.length > 0) {
+      setItems(local);
+    }
+    // Then fetch latest from API
+    fetchCustomerFeedbacks().then((latest) => {
+      if (latest && latest.length > 0) {
+        setItems(latest);
+      }
+    }).catch(() => {});
+  }, [initialFeedbacks]);
 
   // Touch / Swipe handling refs
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
 
-  const totalItems = feedbacks.length;
+  const totalItems = items.length;
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev === 0 ? totalItems - 1 : prev - 1));
@@ -69,15 +89,15 @@ export default function CustomerReviewsCarousel({
 
   // Get 3 visible items based on currentIndex (prev, current, next)
   const getVisibleFeedbacks = () => {
-    if (totalItems <= 1) return feedbacks.map((f, i) => ({ item: f, index: i, isCenter: true }));
+    if (totalItems <= 1) return items.map((f, i) => ({ item: f, index: i, isCenter: true }));
 
     const prevIndex = (currentIndex - 1 + totalItems) % totalItems;
     const nextIndex = (currentIndex + 1) % totalItems;
 
     return [
-      { item: feedbacks[prevIndex], index: prevIndex, isCenter: false },
-      { item: feedbacks[currentIndex], index: currentIndex, isCenter: true },
-      { item: feedbacks[nextIndex], index: nextIndex, isCenter: false },
+      { item: items[prevIndex], index: prevIndex, isCenter: false },
+      { item: items[currentIndex], index: currentIndex, isCenter: true },
+      { item: items[nextIndex], index: nextIndex, isCenter: false },
     ];
   };
 
@@ -228,7 +248,7 @@ export default function CustomerReviewsCarousel({
 
         {/* Carousel Pagination Dots */}
         <div className="flex items-center justify-center gap-2 mt-7">
-          {feedbacks.map((_, i) => (
+          {items.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrentIndex(i)}
