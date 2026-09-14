@@ -12,12 +12,12 @@ export const revalidate = 0;
 // ── GET /api/customer-reviews ──────────────────────────────────────────────────
 export async function GET() {
   try {
-    // 1. Try Supabase first
+    // 1. Try dedicated customer_reviews table (if custom SQL table created)
     try {
       const { data, error } = await supabase
         .from('customer_reviews')
         .select('*')
-        .order('created_at', { ascending: true });
+        .order('order_index', { ascending: true });
 
       if (!error && Array.isArray(data) && data.length > 0) {
         const formatted: CustomerFeedbackItem[] = data.map((item) => ({
@@ -43,11 +43,37 @@ export async function GET() {
           },
         });
       }
-    } catch (dbErr) {
-      console.warn('Supabase customer_reviews fetch failed, checking local file fallback:', dbErr);
+    } catch {
+      // Ignore and proceed to site_popups table
     }
 
-    // 2. Local JSON fallback file
+    // 2. Try site_popups table with id = 'customer_reviews_config' (always exists in Supabase!)
+    try {
+      const { data, error } = await supabase
+        .from('site_popups')
+        .select('*')
+        .eq('id', 'customer_reviews_config')
+        .single();
+
+      if (!error && data && data.subheadline) {
+        try {
+          const parsed = JSON.parse(data.subheadline);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return new NextResponse(JSON.stringify(parsed), {
+              status: 200,
+              headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+              },
+            });
+          }
+        } catch {}
+      }
+    } catch (popupDbErr) {
+      console.warn('site_popups customer_reviews_config fetch error:', popupDbErr);
+    }
+
+    // 3. Local JSON fallback file
     if (fs.existsSync(fallbackConfigPath)) {
       try {
         const raw = fs.readFileSync(fallbackConfigPath, 'utf8');
@@ -60,7 +86,7 @@ export async function GET() {
       }
     }
 
-    // 3. Default preset reviews
+    // 4. Default preset reviews
     return NextResponse.json(defaultCustomerFeedbacks);
   } catch (err: any) {
     console.error('Error in /api/customer-reviews GET:', err);
@@ -91,7 +117,26 @@ export async function POST(request: NextRequest) {
       categoryTag: item.categoryTag || '',
     }));
 
-    // 1. Sync to Supabase (if table exists)
+    // 1. Sync to Supabase site_popups table (zero SQL needed, always persists across all users and devices!)
+    try {
+      const { error: popupError } = await supabase
+        .from('site_popups')
+        .upsert({
+          id: 'customer_reviews_config',
+          campaign_name: 'Customer Reviews Config',
+          subheadline: JSON.stringify(feedbacks),
+          is_active: true,
+          updated_at: new Date().toISOString(),
+        });
+
+      if (popupError) {
+        console.warn('site_popups upsert warning:', popupError.message);
+      }
+    } catch (popupErr) {
+      console.warn('site_popups upsert exception:', popupErr);
+    }
+
+    // 2. Also try customer_reviews table if it exists
     try {
       const dbPayload = feedbacks.map((f, i) => ({
         id: f.id,
@@ -110,18 +155,12 @@ export async function POST(request: NextRequest) {
         updated_at: new Date().toISOString(),
       }));
 
-      const { error: dbError } = await supabase
+      await supabase
         .from('customer_reviews')
         .upsert(dbPayload, { onConflict: 'id' });
+    } catch {}
 
-      if (dbError) {
-        console.warn('Supabase customer_reviews upsert warning (fallback file will be used):', dbError.message);
-      }
-    } catch (dbErr) {
-      console.warn('Supabase exception on customer_reviews save:', dbErr);
-    }
-
-    // 2. Sync to local JSON fallback file (works immediately in all environments)
+    // 3. Sync to local JSON fallback file
     try {
       fs.writeFileSync(fallbackConfigPath, JSON.stringify(feedbacks, null, 2), 'utf8');
     } catch (fsErr) {

@@ -115,7 +115,10 @@ export function setLocalCustomerFeedbacks(feedbacks: CustomerFeedbackItem[]) {
 
 export async function fetchCustomerFeedbacks(): Promise<CustomerFeedbackItem[]> {
   try {
-    const res = await fetch('/api/customer-reviews', { cache: 'no-store' });
+    const res = await fetch(`/api/customer-reviews?_t=${Date.now()}`, { 
+      cache: 'no-store',
+      headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' }
+    });
     if (res.ok) {
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
@@ -131,6 +134,12 @@ export async function fetchCustomerFeedbacks(): Promise<CustomerFeedbackItem[]> 
 
 export async function saveCustomerFeedbacks(feedbacks: CustomerFeedbackItem[]): Promise<boolean> {
   setLocalCustomerFeedbacks(feedbacks);
+  
+  // Dispatch custom event for real-time in-browser updates
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('bitium_reviews_updated', { detail: feedbacks }));
+  }
+
   try {
     const res = await fetch('/api/customer-reviews', {
       method: 'POST',

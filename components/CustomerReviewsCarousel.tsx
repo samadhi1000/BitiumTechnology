@@ -24,23 +24,53 @@ export default function CustomerReviewsCarousel({
   const [items, setItems] = useState<CustomerFeedbackItem[]>(initialFeedbacks || defaultCustomerFeedbacks);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Sync with live server API on mount
+  // Sync with live server API and listen for cross-tab updates
   React.useEffect(() => {
     if (initialFeedbacks && initialFeedbacks.length > 0) {
       setItems(initialFeedbacks);
       return;
     }
-    // Load local storage first for zero-layout-shift
-    const local = getLocalCustomerFeedbacks();
-    if (local && local.length > 0) {
-      setItems(local);
-    }
-    // Then fetch latest from API
-    fetchCustomerFeedbacks().then((latest) => {
-      if (latest && latest.length > 0) {
-        setItems(latest);
+
+    const refreshData = () => {
+      const local = getLocalCustomerFeedbacks();
+      if (local && local.length > 0) {
+        setItems(local);
       }
-    }).catch(() => {});
+      fetchCustomerFeedbacks().then((latest) => {
+        if (latest && latest.length > 0) {
+          setItems(latest);
+        }
+      }).catch(() => {});
+    };
+
+    refreshData();
+
+    const handleCustomUpdate = (e: any) => {
+      if (e.detail && Array.isArray(e.detail)) {
+        setItems(e.detail);
+      } else {
+        refreshData();
+      }
+    };
+
+    const handleStorageUpdate = (e: StorageEvent) => {
+      if (e.key === 'bitium_customer_feedbacks_data' && e.newValue) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setItems(parsed);
+          }
+        } catch {}
+      }
+    };
+
+    window.addEventListener('bitium_reviews_updated', handleCustomUpdate);
+    window.addEventListener('storage', handleStorageUpdate);
+
+    return () => {
+      window.removeEventListener('bitium_reviews_updated', handleCustomUpdate);
+      window.removeEventListener('storage', handleStorageUpdate);
+    };
   }, [initialFeedbacks]);
 
   // Touch / Swipe handling refs
