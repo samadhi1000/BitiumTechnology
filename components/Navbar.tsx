@@ -129,7 +129,7 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 w-full glass shadow-sm transition-all duration-300 border-b border-border/80 bg-background/90 backdrop-blur-md">
-      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
@@ -409,17 +409,17 @@ export default function Navbar() {
 
             {/* Desktop Auth */}
             {isLoggedIn ? (
-              <div className="hidden lg:flex items-center space-x-2">
+              <div className="hidden lg:flex items-center space-x-1.5">
                 <Link
                   href="/admin"
                   title="Return to Admin Panel"
-                  className="flex items-center space-x-2 px-3 py-1.5 rounded-xl border border-emerald-500/30 dark:border-[#2CFF05]/30 bg-emerald-500/10 dark:bg-[#2CFF05]/10 hover:bg-emerald-500/20 dark:hover:bg-[#2CFF05]/20 text-sm font-medium hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-all group shadow-sm"
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border border-emerald-500/30 dark:border-[#2CFF05]/30 bg-emerald-500/10 dark:bg-[#2CFF05]/10 hover:bg-emerald-500/20 dark:hover:bg-[#2CFF05]/20 text-xs font-bold hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-all group shadow-sm"
                 >
-                  <User size={16} className="text-emerald-600 dark:text-[#2CFF05] shrink-0" />
-                  <span className="max-w-[120px] truncate font-bold text-xs text-foreground group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05]">
-                    {displayName}
+                  <User size={14} className="text-emerald-600 dark:text-[#2CFF05] shrink-0" />
+                  <span className="max-w-[85px] truncate text-[11px] font-bold text-foreground group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05]">
+                    {displayName.includes('@') ? displayName.split('@')[0] : displayName}
                   </span>
-                  <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none border uppercase ${
+                  <span className={`text-[8px] font-black px-1.5 py-0.5 rounded-full leading-none border uppercase ${
                     roleLabel === 'ADMIN'
                       ? 'text-emerald-700 dark:text-[#2CFF05] bg-emerald-500/20 dark:bg-[#2CFF05]/20 border-emerald-600/30 dark:border-[#2CFF05]/30'
                       : 'text-sky-700 dark:text-sky-400 bg-sky-500/20 dark:bg-sky-500/20 border-sky-600/30 dark:border-sky-500/30'
@@ -429,10 +429,10 @@ export default function Navbar() {
                 </Link>
                 <button
                   onClick={handleNavbarSignOut}
-                  className="p-2 rounded-xl hover:bg-red-500/10 text-muted-foreground hover:text-red-500 border border-transparent hover:border-red-500/20 transition-colors cursor-pointer"
+                  className="p-1.5 rounded-full hover:bg-red-500/10 text-muted-foreground hover:text-red-500 border border-transparent hover:border-red-500/20 transition-colors cursor-pointer"
                   title="Sign Out of Admin"
                 >
-                  <LogOut size={16} />
+                  <LogOut size={14} />
                 </button>
               </div>
             ) : null}
