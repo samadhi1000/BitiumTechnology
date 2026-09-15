@@ -788,15 +788,15 @@ function HomeContent() {
             
             {/* Left side: Heading & CTA */}
             <div className="space-y-6 lg:sticky lg:top-24">
-              <div className="inline-flex items-center gap-2 bg-[#2CFF05]/10 border border-[#2CFF05]/25 rounded-full px-3.5 py-1.5">
-                <Sparkles size={12} className="text-[#2CFF05]" />
-                <span className="font-heading font-semibold text-[11px] text-[#2CFF05] tracking-wider uppercase">
+              <div className="inline-flex items-center gap-2 bg-emerald-500/10 dark:bg-[#2CFF05]/10 border border-emerald-500/25 dark:border-[#2CFF05]/25 rounded-full px-3.5 py-1.5">
+                <Sparkles size={12} className="text-emerald-600 dark:text-[#2CFF05]" />
+                <span className="font-heading font-semibold text-[11px] text-emerald-600 dark:text-[#2CFF05] tracking-wider uppercase">
                   {t.homeSections?.faqBadge || 'SUPPORT HUB'}
                 </span>
               </div>
               <h2 className="font-heading font-black text-[clamp(32px,4.5vw,48px)] text-foreground leading-[1.1]">
                 {t.homeSections?.faqTitle1 || 'Frequently Asked '}
-                <span className="text-[#2CFF05]">
+                <span className="text-emerald-600 dark:text-[#2CFF05]">
                   {t.homeSections?.faqTitle2 || 'Questions'}
                 </span>
               </h2>
@@ -804,7 +804,7 @@ function HomeContent() {
                 {t.homeSections?.faqDesc || 'Need help with your design, files, or custom sheets? Find answers to commonly asked questions here, or reach out directly to our printing experts.'}
               </p>
               <div className="pt-2">
-                <Link href="/contact" className="lime-btn inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-xs font-black uppercase tracking-wider shadow-lg shadow-[#2CFF05]/10 hover:shadow-[#2CFF05]/25 cursor-pointer">
+                <Link href="/contact" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-600 hover:bg-emerald-700 text-white dark:bg-[#2CFF05] dark:hover:bg-[#28e604] dark:text-[#0a0a0a] shadow-lg shadow-emerald-600/10 dark:shadow-[#2CFF05]/10 transition-all hover:scale-105 cursor-pointer">
                   <MessageSquareHeart size={14} /> {t.homeSections?.faqSupportBtn || 'Contact Support'}
                 </Link>
               </div>
@@ -815,17 +815,17 @@ function HomeContent() {
               {faqs.map((faq, i) => (
                 <div 
                   key={i} 
-                  className={`border border-border rounded-[20px] bg-card/30 dark:bg-[#0f172a]/20 hover:border-[#2CFF05]/40 transition-all duration-300 p-5 cursor-pointer ${
-                    openFaq === i ? 'border-[#2CFF05]/40 bg-card/65 dark:bg-[#0f172a]/45 shadow-[0_8px_30px_rgba(141,255,0,0.04)]' : ''
+                  className={`border border-border rounded-[20px] bg-card/30 dark:bg-[#0f172a]/20 hover:border-emerald-500/40 dark:hover:border-[#2CFF05]/40 transition-all duration-300 p-5 cursor-pointer ${
+                    openFaq === i ? 'border-emerald-500/50 dark:border-[#2CFF05]/40 bg-card/65 dark:bg-[#0f172a]/45 shadow-sm' : ''
                   }`}
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                 >
                   <button 
                     className="w-full bg-transparent border-none cursor-pointer flex items-center justify-between gap-4 text-left p-0 focus:outline-none group"
                   >
-                    <span className="font-heading font-bold text-[16px] text-foreground group-hover:text-[#2CFF05] transition-colors">{faq.q}</span>
-                    <div className={`w-8 h-8 rounded-full border border-border flex items-center justify-center text-foreground group-hover:border-[#2CFF05]/40 group-hover:text-[#2CFF05] transition-all duration-300 shrink-0 ${
-                      openFaq === i ? 'bg-[#2CFF05] border-[#2CFF05] text-[#0a0a0a] rotate-180' : ''
+                    <span className="font-heading font-bold text-[16px] text-foreground group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05] transition-colors">{faq.q}</span>
+                    <div className={`w-8 h-8 rounded-full border border-border flex items-center justify-center text-foreground group-hover:border-emerald-500/40 dark:group-hover:border-[#2CFF05]/40 group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05] transition-all duration-300 shrink-0 ${
+                      openFaq === i ? 'bg-emerald-600 dark:bg-[#2CFF05] border-emerald-600 dark:border-[#2CFF05] text-white dark:text-[#0a0a0a] rotate-180' : ''
                     }`}>
                       <ChevronDown />
                     </div>
