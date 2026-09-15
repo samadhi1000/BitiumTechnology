@@ -409,28 +409,18 @@ export default function Navbar() {
 
             {/* Desktop Auth */}
             {isLoggedIn ? (
-              <div className="hidden lg:flex items-center space-x-1.5">
+              <div className="hidden lg:flex items-center gap-1.5">
                 <Link
                   href="/admin"
-                  title="Return to Admin Panel"
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border border-emerald-500/30 dark:border-[#2CFF05]/30 bg-emerald-500/10 dark:bg-[#2CFF05]/10 hover:bg-emerald-500/20 dark:hover:bg-[#2CFF05]/20 text-xs font-bold hover:text-emerald-600 dark:hover:text-[#2CFF05] transition-all group shadow-sm"
+                  title={`${displayName} (${roleLabel}) — Return to Admin`}
+                  className="w-8 h-8 rounded-full bg-emerald-500/10 dark:bg-[#2CFF05]/10 border border-emerald-500/30 dark:border-[#2CFF05]/30 flex items-center justify-center text-emerald-600 dark:text-[#2CFF05] hover:bg-emerald-500/25 dark:hover:bg-[#2CFF05]/20 transition-all shadow-sm"
                 >
-                  <User size={14} className="text-emerald-600 dark:text-[#2CFF05] shrink-0" />
-                  <span className="max-w-[85px] truncate text-[11px] font-bold text-foreground group-hover:text-emerald-600 dark:group-hover:text-[#2CFF05]">
-                    {displayName.includes('@') ? displayName.split('@')[0] : displayName}
-                  </span>
-                  <span className={`text-[8px] font-black px-1.5 py-0.5 rounded-full leading-none border uppercase ${
-                    roleLabel === 'ADMIN'
-                      ? 'text-emerald-700 dark:text-[#2CFF05] bg-emerald-500/20 dark:bg-[#2CFF05]/20 border-emerald-600/30 dark:border-[#2CFF05]/30'
-                      : 'text-sky-700 dark:text-sky-400 bg-sky-500/20 dark:bg-sky-500/20 border-sky-600/30 dark:border-sky-500/30'
-                  }`}>
-                    {roleLabel}
-                  </span>
+                  <User size={15} />
                 </Link>
                 <button
                   onClick={handleNavbarSignOut}
-                  className="p-1.5 rounded-full hover:bg-red-500/10 text-muted-foreground hover:text-red-500 border border-transparent hover:border-red-500/20 transition-colors cursor-pointer"
-                  title="Sign Out of Admin"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-red-500 border border-transparent hover:border-red-500/20 hover:bg-red-500/10 transition-colors cursor-pointer"
+                  title="Sign Out"
                 >
                   <LogOut size={14} />
                 </button>
