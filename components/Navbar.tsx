@@ -127,8 +127,8 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full glass shadow-sm transition-all duration-300 border-b border-border/80 bg-background/90 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="sticky top-0 z-50 w-full glass shadow-sm transition-all duration-300 border-b border-border/80 bg-background/90 backdrop-blur-md px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center h-16 sm:h-[68px]">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
@@ -153,8 +153,8 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop Navigation Links (Tidy & Cleanly Spaced) */}
-          <div className="hidden lg:flex items-center gap-1 xl:gap-2.5 2xl:gap-3.5 h-full">
+          {/* Desktop Navigation Links (Centered & Tidy) */}
+          <div className="hidden lg:flex items-center justify-center flex-1 mx-2 xl:mx-4 gap-1 xl:gap-2.5 2xl:gap-3.5 h-full">
             {/* 02. Stencil Page Dropdown */}
             <div 
               className="relative h-full flex items-center"
