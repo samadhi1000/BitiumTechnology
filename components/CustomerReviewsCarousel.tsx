@@ -139,23 +139,23 @@ export default function CustomerReviewsCarousel({
 
   return (
     <section 
-      className="py-20 px-4 sm:px-6 lg:px-8 bg-[#090d16] text-white border-b border-white/10 relative overflow-hidden select-none"
+      className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-[#090d16] text-slate-900 dark:text-white border-b border-slate-200 dark:border-white/10 relative overflow-hidden select-none transition-colors duration-300"
       onKeyDown={handleKeyDown}
       tabIndex={0}
       aria-label="Customer Reviews Section"
     >
       {/* Background ambient lighting effects */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-[#2CFF05]/5 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-72 h-72 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-emerald-500/10 dark:bg-[#2CFF05]/5 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-72 h-72 bg-blue-500/10 dark:bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Header */}
         <div className="text-center mb-12 sm:mb-14">
-          <span className="font-heading font-extrabold text-[12px] sm:text-[13px] text-[#2CFF05] uppercase tracking-[0.25em] block mb-2">
+          <span className="font-heading font-extrabold text-[12px] sm:text-[13px] text-emerald-600 dark:text-[#2CFF05] uppercase tracking-[0.25em] block mb-2">
             {sectionBadge}
           </span>
-          <h2 className="font-heading font-black text-[clamp(28px,4.5vw,46px)] text-white tracking-tight leading-tight">
+          <h2 className="font-heading font-black text-[clamp(28px,4.5vw,46px)] text-slate-900 dark:text-white tracking-tight leading-tight">
             {sectionTitle}
           </h2>
         </div>
@@ -171,7 +171,7 @@ export default function CustomerReviewsCarousel({
           <button
             onClick={handlePrev}
             aria-label="Previous review"
-            className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-[#131b2e]/90 hover:bg-[#2CFF05] text-white hover:text-[#0a0a0a] border border-white/15 hover:border-[#2CFF05] flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 shrink-0 z-20 cursor-pointer"
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-white dark:bg-[#131b2e]/90 text-slate-700 dark:text-white hover:bg-emerald-600 dark:hover:bg-[#2CFF05] hover:text-white dark:hover:text-[#0a0a0a] border border-slate-200 dark:border-white/15 hover:border-emerald-600 dark:hover:border-[#2CFF05] flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 shrink-0 z-20 cursor-pointer"
           >
             <ChevronLeft size={20} className="stroke-[2.5]" />
           </button>
@@ -193,13 +193,13 @@ export default function CustomerReviewsCarousel({
                   key={`${item.id}-${index}-${cardPos}`}
                   onClick={() => setCurrentIndex(index)}
                   className={`
-                    relative rounded-[22px] sm:rounded-[26px] overflow-hidden min-h-[380px] sm:min-h-[420px] flex flex-col justify-end p-6 sm:p-7 transition-all duration-500 cursor-pointer group
+                    relative rounded-[22px] sm:rounded-[26px] overflow-hidden min-h-[380px] sm:min-h-[420px] flex flex-col justify-end p-6 sm:p-7 transition-all duration-500 cursor-pointer group bg-slate-900
                     ${isHiddenOnMobile ? 'hidden lg:flex' : 'flex'}
                     ${isHiddenOnTablet && !isHiddenOnMobile ? 'hidden md:flex' : ''}
                     ${
                       isCenter
-                        ? 'border-[1.5px] border-blue-500/70 shadow-[0_0_35px_rgba(59,130,246,0.3)] ring-1 ring-blue-500/40 lg:scale-[1.02] z-10'
-                        : 'border border-white/10 hover:border-white/25 shadow-md opacity-85 hover:opacity-100'
+                        ? 'border-[2px] border-emerald-500 dark:border-blue-500/70 shadow-[0_0_30px_rgba(16,185,129,0.25)] dark:shadow-[0_0_35px_rgba(59,130,246,0.3)] ring-1 ring-emerald-500/30 dark:ring-blue-500/40 lg:scale-[1.02] z-10'
+                        : 'border border-slate-200/80 dark:border-white/10 hover:border-slate-400 dark:hover:border-white/25 shadow-md opacity-90 hover:opacity-100'
                     }
                   `}
                 >
@@ -213,9 +213,8 @@ export default function CustomerReviewsCarousel({
                       className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                       priority={isCenter}
                     />
-                    {/* Multi-layered Dark Gradient for high text legibility */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#080c14] via-[#080c14]/85 via-55% to-[#080c14]/40" />
-                    <div className="absolute inset-0 bg-black/20" />
+                    {/* Lightweight Bottom Scrim Gradient for maximum image clarity & text legibility */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 via-45% to-transparent" />
                   </div>
 
                   {/* Card Content (Overlayed over Image) */}
@@ -229,22 +228,22 @@ export default function CustomerReviewsCarousel({
                           className={`${
                             s < item.rating
                               ? 'fill-[#f59e0b] text-[#f59e0b]'
-                              : 'fill-transparent text-zinc-600'
+                              : 'fill-transparent text-zinc-500'
                           }`}
                         />
                       ))}
                     </div>
 
                     {/* Review Quote Text */}
-                    <p className="text-[14px] sm:text-[15px] font-sans text-white/95 leading-[1.65] mb-5 font-normal tracking-wide line-clamp-3">
+                    <p className="text-[14px] sm:text-[15px] font-sans text-white leading-[1.65] mb-5 font-medium tracking-wide line-clamp-3 drop-shadow-sm">
                       {customerText}
                     </p>
 
                     {/* Customer Profile Row */}
-                    <div className="flex items-center gap-3.5 pt-2 border-t border-white/10">
+                    <div className="flex items-center gap-3.5 pt-2.5 border-t border-white/20">
                       {/* Avatar Initials Badge */}
                       <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center font-heading font-extrabold text-[13px] text-white shrink-0 shadow-md ring-2 ring-white/15"
+                        className="w-10 h-10 rounded-full flex items-center justify-center font-heading font-extrabold text-[13px] text-white shrink-0 shadow-md ring-2 ring-white/20"
                         style={{ backgroundColor: avatarColor }}
                       >
                         {item.avatar}
@@ -252,10 +251,10 @@ export default function CustomerReviewsCarousel({
 
                       {/* Customer Name & Role */}
                       <div className="overflow-hidden">
-                        <div className="font-heading font-bold text-[14px] sm:text-[15px] text-white truncate group-hover:text-[#2CFF05] transition-colors">
+                        <div className="font-heading font-bold text-[14px] sm:text-[15px] text-white truncate group-hover:text-emerald-400 dark:group-hover:text-[#2CFF05] transition-colors">
                           {customerName}
                         </div>
-                        <div className="text-[11px] sm:text-[12px] text-zinc-400 font-medium truncate">
+                        <div className="text-[11px] sm:text-[12px] text-zinc-300 font-medium truncate">
                           {customerRole}
                         </div>
                       </div>
@@ -270,7 +269,7 @@ export default function CustomerReviewsCarousel({
           <button
             onClick={handleNext}
             aria-label="Next review"
-            className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-[#131b2e]/90 hover:bg-[#2CFF05] text-white hover:text-[#0a0a0a] border border-white/15 hover:border-[#2CFF05] flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 shrink-0 z-20 cursor-pointer"
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-white dark:bg-[#131b2e]/90 text-slate-700 dark:text-white hover:bg-emerald-600 dark:hover:bg-[#2CFF05] hover:text-white dark:hover:text-[#0a0a0a] border border-slate-200 dark:border-white/15 hover:border-emerald-600 dark:hover:border-[#2CFF05] flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 shrink-0 z-20 cursor-pointer"
           >
             <ChevronRight size={20} className="stroke-[2.5]" />
           </button>
@@ -285,8 +284,8 @@ export default function CustomerReviewsCarousel({
               aria-label={`Go to slide ${i + 1}`}
               className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
                 currentIndex === i 
-                  ? 'w-7 bg-[#2CFF05]' 
-                  : 'w-2 bg-white/20 hover:bg-white/40'
+                  ? 'w-7 bg-emerald-600 dark:bg-[#2CFF05]' 
+                  : 'w-2 bg-slate-300 dark:bg-white/20 hover:bg-slate-400 dark:hover:bg-white/40'
               }`}
             />
           ))}
@@ -296,15 +295,15 @@ export default function CustomerReviewsCarousel({
         <div className="relative text-center mt-10 sm:mt-12 flex items-center justify-center">
           <Link
             href="/community"
-            className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full text-[14px] font-extrabold text-[#0a0a0a] bg-[#2CFF05] hover:bg-[#28e604] shadow-[0_6px_25px_rgba(44,255,5,0.35)] hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer group"
+            className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full text-[14px] font-extrabold text-white dark:text-[#0a0a0a] bg-emerald-600 hover:bg-emerald-700 dark:bg-[#2CFF05] dark:hover:bg-[#28e604] shadow-[0_6px_25px_rgba(16,185,129,0.3)] dark:shadow-[0_6px_25px_rgba(44,255,5,0.35)] hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer group"
           >
-            <Users size={18} className="text-[#0a0a0a]" />
+            <Users size={18} className="text-white dark:text-[#0a0a0a]" />
             <span>{communityLabel}</span>
-            <ArrowRight size={16} className="text-[#0a0a0a] group-hover:translate-x-1 transition-transform" />
+            <ArrowRight size={16} className="text-white dark:text-[#0a0a0a] group-hover:translate-x-1 transition-transform" />
           </Link>
 
-          {/* Decorative Sparkle (as seen in the screenshot) */}
-          <div className="hidden sm:block absolute right-4 sm:right-12 bottom-0 text-white/25 pointer-events-none">
+          {/* Decorative Sparkle */}
+          <div className="hidden sm:block absolute right-4 sm:right-12 bottom-0 text-slate-300 dark:text-white/25 pointer-events-none">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 0C12 6.627 6.627 12 0 12C6.627 12 12 17.373 12 24C12 17.373 17.373 12 24 12C17.373 12 12 6.627 12 0Z"/>
             </svg>
