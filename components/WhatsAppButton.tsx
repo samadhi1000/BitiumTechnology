@@ -16,7 +16,7 @@ export default function WhatsAppButton() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end font-sans">
+    <div className="fixed bottom-6 right-6 min-[1360px]:right-[calc((100vw-1280px)/2+1.5rem)] z-[9999] flex flex-col items-end font-sans transition-[right] duration-200">
       {/* 1. CSS Keyframe styles for animations */}
       <style>{`
         @keyframes wa-pulse {

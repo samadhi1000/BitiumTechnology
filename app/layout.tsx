@@ -75,7 +75,7 @@ export default function RootLayout({
       lang="en"
       className={`h-full antialiased dark ${inter.variable} ${outfit.variable} ${notoSansSinhala.variable}`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground font-sans selection:bg-primary/40 selection:text-primary-foreground">
+      <body className="min-h-full flex flex-col overflow-x-hidden bg-background text-foreground font-sans selection:bg-primary/40 selection:text-primary-foreground">
         <ThemeProvider>
           <LanguageProvider>
             <PreloaderWrapper>

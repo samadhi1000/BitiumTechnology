@@ -270,24 +270,30 @@ function HomeContent() {
 
       {/* 01. Hero Banner Section with Static Industrial Printer Background & Right Showcase */}
       <section className="relative py-14 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 border-b border-border bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-white min-h-[600px] lg:min-h-[660px] flex items-center transition-colors duration-300 z-20">
-        {/* Static Background Image with Crystal Clear Visibility & Gradient Falloff to the Right */}
-        <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
-          <Image
-            src="/images/hero-printer-bg.webp"
-            alt="Bitium Technology Industrial Printing Machinery"
-            fill
-            priority
-            quality={95}
-            className="object-cover object-center lg:object-right opacity-100 dark:opacity-95 transition-opacity duration-300"
-          />
-          {/* 1. Subtle Base Tint (Dark mode only) */}
-          <div className="absolute inset-0 bg-transparent dark:bg-black/25 transition-colors duration-300" />
+        {/* Static Background Image Container - Centered and bound to max-w-7xl with edge fades to prevent widescreen overstretch */}
+        <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden flex justify-center">
+          <div className="relative w-full max-w-7xl h-full overflow-hidden">
+            <Image
+              src="/images/hero-printer-bg.webp"
+              alt="Bitium Technology Industrial Printing Machinery"
+              fill
+              priority
+              quality={95}
+              className="object-cover object-center lg:object-right opacity-100 dark:opacity-95 transition-opacity duration-300"
+            />
+            {/* 1. Subtle Base Tint (Dark mode only) */}
+            <div className="absolute inset-0 bg-transparent dark:bg-black/25 transition-colors duration-300" />
 
-          {/* 2. Text Reading Scrim: Full opaque white backdrop behind left text column (0-52%), smoothly transitioning into machinery background (62-80%) */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 via-40% to-transparent to-58% dark:from-[#020617] dark:via-[#020617]/90 dark:via-38% dark:to-transparent dark:to-58% transition-all duration-300" />
+            {/* 2. Text Reading Scrim: Full opaque white backdrop behind left text column, smoothly transitioning into machinery background */}
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 via-40% to-transparent to-62% dark:from-[#020617] dark:via-[#020617]/90 dark:via-38% dark:to-transparent dark:to-62% transition-all duration-300" />
 
-          {/* 3. Subtle Bottom Edge Fade into next section */}
-          <div className="absolute bottom-0 left-0 right-0 h-8 sm:h-10 bg-gradient-to-t from-background/60 to-transparent pointer-events-none" />
+            {/* 3. Subtle Left & Right Edge Fades to seamlessly blend with the background color on ultrawide monitors */}
+            <div className="hidden min-[1360px]:block absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-slate-50 dark:from-[#020617] to-transparent pointer-events-none" />
+            <div className="hidden min-[1360px]:block absolute inset-y-0 right-0 w-28 bg-gradient-to-l from-slate-50 dark:from-[#020617] to-transparent pointer-events-none" />
+
+            {/* 4. Subtle Bottom Edge Fade into next section */}
+            <div className="absolute bottom-0 left-0 right-0 h-8 sm:h-10 bg-gradient-to-t from-background/60 to-transparent pointer-events-none" />
+          </div>
         </div>
         
         <div className="max-w-7xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
