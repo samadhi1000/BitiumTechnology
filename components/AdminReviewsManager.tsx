@@ -106,6 +106,10 @@ export default function AdminReviewsManager() {
   };
 
   const handleOpenNew = () => {
+    if (feedbacks.length >= 10) {
+      alert('Maximum limit reached! You can only add up to 10 customer review cards.');
+      return;
+    }
     setEditingItem({
       id: `review-${Date.now()}`,
       name: '',
@@ -153,6 +157,11 @@ export default function AdminReviewsManager() {
 
     if (!editingItem.name.trim() || !editingItem.text.trim()) {
       alert('Please provide customer name and feedback quote text.');
+      return;
+    }
+
+    if (isNew && feedbacks.length >= 10) {
+      alert('Maximum limit reached! You can only add up to 10 customer review cards.');
       return;
     }
 
@@ -233,14 +242,14 @@ export default function AdminReviewsManager() {
           <div className="inline-flex items-center gap-2 bg-[#2CFF05]/10 border border-[#2CFF05]/20 rounded-full px-3 py-1 mb-2">
             <MessageSquareHeart size={13} className="text-[#2CFF05]" />
             <span className="text-[11px] font-bold text-[#2CFF05] uppercase tracking-wider">
-              Reviews &amp; Feedbacks Controller
+              Reviews &amp; Feedbacks Controller ({feedbacks.length}/10 Cards)
             </span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black font-heading text-foreground tracking-tight">
             Customer Feedback Carousel Manager
           </h2>
           <p className="text-xs text-muted-foreground mt-1">
-            Add, edit, reorder, or customize customer reviews, ratings, avatar colors, and background images.
+            Add, edit, reorder, or customize customer reviews (Maximum 10 cards allowed).
           </p>
         </div>
 
@@ -256,10 +265,16 @@ export default function AdminReviewsManager() {
 
           <button
             onClick={handleOpenNew}
-            className="px-4 py-2 rounded-xl bg-card border border-[#2CFF05]/40 text-[#2CFF05] hover:bg-[#2CFF05]/10 text-xs font-bold flex items-center gap-2 transition-all hover:scale-105 cursor-pointer"
+            disabled={feedbacks.length >= 10}
+            title={feedbacks.length >= 10 ? 'Maximum 10 review cards limit reached' : 'Add new customer review card'}
+            className={`px-4 py-2 rounded-xl bg-card border text-xs font-bold flex items-center gap-2 transition-all cursor-pointer ${
+              feedbacks.length >= 10
+                ? 'border-zinc-700 text-zinc-500 opacity-50 cursor-not-allowed bg-transparent'
+                : 'border-[#2CFF05]/40 text-[#2CFF05] hover:bg-[#2CFF05]/10 hover:scale-105'
+            }`}
           >
             <Plus size={14} />
-            Add Review Card
+            Add Review ({feedbacks.length}/10)
           </button>
 
           <button

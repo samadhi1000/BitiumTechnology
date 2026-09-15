@@ -102,7 +102,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Expected array of customer feedback items' }, { status: 400 });
     }
 
-    const feedbacks: CustomerFeedbackItem[] = body.map((item, index) => ({
+    const limitedBody = body.slice(0, 10);
+    const feedbacks: CustomerFeedbackItem[] = limitedBody.map((item, index) => ({
       id: item.id || `review-${Date.now()}-${index}`,
       name: item.name || 'Anonymous Client',
       nameSi: item.nameSi || item.name || '',
