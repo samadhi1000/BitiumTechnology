@@ -129,12 +129,12 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 w-full glass shadow-sm transition-all duration-300 border-b border-border/80 bg-background/90 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16 sm:h-[68px]">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <Link href="/" onClick={closeMobileMenu} className="flex items-center space-x-2.5 sm:space-x-3 group relative py-1 hover:opacity-90 transition-opacity">
-              <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-primary/50 shadow-[0_0_20px_rgba(99,102,241,0.5)] group-hover:scale-105 transition-transform">
+            <Link href="/" onClick={closeMobileMenu} className="flex items-center space-x-2 sm:space-x-2.5 group relative py-1 hover:opacity-90 transition-opacity">
+              <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border-2 border-primary/50 shadow-[0_0_20px_rgba(99,102,241,0.5)] group-hover:scale-105 transition-transform">
                 <Image
                   src="/images/bitium-logo.webp"
                   alt="Bitium Technology"
@@ -144,10 +144,10 @@ export default function Navbar() {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-2xl sm:text-3xl font-black tracking-wider text-slate-900 dark:text-white flex items-center gap-0.5 leading-none">
+                <span className="text-xl sm:text-2xl font-black tracking-wider text-slate-900 dark:text-white flex items-center gap-0.5 leading-none">
                   B<span className="text-[#ff1a3c] drop-shadow-[0_0_12px_#ff1a3c]">!</span>T<span className="text-[#ff1a3c] drop-shadow-[0_0_12px_#ff1a3c]">!</span>UM
                 </span>
-                <span className="text-xs sm:text-[13px] font-extrabold tracking-[0.25em] text-slate-900 dark:text-white uppercase leading-tight mt-0.5 sm:mt-1 transition-colors">
+                <span className="text-[10px] sm:text-[11px] font-extrabold tracking-[0.25em] text-slate-900 dark:text-white uppercase leading-tight mt-0.5 transition-colors">
                   Technology
                 </span>
               </div>
@@ -155,19 +155,19 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation Links (Tidy & Cleanly Spaced) */}
-          <div className="hidden lg:flex items-center gap-2 xl:gap-4 2xl:gap-6 h-full">
+          <div className="hidden lg:flex items-center gap-1 xl:gap-2.5 2xl:gap-3.5 h-full">
             {/* 02. Stencil Page Dropdown */}
             <div 
               className="relative h-full flex items-center"
               onMouseEnter={() => setStencilHovered(true)}
               onMouseLeave={() => setStencilHovered(false)}
             >
-              <Link href={adminLink('/stencil')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
+              <Link href={adminLink('/stencil')} className="px-2 py-1.5 rounded-lg text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>{t.nav.stencil || 'Stencils'}</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${stencilHovered ? 'rotate-180' : ''}`} />
               </Link>
               {stencilHovered && (
-                <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
+                <div className="absolute top-[52px] sm:top-[56px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
                   <Link href={adminLink('/stencil')} className="px-3 py-2 rounded-lg text-[11px] font-bold text-emerald-600 dark:text-[#2CFF05] hover:bg-card transition-colors">
                     {t.nav.allStencils}
                   </Link>
@@ -199,12 +199,12 @@ export default function Navbar() {
               onMouseEnter={() => setScreenPrintingHovered(true)}
               onMouseLeave={() => setScreenPrintingHovered(false)}
             >
-              <Link href={adminLink('/screen-printing')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
+              <Link href={adminLink('/screen-printing')} className="px-2 py-1.5 rounded-lg text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>{t.subNav.screenPrinting}</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${screenPrintingHovered ? 'rotate-180' : ''}`} />
               </Link>
               {screenPrintingHovered && (
-                <div className="absolute top-[60px] left-0 w-52 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
+                <div className="absolute top-[52px] sm:top-[56px] left-0 w-52 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
                   <Link href={adminLink('/screen-printing')} className="px-3 py-2 rounded-lg text-[11px] font-bold text-emerald-600 dark:text-[#2CFF05] hover:bg-card transition-colors">
                     {t.nav.allScreenPrinting}
                   </Link>
@@ -238,12 +238,12 @@ export default function Navbar() {
               onMouseEnter={() => setDtfPrintingHovered(true)}
               onMouseLeave={() => setDtfPrintingHovered(false)}
             >
-              <Link href={adminLink('/dtf-printing')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
+              <Link href={adminLink('/dtf-printing')} className="px-2 py-1.5 rounded-lg text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>{t.subNav.dtfPrinting}</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${dtfPrintingHovered ? 'rotate-180' : ''}`} />
               </Link>
               {dtfPrintingHovered && (
-                <div className="absolute top-[60px] left-0 w-52 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50 max-h-[420px] overflow-y-auto">
+                <div className="absolute top-[52px] sm:top-[56px] left-0 w-52 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50 max-h-[420px] overflow-y-auto">
                   <Link href={adminLink('/dtf-printing')} className="px-3 py-2 rounded-lg text-[11px] font-bold text-emerald-600 dark:text-[#2CFF05] hover:bg-card transition-colors">
                     {t.nav.allDtfPrinting}
                   </Link>
@@ -283,12 +283,12 @@ export default function Navbar() {
               onMouseEnter={() => setBatikStampHovered(true)}
               onMouseLeave={() => setBatikStampHovered(false)}
             >
-              <Link href={adminLink('/batik-stamp')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
+              <Link href={adminLink('/batik-stamp')} className="px-2 py-1.5 rounded-lg text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>{t.nav.batikStamp || 'Block Designs'}</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${batikStampHovered ? 'rotate-180' : ''}`} />
               </Link>
               {batikStampHovered && (
-                <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
+                <div className="absolute top-[52px] sm:top-[56px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
                   <Link 
                     href={adminLink('/batik-stamp')} 
                     className="px-3 py-2 rounded-lg text-[11px] font-bold text-emerald-600 dark:text-[#2CFF05] hover:bg-card transition-colors"
@@ -319,12 +319,12 @@ export default function Navbar() {
               onMouseEnter={() => setLaserCuttingHovered(true)}
               onMouseLeave={() => setLaserCuttingHovered(false)}
             >
-              <Link href={adminLink('/laser-cutting')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
+              <Link href={adminLink('/laser-cutting')} className="px-2 py-1.5 rounded-lg text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all flex items-center gap-1 cursor-pointer text-foreground whitespace-nowrap">
                 <span>{t.subNav.laserCutting}</span>
                 <ChevronDown size={11} className={`transition-transform duration-200 ${laserCuttingHovered ? 'rotate-180' : ''}`} />
               </Link>
               {laserCuttingHovered && (
-                <div className="absolute top-[60px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
+                <div className="absolute top-[52px] sm:top-[56px] left-0 w-48 rounded-xl border border-border bg-background p-2 shadow-2xl animate-fade-in flex flex-col gap-1 z-50">
                   <Link href={adminLink('/laser-cutting')} className="px-3 py-2 rounded-lg text-[11px] font-bold text-emerald-600 dark:text-[#2CFF05] hover:bg-card transition-colors">
                     {t.nav.allLaserCutting}
                   </Link>
@@ -348,41 +348,41 @@ export default function Navbar() {
             </div>
 
             {/* 07. Digital downloads */}
-            <Link href={adminLink('/downloads')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
+            <Link href={adminLink('/downloads')} className="px-2 py-1.5 rounded-lg text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
               {t.nav.downloads || 'Downloads'}
             </Link>
 
-            {/* 08. Materials / Consumables */}
-            <Link href={adminLink('/materials')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
-              {t.nav.materials || 'Materials / Consumables'}
+            {/* 08. Materials */}
+            <Link href={adminLink('/materials')} className="px-2 py-1.5 rounded-lg text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
+              {t.nav.materials || 'Materials'}
             </Link>
 
             {/* 09. Other Category */}
-            <Link href={adminLink('/other')} className="px-2.5 py-1.5 rounded-xl text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
+            <Link href={adminLink('/other')} className="px-2 py-1.5 rounded-lg text-xs font-semibold hover:text-emerald-600 dark:hover:text-[#2CFF05] hover:bg-card/50 transition-all text-foreground whitespace-nowrap">
               {t.nav.other || 'Other'}
             </Link>
           </div>
 
           {/* Action Buttons & Mobile Hamburger */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="flex items-center space-x-1.5 sm:space-x-2">
 
             {/* 🌙 Light / Dark Mode Toggle */}
             <button
               onClick={toggle}
               aria-label="Toggle light/dark mode"
-              className="relative flex items-center justify-center w-12 h-6 sm:w-14 sm:h-7 rounded-full border border-slate-300 dark:border-zinc-700 bg-card hover:border-emerald-600 dark:hover:border-[#2CFF05] transition-all duration-300 group overflow-hidden"
+              className="relative flex items-center justify-center w-11 h-6 sm:w-12 sm:h-6.5 rounded-full border border-slate-300 dark:border-zinc-700 bg-card hover:border-emerald-600 dark:hover:border-[#2CFF05] transition-all duration-300 group overflow-hidden"
             >
               <span className={`absolute inset-0 rounded-full transition-all duration-500 ${
                 theme === 'light' ? 'bg-emerald-500/15' : 'bg-muted'
               }`} />
-              <span className={`absolute w-4 h-4 sm:w-5 sm:h-5 rounded-full shadow-sm flex items-center justify-center transition-all duration-500 ${
+              <span className={`absolute w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full shadow-sm flex items-center justify-center transition-all duration-500 ${
                 theme === 'light'
-                  ? 'translate-x-2.5 sm:translate-x-3.5 bg-emerald-600 shadow-sm'
-                  : '-translate-x-2.5 sm:-translate-x-3.5 bg-zinc-600 shadow-sm'
+                  ? 'translate-x-2 sm:translate-x-2.5 bg-emerald-600 shadow-sm'
+                  : '-translate-x-2 sm:-translate-x-2.5 bg-zinc-600 shadow-sm'
               }`}>
                 {theme === 'light'
-                  ? <Sun size={10} className="text-white" />
-                  : <Moon size={10} className="text-white" />}
+                  ? <Sun size={9} className="text-white" />
+                  : <Moon size={9} className="text-white" />}
               </span>
             </button>
 
