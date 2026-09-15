@@ -144,9 +144,9 @@ export default function CustomerReviewsCarousel({
       tabIndex={0}
       aria-label="Customer Reviews Section"
     >
-      {/* Background ambient lighting effects */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-emerald-500/10 dark:bg-[#2CFF05]/5 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-72 h-72 bg-blue-500/10 dark:bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+      {/* Background ambient lighting effects (Dark mode only) */}
+      <div className="hidden dark:block absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-[#2CFF05]/5 rounded-full blur-[140px] pointer-events-none" />
+      <div className="hidden dark:block absolute bottom-10 right-10 w-72 h-72 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         
@@ -291,7 +291,7 @@ export default function CustomerReviewsCarousel({
           ))}
         </div>
 
-        {/* Bottom CTA & Decorative Star */}
+        {/* Bottom CTA */}
         <div className="relative text-center mt-10 sm:mt-12 flex items-center justify-center">
           <Link
             href="/community"
@@ -301,13 +301,6 @@ export default function CustomerReviewsCarousel({
             <span>{communityLabel}</span>
             <ArrowRight size={16} className="text-white dark:text-[#0a0a0a] group-hover:translate-x-1 transition-transform" />
           </Link>
-
-          {/* Decorative Sparkle */}
-          <div className="hidden sm:block absolute right-4 sm:right-12 bottom-0 text-slate-300 dark:text-white/25 pointer-events-none">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0C12 6.627 6.627 12 0 12C6.627 12 12 17.373 12 24C12 17.373 17.373 12 24 12C17.373 12 12 6.627 12 0Z"/>
-            </svg>
-          </div>
         </div>
 
       </div>
